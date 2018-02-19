@@ -3,3 +3,8 @@ sections/syntax.bnf
 sections/01_module.bnf
 sections/06_constant_expression.bnf
 sections/08_instruction.bnf
+errors/
+lexer/
+parser/
+token/
+util/
