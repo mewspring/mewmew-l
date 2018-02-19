@@ -218,11 +218,6 @@ GlobalType
 	| "global"
 ;
 
-OptGlobalValue
-	: empty
-	| GlobalValue // absent if external linkage.
-;
-
 Attrs
 	: empty
 	| "," AttrList
