@@ -36,7 +36,7 @@ bool LLParser::ParseTopLevelEntities() {
 
 TopLevelEntity
 	: SourceFilename
-	//| TargetDefinition
+	| TargetDefinition
 	//| ModuleAsm
 	//| TypeDef
 	//| ComdatDef

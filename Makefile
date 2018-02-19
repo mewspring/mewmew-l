@@ -8,7 +8,7 @@ sections/syntax.bnf: sections/01_module.bnf sections/02_identifier.bnf sections/
 	cat $^ > $@
 
 #sections/01_module.bnf: sections/01_module/a_summary.bnf sections/01_module/b_source_filename.bnf sections/01_module/c_target_definition.bnf sections/01_module/d_module_asm.bnf sections/01_module/e_type_definition.bnf sections/01_module/f_comdat_definition.bnf sections/01_module/g_global_variable.bnf sections/01_module/h_function.bnf sections/01_module/i_attribute_group_definition.bnf sections/01_module/j_metadata_definition.bnf
-sections/01_module.bnf: sections/01_module/a_summary.bnf sections/01_module/b_source_filename.bnf
+sections/01_module.bnf: sections/01_module/a_summary.bnf sections/01_module/b_source_filename.bnf sections/01_module/c_target_definition.bnf
 	cat $^ > $@
 
 sections/06_constant_expression.bnf: sections/06_constant_expression/a_summary.bnf sections/06_constant_expression/b_binary_expression.bnf sections/06_constant_expression/c_bitwise_expression.bnf sections/06_constant_expression/d_vector_expression.bnf sections/06_constant_expression/e_aggregate_expression.bnf sections/06_constant_expression/f_memory_expression.bnf sections/06_constant_expression/g_conversion_expression.bnf sections/06_constant_expression/h_other_expression.bnf
