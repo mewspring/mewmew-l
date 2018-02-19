@@ -1,0 +1,20 @@
+// --- [ Comdat Definition ] ---------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#langref-comdats
+
+/*
+bool LLParser::parseComdat() {
+*/
+
+ComdatDef
+	: ComdatVar "=" "comdat" SelectionKind
+;
+
+SelectionKind
+	: "any"
+	| "exactmatch"
+	| "largest"
+	| "noduplicates"
+	| "samesize"
+;
+

@@ -1,0 +1,14 @@
+// --- [ Source Filename ] -----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#source-filename
+
+/*
+/// toplevelentity
+///   ::= 'source_filename' '=' STRINGCONSTANT
+bool LLParser::ParseSourceFileName() {
+*/
+
+SourceFilename
+	: "source_filename" "=" string_lit
+;
+

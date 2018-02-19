@@ -1,0 +1,14 @@
+// --- [ Attribute Group Definition ] ------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#attribute-groups
+
+/*
+/// ParseUnnamedAttrGrp
+///   ::= 'attributes' AttrGrpID '=' '{' AttrValPair+ '}'
+bool LLParser::ParseUnnamedAttrGrp() {
+*/
+
+UnnamedAttrGrp
+	: "attributes" AttrGrpID "=" "{" FnAttributeValuePairList "}"
+;
+

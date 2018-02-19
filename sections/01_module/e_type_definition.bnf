@@ -1,0 +1,21 @@
+// --- [ Type Defintion ] ------------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#structure-type
+
+/*
+/// ParseUnnamedType:
+///   ::= LocalVarID '=' 'type' type
+bool LLParser::ParseUnnamedType() {
+*/
+
+/*
+/// toplevelentity
+///   ::= LocalVar '=' 'type' type
+bool LLParser::ParseNamedType() {
+*/
+
+TypeDef
+	: LocalVarID "=" "type" Type
+	| LocalVar "=" "type" Type
+;
+

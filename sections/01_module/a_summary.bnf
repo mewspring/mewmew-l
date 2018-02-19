@@ -1,0 +1,52 @@
+// The LLVM IR grammar has been based on the source code of the official LLVM
+// project, as of 2018-02-19 (rev db070bbdacd303ae7da129f59beaf35024d94c53).
+//
+//    * lib/AsmParser/LLParser.cpp
+
+// === [ Module ] ==============================================================
+
+// https://llvm.org/docs/LangRef.html#module-structure
+
+/*
+/// Run: module ::= toplevelentity*
+bool LLParser::Run() {
+*/
+
+Module
+	: TopLevelEntities
+;
+
+TopLevelEntities
+	: empty
+	| TopLevelEntityList
+;
+
+TopLevelEntityList
+	: TopLevelEntity
+	| TopLevelEntityList TopLevelEntity
+;
+
+//===----------------------------------------------------------------------===//
+// Top-Level Entities
+//===----------------------------------------------------------------------===//
+
+/*
+bool LLParser::ParseTopLevelEntities() {
+*/
+
+TopLevelEntity
+	: SourceFilename
+	| TargetDefinition
+	| ModuleAsm
+	| TypeDef
+	| ComdatDef
+	| GlobalDef
+	| FunctionDecl
+	| FunctionDef
+	| AttrGroupDef
+	| StandaloneMetadata
+	| NamedMetadata
+	//| UseListOrder // TODO: Implement UseListOrder
+	//| UseListOrderBB // TODO: Implement UseListOrderBB
+;
+

@@ -1,0 +1,386 @@
+// --- [ Global Variable Declaration or Definition ] ---------------------------
+
+// https://llvm.org/docs/LangRef.html#global-variables
+
+/*
+/// ParseUnnamedGlobal:
+///   OptionalVisibility (ALIAS | IFUNC) ...
+///   OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+///   OptionalDLLStorageClass
+///                                                     ...   -> global variable
+///   GlobalID '=' OptionalVisibility (ALIAS | IFUNC) ...
+///   GlobalID '=' OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+///                OptionalDLLStorageClass
+///                                                     ...   -> global variable
+bool LLParser::ParseUnnamedGlobal() {
+*/
+
+// NOTE: Global variable without GlobalID part of BNF comment; it should not be.
+
+/*
+/// ParseNamedGlobal:
+///   GlobalVar '=' OptionalVisibility (ALIAS | IFUNC) ...
+///   GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+///                 OptionalVisibility OptionalDLLStorageClass
+///                                                     ...   -> global variable
+bool LLParser::ParseNamedGlobal() {
+*/
+
+GlobalDef
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Global
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
+;
+
+// https://llvm.org/docs/LangRef.html#linkage-types
+
+/*
+/// ParseOptionalLinkage
+///   ::= empty
+///   ::= 'private'
+///   ::= 'internal'
+///   ::= 'weak'
+///   ::= 'weak_odr'
+///   ::= 'linkonce'
+///   ::= 'linkonce_odr'
+///   ::= 'available_externally'
+///   ::= 'appending'
+///   ::= 'common'
+///   ::= 'extern_weak'
+///   ::= 'external'
+bool LLParser::ParseOptionalLinkage(unsigned &Res, bool &HasLinkage,
+*/
+
+OptLinkage
+	: empty
+	| Linkage
+;
+
+Linkage
+	: "private"
+	| "internal"
+	| "weak"
+	| "weak_odr"
+	| "linkonce"
+	| "linkonce_odr"
+	| "available_externally"
+	| "appending"
+	| "common"
+	| "extern_weak"
+	| "external"
+;
+
+// https://llvm.org/docs/LangRef.html#runtime-preemption-model
+
+/*
+void LLParser::ParseOptionalDSOLocal(bool &DSOLocal) {
+*/
+
+OptPreemptionSpecifier
+	: empty
+	| PreemptionSpecifier
+;
+
+PreemptionSpecifier
+	: "dso_local"
+	| "dso_preemptable"
+;
+
+// https://llvm.org/docs/LangRef.html#visibility-styles
+
+/*
+/// ParseOptionalVisibility
+///   ::= empty
+///   ::= 'default'
+///   ::= 'hidden'
+///   ::= 'protected'
+///
+void LLParser::ParseOptionalVisibility(unsigned &Res) {
+*/
+
+OptVisibility
+	: empty
+	| Visibility
+;
+
+Visibility
+	: "default"
+	| "hidden"
+	| "protected"
+;
+
+// https://llvm.org/docs/LangRef.html#dll-storage-classes
+
+/*
+/// ParseOptionalDLLStorageClass
+///   ::= empty
+///   ::= 'dllimport'
+///   ::= 'dllexport'
+///
+void LLParser::ParseOptionalDLLStorageClass(unsigned &Res) {
+*/
+
+OptDLLStorageClass
+	: empty
+	| DLLStorageClass
+;
+
+DLLStorageClass
+	: "dllimport"
+	| "dllexport"
+;
+
+/*
+/// ParseOptionalThreadLocal
+///   := empty
+///   := 'thread_local'
+///   := 'thread_local' '(' tlsmodel ')'
+bool LLParser::ParseOptionalThreadLocal(GlobalVariable::ThreadLocalMode &TLM) {
+*/
+
+OptThreadLocal
+	: empty
+	| ThreadLocal
+;
+
+ThreadLocal
+	: "thread_local"
+	| "thread_local" "(" TLSModel ")"
+;
+
+/*
+/// ParseTLSModel
+///   := 'localdynamic'
+///   := 'initialexec'
+///   := 'localexec'
+bool LLParser::ParseTLSModel(GlobalVariable::ThreadLocalMode &TLM) {
+*/
+
+TLSModel
+	: "localdynamic"
+	| "initialexec"
+	| "localexec"
+;
+
+// --- [ Global Variable ] -----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#global-variables
+
+/*
+/// ParseGlobal
+///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+///       OptionalVisibility OptionalDLLStorageClass
+///       OptionalThreadLocal OptionalUnnamedAddr OptionalAddrSpace
+///       OptionalExternallyInitialized GlobalType Type Const OptionalAttrs
+///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+///       OptionalDLLStorageClass OptionalThreadLocal OptionalUnnamedAddr
+///       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
+///       Const OptionalAttrs
+///
+/// Everything up to and including OptionalUnnamedAddr has been parsed
+/// already.
+///
+bool LLParser::ParseGlobal(const std::string &Name, LocTy NameLoc,
+*/
+
+Global
+	: OptAddrSpace OptExternallyInitialized GlobalType Type OptGlobalValue Attrs FnAttributeValuePairs
+;
+
+/*
+/// ParseOptionalAddrSpace
+///   := empty
+///   := 'addrspace' '(' uint32 ')'
+bool LLParser::ParseOptionalAddrSpace(unsigned &AddrSpace) {
+*/
+
+OptAddrSpace
+	: empty
+	| AddrSpace
+;
+
+AddrSpace
+	: "addrspace" "(" int_lit ")"
+;
+
+OptExternallyInitialized
+	: empty
+	| "externally_initialized"
+;
+
+/*
+/// ParseGlobalType
+///   ::= 'constant'
+///   ::= 'global'
+bool LLParser::ParseGlobalType(bool &IsConstant) {
+*/
+
+GlobalType
+	: "constant"
+	| "global"
+;
+
+OptGlobalValue
+	: empty
+	| GlobalValue // absent if external linkage.
+;
+
+Attrs
+	: empty
+	| "," AttrList
+;
+
+AttrList
+	: Attr
+	| AttrList "," Attr
+;
+
+Attr
+	: Section
+	| Alignment
+	| GlobalObjectMetadataAttachment
+	| OptionalComdat
+;
+
+OptSection
+	: empty
+	| Section
+;
+
+Section
+	: "section" string_lit
+;
+
+/*
+/// ParseOptionalAlignment
+///   ::= empty
+///   ::= 'align' 4
+bool LLParser::ParseOptionalAlignment(unsigned &Alignment) {
+*/
+
+OptAlignment
+	: empty
+	| Alignment
+;
+
+Alignment
+	: "align" int_lit
+;
+
+/*
+/// ParseFnAttributeValuePairs
+///   ::= <attr> | <attr> '=' <value>
+bool LLParser::ParseFnAttributeValuePairs(AttrBuilder &B,
+*/
+
+FnAttributeValuePairs
+	: empty
+	| FnAttributeValuePairList
+;
+
+FnAttributeValuePairList
+	: FnAttributeValuePair
+	| FnAttributeValuePairList FnAttributeValuePair
+;
+
+FnAttributeValuePair
+	: "builtin"
+	| AttrGrpID // not used in attribute groups.
+	| string_lit
+	| "align" "=" int_lit // used in attribute groups.
+	| Alignment // used in functions.
+	| "alignstack" "=" int_lit
+	| StackAlignment
+	| AllocSize
+	| "alwaysinline"
+	| "argmemonly"
+	| "builtin"
+	| "cold"
+	| "convergent"
+	| "inaccessiblememonly"
+	| "inaccessiblemem_or_argmemonly"
+	| "inlinehint"
+	| "jumptable"
+	| "minsize"
+	| "naked"
+	| "nobuiltin"
+	| "noduplicate"
+	| "noimplicitfloat"
+	| "noinline"
+	| "nonlazybind"
+	| "noredzone"
+	| "noreturn"
+	| "norecurse"
+	| "nounwind"
+	| "optnone"
+	| "optsize"
+	| "readnone"
+	| "readonly"
+	| "returns_twice"
+	| "speculatable"
+	| "ssp"
+	| "sspreq"
+	| "sspstrong"
+	| "safestack"
+	| "sanitize_address"
+	| "sanitize_hwaddress"
+	| "sanitize_thread"
+	| "sanitize_memory"
+	| "strictfp"
+	| "uwtable"
+	| "writeonly"
+;
+
+/*
+/// ParseOptionalStackAlignment
+///   ::= empty
+///   ::= 'alignstack' '(' 4 ')'
+bool LLParser::ParseOptionalStackAlignment(unsigned &Alignment) {
+*/
+StackAlignment
+	: "alignstack" "(" int_lit ")"
+;
+
+/*
+bool LLParser::parseAllocSizeArguments(unsigned &BaseSizeArg,
+*/
+
+AllocSize
+	: "allocsize" "(" int_lit ")"
+	| "allocsize" "(" int_lit "," int_lit ")"
+;
+
+// TODO: Move indirect symbols to alias and ifunc.
+
+// --- [ Indirect Symbol ] -----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#aliases
+// https://llvm.org/docs/LangRef.html#ifuncs
+
+/*
+/// parseIndirectSymbol:
+///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+///                     OptionalVisibility OptionalDLLStorageClass
+///                     OptionalThreadLocal OptionalUnnamedAddr
+//                      'alias|ifunc' IndirectSymbol
+///
+/// IndirectSymbol
+///   ::= TypeAndValue
+///
+/// Everything through OptionalUnnamedAddr has already been parsed.
+///
+bool LLParser::parseIndirectSymbol(const std::string &Name, LocTy NameLoc,
+*/
+
+IndirectSymbol
+	: Type "," GlobalTypeAndValue
+	| Type "," IndirectCast ValID
+;
+
+IndirectCast
+	: "bitcast"
+	| "getelementptr"
+	| "addrspacecast"
+	| "inttoptr"
+;
+

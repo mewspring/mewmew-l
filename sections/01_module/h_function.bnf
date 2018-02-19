@@ -1,0 +1,167 @@
+// --- [ Function Declaration ] ------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#functions
+
+/*
+/// toplevelentity
+///   ::= 'declare' FunctionHeader
+bool LLParser::ParseDeclare() {
+*/
+
+// NOTE: MetadataAttachment* not part of BNF comment; it should be.
+
+FunctionDecl
+	: "declare" MetadataAttachments FunctionHeader
+;
+
+// --- [ Function Definition ] -------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#functions
+
+/*
+/// toplevelentity
+///   ::= 'define' FunctionHeader (!dbg !56)* '{' ...
+bool LLParser::ParseDefine() {
+*/
+
+FunctionDef
+	: "define" FunctionHeader OptFunctionMetadata FunctionBody
+;
+
+/*
+/// FunctionHeader
+///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+///       OptionalCallingConv OptRetAttrs OptUnnamedAddr Type GlobalName
+///       '(' ArgList ')' OptFuncAttrs OptSection OptionalAlign OptGC
+///       OptionalPrefix OptionalPrologue OptPersonalityFn
+bool LLParser::ParseFunctionHeader(Function *&Fn, bool isDefine) {
+*/
+
+FunctionHeader
+	: OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Arguments ")" OptUnnamedAddr FnAttributeValuePairs OptSection OptComdat OptAlignment OptGC OptPrefix OptPrologue OptPersonality
+;
+
+/*
+/// ParseOptionalCallingConv
+///   ::= empty
+///   ::= 'ccc'
+///   ::= 'fastcc'
+///   ::= 'intel_ocl_bicc'
+///   ::= 'coldcc'
+///   ::= 'x86_stdcallcc'
+///   ::= 'x86_fastcallcc'
+///   ::= 'x86_thiscallcc'
+///   ::= 'x86_vectorcallcc'
+///   ::= 'arm_apcscc'
+///   ::= 'arm_aapcscc'
+///   ::= 'arm_aapcs_vfpcc'
+///   ::= 'msp430_intrcc'
+///   ::= 'avr_intrcc'
+///   ::= 'avr_signalcc'
+///   ::= 'ptx_kernel'
+///   ::= 'ptx_device'
+///   ::= 'spir_func'
+///   ::= 'spir_kernel'
+///   ::= 'x86_64_sysvcc'
+///   ::= 'win64cc'
+///   ::= 'webkit_jscc'
+///   ::= 'anyregcc'
+///   ::= 'preserve_mostcc'
+///   ::= 'preserve_allcc'
+///   ::= 'ghccc'
+///   ::= 'swiftcc'
+///   ::= 'x86_intrcc'
+///   ::= 'hhvmcc'
+///   ::= 'hhvm_ccc'
+///   ::= 'cxx_fast_tlscc'
+///   ::= 'amdgpu_vs'
+///   ::= 'amdgpu_ls'
+///   ::= 'amdgpu_hs'
+///   ::= 'amdgpu_es'
+///   ::= 'amdgpu_gs'
+///   ::= 'amdgpu_ps'
+///   ::= 'amdgpu_cs'
+///   ::= 'amdgpu_kernel'
+///   ::= 'cc' UINT
+///
+bool LLParser::ParseOptionalCallingConv(unsigned &CC) {
+*/
+
+OptCallingConv
+	: empty
+	| CallingConv
+;
+
+CallingConv
+	: "ccc"
+	| "fastcc"
+	| "coldcc"
+	| "x86_stdcallcc"
+	| "x86_fastcallcc"
+	| "x86_regcallcc"
+	| "x86_thiscallcc"
+	| "x86_vectorcallcc"
+	| "arm_apcscc"
+	| "arm_aapcscc"
+	| "arm_aapcs_vfpcc"
+	| "msp430_intrcc"
+	| "avr_intrcc"
+	| "avr_signalcc"
+	| "ptx_kernel"
+	| "ptx_device"
+	| "spir_kernel"
+	| "spir_func"
+	| "intel_ocl_bicc"
+	| "x86_64_sysvcc"
+	| "win64cc"
+	| "webkit_jscc"
+	| "anyregcc"
+	| "preserve_mostcc"
+	| "preserve_allcc"
+	| "ghccc"
+	| "swiftcc"
+	| "x86_intrcc"
+	| "hhvmcc"
+	| "hhvm_ccc"
+	| "cxx_fast_tlscc"
+	| "amdgpu_vs"
+	| "amdgpu_ls"
+	| "amdgpu_hs"
+	| "amdgpu_es"
+	| "amdgpu_gs"
+	| "amdgpu_ps"
+	| "amdgpu_cs"
+	| "amdgpu_kernel"
+	| "cc" int_lit
+;
+
+/*
+bool LLParser::parseOptionalComdat(StringRef GlobalName, Comdat *&C) {
+*/
+
+OptComdat
+	: empty
+	| "comdat"
+	| "comdat" "(" ComdatVar ")"
+;
+
+OptGC
+	: empty
+	: "gc" string_lit
+;
+
+OptPrefix
+	: empty
+	| "prefix" GlobalTypeAndValue
+;
+
+OptPrologue
+	: empty
+	| "prologue" GlobalTypeAndValue
+;
+
+OptPersonality
+	: empty
+	| "personality" GlobalTypeAndValue
+;
+

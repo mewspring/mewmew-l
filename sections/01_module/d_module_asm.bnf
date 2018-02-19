@@ -1,0 +1,14 @@
+// --- [ Module-level Inline Assembly ] ----------------------------------------
+
+// https://llvm.org/docs/LangRef.html#module-level-inline-assembly
+
+/*
+/// toplevelentity
+///   ::= 'module' 'asm' STRINGCONSTANT
+bool LLParser::ParseModuleAsm() {
+*/
+
+ModuleAsm
+	: "module" "asm" string_lit
+;
+
