@@ -7,7 +7,7 @@ bool LLParser::parseComdat() {
 */
 
 ComdatDef
-	: ComdatVar "=" "comdat" SelectionKind
+	: ComdatName "=" "comdat" SelectionKind
 ;
 
 SelectionKind

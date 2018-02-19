@@ -6,3 +6,7 @@ LocalIdent
 	: local_ident
 ;
 
+ComdatName
+	: comdat_name
+;
+
