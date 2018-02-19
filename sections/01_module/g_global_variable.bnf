@@ -26,8 +26,31 @@ bool LLParser::ParseUnnamedGlobal() {
 bool LLParser::ParseNamedGlobal() {
 */
 
+/*
+/// ParseGlobal
+///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+///       OptionalVisibility OptionalDLLStorageClass
+///       OptionalThreadLocal OptionalUnnamedAddr OptionalAddrSpace
+///       OptionalExternallyInitialized GlobalType Type Const OptionalAttrs
+///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+///       OptionalDLLStorageClass OptionalThreadLocal OptionalUnnamedAddr
+///       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
+///       Const OptionalAttrs
+///
+/// Everything up to and including OptionalUnnamedAddr has been parsed
+/// already.
+///
+bool LLParser::ParseGlobal(const std::string &Name, LocTy NameLoc,
+*/
+
+GlobalDecl
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Attrs FnAttributeValuePairs
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
+;
+
 GlobalDef
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Global
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type GlobalValue Attrs FnAttributeValuePairs
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
@@ -160,31 +183,6 @@ TLSModel
 	: "localdynamic"
 	| "initialexec"
 	| "localexec"
-;
-
-// --- [ Global Variable ] -----------------------------------------------------
-
-// https://llvm.org/docs/LangRef.html#global-variables
-
-/*
-/// ParseGlobal
-///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
-///       OptionalVisibility OptionalDLLStorageClass
-///       OptionalThreadLocal OptionalUnnamedAddr OptionalAddrSpace
-///       OptionalExternallyInitialized GlobalType Type Const OptionalAttrs
-///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
-///       OptionalDLLStorageClass OptionalThreadLocal OptionalUnnamedAddr
-///       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
-///       Const OptionalAttrs
-///
-/// Everything up to and including OptionalUnnamedAddr has been parsed
-/// already.
-///
-bool LLParser::ParseGlobal(const std::string &Name, LocTy NameLoc,
-*/
-
-Global
-	: OptAddrSpace OptExternallyInitialized GlobalType Type OptGlobalValue Attrs FnAttributeValuePairs
 ;
 
 /*

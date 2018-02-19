@@ -147,7 +147,7 @@ OptComdat
 
 OptGC
 	: empty
-	: "gc" string_lit
+	| "gc" string_lit
 ;
 
 OptPrefix

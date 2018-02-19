@@ -1,2 +1,25 @@
 // TODO: add lexer.
 
+_decimal_digit
+	: '0' - '9'
+;
+
+int_lit
+	: _decimal_lit
+;
+
+_decimal_lit
+	: [ '-' ] _decimals
+;
+
+_decimals
+	: _decimal_digit { _decimal_digit }
+;
+
+string_lit
+	: _quoted_string
+;
+
+_quoted_string
+	: '"' { . } '"'
+;

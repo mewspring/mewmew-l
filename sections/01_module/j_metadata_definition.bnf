@@ -46,7 +46,7 @@ bool LLParser::ParseStandaloneMetadata() {
 
 StandaloneMetadata
 	: MetadataID "=" OptDistinct MDTuple
-	: MetadataID "=" OptDistinct SpecializedMDNode
+	| MetadataID "=" OptDistinct SpecializedMDNode
 ;
 
 OptDistinct
