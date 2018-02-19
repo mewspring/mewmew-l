@@ -39,7 +39,7 @@ TopLevelEntity
 	| TargetDefinition
 	| ModuleAsm
 	| TypeDef
-	//| ComdatDef
+	| ComdatDef
 	//| GlobalDecl
 	//| GlobalDef
 	//| FunctionDecl
