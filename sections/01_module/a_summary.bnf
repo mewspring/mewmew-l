@@ -38,7 +38,7 @@ TopLevelEntity
 	: SourceFilename
 	| TargetDefinition
 	| ModuleAsm
-	//| TypeDef
+	| TypeDef
 	//| ComdatDef
 	//| GlobalDecl
 	//| GlobalDef

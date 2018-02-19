@@ -185,22 +185,6 @@ TLSModel
 	| "localexec"
 ;
 
-/*
-/// ParseOptionalAddrSpace
-///   := empty
-///   := 'addrspace' '(' uint32 ')'
-bool LLParser::ParseOptionalAddrSpace(unsigned &AddrSpace) {
-*/
-
-OptAddrSpace
-	: empty
-	| AddrSpace
-;
-
-AddrSpace
-	: "addrspace" "(" int_lit ")"
-;
-
 OptExternallyInitialized
 	: empty
 	| "externally_initialized"
@@ -242,22 +226,6 @@ OptSection
 
 Section
 	: "section" string_lit
-;
-
-/*
-/// ParseOptionalAlignment
-///   ::= empty
-///   ::= 'align' 4
-bool LLParser::ParseOptionalAlignment(unsigned &Alignment) {
-*/
-
-OptAlignment
-	: empty
-	| Alignment
-;
-
-Alignment
-	: "align" int_lit
 ;
 
 /*

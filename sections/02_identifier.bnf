@@ -2,3 +2,7 @@ GlobalIdent
 	: global_ident
 ;
 
+LocalIdent
+	: local_ident
+;
+
