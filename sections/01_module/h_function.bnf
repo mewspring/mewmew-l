@@ -8,8 +8,6 @@
 bool LLParser::ParseDeclare() {
 */
 
-// NOTE: MetadataAttachment* not part of BNF comment; it should be.
-
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
 ;
@@ -43,8 +41,8 @@ FunctionDef
 bool LLParser::ParseFunctionHeader(Function *&Fn, bool isDefine) {
 */
 
-// NOTE: OptAlignment has been removed to resolve an LR-1 conflict. Alignment
-// can still be specified with FuncAttrs.
+// TODO: Add OptAlignment before OptGC once the LR-1 conflict has been resolved,
+// as FuncAttrs also contains "align".
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Args ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality

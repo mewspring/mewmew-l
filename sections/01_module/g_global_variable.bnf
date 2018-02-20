@@ -15,8 +15,6 @@
 bool LLParser::ParseUnnamedGlobal() {
 */
 
-// NOTE: Global variable without GlobalID part of BNF comment; it should not be.
-
 /*
 /// ParseNamedGlobal:
 ///   GlobalVar '=' OptionalVisibility (ALIAS | IFUNC) ...
