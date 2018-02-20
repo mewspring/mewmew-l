@@ -198,3 +198,49 @@ OptInrange
 	| "inrange"
 ;
 
+// https://llvm.org/docs/LangRef.html#linkage-types
+
+/*
+/// ParseOptionalLinkage
+///   ::= empty
+///   ::= 'private'
+///   ::= 'internal'
+///   ::= 'weak'
+///   ::= 'weak_odr'
+///   ::= 'linkonce'
+///   ::= 'linkonce_odr'
+///   ::= 'available_externally'
+///   ::= 'appending'
+///   ::= 'common'
+///   ::= 'extern_weak'
+///   ::= 'external'
+bool LLParser::ParseOptionalLinkage(unsigned &Res, bool &HasLinkage,
+*/
+
+OptLinkage
+	: empty
+	| Linkage
+;
+
+Linkage
+	: "private"
+	| "internal"
+	| "weak"
+	| "weak_odr"
+	| "linkonce"
+	| "linkonce_odr"
+	| "available_externally"
+	| "appending"
+	| "common"
+;
+
+OptExternLinkage
+	: empty
+	| ExternLinkage
+;
+
+ExternLinkage
+	: "extern_weak"
+	| "external"
+;
+

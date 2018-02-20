@@ -60,9 +60,29 @@ Type
 bool LLParser::ParseStructBody(SmallVectorImpl<Type*> &Body) {
 */
 
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    StructType
+//       : "{" Fields "}"
+//       | "<" "{" Fields "}" ">"
+//    ;
+//
+//    Fields
+//       : empty
+//       | FieldList
+//    ;
+
 StructType
-	: "<" "{" Fields "}" ">"
-	| "{" Fields "}"
+	: "{" "}"
+	| "{" FieldList "}"
+	| "<" "{" "}" ">"
+	| "<" "{" FieldList "}" ">"
 ;
 
 Fields

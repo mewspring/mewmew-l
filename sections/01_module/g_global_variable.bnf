@@ -44,53 +44,15 @@ bool LLParser::ParseGlobal(const std::string &Name, LocTy NameLoc,
 */
 
 GlobalDecl
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Attrs FnAttributeValuePairs
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
+	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Attrs FnAttributeValuePairs
+	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
+	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
 
 GlobalDef
 	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Constant Attrs FnAttributeValuePairs
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
-;
-
-// https://llvm.org/docs/LangRef.html#linkage-types
-
-/*
-/// ParseOptionalLinkage
-///   ::= empty
-///   ::= 'private'
-///   ::= 'internal'
-///   ::= 'weak'
-///   ::= 'weak_odr'
-///   ::= 'linkonce'
-///   ::= 'linkonce_odr'
-///   ::= 'available_externally'
-///   ::= 'appending'
-///   ::= 'common'
-///   ::= 'extern_weak'
-///   ::= 'external'
-bool LLParser::ParseOptionalLinkage(unsigned &Res, bool &HasLinkage,
-*/
-
-OptLinkage
-	: empty
-	| Linkage
-;
-
-Linkage
-	: "private"
-	| "internal"
-	| "weak"
-	| "weak_odr"
-	| "linkonce"
-	| "linkonce_odr"
-	| "available_externally"
-	| "appending"
-	| "common"
-	| "extern_weak"
-	| "external"
 ;
 
 // https://llvm.org/docs/LangRef.html#runtime-preemption-model

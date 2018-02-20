@@ -65,9 +65,24 @@ NoneConst
 	: "none"
 ;
 
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    StructConst
+//       : "{" Elems "}"
+//       | "<" "{" Elems "}" ">"
+//    ;
+
 StructConst
-	: "{" Elems "}"
-	| "<" "{" Elems "}" ">"
+	: "{" "}"
+	| "{" ElemList "}"
+	| "<" "{" "}" ">"
+	| "<" "{" ElemList "}" ">"
 ;
 
 ArrayConst
