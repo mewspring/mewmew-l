@@ -324,17 +324,17 @@ UnnamedAddr
 bool LLParser::ParseFnAttributeValuePairs(AttrBuilder &B,
 */
 
-FnAttributeValuePairs
+FuncAttrs
 	: empty
-	| FnAttributeValuePairList
+	| FuncAttrList
 ;
 
-FnAttributeValuePairList
-	: FnAttributeValuePair
-	| FnAttributeValuePairList FnAttributeValuePair
+FuncAttrList
+	: FuncAttr
+	| FuncAttrList FuncAttr
 ;
 
-FnAttributeValuePair
+FuncAttr
 	: "builtin"
 	| AttrGroupID // not used in attribute groups.
 	| string_lit

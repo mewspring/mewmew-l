@@ -24,9 +24,14 @@ FunctionDecl
 bool LLParser::ParseDefine() {
 */
 
+/*
+/// ParseOptionalFunctionMetadata
+///   ::= (!dbg !57)*
+bool LLParser::ParseOptionalFunctionMetadata(Function &F) {
+*/
+
 FunctionDef
-	: "define" OptLinkage FunctionHeader FunctionBody
-	//: "define" OptLinkage FunctionHeader OptFunctionMetadata FunctionBody // TODO: Add OptFunctionMetadata
+	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 ;
 
 /*
@@ -39,12 +44,10 @@ bool LLParser::ParseFunctionHeader(Function *&Fn, bool isDefine) {
 */
 
 // NOTE: OptAlignment has been removed to resolve an LR-1 conflict. Alignment
-// can still be specified with FnAttributeValuePairs.
-
-// TODO: Rename FnAttributeValuePairs to FuncAttrs.
+// can still be specified with FuncAttrs.
 
 FunctionHeader
-	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Args ")" OptUnnamedAddr FnAttributeValuePairs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
+	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Args ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
 ;
 
 /*
