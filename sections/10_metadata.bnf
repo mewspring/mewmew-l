@@ -55,6 +55,23 @@ SpecializedMDNode
 	| DISubroutineType
 	| DIFile
 	| DICompileUnit
+	| DISubprogram
+	| MDField
+	| DILexicalBlock
+	| DILexicalBlockFile
+	| DINamespace
+	| DIMacro
+	| MDField
+	| DIMacroFile
+	| DIModule
+	| DITemplateTypeParameter
+	| DITemplateValueParameter
+	| DIGlobalVariable
+	| DILocalVariable
+	| DIExpression
+	| DIGlobalVariableExpression
+	| DIObjCProperty
+	| DIImportedEntity
 ;
 
 /*
@@ -564,6 +581,575 @@ EmissionKind
 	| "NoDebug"
 	| "FullDebug"
 	| "LineTablesOnly"
+;
+
+/*
+/// ParseDISubprogram:
+///   ::= !DISubprogram(scope: !0, name: "foo", linkageName: "_Zfoo",
+///                     file: !1, line: 7, type: !2, isLocal: false,
+///                     isDefinition: true, scopeLine: 8, containingType: !3,
+///                     virtuality: DW_VIRTUALTIY_pure_virtual,
+///                     virtualIndex: 10, thisAdjustment: 4, flags: 11,
+///                     isOptimized: false, templateParams: !4, declaration: !5,
+///                     variables: !6, thrownTypes: !7)
+bool LLParser::ParseDISubprogram(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(scope, MDField, );
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(linkageName, MDStringField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(type, MDField, );
+  OPTIONAL(isLocal, MDBoolField, );
+  OPTIONAL(isDefinition, MDBoolField, (true));
+  OPTIONAL(scopeLine, LineField, );
+  OPTIONAL(containingType, MDField, );
+  OPTIONAL(virtuality, DwarfVirtualityField, );
+  OPTIONAL(virtualIndex, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(thisAdjustment, MDSignedField, (0, INT32_MIN, INT32_MAX));
+  OPTIONAL(flags, DIFlagField, );
+  OPTIONAL(isOptimized, MDBoolField, );
+  OPTIONAL(unit, MDField, );
+  OPTIONAL(templateParams, MDField, );
+  OPTIONAL(declaration, MDField, );
+  OPTIONAL(variables, MDField, );
+  OPTIONAL(thrownTypes, MDField, );
+*/
+
+DISubprogram
+	: "!DISubprogram" "(" DISubprogramFields ")"
+;
+
+DISubprogramFields
+	: empty
+	| DISubprogramFieldList
+;
+
+DISubprogramFieldList
+	: DISubprogramField
+	| DISubprogramFieldList "," DISubprogramField
+;
+
+DISubprogramField
+	: "scope:" MDField
+	| "name:" string_lit
+	| "linkageName:" string_lit
+	| "file:" MDField
+	| "line:" int_lit
+	| "type:" MDField
+	| "isLocal:" BoolConst
+	| "isDefinition:" BoolConst
+	| "scopeLine:" int_lit
+	| "containingType:" MDField
+	| "virtuality:" DwarfVirtuality
+	| "virtualIndex:" int_lit
+	| "thisAdjustment:" int_lit
+	| "flags:" DIFlagList
+	| "isOptimized:" BoolConst
+	| "unit:" MDField
+	| "templateParams:" MDField
+	| "declaration:" MDField
+	| "variables:" MDField
+	| "thrownTypes:" MDField
+;
+
+/*
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name,
+                            DwarfVirtualityField &Result) {
+*/
+
+DwarfVirtuality
+	: int_lit
+	// DW_VIRTUALITY_foo
+	| dwarf_virtuality
+;
+
+/*
+/// ParseDILexicalBlock:
+///   ::= !DILexicalBlock(scope: !0, file: !2, line: 7, column: 9)
+bool LLParser::ParseDILexicalBlock(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(scope, MDField, (AllowNull false));
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(column, ColumnField, );
+*/
+
+DILexicalBlock
+	: "!DILexicalBlock" "(" DILexicalBlockFields ")"
+;
+
+DILexicalBlockFields
+	: empty
+	| DILexicalBlockFieldList
+;
+
+DILexicalBlockFieldList
+	: DILexicalBlockField
+	| DILexicalBlockFieldList "," DILexicalBlockField
+;
+
+DILexicalBlockField
+	: "scope:" MDField
+	| "file:" MDField
+	| "line:" int_lit
+	| "column:" int_lit
+;
+
+/*
+/// ParseDILexicalBlockFile:
+///   ::= !DILexicalBlockFile(scope: !0, file: !2, discriminator: 9)
+bool LLParser::ParseDILexicalBlockFile(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(scope, MDField, (AllowNull false));
+  OPTIONAL(file, MDField, );
+  REQUIRED(discriminator, MDUnsignedField, (0, UINT32_MAX));
+*/
+
+DILexicalBlockFile
+	: "!DILexicalBlockFile" "(" DILexicalBlockFileFields ")"
+;
+
+DILexicalBlockFileFields
+	: empty
+	| DILexicalBlockFileFieldList
+;
+
+DILexicalBlockFileFieldList
+	: DILexicalBlockFileField
+	| DILexicalBlockFileFieldList "," DILexicalBlockFileField
+;
+
+DILexicalBlockFileField
+	: "scope:" MDField
+	| "file:" MDField
+	| "discriminator:" int_lit
+;
+
+/*
+/// ParseDINamespace:
+///   ::= !DINamespace(scope: !0, file: !2, name: "SomeNamespace", line: 9)
+bool LLParser::ParseDINamespace(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(scope, MDField, );
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(exportSymbols, MDBoolField, );
+*/
+
+DINamespace
+	: "!DINamespace" "(" DINamespaceFields ")"
+;
+
+DINamespaceFields
+	: empty
+	| DINamespaceFieldList
+;
+
+DINamespaceFieldList
+	: DINamespaceField
+	| DINamespaceFieldList "," DINamespaceField
+;
+
+DINamespaceField
+	: "scope:" MDField
+	| "name:" string_lit
+	| "exportSymbols:" BoolConst
+;
+
+/*
+/// ParseDIMacro:
+///   ::= !DIMacro(macinfo: type, line: 9, name: "SomeMacro", value: "SomeValue")
+bool LLParser::ParseDIMacro(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(type, DwarfMacinfoTypeField, );
+  OPTIONAL(line, LineField, );
+  REQUIRED(name, MDStringField, );
+  OPTIONAL(value, MDStringField, );
+*/
+
+DIMacro
+	: "!DIMacro" "(" DIMacroFields ")"
+;
+
+DIMacroFields
+	: empty
+	| DIMacroFieldList
+;
+
+DIMacroFieldList
+	: DIMacroField
+	| DIMacroFieldList "," DIMacroField
+;
+
+DIMacroField
+	: "type:" DwarfMacinfo
+	| "line:" int_lit
+	| "name:" string_lit
+	| "value:" string_lit
+;
+
+/*
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name,
+                            DwarfMacinfoTypeField &Result) {
+*/
+
+DwarfMacinfo
+	: int_lit
+	// DW_MACINFO_foo
+	| dwarf_macinfo
+;
+
+/*
+/// ParseDIMacroFile:
+///   ::= !DIMacroFile(line: 9, file: !2, nodes: !3)
+bool LLParser::ParseDIMacroFile(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(type, DwarfMacinfoTypeField, (dwarf::DW_MACINFO_start_file));
+  OPTIONAL(line, LineField, );
+  REQUIRED(file, MDField, );
+  OPTIONAL(nodes, MDField, );
+*/
+
+DIMacroFile
+	: "!DIMacroFile" "(" DIMacroFileFields ")"
+;
+
+DIMacroFileFields
+	: empty
+	| DIMacroFileFieldList
+;
+
+DIMacroFileFieldList
+	: DIMacroFileField
+	| DIMacroFileFieldList "," DIMacroFileField
+;
+
+DIMacroFileField
+	: "type:" DwarfMacinfo
+	| "line:" int_lit
+	| "file:" MDField
+	| "nodes:" MDField
+;
+
+/*
+/// ParseDIModule:
+///   ::= !DIModule(scope: !0, name: "SomeModule", configMacros: "-DNDEBUG",
+///                 includePath: "/usr/include", isysroot: "/")
+bool LLParser::ParseDIModule(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(scope, MDField, );
+  REQUIRED(name, MDStringField, );
+  OPTIONAL(configMacros, MDStringField, );
+  OPTIONAL(includePath, MDStringField, );
+  OPTIONAL(isysroot, MDStringField, );
+*/
+
+DIModule
+	: "!DIModule" "(" DIModuleFields ")"
+;
+
+DIModuleFields
+	: empty
+	| DIModuleFieldList
+;
+
+DIModuleFieldList
+	: DIModuleField
+	| DIModuleFieldList "," DIModuleField
+;
+
+DIModuleField
+	: "scope:" MDField
+	| "name:" string_lit
+	| "configMacros:" string_lit
+	| "includePath:" string_lit
+	| "isysroot:" string_lit
+;
+
+/*
+/// ParseDITemplateTypeParameter:
+///   ::= !DITemplateTypeParameter(name: "Ty", type: !1)
+bool LLParser::ParseDITemplateTypeParameter(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(name, MDStringField, );
+  REQUIRED(type, MDField, );
+*/
+
+DITemplateTypeParameter
+	: "!DITemplateTypeParameter" "(" DITemplateTypeParameterFields ")"
+;
+
+DITemplateTypeParameterFields
+	: empty
+	| DITemplateTypeParameterFieldList
+;
+
+DITemplateTypeParameterFieldList
+	: DITemplateTypeParameterField
+	| DITemplateTypeParameterFieldList "," DITemplateTypeParameterField
+;
+
+DITemplateTypeParameterField
+	: "name:" string_lit
+	| "type:" MDField
+;
+
+/*
+/// ParseDITemplateValueParameter:
+///   ::= !DITemplateValueParameter(tag: DW_TAG_template_value_parameter,
+///                                 name: "V", type: !1, value: i32 7)
+bool LLParser::ParseDITemplateValueParameter(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(tag, DwarfTagField, (dwarf::DW_TAG_template_value_parameter));
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(type, MDField, );
+  REQUIRED(value, MDField, );
+*/
+
+DITemplateValueParameter
+	: "!DITemplateValueParameter" "(" DITemplateValueParameterFields ")"
+;
+
+DITemplateValueParameterFields
+	: empty
+	| DITemplateValueParameterFieldList
+;
+
+DITemplateValueParameterFieldList
+	: DITemplateValueParameterField
+	| DITemplateValueParameterFieldList "," DITemplateValueParameterField
+;
+
+DITemplateValueParameterField
+	: "tag:" DwarfTag
+	| "name:" string_lit
+	| "type:" MDField
+	| "value:" MDField
+;
+
+/*
+/// ParseDIGlobalVariable:
+///   ::= !DIGlobalVariable(scope: !0, name: "foo", linkageName: "foo",
+///                         file: !1, line: 7, type: !2, isLocal: false,
+///                         isDefinition: true, declaration: !3, align: 8)
+bool LLParser::ParseDIGlobalVariable(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(name, MDStringField, (AllowEmpty false));
+  OPTIONAL(scope, MDField, );
+  OPTIONAL(linkageName, MDStringField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(type, MDField, );
+  OPTIONAL(isLocal, MDBoolField, );
+  OPTIONAL(isDefinition, MDBoolField, (true));
+  OPTIONAL(declaration, MDField, );
+  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
+*/
+
+DIGlobalVariable
+	: "!DIGlobalVariable" "(" DIGlobalVariableFields ")"
+;
+
+DIGlobalVariableFields
+	: empty
+	| DIGlobalVariableFieldList
+;
+
+DIGlobalVariableFieldList
+	: DIGlobalVariableField
+	| DIGlobalVariableFieldList "," DIGlobalVariableField
+;
+
+DIGlobalVariableField
+	: "name:" string_lit
+	| "scope:" MDField
+	| "linkageName:" string_lit
+	| "file:" MDField
+	| "line:" int_lit
+	| "type:" MDField
+	| "isLocal:" BoolConst
+	| "isDefinition:" BoolConst
+	| "declaration:" MDField
+	| "align:" int_lit
+;
+
+/*
+/// ParseDILocalVariable:
+///   ::= !DILocalVariable(arg: 7, scope: !0, name: "foo",
+///                        file: !1, line: 7, type: !2, arg: 2, flags: 7,
+///                        align: 8)
+///   ::= !DILocalVariable(scope: !0, name: "foo",
+///                        file: !1, line: 7, type: !2, arg: 2, flags: 7,
+///                        align: 8)
+bool LLParser::ParseDILocalVariable(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(scope, MDField, (AllowNull false));
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(arg, MDUnsignedField, (0, UINT16_MAX));
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(type, MDField, );
+  OPTIONAL(flags, DIFlagField, );
+  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
+*/
+
+DILocalVariable
+	: "!DILocalVariable" "(" DILocalVariableFields ")"
+;
+
+DILocalVariableFields
+	: empty
+	| DILocalVariableFieldList
+;
+
+DILocalVariableFieldList
+	: DILocalVariableField
+	| DILocalVariableFieldList "," DILocalVariableField
+;
+
+DILocalVariableField
+	: "scope:" MDField
+	| "name:" string_lit
+	| "arg:" int_lit
+	| "file:" MDField
+	| "line:" int_lit
+	| "type:" MDField
+	| "flags:" DIFlagList
+	| "align:" int_lit
+;
+
+/*
+/// ParseDIExpression:
+///   ::= !DIExpression(0, 7, -1)
+bool LLParser::ParseDIExpression(MDNode *&Result, bool IsDistinct) {
+*/
+
+DIExpression
+	: "!DIExpression" "(" DIExpressionFields ")"
+;
+
+DIExpressionFields
+	: empty
+	| DIExpressionFieldList
+;
+
+DIExpressionFieldList
+	: DIExpressionField
+	| DIExpressionFieldList "," DIExpressionField
+;
+
+DIExpressionField
+	: int_lit
+	| DwarfOp
+;
+
+DwarfOp
+	// DW_OP_foo
+	: dwarf_op
+;
+
+/*
+/// ParseDIGlobalVariableExpression:
+///   ::= !DIGlobalVariableExpression(var: !0, expr: !1)
+bool LLParser::ParseDIGlobalVariableExpression(MDNode *&Result,
+                                               bool IsDistinct) {
+  REQUIRED(var, MDField, );
+  REQUIRED(expr, MDField, );
+*/
+
+DIGlobalVariableExpression
+	: "!DIGlobalVariableExpression" "(" DIGlobalVariableExpressionFields ")"
+;
+
+DIGlobalVariableExpressionFields
+	: empty
+	| DIGlobalVariableExpressionFieldList
+;
+
+DIGlobalVariableExpressionFieldList
+	: DIGlobalVariableExpressionField
+	| DIGlobalVariableExpressionFieldList "," DIGlobalVariableExpressionField
+;
+
+DIGlobalVariableExpressionField
+	: "var:" MDField
+	| "expr:" MDField
+;
+
+/*
+/// ParseDIObjCProperty:
+///   ::= !DIObjCProperty(name: "foo", file: !1, line: 7, setter: "setFoo",
+///                       getter: "getFoo", attributes: 7, type: !2)
+bool LLParser::ParseDIObjCProperty(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(setter, MDStringField, );
+  OPTIONAL(getter, MDStringField, );
+  OPTIONAL(attributes, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(type, MDField, );
+*/
+
+DIObjCProperty
+	: "!DIObjCProperty" "(" DIObjCPropertyFields ")"
+;
+
+DIObjCPropertyFields
+	: empty
+	| DIObjCPropertyFieldList
+;
+
+DIObjCPropertyFieldList
+	: DIObjCPropertyField
+	| DIObjCPropertyFieldList "," DIObjCPropertyField
+;
+
+DIObjCPropertyField
+	: "name:" string_lit
+	| "file:" MDField
+	| "line:" int_lit
+	| "setter:" string_lit
+	| "getter:" string_lit
+	| "attributes:" int_lit
+	| "type:" MDField
+;
+
+/*
+/// ParseDIImportedEntity:
+///   ::= !DIImportedEntity(tag: DW_TAG_imported_module, scope: !0, entity: !1,
+///                         line: 7, name: "foo")
+bool LLParser::ParseDIImportedEntity(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(tag, DwarfTagField, );
+  REQUIRED(scope, MDField, );
+  OPTIONAL(entity, MDField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(name, MDStringField, );
+*/
+
+DIImportedEntity
+	: "!DIImportedEntity" "(" DIImportedEntityFields ")"
+;
+
+DIImportedEntityFields
+	: empty
+	| DIImportedEntityFieldList
+;
+
+DIImportedEntityFieldList
+	: DIImportedEntityField
+	| DIImportedEntityFieldList "," DIImportedEntityField
+;
+
+DIImportedEntityField
+	: "tag:" DwarfTag
+	| "scope:" MDField
+	| "entity:" MDField
+	| "file:" MDField
+	| "line:" int_lit
+	| "name:" string_lit
 ;
 
 /*

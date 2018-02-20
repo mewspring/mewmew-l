@@ -149,6 +149,21 @@ checksum_kind
 	: 'C' 'S' 'K' '_' { _ascii_letter | _decimal_digit }
 ;
 
+// DW_VIRTUALITY_foo
+dwarf_virtuality
+	: 'D' 'W' '_' 'V' 'I' 'R' 'T' 'U' 'A' 'L' 'I' 'T' 'Y' '_' { _ascii_letter | _decimal_digit }
+;
+
+// DW_MACINFO_foo
+dwarf_macinfo
+	: 'D' 'W' '_' 'M' 'A' 'C' 'I' 'N' 'F' 'O' '_' { _ascii_letter | _decimal_digit }
+;
+
+// DW_OP_foo
+dwarf_op
+	: 'D' 'W' '_' 'O' 'P' '_' { _ascii_letter | _decimal_digit }
+;
+
 // === [ Integer literals ] ====================================================
 
 //   Integer           [-]?[0-9]+
