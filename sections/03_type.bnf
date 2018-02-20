@@ -21,12 +21,14 @@ bool LLParser::ParseType(Type *&Result, const Twine &Msg, bool AllowVoid) {
   TYPEKEYWORD("token",     Type::getTokenTy(Context));
 */
 
+// NOTE: MetadataType has been removed from Type and is instead used directly
+// for metadata values.
+
 Type
 	// Type ::= 'float' | 'void' (etc)
 	: VoidType
 	| FloatType
 	| LabelType
-	| MetadataType
 	| MMXType
 	| TokenType
 	| IntType
