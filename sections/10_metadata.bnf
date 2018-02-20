@@ -53,6 +53,8 @@ SpecializedMDNode
 	| DIDerivedType
 	| DICompositeType
 	| DISubroutineType
+	| DIFile
+	| DICompileUnit
 ;
 
 /*
@@ -454,6 +456,114 @@ DwarfCC
 	: int_lit
 	// DW_CC_foo
 	| dwarf_cc
+;
+
+/*
+/// ParseDIFileType:
+///   ::= !DIFileType(filename: "path/to/file", directory: "/path/to/dir"
+///                   checksumkind: CSK_MD5,
+///                   checksum: "000102030405060708090a0b0c0d0e0f")
+bool LLParser::ParseDIFile(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(filename, MDStringField, );
+  REQUIRED(directory, MDStringField, );
+  OPTIONAL(checksumkind, ChecksumKindField, (DIFile::CSK_MD5));
+  OPTIONAL(checksum, MDStringField, );
+*/
+
+DIFile
+	: "!DIFile" "(" DIFileFields ")"
+;
+
+DIFileFields
+	: empty
+	| DIFileFieldList
+;
+
+DIFileFieldList
+	: DIFileField
+	| DIFileFieldList "," DIFileField
+;
+
+DIFileField
+	: "filename:" string_lit
+	| "directory:" string_lit
+	| "checksumkind:" ChecksumKind
+	| "checksum:" string_lit
+;
+
+ChecksumKind
+	// CSK_foo
+	: checksum_kind
+;
+
+/*
+/// ParseDICompileUnit:
+///   ::= !DICompileUnit(language: DW_LANG_C99, file: !0, producer: "clang",
+///                      isOptimized: true, flags: "-O2", runtimeVersion: 1,
+///                      splitDebugFilename: "abc.debug",
+///                      emissionKind: FullDebug, enums: !1, retainedTypes: !2,
+///                      globals: !4, imports: !5, macros: !6, dwoId: 0x0abcd)
+bool LLParser::ParseDICompileUnit(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(language, DwarfLangField, );
+  REQUIRED(file, MDField, (AllowNull false));
+  OPTIONAL(producer, MDStringField, );
+  OPTIONAL(isOptimized, MDBoolField, );
+  OPTIONAL(flags, MDStringField, );
+  OPTIONAL(runtimeVersion, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(splitDebugFilename, MDStringField, );
+  OPTIONAL(emissionKind, EmissionKindField, );
+  OPTIONAL(enums, MDField, );
+  OPTIONAL(retainedTypes, MDField, );
+  OPTIONAL(globals, MDField, );
+  OPTIONAL(imports, MDField, );
+  OPTIONAL(macros, MDField, );
+  OPTIONAL(dwoId, MDUnsignedField, );
+  OPTIONAL(splitDebugInlining, MDBoolField, = true);
+  OPTIONAL(debugInfoForProfiling, MDBoolField, = false);
+  OPTIONAL(gnuPubnames, MDBoolField, = false);
+*/
+
+DICompileUnit
+	: "!DICompileUnit" "(" DICompileUnitFields ")"
+;
+
+DICompileUnitFields
+	: empty
+	| DICompileUnitFieldList
+;
+
+DICompileUnitFieldList
+	: DICompileUnitField
+	| DICompileUnitFieldList "," DICompileUnitField
+;
+
+DICompileUnitField
+	: "language:" DwarfLang
+	| FileField
+	| "producer:" string_lit
+	| "isOptimized:" BoolConst
+	| "flags:" string_lit
+	| "runtimeVersion:" int_lit
+	| "splitDebugFilename:" string_lit
+	| "emissionKind:" EmissionKind
+	| "enums:" MDField
+	| "retainedTypes:" MDField
+	| "globals:" MDField
+	| "imports:" MDField
+	| "macros:" MDField
+	| "dwoId:" int_lit
+	| "splitDebugInlining:" BoolConst
+	| "debugInfoForProfiling:" BoolConst
+	| "gnuPubnames:" BoolConst
+;
+
+EmissionKind
+	: int_lit
+	| "NoDebug"
+	| "FullDebug"
+	| "LineTablesOnly"
 ;
 
 /*

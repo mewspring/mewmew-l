@@ -144,6 +144,10 @@ dwarf_cc
 	: 'D' 'W' '_' 'C' 'C' '_' { _ascii_letter | _decimal_digit }
 ;
 
+// CSK_foo
+checksum_kind
+	: 'C' 'S' 'K' '_' { _ascii_letter | _decimal_digit }
+;
 
 // === [ Integer literals ] ====================================================
 
