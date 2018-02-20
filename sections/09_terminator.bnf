@@ -23,8 +23,6 @@ Terminator
 	| CleanupRetTerm
 	| CatchRetTerm
 	| CatchSwitchTerm
-	| CatchPadTerm
-	| CleanupPadTerm
 ;
 
 // --- [ unreachable ] ---------------------------------------------------------
@@ -125,47 +123,6 @@ InvokeTerm
 	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" Type LocalIdent "unwind" Type LocalIdent MetadataAttachments
 ;
 
-/*
-/// ParseOptionalOperandBundles
-///    ::= empty
-///    ::= '[' OperandBundle [, OperandBundle ]* ']'
-///
-/// OperandBundle
-///    ::= bundle-tag '(' ')'
-///    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
-///
-/// bundle-tag ::= String Constant
-bool LLParser::ParseOptionalOperandBundles(
-*/
-
-OperandBundles
-	: empty
-	| "[" OperandBundleList "]"
-;
-
-OperandBundleList
-	: OperandBundle
-	| OperandBundleList OperandBundle
-;
-
-OperandBundle
-	: string_lit "(" BundleInputs ")"
-;
-
-BundleInputs
-	: empty
-	| BundleInputList
-;
-
-BundleInputList
-	: BundleInput
-	| BundleInputList BundleInput
-;
-
-BundleInput
-	: Type Value
-;
-
 // --- [ resume ] --------------------------------------------------------------
 
 /*
@@ -222,48 +179,5 @@ CatchSwitchTerm
 ExceptionScope
 	: "none"
 	| LocalIdent
-;
-
-// --- [ catchpad ] ------------------------------------------------------------
-
-/*
-/// ParseCatchPad
-///   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
-bool LLParser::ParseCatchPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-CatchPadTerm
-	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" MetadataAttachments
-;
-
-/*
-bool LLParser::ParseExceptionArgs(SmallVectorImpl<Value *> &Args,
-*/
-
-ExceptionArgs
-	: empty
-	| ExceptionArgList
-;
-
-ExceptionArgList
-	: ExceptionArg
-	| ExceptionArgList "," ExceptionArg
-;
-
-ExceptionArg
-	: Type Value
-	| MetadataType Metadata
-;
-
-// --- [ cleanuppad ] ----------------------------------------------------------
-
-/*
-/// ParseCleanupPad
-///   ::= 'cleanuppad' within Parent ParamList
-bool LLParser::ParseCleanupPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-CleanupPadTerm
-	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" MetadataAttachments
 ;
 

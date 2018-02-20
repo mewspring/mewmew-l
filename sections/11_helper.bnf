@@ -5,11 +5,6 @@
 bool LLParser::ParseOptionalAlignment(unsigned &Alignment) {
 */
 
-OptAlignment
-	: empty
-	| Alignment
-;
-
 Alignment
 	: "align" int_lit
 ;
@@ -153,7 +148,7 @@ FastMathFlag
 	| "afn"
 ;
 
-OptInbounds
+OptInBounds
 	: empty
 	| "inbounds"
 ;
@@ -170,32 +165,6 @@ ElemList
 
 Elem
 	: Type Constant
-;
-
-/*
-/// ParseGlobalValueVector
-///   ::= empty
-///   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
-bool LLParser::ParseGlobalValueVector(SmallVectorImpl<Constant *> &Elts,
-*/
-
-GEPIndices
-	: empty
-	| GEPIndexList
-;
-
-GEPIndexList
-	: GEPIndex
-	| GEPIndexList "," GEPIndex
-;
-
-GEPIndex
-	: OptInrange Type Constant
-;
-
-OptInrange
-	: empty
-	| "inrange"
 ;
 
 // https://llvm.org/docs/LangRef.html#linkage-types
@@ -495,5 +464,72 @@ bool LLParser::ParseMetadataAsValue(Value *&V, PerFunctionState &PFS) {
 Param
 	: Type ParamAttrs Value
 	| MetadataType Metadata
+;
+
+/*
+/// ParseOptionalReturnAttrs - Parse a potentially empty list of return attributes.
+bool LLParser::ParseOptionalReturnAttrs(AttrBuilder &B) {
+*/
+
+ReturnAttrs
+	: empty
+	| ReturnAttrList
+;
+
+ReturnAttrList
+	: ReturnAttr
+	| ReturnAttrList ReturnAttr
+;
+
+ReturnAttr
+	: string_lit
+	| Dereferenceable
+	| Alignment
+	| "inreg"
+	| "noalias"
+	| "nonnull"
+	| "signext"
+	| "zeroext"
+;
+
+/*
+/// ParseOptionalOperandBundles
+///    ::= empty
+///    ::= '[' OperandBundle [, OperandBundle ]* ']'
+///
+/// OperandBundle
+///    ::= bundle-tag '(' ')'
+///    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
+///
+/// bundle-tag ::= String Constant
+bool LLParser::ParseOptionalOperandBundles(
+*/
+
+OperandBundles
+	: empty
+	| "[" OperandBundleList "]"
+;
+
+OperandBundleList
+	: OperandBundle
+	| OperandBundleList OperandBundle
+;
+
+OperandBundle
+	: string_lit "(" BundleInputs ")"
+;
+
+BundleInputs
+	: empty
+	| BundleInputList
+;
+
+BundleInputList
+	: BundleInput
+	| BundleInputList BundleInput
+;
+
+BundleInput
+	: Type Value
 ;
 

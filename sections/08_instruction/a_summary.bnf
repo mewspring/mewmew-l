@@ -1,10 +1,11 @@
 // === [ Instructions ] ========================================================
 
-Instructions
-	: empty
-;
-
 /*
+/// ParseInstruction - Parse one of the many different instructions.
+///
+int LLParser::ParseInstruction(Instruction *&Inst, BasicBlock *BB,
+*/
+
 Instructions
 	: empty
 	| InstructionList
@@ -81,5 +82,4 @@ ValueInstruction
 	| CatchPadInst
 	| CleanupPadInst
 ;
-*/
 

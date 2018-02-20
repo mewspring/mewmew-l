@@ -163,32 +163,6 @@ OptPersonality
 ;
 
 /*
-/// ParseOptionalReturnAttrs - Parse a potentially empty list of return attributes.
-bool LLParser::ParseOptionalReturnAttrs(AttrBuilder &B) {
-*/
-
-ReturnAttrs
-	: empty
-	| ReturnAttrList
-;
-
-ReturnAttrList
-	: ReturnAttr
-	| ReturnAttrList ReturnAttr
-;
-
-ReturnAttr
-	: string_lit
-	| Dereferenceable
-	| Alignment
-	| "inreg"
-	| "noalias"
-	| "nonnull"
-	| "signext"
-	| "zeroext"
-;
-
-/*
 /// ParseFunctionBody
 ///   ::= '{' BasicBlock+ UseListOrderDirective* '}'
 bool LLParser::ParseFunctionBody(Function &Fn) {

@@ -1,5 +1,32 @@
 // --- [ Memory expressions ] --------------------------------------------------
 
 GetElementPtrExpr
-	: "getelementptr" OptInbounds "(" Type "," Type Constant "," GEPIndices ")"
+	: "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
 ;
+
+/*
+/// ParseGlobalValueVector
+///   ::= empty
+///   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
+bool LLParser::ParseGlobalValueVector(SmallVectorImpl<Constant *> &Elts,
+*/
+
+GEPConstIndices
+	: empty
+	| GEPConstIndexList
+;
+
+GEPConstIndexList
+	: GEPConstIndex
+	| GEPConstIndexList "," GEPConstIndex
+;
+
+GEPConstIndex
+	: OptInrange Type Constant
+;
+
+OptInrange
+	: empty
+	| "inrange"
+;
+
