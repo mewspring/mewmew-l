@@ -8,30 +8,26 @@
 bool LLParser::ParseNamedMetadata() {
 */
 
-NamedMetadata
-	: MetadataVar "=" "!" "{" MDNodes "}"
+NamedMetadataDef
+	: MetadataName "=" "!" "{" MetadataNodes "}"
 ;
 
-MDNodes
+MetadataNodes
 	: empty
-	| MDNodeList
+	| MetadataNodeList
 ;
 
-MDNodeList
-	: MDNode
-	| MDNodeList "," MDNode
+MetadataNodeList
+	: MetadataNode
+	| MetadataNodeList "," MetadataNode
 ;
 
-MDNode
-	: MDNodeID
+MetadataNode
+	: MetadataID
 	// Parse DIExpressions inline as a special case. They are still MDNodes, so
 	// they can still appear in named metadata. Remove this logic if they become
 	// plain Metadata.
 	| DIExpression
-;
-
-MDNodeID
-	: MetadataID
 ;
 
 // --- [ Standalone Metadata ] -------------------------------------------------
@@ -44,7 +40,7 @@ MDNodeID
 bool LLParser::ParseStandaloneMetadata() {
 */
 
-StandaloneMetadata
+MetadataDef
 	: MetadataID "=" OptDistinct MDTuple
 	| MetadataID "=" OptDistinct SpecializedMDNode
 ;
@@ -52,9 +48,5 @@ StandaloneMetadata
 OptDistinct
 	: empty
 	| "distinct"
-;
-
-MDTuple
-	: "!" "{" "}"
 ;
 

@@ -42,11 +42,11 @@ TopLevelEntity
 	//| ComdatDef
 	//| GlobalDecl
 	//| GlobalDef
-	: FunctionDecl
-	| FunctionDef
+	//| FunctionDecl
+	//| FunctionDef
 	//| AttrGroupDef
-	//| StandaloneMetadata
-	//| NamedMetadata
+	: NamedMetadataDef
+	| MetadataDef
 	//| UseListOrder // TODO: Implement UseListOrder
 	//| UseListOrderBB // TODO: Implement UseListOrderBB
 ;
