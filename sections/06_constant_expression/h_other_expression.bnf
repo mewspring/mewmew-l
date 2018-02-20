@@ -1,0 +1,14 @@
+// --- [ Other expressions ] ---------------------------------------------------
+
+ICmpExpr
+	: "icmp" IPred "(" Type Constant "," Type Constant ")"
+;
+
+FCmpExpr
+	: "fcmp" FPred "(" Type Constant "," Type Constant ")"
+;
+
+SelectExpr
+	: "select" "(" Type Constant "," Type Constant "," Type Constant ")"
+;
+

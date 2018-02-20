@@ -1,0 +1,50 @@
+// --- [ Binary expressions ] --------------------------------------------------
+
+AddExpr
+	: "add" OverflowFlags "(" Type Constant "," Type Constant ")"
+;
+
+FAddExpr
+	: "fadd" "(" Type Constant "," Type Constant ")"
+;
+
+SubExpr
+	: "sub" OverflowFlags "(" Type Constant "," Type Constant ")"
+;
+
+FSubExpr
+	: "fsub" "(" Type Constant "," Type Constant ")"
+;
+
+MulExpr
+	: "mul" OverflowFlags "(" Type Constant "," Type Constant ")"
+;
+
+FMulExpr
+	: "fmul" "(" Type Constant "," Type Constant ")"
+;
+
+UDivExpr
+	: "udiv" OptExact "(" Type Constant "," Type Constant ")"
+;
+
+SDivExpr
+	: "sdiv" OptExact "(" Type Constant "," Type Constant ")"
+;
+
+FDivExpr
+	: "fdiv" "(" Type Constant "," Type Constant ")"
+;
+
+URemExpr
+	: "urem" "(" Type Constant "," Type Constant ")"
+;
+
+SRemExpr
+	: "srem" "(" Type Constant "," Type Constant ")"
+;
+
+FRemExpr
+	: "frem" "(" Type Constant "," Type Constant ")"
+;
+

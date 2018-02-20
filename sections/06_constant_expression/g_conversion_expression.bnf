@@ -1,0 +1,53 @@
+// --- [ Conversion expressions ] ----------------------------------------------
+
+TruncExpr
+	: "trunc" "(" Type Constant "to" Type ")"
+;
+
+ZExtExpr
+	: "zext" "(" Type Constant "to" Type ")"
+;
+
+SExtExpr
+	: "sext" "(" Type Constant "to" Type ")"
+;
+
+FPTruncExpr
+	: "fptrunc" "(" Type Constant "to" Type ")"
+;
+
+FPExtExpr
+	: "fpext" "(" Type Constant "to" Type ")"
+;
+
+FPToUIExpr
+	: "fptoui" "(" Type Constant "to" Type ")"
+;
+
+FPToSIExpr
+	: "fptosi" "(" Type Constant "to" Type ")"
+;
+
+UIToFPExpr
+	: "uitofp" "(" Type Constant "to" Type ")"
+;
+
+SIToFPExpr
+	: "sitofp" "(" Type Constant "to" Type ")"
+;
+
+PtrToIntExpr
+	: "ptrtoint" "(" Type Constant "to" Type ")"
+;
+
+IntToPtrExpr
+	: "inttoptr" "(" Type Constant "to" Type ")"
+;
+
+BitCastExpr
+	: "bitcast" "(" Type Constant "to" Type ")"
+;
+
+AddrSpaceCastExpr
+	: "addrspacecast" "(" Type Constant "to" Type ")"
+;

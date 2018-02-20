@@ -1,0 +1,5 @@
+// --- [ Memory expressions ] --------------------------------------------------
+
+GetElementPtrExpr
+	: "getelementptr" OptInbounds "(" Type "," Type Constant "," GEPIndices ")"
+;

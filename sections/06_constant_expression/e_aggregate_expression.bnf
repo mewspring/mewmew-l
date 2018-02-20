@@ -1,0 +1,10 @@
+// --- [ Aggregate expressions ] -----------------------------------------------
+
+ExtractValueExpr
+	: "extractvalue" "(" Type Constant Indices ")"
+;
+
+InsertValueExpr
+	: "insertvalue" "(" Type Constant "," Type Constant Indices ")"
+;
+

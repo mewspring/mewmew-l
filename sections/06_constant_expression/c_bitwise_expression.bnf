@@ -1,0 +1,26 @@
+// --- [ Bitwise expressions ] -------------------------------------------------
+
+ShlExpr
+	: "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
+;
+
+LShrExpr
+	: "lshr" OptExact "(" Type Constant "," Type Constant ")"
+;
+
+AShrExpr
+	: "ashr" OptExact "(" Type Constant "," Type Constant ")"
+;
+
+AndExpr
+	: "and" "(" Type Constant "," Type Constant ")"
+;
+
+OrExpr
+	: "or" "(" Type Constant "," Type Constant ")"
+;
+
+XorExpr
+	: "xor" "(" Type Constant "," Type Constant ")"
+;
+

@@ -30,3 +30,171 @@ AddrSpace
 	: "addrspace" "(" int_lit ")"
 ;
 
+/*
+bool LLParser::parseOptionalComdat(StringRef GlobalName, Comdat *&C) {
+*/
+
+OptComdat
+	: empty
+	| Comdat
+;
+
+Comdat
+	: "comdat"
+	| "comdat" "(" ComdatName ")"
+;
+
+/*
+/// ParseIndexList - This parses the index list for an insert/extractvalue
+/// instruction.  This sets AteExtraComma in the case where we eat an extra
+/// comma at the end of the line and find that it is followed by metadata.
+/// Clients that don't allow metadata can call the version of this function that
+/// only takes one argument.
+///
+/// ParseIndexList
+///    ::=  (',' uint32)+
+///
+bool LLParser::ParseIndexList(SmallVectorImpl<unsigned> &Indices,
+*/
+
+Indices
+	: empty
+	| "," IndexList
+;
+
+IndexList
+	: Index
+	| IndexList "," Index
+;
+
+Index
+	: int_lit
+;
+
+/*
+/// ParseCmpPredicate - Parse an integer or fp predicate, based on Kind.
+bool LLParser::ParseCmpPredicate(unsigned &P, unsigned Opc) {
+*/
+
+IPred
+	: "eq"
+	| "ne"
+	| "slt"
+	| "sgt"
+	| "sle"
+	| "sge"
+	| "ult"
+	| "ugt"
+	| "ule"
+	| "uge"
+;
+
+FPred
+	: "oeq"
+	| "one"
+	| "olt"
+	| "ogt"
+	| "ole"
+	| "oge"
+	| "ord"
+	| "uno"
+	| "ueq"
+	| "une"
+	| "ult"
+	| "ugt"
+	| "ule"
+	| "uge"
+	| "true"
+	| "false"
+;
+
+OverflowFlags
+	: empty
+	| OverflowFlagList
+;
+
+OverflowFlagList
+	: OverflowFlag
+	| OverflowFlagList OverflowFlag
+;
+
+OverflowFlag
+	: "nuw"
+	| "nsw"
+;
+
+OptExact
+	: empty
+	| "exact"
+;
+
+/*
+FastMathFlags EatFastMathFlagsIfPresent() {
+*/
+
+FastMathFlags
+	: empty
+	| FastMathFlagList
+;
+
+FastMathFlagList
+	: FastMathFlag
+	| FastMathFlagList FastMathFlag
+;
+
+FastMathFlag
+	: "fast"
+	| "nnan"
+	| "ninf"
+	| "nsz"
+	| "arcp"
+	| "contract"
+	| "reassoc"
+	| "afn"
+;
+
+OptInbounds
+	: empty
+	| "inbounds"
+;
+
+Elems
+	: empty
+	| ElemList
+;
+
+ElemList
+	: Elem
+	| ElemList "," Elem
+;
+
+Elem
+	: Type Constant
+;
+
+/*
+/// ParseGlobalValueVector
+///   ::= empty
+///   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
+bool LLParser::ParseGlobalValueVector(SmallVectorImpl<Constant *> &Elts,
+*/
+
+GEPIndices
+	: empty
+	| GEPIndexList
+;
+
+GEPIndexList
+	: GEPIndex
+	| GEPIndexList "," GEPIndex
+;
+
+GEPIndex
+	: OptInrange Type Constant
+;
+
+OptInrange
+	: empty
+	| "inrange"
+;
+

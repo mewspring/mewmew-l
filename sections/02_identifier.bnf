@@ -8,7 +8,23 @@ LocalIdent
 	: local_ident
 ;
 
+LabelIdent
+	: label_ident
+;
+
+AttrGroupID
+	: attr_group_id
+;
+
 ComdatName
 	: comdat_name
+;
+
+MetadataName
+	: metadata_name
+;
+
+MetadataID
+	: metadata_id
 ;
 

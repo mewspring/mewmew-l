@@ -135,16 +135,6 @@ CallingConv
 	| "cc" int_lit
 ;
 
-/*
-bool LLParser::parseOptionalComdat(StringRef GlobalName, Comdat *&C) {
-*/
-
-OptComdat
-	: empty
-	| "comdat"
-	| "comdat" "(" ComdatVar ")"
-;
-
 OptGC
 	: empty
 	| "gc" string_lit

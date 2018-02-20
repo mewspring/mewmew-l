@@ -1,0 +1,36 @@
+Value
+	: Constant
+	// %42
+	// %foo
+	| LocalIdent
+	| InlineAsm
+;
+
+// --- [ Inline Assembler Expressions ] ----------------------------------------
+
+// https://llvm.org/docs/LangRef.html#inline-assembler-expressions
+
+/*
+// ValID ::= 'asm' SideEffect? AlignStack? IntelDialect? STRINGCONSTANT ','
+//             STRINGCONSTANT
+*/
+
+InlineAsm
+	: "asm" OptSideEffect OptAlignStack OptIntelDialect string_lit "," string_lit
+;
+
+OptSideEffect
+	: empty
+	| "sideeffect"
+;
+
+OptAlignStack
+	: empty
+	| "alignstack"
+;
+
+OptIntelDialect
+	: empty
+	| "inteldialect"
+;
+

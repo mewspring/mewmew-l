@@ -35,13 +35,13 @@ bool LLParser::ParseTopLevelEntities() {
 */
 
 TopLevelEntity
-	: SourceFilename
-	| TargetDefinition
-	| ModuleAsm
-	| TypeDef
-	| ComdatDef
-	//| GlobalDecl
-	//| GlobalDef
+	//: SourceFilename
+	//| TargetDefinition
+	//| ModuleAsm
+	//| TypeDef
+	//| ComdatDef
+	: GlobalDecl
+	| GlobalDef
 	//| FunctionDecl
 	//| FunctionDef
 	//| AttrGroupDef

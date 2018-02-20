@@ -50,7 +50,7 @@ GlobalDecl
 ;
 
 GlobalDef
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type GlobalValue Attrs FnAttributeValuePairs
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Constant Attrs FnAttributeValuePairs
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
@@ -215,8 +215,9 @@ AttrList
 Attr
 	: Section
 	| Alignment
+	///   ::= !dbg !57
 	| GlobalObjectMetadataAttachment
-	| OptionalComdat
+	| Comdat
 ;
 
 OptSection
@@ -246,7 +247,7 @@ FnAttributeValuePairList
 
 FnAttributeValuePair
 	: "builtin"
-	| AttrGrpID // not used in attribute groups.
+	| AttrGroupID // not used in attribute groups.
 	| string_lit
 	| "align" "=" int_lit // used in attribute groups.
 	| Alignment // used in functions.
@@ -311,6 +312,36 @@ AllocSize
 	| "allocsize" "(" int_lit "," int_lit ")"
 ;
 
+/*
+bool LLParser::ParseOptionalUnnamedAddr(
+*/
+
+OptUnnamedAddr
+	: empty
+	| UnnamedAddr
+;
+
+UnnamedAddr
+	: "unnamed_addr"
+	| "local_unnamed_addr"
+;
+
+/*
+/// ParseGlobalObjectMetadataAttachment
+///   ::= !dbg !57
+bool LLParser::ParseGlobalObjectMetadataAttachment(GlobalObject &GO) {
+*/
+
+/*
+/// ParseMetadataAttachment
+///   ::= !dbg !42
+bool LLParser::ParseMetadataAttachment(unsigned &Kind, MDNode *&MD) {
+*/
+
+GlobalObjectMetadataAttachment
+	: MetadataName
+;
+
 // TODO: Move indirect symbols to alias and ifunc.
 
 // --- [ Indirect Symbol ] -----------------------------------------------------
@@ -334,8 +365,8 @@ bool LLParser::parseIndirectSymbol(const std::string &Name, LocTy NameLoc,
 */
 
 IndirectSymbol
-	: Type "," GlobalTypeAndValue
-	| Type "," IndirectCast ValID
+	: Type "," Type Constant
+	| Type "," IndirectCast Constant
 ;
 
 IndirectCast
