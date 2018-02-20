@@ -118,24 +118,8 @@ Attr
 	: Section
 	| Alignment
 	///   ::= !dbg !57
-	| GlobalObjectMetadataAttachment
+	| MetadataAttachment
 	| Comdat
-;
-
-/*
-/// ParseGlobalObjectMetadataAttachment
-///   ::= !dbg !57
-bool LLParser::ParseGlobalObjectMetadataAttachment(GlobalObject &GO) {
-*/
-
-/*
-/// ParseMetadataAttachment
-///   ::= !dbg !42
-bool LLParser::ParseMetadataAttachment(unsigned &Kind, MDNode *&MD) {
-*/
-
-GlobalObjectMetadataAttachment
-	: MetadataName
 ;
 
 // TODO: Move indirect symbols to alias and ifunc.

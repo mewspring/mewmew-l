@@ -1,0 +1,146 @@
+/*
+/// ParseGlobalObjectMetadataAttachment
+///   ::= !dbg !57
+bool LLParser::ParseGlobalObjectMetadataAttachment(GlobalObject &GO) {
+*/
+
+/*
+/// ParseMetadataAttachment
+///   ::= !dbg !42
+bool LLParser::ParseMetadataAttachment(unsigned &Kind, MDNode *&MD) {
+*/
+
+MetadataAttachments
+	: empty
+	| MetadataAttachmentList
+;
+
+MetadataAttachmentList
+	: MetadataAttachment
+	| MetadataAttachmentList MetadataAttachment
+;
+
+MetadataAttachment
+	: MetadataName MDNode
+;
+
+/*
+/// MDNode:
+///  ::= !{ ... }
+///  ::= !7
+///  ::= !DILocation(...)
+bool LLParser::ParseMDNode(MDNode *&N) {
+*/
+
+MDNode
+	: SpecializedMDNode
+	// !{ ... }
+	| MDTuple
+	// !42
+	| MetadataID
+;
+
+/*
+bool LLParser::ParseSpecializedMDNode(MDNode *&N, bool IsDistinct) {
+*/
+
+/*
+/// ParseDILocationFields:
+///   ::= !DILocation(line: 43, column: 8, scope: !5, inlinedAt: !6)
+bool LLParser::ParseDILocation(MDNode *&Result, bool IsDistinct) {
+*/
+
+SpecializedMDNode
+	: "!DILocation" "(" OptLineComma OptColumnComma Scope OptCommaInlinedAt ")"
+;
+
+OptLineComma
+	: Line ","
+;
+
+Line
+	: "line:" int_lit
+;
+
+OptColumnComma
+	: Column ","
+;
+
+Column
+	: "column:" int_lit
+;
+
+Scope
+	: "scope:" MetadataID // underlying Metadata
+;
+
+OptCommaInlinedAt
+	: empty
+	| "," InlinedAt
+;
+
+InlinedAt
+	: "inlinedAt:" MetadataField
+;
+
+MetadataField
+	: MetadataID
+	| "null"
+;
+
+/*
+bool LLParser::ParseMDTuple(MDNode *&MD, bool IsDistinct) {
+*/
+
+MDTuple
+	: "!" "{" Metadatas "}"
+;
+
+//===----------------------------------------------------------------------===//
+// Embedded metadata.
+//===----------------------------------------------------------------------===//
+
+/*
+/// ParseMDNodeVector
+///   ::= { Element (',' Element)* }
+/// Element
+///   ::= 'null' | TypeAndValue
+bool LLParser::ParseMDNodeVector(SmallVectorImpl<Metadata *> &Elts) {
+*/
+
+Metadatas
+	: "null"
+	| Metadata
+;
+
+MetadataList
+	: Metadata
+	| MetadataList "," Metadata
+;
+
+/*
+/// ParseMetadata
+///  ::= i32 %local
+///  ::= i32 @global
+///  ::= i32 7
+///  ::= !42
+///  ::= !{...}
+///  ::= !"string"
+///  ::= !DILocation(...)
+bool LLParser::ParseMetadata(Metadata *&MD, PerFunctionState *PFS) {
+*/
+
+Metadata
+	: SpecializedMDNode
+	| Type Value
+	| MDString
+	// !{ ... }
+	| MDTuple
+	// !7
+	| MetadataID
+;
+
+MDString
+	: "!" string_lit
+;
+

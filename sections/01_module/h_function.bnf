@@ -11,8 +11,7 @@ bool LLParser::ParseDeclare() {
 // NOTE: MetadataAttachment* not part of BNF comment; it should be.
 
 FunctionDecl
-	: "declare" OptExternLinkage FunctionHeader
-	//: "declare" MetadataAttachments OptExternLinkage FunctionHeader // TODO: Add MetadataAttachments
+	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
 ;
 
 // --- [ Function Definition ] -------------------------------------------------

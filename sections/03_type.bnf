@@ -29,6 +29,7 @@ Type
 	| MetadataType
 	| MMXType
 	| TokenType
+	| IntType
 	// Type ::= StructType
 	| StructType
 	// Type ::= '[' ... ']'
@@ -72,6 +73,10 @@ MMXType
 
 TokenType
 	: "token"
+;
+
+IntType
+	: int_type
 ;
 
 /*
