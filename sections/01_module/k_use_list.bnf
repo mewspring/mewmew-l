@@ -1,0 +1,25 @@
+/*
+/// ParseUseListOrder
+///   ::= 'uselistorder' Type Value ',' UseListOrderIndexes
+bool LLParser::ParseUseListOrder(PerFunctionState *PFS) {
+*/
+
+/*
+/// ParseUseListOrderIndexes
+///   ::= '{' uint32 (',' uint32)+ '}'
+bool LLParser::ParseUseListOrderIndexes(SmallVectorImpl<unsigned> &Indexes) {
+*/
+
+UseListOrder
+	: "uselistorder" Type Value "," "{" IndexList "}"
+;
+
+/*
+/// ParseUseListOrderBB
+///   ::= 'uselistorder_bb' @foo ',' %bar ',' UseListOrderIndexes
+bool LLParser::ParseUseListOrderBB() {
+*/
+
+UseListOrderBB
+	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
+;

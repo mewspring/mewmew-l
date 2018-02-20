@@ -45,9 +45,9 @@ TopLevelEntity
 	//| FunctionDecl
 	//| FunctionDef
 	//| AttrGroupDef
-	: NamedMetadataDef
-	| MetadataDef
-	//| UseListOrder // TODO: Implement UseListOrder
-	//| UseListOrderBB // TODO: Implement UseListOrderBB
+	//| NamedMetadataDef
+	//| MetadataDef
+	: UseListOrder
+	| UseListOrderBB
 ;
 
