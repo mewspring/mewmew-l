@@ -35,19 +35,19 @@ bool LLParser::ParseTopLevelEntities() {
 */
 
 TopLevelEntity
-	//: SourceFilename
-	//| TargetDefinition
-	//| ModuleAsm
-	//| TypeDef
-	//| ComdatDef
-	//| GlobalDecl
-	//| GlobalDef
-	//| FunctionDecl
-	//| FunctionDef
-	//| AttrGroupDef
-	//| NamedMetadataDef
-	//| MetadataDef
-	: UseListOrder
+	: SourceFilename
+	| TargetDefinition
+	| ModuleAsm
+	| TypeDef
+	| ComdatDef
+	| GlobalDecl
+	| GlobalDef
+	| FunctionDecl
+	| FunctionDef
+	| AttrGroupDef
+	| NamedMetadataDef
+	| MetadataDef
+	| UseListOrder
 	| UseListOrderBB
 ;
 

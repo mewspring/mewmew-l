@@ -114,11 +114,6 @@ StructType
 	| "<" "{" FieldList "}" ">"
 ;
 
-Fields
-	: empty
-	| FieldList
-;
-
 FieldList
 	: Field
 	| FieldList "," Field

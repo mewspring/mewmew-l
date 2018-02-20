@@ -9,6 +9,6 @@ bool LLParser::ParseUnnamedAttrGrp() {
 */
 
 AttrGroupDef
-	: "attributes" AttrGroupID "=" "{" FnAttributeValuePairList "}"
+	: "attributes" AttrGroupID "=" "{" FuncAttrs "}"
 ;
 
