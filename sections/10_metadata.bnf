@@ -56,12 +56,10 @@ SpecializedMDNode
 	| DIFile
 	| DICompileUnit
 	| DISubprogram
-	| MDField
 	| DILexicalBlock
 	| DILexicalBlockFile
 	| DINamespace
 	| DIMacro
-	| MDField
 	| DIMacroFile
 	| DIModule
 	| DITemplateTypeParameter
