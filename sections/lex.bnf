@@ -124,6 +124,22 @@ dwarf_tag
 	: 'D' 'W' '_' 'T' 'A' 'G' '_' { _ascii_letter | _decimal_digit }
 ;
 
+// DW_ATE_foo
+dwarf_att_encoding
+	: 'D' 'W' '_' 'A' 'T' 'E' '_' { _ascii_letter | _decimal_digit }
+;
+
+// DIFlagFoo
+di_flag
+	: 'D' 'I' 'F' 'l' 'a' 'g' { _ascii_letter | _decimal_digit }
+;
+
+// DW_LANG_foo
+dwarf_lang
+	: 'D' 'W' '_' 'L' 'A' 'N' 'G' '_' { _ascii_letter | _decimal_digit }
+;
+
+
 // === [ Integer literals ] ====================================================
 
 //   Integer           [-]?[0-9]+

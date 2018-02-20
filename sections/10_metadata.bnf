@@ -49,6 +49,9 @@ SpecializedMDNode
 	| GenericDINode
 	| DISubrange
 	| DIEnumerator
+	| DIBasicType
+	| DIDerivedType
+	| DICompositeType
 ;
 
 /*
@@ -63,36 +66,32 @@ bool LLParser::ParseDILocation(MDNode *&Result, bool IsDistinct) {
 */
 
 DILocation
-	: "!DILocation" "(" OptLineComma OptColumnComma Scope OptCommaInlinedAt ")"
+	: "!DILocation" "(" DILocationFields ")"
 ;
 
-OptLineComma
-	: Line ","
+DILocationFields
+	: empty
+	| DILocationFieldList
 ;
 
-Line
+DILocationFieldList
+	: DILocationField
+	| DILocationFieldList "," DILocationField
+;
+
+DILocationField
+	: LineField
+	| "column:" int_lit
+	| ScopeField
+	| "inlinedAt:" MDField
+;
+
+LineField
 	: "line:" int_lit
 ;
 
-OptColumnComma
-	: Column ","
-;
-
-Column
-	: "column:" int_lit
-;
-
-Scope
+ScopeField
 	: "scope:" MetadataID // underlying Metadata
-;
-
-OptCommaInlinedAt
-	: empty
-	| "," InlinedAt
-;
-
-InlinedAt
-	: "inlinedAt:" MDField
 ;
 
 MDField
@@ -110,24 +109,27 @@ bool LLParser::ParseGenericDINode(MDNode *&Result, bool IsDistinct) {
   OPTIONAL(operands, MDFieldList, );
 */
 
-// TODO: Clean up when the parser generator no longer introduces ambiguities
-// through the limitation of 1 token lookahead.
-//
-// Structured in this way to allow for naiive 1 token lookahead parser
-// generators.
-//
-// Original production rule.
-//
-//    GenericDINode
-//       : "!GenericDINode" "(" Tag OptCommaHeader OptCommaOperands ")"
-//    ;
-
 GenericDINode
-	: "!GenericDINode" "(" Tag OptCommaOperands ")"
-	| "!GenericDINode" "(" Tag "," Header OptCommaOperands ")"
+	: "!GenericDINode" "(" GenericDINodeFields ")"
 ;
 
-Tag
+GenericDINodeFields
+	: empty
+	| GenericDINodeFieldList
+;
+
+GenericDINodeFieldList
+	: GenericDINodeField
+	| GenericDINodeFieldList "," GenericDINodeField
+;
+
+GenericDINodeField
+	: TagField
+	| "header:" string_lit
+	| "operands:" Metadatas
+;
+
+TagField
 	: "tag:" DwarfTag
 ;
 
@@ -135,24 +137,6 @@ DwarfTag
 	: int_lit
 	// DW_TAG_foo
 	| dwarf_tag
-;
-
-OptCommaHeader
-	: empty
-	| "," Header
-;
-
-Header
-	: "header:" string_lit
-;
-
-OptCommaOperands
-	: empty
-	| "," Operands
-;
-
-Operands
-	: "operands:" Metadatas
 ;
 
 /*
@@ -166,11 +150,22 @@ bool LLParser::ParseDISubrange(MDNode *&Result, bool IsDistinct) {
 */
 
 DISubrange
-	: "!DISubrange" "(" Count OptCommaLowerBound ")"
+	: "!DISubrange" "(" DISubrangeFields ")"
 ;
 
-Count
+DISubrangeFields
+	: empty
+	| DISubrangeFieldList
+;
+
+DISubrangeFieldList
+	: DISubrangeField
+	| DISubrangeFieldList "," DISubrangeField
+;
+
+DISubrangeField
 	: "count:" IntLitOrMDField
+	| "lowerBound:" int_lit
 ;
 
 /*
@@ -180,15 +175,6 @@ struct MDSignedOrMDField : MDEitherFieldImpl<MDSignedField, MDField> {
 IntLitOrMDField
 	: int_lit
 	| MDField
-;
-
-OptCommaLowerBound
-	: empty
-	| "," LowerBound
-;
-
-LowerBound
-	: "lowerBound:" int_lit
 ;
 
 /*
@@ -202,24 +188,229 @@ bool LLParser::ParseDIEnumerator(MDNode *&Result, bool IsDistinct) {
 */
 
 DIEnumerator
-	: "!DIEnumerator" "(" Name DIEnumeratorValue OptCommaIsUnsigned ")"
+	: "!DIEnumerator" "(" DIEnumeratorFields ")"
 ;
 
-Name
+DIEnumeratorFields
+	: empty
+	| DIEnumeratorFieldList
+;
+
+DIEnumeratorFieldList
+	: DIEnumeratorField
+	| DIEnumeratorFieldList "," DIEnumeratorField
+;
+
+DIEnumeratorField
+	: NameField
+	| "value:" int_lit
+	| "isUnsigned:" BoolConst
+;
+
+NameField
 	: "name:" string_lit
 ;
 
-DIEnumeratorValue
-	: "value:" int_lit
+/*
+/// ParseDIBasicType:
+///   ::= !DIBasicType(tag: DW_TAG_base_type, name: "int", size: 32, align: 32)
+bool LLParser::ParseDIBasicType(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(tag, DwarfTagField, (dwarf::DW_TAG_base_type));
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(size, MDUnsignedField, (0, UINT64_MAX));
+  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(encoding, DwarfAttEncodingField, );
+*/
+
+DIBasicType
+	: "!DIBasicType" "(" DIBasicTypeFields ")"
 ;
 
-OptCommaIsUnsigned
+DIBasicTypeFields
 	: empty
-	| "," IsUnsigned
+	| DIBasicTypeFieldList
 ;
 
-IsUnsigned
-	: "isUnsigned:" BoolConst
+DIBasicTypeFieldList
+	: DIBasicTypeField
+	| DIBasicTypeFieldList "," DIBasicTypeField
+;
+
+DIBasicTypeField
+	: TagField
+	| NameField
+	| SizeField
+	| AlignField
+	| "encoding:" DwarfAttEncoding
+;
+
+SizeField
+	: "size:" int_lit
+;
+
+AlignField
+	: "align:" int_lit
+;
+
+/*
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name,
+                            DwarfAttEncodingField &Result) {
+*/
+
+DwarfAttEncoding
+	: int_lit
+	// DW_ATE_foo
+	| dwarf_att_encoding
+;
+
+/*
+/// ParseDIDerivedType:
+///   ::= !DIDerivedType(tag: DW_TAG_pointer_type, name: "int", file: !0,
+///                      line: 7, scope: !1, baseType: !2, size: 32,
+///                      align: 32, offset: 0, flags: 0, extraData: !3,
+///                      dwarfAddressSpace: 3)
+bool LLParser::ParseDIDerivedType(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(tag, DwarfTagField, );
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(scope, MDField, );
+  REQUIRED(baseType, MDField, );
+  OPTIONAL(size, MDUnsignedField, (0, UINT64_MAX));
+  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(offset, MDUnsignedField, (0, UINT64_MAX));
+  OPTIONAL(flags, DIFlagField, );
+  OPTIONAL(extraData, MDField, );
+  OPTIONAL(dwarfAddressSpace, MDUnsignedField, (UINT32_MAX, UINT32_MAX));
+*/
+
+DIDerivedType
+	: "!DIDerivedType" "(" DIDerivedTypeFields ")"
+;
+
+DIDerivedTypeFields
+	: empty
+	| DIDerivedTypeFieldList
+;
+
+DIDerivedTypeFieldList
+	: DIDerivedTypeField
+	| DIDerivedTypeFieldList "," DIDerivedTypeField
+;
+
+DIDerivedTypeField
+	: TagField
+	| NameField
+	| FileField
+	| LineField
+	| ScopeField
+	| BaseTypeField
+	| SizeField
+	| AlignField
+	| OffsetField
+	| FlagsField
+	| "extraData:" MDField
+	| "dwarfAddressSpace:" int_lit
+;
+
+FileField
+	: "file:" MDField
+;
+
+BaseTypeField
+	: "baseType:" MDField
+;
+
+OffsetField
+	: "offset:" int_lit
+;
+
+FlagsField
+	: "flags:" DIFlagList
+;
+
+/*
+/// DIFlagField
+///  ::= uint32
+///  ::= DIFlagVector
+///  ::= DIFlagVector '|' DIFlagFwdDecl '|' uint32 '|' DIFlagPublic
+template <>
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name, DIFlagField &Result) {
+*/
+
+DIFlagList
+	: DIFlag
+	| DIFlagList "|" DIFlag
+;
+
+DIFlag
+	: int_lit
+	| di_flag
+;
+
+/*
+bool LLParser::ParseDICompositeType(MDNode *&Result, bool IsDistinct) {
+  REQUIRED(tag, DwarfTagField, );
+  OPTIONAL(name, MDStringField, );
+  OPTIONAL(file, MDField, );
+  OPTIONAL(line, LineField, );
+  OPTIONAL(scope, MDField, );
+  OPTIONAL(baseType, MDField, );
+  OPTIONAL(size, MDUnsignedField, (0, UINT64_MAX));
+  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
+  OPTIONAL(offset, MDUnsignedField, (0, UINT64_MAX));
+  OPTIONAL(flags, DIFlagField, );
+  OPTIONAL(elements, MDField, );
+  OPTIONAL(runtimeLang, DwarfLangField, );
+  OPTIONAL(vtableHolder, MDField, );
+  OPTIONAL(templateParams, MDField, );
+  OPTIONAL(identifier, MDStringField, );
+  OPTIONAL(discriminator, MDField, );
+*/
+
+DICompositeType
+	: "!DICompositeType" "(" ")"
+;
+
+DICompositeTypeFields
+	: empty
+	| DICompositeTypeFieldList
+;
+
+DICompositeTypeFieldList
+	: DICompositeTypeField
+	| DICompositeTypeFieldList "," DICompositeTypeField
+;
+
+DICompositeTypeField
+	: TagField
+	| NameField
+	| FileField
+	| LineField
+	| ScopeField
+	| BaseTypeField
+	| SizeField
+	| AlignField
+	| OffsetField
+	| FlagsField
+	| "elements:" MDField
+	| "runtimeLang:" DwarfLang
+	| "vtableHolder:" MDField
+	| "templateParams:" MDField
+	| "templateParams:" MDField
+	| "identifier:" string_lit
+	| "discriminator:" MDField
+;
+
+/*
+template <>
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name, DwarfLangField &Result) {
+*/
+DwarfLang
+	: int_lit
+	| dwarf_lang
 ;
 
 /*
