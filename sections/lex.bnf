@@ -139,6 +139,11 @@ dwarf_lang
 	: 'D' 'W' '_' 'L' 'A' 'N' 'G' '_' { _ascii_letter | _decimal_digit }
 ;
 
+// DW_CC_foo
+dwarf_cc
+	: 'D' 'W' '_' 'C' 'C' '_' { _ascii_letter | _decimal_digit }
+;
+
 
 // === [ Integer literals ] ====================================================
 

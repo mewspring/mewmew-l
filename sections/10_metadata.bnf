@@ -52,6 +52,7 @@ SpecializedMDNode
 	| DIBasicType
 	| DIDerivedType
 	| DICompositeType
+	| DISubroutineType
 ;
 
 /*
@@ -347,6 +348,7 @@ DIFlagList
 
 DIFlag
 	: int_lit
+	// DIFlagFoo
 	| di_flag
 ;
 
@@ -371,7 +373,7 @@ bool LLParser::ParseDICompositeType(MDNode *&Result, bool IsDistinct) {
 */
 
 DICompositeType
-	: "!DICompositeType" "(" ")"
+	: "!DICompositeType" "(" DICompositeTypeFields ")"
 ;
 
 DICompositeTypeFields
@@ -408,9 +410,50 @@ DICompositeTypeField
 template <>
 bool LLParser::ParseMDField(LocTy Loc, StringRef Name, DwarfLangField &Result) {
 */
+
 DwarfLang
 	: int_lit
+	// DW_LANG_foo
 	| dwarf_lang
+;
+
+/*
+bool LLParser::ParseDISubroutineType(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(flags, DIFlagField, );
+  OPTIONAL(cc, DwarfCCField, );
+  REQUIRED(types, MDField, );
+*/
+
+DISubroutineType
+	: "!DISubroutineType" "(" DISubroutineTypeFields ")"
+;
+
+DISubroutineTypeFields
+	: empty
+	| DISubroutineTypeFieldList
+;
+
+DISubroutineTypeFieldList
+	: DISubroutineTypeField
+	| DISubroutineTypeFieldList "," DISubroutineTypeField
+;
+
+DISubroutineTypeField
+	: FlagsField
+	| "cc:" DwarfCC
+	| "types:" MDField
+;
+
+/*
+template <>
+bool LLParser::ParseMDField(LocTy Loc, StringRef Name, DwarfCCField &Result) {
+*/
+
+DwarfCC
+	: int_lit
+	// DW_CC_foo
+	| dwarf_cc
 ;
 
 /*
