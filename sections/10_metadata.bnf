@@ -1204,6 +1204,12 @@ Metadata
 	| MetadataID
 ;
 
+/*
+// MDString:
+//   ::= '!' STRINGCONSTANT
+bool LLParser::ParseMDString(MDString *&Result) {
+*/
+
 MDString
 	: "!" string_lit
 ;
