@@ -1,0 +1,20 @@
+// === [ Basic blocks ] ========================================================
+
+/*
+ParseBasicBlock
+*/
+
+BasicBlockList
+	: BasicBlock
+	| BasicBlockList BasicBlock
+;
+
+BasicBlock
+	: OptLabelIdent Instructions Terminator
+;
+
+OptLabelIdent
+	: empty
+	| LabelIdent
+;
+

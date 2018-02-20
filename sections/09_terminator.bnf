@@ -1,0 +1,27 @@
+// === [ Terminators ] =========================================================
+
+Terminator
+	: RetTerm
+;
+
+RetTerm
+	: "ret" VoidType
+	| "ret" Type Value
+;
+
+/*
+Terminator
+	: RetTerm
+	| BrTerm
+	| CondBrTerm
+	| SwitchTerm
+	| IndirectBrTerm
+	| InvokeTerm
+	| ResumeTerm
+	| CatchSwitchTerm
+	| CatchRetTerm
+	| CleanupRetTerm
+	| UnreachableTerm
+;
+*.
+

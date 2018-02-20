@@ -11,7 +11,8 @@ bool LLParser::ParseDeclare() {
 // NOTE: MetadataAttachment* not part of BNF comment; it should be.
 
 FunctionDecl
-	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
+	: "declare" OptExternLinkage FunctionHeader
+	//: "declare" MetadataAttachments OptExternLinkage FunctionHeader // TODO: Add MetadataAttachments
 ;
 
 // --- [ Function Definition ] -------------------------------------------------
@@ -25,7 +26,8 @@ bool LLParser::ParseDefine() {
 */
 
 FunctionDef
-	: "define" OptLinkage FunctionHeader OptFunctionMetadata FunctionBody
+	: "define" OptLinkage FunctionHeader FunctionBody
+	//: "define" OptLinkage FunctionHeader OptFunctionMetadata FunctionBody // TODO: Add OptFunctionMetadata
 ;
 
 /*
@@ -37,8 +39,13 @@ FunctionDef
 bool LLParser::ParseFunctionHeader(Function *&Fn, bool isDefine) {
 */
 
+// NOTE: OptAlignment has been removed to resolve an LR-1 conflict. Alignment
+// can still be specified with FnAttributeValuePairs.
+
+// TODO: Rename FnAttributeValuePairs to FuncAttrs.
+
 FunctionHeader
-	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Arguments ")" OptUnnamedAddr FnAttributeValuePairs OptSection OptComdat OptAlignment OptGC OptPrefix OptPrologue OptPersonality
+	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Args ")" OptUnnamedAddr FnAttributeValuePairs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
 ;
 
 /*
@@ -142,16 +149,52 @@ OptGC
 
 OptPrefix
 	: empty
-	| "prefix" GlobalTypeAndValue
+	| "prefix" Type Constant
 ;
 
 OptPrologue
 	: empty
-	| "prologue" GlobalTypeAndValue
+	| "prologue" Type Constant
 ;
 
 OptPersonality
 	: empty
-	| "personality" GlobalTypeAndValue
+	| "personality" Type Constant
+;
+
+/*
+/// ParseOptionalReturnAttrs - Parse a potentially empty list of return attributes.
+bool LLParser::ParseOptionalReturnAttrs(AttrBuilder &B) {
+*/
+
+ReturnAttrs
+	: empty
+	| ReturnAttrList
+;
+
+ReturnAttrList
+	: ReturnAttr
+	| ReturnAttrList ReturnAttr
+;
+
+ReturnAttr
+	: string_lit
+	| Dereferenceable
+	| Alignment
+	| "inreg"
+	| "noalias"
+	| "nonnull"
+	| "signext"
+	| "zeroext"
+;
+
+/*
+/// ParseFunctionBody
+///   ::= '{' BasicBlock+ UseListOrderDirective* '}'
+bool LLParser::ParseFunctionBody(Function &Fn) {
+*/
+FunctionBody
+	// TODO: Handle UseListOrderDirective.
+	: "{" BasicBlockList "}"
 ;
 

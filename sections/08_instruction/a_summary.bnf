@@ -1,0 +1,85 @@
+// === [ Instructions ] ========================================================
+
+Instructions
+	: empty
+;
+
+/*
+Instructions
+	: empty
+	| InstructionList
+;
+
+InstructionList
+	: Instruction
+	| InstructionList Instruction
+;
+
+Instruction
+	: StoreInst
+	| FenceInst
+	| CmpXchgInst
+	| AtomicRMWInst
+	| LocalIdent "=" ValueInstruction
+	| ValueInstruction
+;
+
+ValueInstruction
+	// Binary instructions
+	: AddInst
+	| FAddInst
+	| SubInst
+	| FSubInst
+	| MulInst
+	| FMulInst
+	| UDivInst
+	| SDivInst
+	| FDivInst
+	| URemInst
+	| SRemInst
+	| FRemInst
+	// Bitwise instructions
+	| ShlInst
+	| LShrInst
+	| AShrInst
+	| AndInst
+	| OrInst
+	| XorInst
+	// Vector instructions
+	| ExtractElementInst
+	| InsertElementInst
+	| ShuffleVectorInst
+	// Aggregate instructions
+	| ExtractValueInst
+	| InsertValueInst
+	// Memory instructions
+	| AllocaInst
+	| LoadInst
+	| GetElementPtrInst
+	// Conversion instructions
+	| TruncInst
+	| ZExtInst
+	| SExtInst
+	| FPTruncInst
+	| FPExtInst
+	| FPToUIInst
+	| FPToSIInst
+	| UIToFPInst
+	| SIToFPInst
+	| PtrToIntInst
+	| IntToPtrInst
+	| BitCastInst
+	| AddrSpaceCastInst
+	// Other instructions
+	| ICmpInst
+	| FCmpInst
+	| PhiInst
+	| SelectInst
+	| CallInst
+	| VAArgInst
+	| LandingPadInst
+	| CatchPadInst
+	| CleanupPadInst
+;
+*/
+

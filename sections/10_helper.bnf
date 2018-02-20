@@ -244,3 +244,220 @@ ExternLinkage
 	| "external"
 ;
 
+// https://llvm.org/docs/LangRef.html#runtime-preemption-model
+
+/*
+void LLParser::ParseOptionalDSOLocal(bool &DSOLocal) {
+*/
+
+OptPreemptionSpecifier
+	: empty
+	| PreemptionSpecifier
+;
+
+PreemptionSpecifier
+	: "dso_local"
+	| "dso_preemptable"
+;
+
+// https://llvm.org/docs/LangRef.html#visibility-styles
+
+/*
+/// ParseOptionalVisibility
+///   ::= empty
+///   ::= 'default'
+///   ::= 'hidden'
+///   ::= 'protected'
+///
+void LLParser::ParseOptionalVisibility(unsigned &Res) {
+*/
+
+OptVisibility
+	: empty
+	| Visibility
+;
+
+Visibility
+	: "default"
+	| "hidden"
+	| "protected"
+;
+
+// https://llvm.org/docs/LangRef.html#dll-storage-classes
+
+/*
+/// ParseOptionalDLLStorageClass
+///   ::= empty
+///   ::= 'dllimport'
+///   ::= 'dllexport'
+///
+void LLParser::ParseOptionalDLLStorageClass(unsigned &Res) {
+*/
+
+OptDLLStorageClass
+	: empty
+	| DLLStorageClass
+;
+
+DLLStorageClass
+	: "dllimport"
+	| "dllexport"
+;
+
+/*
+bool LLParser::ParseOptionalUnnamedAddr(
+*/
+
+OptUnnamedAddr
+	: empty
+	| UnnamedAddr
+;
+
+UnnamedAddr
+	: "unnamed_addr"
+	| "local_unnamed_addr"
+;
+
+/*
+/// ParseFnAttributeValuePairs
+///   ::= <attr> | <attr> '=' <value>
+bool LLParser::ParseFnAttributeValuePairs(AttrBuilder &B,
+*/
+
+FnAttributeValuePairs
+	: empty
+	| FnAttributeValuePairList
+;
+
+FnAttributeValuePairList
+	: FnAttributeValuePair
+	| FnAttributeValuePairList FnAttributeValuePair
+;
+
+FnAttributeValuePair
+	: "builtin"
+	| AttrGroupID // not used in attribute groups.
+	| string_lit
+	| "align" "=" int_lit // used in attribute groups.
+	| Alignment // used in functions.
+	| "alignstack" "=" int_lit
+	| StackAlignment
+	| AllocSize
+	| "alwaysinline"
+	| "argmemonly"
+	| "builtin"
+	| "cold"
+	| "convergent"
+	| "inaccessiblememonly"
+	| "inaccessiblemem_or_argmemonly"
+	| "inlinehint"
+	| "jumptable"
+	| "minsize"
+	| "naked"
+	| "nobuiltin"
+	| "noduplicate"
+	| "noimplicitfloat"
+	| "noinline"
+	| "nonlazybind"
+	| "noredzone"
+	| "noreturn"
+	| "norecurse"
+	| "nounwind"
+	| "optnone"
+	| "optsize"
+	| "readnone"
+	| "readonly"
+	| "returns_twice"
+	| "speculatable"
+	| "ssp"
+	| "sspreq"
+	| "sspstrong"
+	| "safestack"
+	| "sanitize_address"
+	| "sanitize_hwaddress"
+	| "sanitize_thread"
+	| "sanitize_memory"
+	| "strictfp"
+	| "uwtable"
+	| "writeonly"
+;
+
+/*
+/// ParseOptionalStackAlignment
+///   ::= empty
+///   ::= 'alignstack' '(' 4 ')'
+bool LLParser::ParseOptionalStackAlignment(unsigned &Alignment) {
+*/
+StackAlignment
+	: "alignstack" "(" int_lit ")"
+;
+
+/*
+bool LLParser::parseAllocSizeArguments(unsigned &BaseSizeArg,
+*/
+
+AllocSize
+	: "allocsize" "(" int_lit ")"
+	| "allocsize" "(" int_lit "," int_lit ")"
+;
+
+OptSection
+	: empty
+	| Section
+;
+
+Section
+	: "section" string_lit
+;
+
+/*
+/// ParseOptionalParamAttrs - Parse a potentially empty list of parameter attributes.
+bool LLParser::ParseOptionalParamAttrs(AttrBuilder &B) {
+*/
+
+ParamAttrs
+	: empty
+	| ParamAttrList
+;
+
+ParamAttrList
+	: ParamAttr
+	| ParamAttrList ParamAttr
+;
+
+/*
+/// ParseOptionalDerefAttrBytes
+///   ::= empty
+///   ::= AttrKind '(' 4 ')'
+///
+/// where AttrKind is either 'dereferenceable' or 'dereferenceable_or_null'.
+bool LLParser::ParseOptionalDerefAttrBytes(lltok::Kind AttrKind,
+*/
+
+ParamAttr
+	: string_lit
+	| Alignment
+	| "byval"
+	| Dereferenceable
+	| "inalloca"
+	| "inreg"
+	| "nest"
+	| "noalias"
+	| "nocapture"
+	| "nonnull"
+	| "readnone"
+	| "readonly"
+	| "returned"
+	| "signext"
+	| "sret"
+	| "swifterror"
+	| "swiftself"
+	| "writeonly"
+	| "zeroext"
+;
+
+Dereferenceable
+	: "dereferenceable" "(" int_lit ")"
+	| "dereferenceable_or_null" "(" int_lit ")"
+;
+

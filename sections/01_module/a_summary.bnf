@@ -40,10 +40,10 @@ TopLevelEntity
 	//| ModuleAsm
 	//| TypeDef
 	//| ComdatDef
-	: GlobalDecl
-	| GlobalDef
-	//| FunctionDecl
-	//| FunctionDef
+	//| GlobalDecl
+	//| GlobalDef
+	: FunctionDecl
+	| FunctionDef
 	//| AttrGroupDef
 	//| StandaloneMetadata
 	//| NamedMetadata
