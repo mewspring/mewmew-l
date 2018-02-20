@@ -119,6 +119,11 @@ metadata_id
 	: '!' _id
 ;
 
+// DW_TAG_foo
+dwarf_tag
+	: 'D' 'W' '_' 'T' 'A' 'G' '_' { _ascii_letter | _decimal_digit }
+;
+
 // === [ Integer literals ] ====================================================
 
 //   Integer           [-]?[0-9]+

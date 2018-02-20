@@ -44,13 +44,25 @@ MDNode
 bool LLParser::ParseSpecializedMDNode(MDNode *&N, bool IsDistinct) {
 */
 
+SpecializedMDNode
+	: DILocation
+	| GenericDINode
+	| DISubrange
+	| DIEnumerator
+;
+
 /*
 /// ParseDILocationFields:
 ///   ::= !DILocation(line: 43, column: 8, scope: !5, inlinedAt: !6)
 bool LLParser::ParseDILocation(MDNode *&Result, bool IsDistinct) {
+
+  OPTIONAL(line, LineField, );
+  OPTIONAL(column, ColumnField, );
+  REQUIRED(scope, MDField, (AllowNull false));
+  OPTIONAL(inlinedAt, MDField, );
 */
 
-SpecializedMDNode
+DILocation
 	: "!DILocation" "(" OptLineComma OptColumnComma Scope OptCommaInlinedAt ")"
 ;
 
@@ -80,12 +92,134 @@ OptCommaInlinedAt
 ;
 
 InlinedAt
-	: "inlinedAt:" MetadataField
+	: "inlinedAt:" MDField
 ;
 
-MetadataField
+MDField
 	: MetadataID
 	| "null"
+;
+
+/*
+/// ParseGenericDINode:
+///   ::= !GenericDINode(tag: 15, header: "...", operands: {...})
+bool LLParser::ParseGenericDINode(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(tag, DwarfTagField, );
+  OPTIONAL(header, MDStringField, );
+  OPTIONAL(operands, MDFieldList, );
+*/
+
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    GenericDINode
+//       : "!GenericDINode" "(" Tag OptCommaHeader OptCommaOperands ")"
+//    ;
+
+GenericDINode
+	: "!GenericDINode" "(" Tag OptCommaOperands ")"
+	| "!GenericDINode" "(" Tag "," Header OptCommaOperands ")"
+;
+
+Tag
+	: "tag:" DwarfTag
+;
+
+DwarfTag
+	: int_lit
+	// DW_TAG_foo
+	| dwarf_tag
+;
+
+OptCommaHeader
+	: empty
+	| "," Header
+;
+
+Header
+	: "header:" string_lit
+;
+
+OptCommaOperands
+	: empty
+	| "," Operands
+;
+
+Operands
+	: "operands:" Metadatas
+;
+
+/*
+/// ParseDISubrange:
+///   ::= !DISubrange(count: 30, lowerBound: 2)
+///   ::= !DISubrange(count: !node, lowerBound: 2)
+bool LLParser::ParseDISubrange(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(count, MDSignedOrMDField, (-1, -1, INT64_MAX, false));
+  OPTIONAL(lowerBound, MDSignedField, );
+*/
+
+DISubrange
+	: "!DISubrange" "(" Count OptCommaLowerBound ")"
+;
+
+Count
+	: "count:" IntLitOrMDField
+;
+
+/*
+struct MDSignedOrMDField : MDEitherFieldImpl<MDSignedField, MDField> {
+*/
+
+IntLitOrMDField
+	: int_lit
+	| MDField
+;
+
+OptCommaLowerBound
+	: empty
+	| "," LowerBound
+;
+
+LowerBound
+	: "lowerBound:" int_lit
+;
+
+/*
+/// ParseDIEnumerator:
+///   ::= !DIEnumerator(value: 30, isUnsigned: true, name: "SomeKind")
+bool LLParser::ParseDIEnumerator(MDNode *&Result, bool IsDistinct) {
+
+  REQUIRED(name, MDStringField, );
+  REQUIRED(value, MDSignedOrUnsignedField, );
+  OPTIONAL(isUnsigned, MDBoolField, (false));
+*/
+
+DIEnumerator
+	: "!DIEnumerator" "(" Name DIEnumeratorValue OptCommaIsUnsigned ")"
+;
+
+Name
+	: "name:" string_lit
+;
+
+DIEnumeratorValue
+	: "value:" int_lit
+;
+
+OptCommaIsUnsigned
+	: empty
+	| "," IsUnsigned
+;
+
+IsUnsigned
+	: "isUnsigned:" BoolConst
 ;
 
 /*
