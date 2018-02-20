@@ -461,3 +461,39 @@ Dereferenceable
 	| "dereferenceable_or_null" "(" int_lit ")"
 ;
 
+/*
+/// ParseParameterList
+///    ::= '(' ')'
+///    ::= '(' Arg (',' Arg)* ')'
+///  Arg
+///    ::= Type OptionalAttributes Value OptionalAttributes
+bool LLParser::ParseParameterList(SmallVectorImpl<ParamInfo> &ArgList,
+*/
+Params
+	: empty
+	| "..."
+	| ParamList
+	| ParamList "," "..."
+;
+
+ParamList
+	: Param
+	| ParamList "," Param
+;
+
+/*
+/// ParseMetadataAsValue
+///  ::= metadata i32 %local
+///  ::= metadata i32 @global
+///  ::= metadata i32 7
+///  ::= metadata !0
+///  ::= metadata !{...}
+///  ::= metadata !"string"
+bool LLParser::ParseMetadataAsValue(Value *&V, PerFunctionState &PFS) {
+*/
+
+Param
+	: Type ParamAttrs Value
+	| MetadataType Metadata
+;
+
