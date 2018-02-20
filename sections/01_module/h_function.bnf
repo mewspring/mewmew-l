@@ -196,7 +196,6 @@ ReturnAttr
 bool LLParser::ParseFunctionBody(Function &Fn) {
 */
 FunctionBody
-	// TODO: Handle UseListOrderDirective.
-	: "{" BasicBlockList "}"
+	: "{" BasicBlockList UseListOrders "}"
 ;
 
