@@ -167,6 +167,6 @@ CleanupRetTerm
 // ref: ParseInstruction
 
 UnreachableTerm
-	: "unreachable"
+	: "unreachable" OptCommaSepMetadataAttachmentList
 ;
 

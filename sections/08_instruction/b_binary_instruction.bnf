@@ -1,15 +1,10 @@
 // --- [ Binary instructions ] -------------------------------------------------
 
-/*
-/// ParseArithmetic
-///  ::= ArithmeticOps TypeAndValue ',' Value
-///
-/// If OperandType is 0, then any FP or integer operand is allowed.  If it is 1,
-/// then any integer operand is allowed, if it is 2, any fp operand is allowed.
-bool LLParser::ParseArithmetic(Instruction *&Inst, PerFunctionState &PFS,
-*/
-
 // ~~~ [ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 AddInst
 	: "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -17,11 +12,19 @@ AddInst
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 SubInst
 	: "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 MulInst
 	: "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -29,11 +32,19 @@ MulInst
 
 // ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 ShlInst
 	: "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 FAddInst
 	: "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -41,11 +52,19 @@ FAddInst
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 FSubInst
 	: "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 FMulInst
 	: "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -53,11 +72,19 @@ FMulInst
 
 // ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 FDivInst
 	: "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 FRemInst
 	: "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -65,11 +92,19 @@ FRemInst
 
 // ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 SDivInst
 	: "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 UDivInst
 	: "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -77,17 +112,29 @@ UDivInst
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 LShrInst
 	: "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 AShrInst
 	: "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
 URemInst
 	: "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -99,13 +146,15 @@ SRemInst
 	: "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-/*
-/// ParseLogical
-///  ::= ArithmeticOps TypeAndValue ',' Value {
-bool LLParser::ParseLogical(Instruction *&Inst, PerFunctionState &PFS,
-*/
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
 
 // ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
 
 AndInst
 	: "and" Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -113,24 +162,29 @@ AndInst
 
 // ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
+
 OrInst
 	: "or" Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
+
 XorInst
 	: "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-/*
-/// ParseCompare
-///  ::= 'icmp' IPredicates TypeAndValue ',' Value
-///  ::= 'fcmp' FPredicates TypeAndValue ',' Value
-bool LLParser::ParseCompare(Instruction *&Inst, PerFunctionState &PFS,
-*/
-
 // ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCompare
+//
+//  ::= 'icmp' IPredicates TypeAndValue ',' Value
 
 ICmpInst
 	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
@@ -138,17 +192,19 @@ ICmpInst
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCompare
+//
+//  ::= 'fcmp' FPredicates TypeAndValue ',' Value
+
 FCmpInst
 	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-/*
-/// ParseCast
-///   ::= CastOpc TypeAndValue 'to' Type
-bool LLParser::ParseCast(Instruction *&Inst, PerFunctionState &PFS,
-*/
-
 // ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 TruncInst
 	: "trunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -156,11 +212,19 @@ TruncInst
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 ZExtInst
 	: "zext" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 SExtInst
 	: "sext" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -168,11 +232,19 @@ SExtInst
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 FPTruncInst
 	: "fptrunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 FPExtInst
 	: "fpext" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -180,11 +252,19 @@ FPExtInst
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 BitCastInst
 	: "bitcast" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 AddrSpaceCastInst
 	: "addrspacecast" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -192,11 +272,19 @@ AddrSpaceCastInst
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 UIToFPInst
 	: "uitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 SIToFPInst
 	: "sitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -204,11 +292,19 @@ SIToFPInst
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 FPToUIInst
 	: "fptoui" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 FPToSIInst
 	: "fptosi" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -216,11 +312,19 @@ FPToSIInst
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
 IntToPtrInst
 	: "inttoptr" Type Value "to" Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
 
 PtrToIntInst
 	: "ptrtoint" Type Value "to" Value OptCommaSepMetadataAttachmentList
@@ -228,11 +332,9 @@ PtrToIntInst
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseSelect
-///   ::= 'select' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-bool LLParser::ParseSelect(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseSelect
+//
+//   ::= 'select' TypeAndValue ',' TypeAndValue ',' TypeAndValue
 
 SelectInst
 	: "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
@@ -240,11 +342,9 @@ SelectInst
 
 // ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseVA_Arg
-///   ::= 'va_arg' TypeAndValue ',' Type
-bool LLParser::ParseVA_Arg(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseVA_Arg
+//
+//   ::= 'va_arg' TypeAndValue ',' Type
 
 VAArgInst
 	: "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
@@ -252,11 +352,9 @@ VAArgInst
 
 // ~~~ [ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseExtractElement
-///   ::= 'extractelement' TypeAndValue ',' TypeAndValue
-bool LLParser::ParseExtractElement(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseExtractElement
+//
+//   ::= 'extractelement' TypeAndValue ',' TypeAndValue
 
 ExtractElementInst
 	: "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
@@ -264,11 +362,9 @@ ExtractElementInst
 
 // ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseInsertElement
-///   ::= 'insertelement' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-bool LLParser::ParseInsertElement(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseInsertElement
+//
+//   ::= 'insertelement' TypeAndValue ',' TypeAndValue ',' TypeAndValue
 
 InsertElementInst
 	: "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
@@ -276,11 +372,9 @@ InsertElementInst
 
 // ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseShuffleVector
-///   ::= 'shufflevector' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-bool LLParser::ParseShuffleVector(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseShuffleVector
+//
+//   ::= 'shufflevector' TypeAndValue ',' TypeAndValue ',' TypeAndValue
 
 ShuffleVectorInst
 	: "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
@@ -288,11 +382,9 @@ ShuffleVectorInst
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParsePHI
-///   ::= 'phi' Type '[' Value ',' Value ']' (',' '[' Value ',' Value ']')*
-int LLParser::ParsePHI(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParsePHI
+//
+//   ::= 'phi' Type '[' Value ',' Value ']' (',' '[' Value ',' Value ']')*
 
 PhiInst
 	: "phi" Type IncList OptCommaSepMetadataAttachmentList
@@ -309,15 +401,13 @@ Inc
 
 // ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseLandingPad
-///   ::= 'landingpad' Type 'personality' TypeAndValue 'cleanup'? Clause+
-/// Clause
-///   ::= 'catch' TypeAndValue
-///   ::= 'filter'
-///   ::= 'filter' TypeAndValue ( ',' TypeAndValue )*
-bool LLParser::ParseLandingPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseLandingPad
+//
+//   ::= 'landingpad' Type 'personality' TypeAndValue 'cleanup'? Clause+
+// Clause
+//   ::= 'catch' TypeAndValue
+//   ::= 'filter'
+//   ::= 'filter' TypeAndValue ( ',' TypeAndValue )*
 
 LandingPadInst
 	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
@@ -345,18 +435,16 @@ Clause
 
 // ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseCall
-///   ::= 'call' OptionalFastMathFlags OptionalCallingConv
-///           OptionalAttrs Type Value ParameterList OptionalAttrs
-///   ::= 'tail' 'call' OptionalFastMathFlags OptionalCallingConv
-///           OptionalAttrs Type Value ParameterList OptionalAttrs
-///   ::= 'musttail' 'call' OptionalFastMathFlags OptionalCallingConv
-///           OptionalAttrs Type Value ParameterList OptionalAttrs
-///   ::= 'notail' 'call'  OptionalFastMathFlags OptionalCallingConv
-///           OptionalAttrs Type Value ParameterList OptionalAttrs
-bool LLParser::ParseCall(Instruction *&Inst, PerFunctionState &PFS,
-*/
+// ref: ParseCall
+//
+//   ::= 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'tail' 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'musttail' 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'notail' 'call'  OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
 
 CallInst
 	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
@@ -369,26 +457,14 @@ OptTail
 	| "notail"
 ;
 
-//===----------------------------------------------------------------------===//
-// Memory Instructions.
-//===----------------------------------------------------------------------===//
-
 // ~~~ [ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseAlloc
-///   ::= 'alloca' 'inalloca'? 'swifterror'? Type (',' TypeAndValue)?
-///       (',' 'align' i32)? (',', 'addrspace(n))?
-int LLParser::ParseAlloc(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseAlloc
+//
+//   ::= 'alloca' 'inalloca'? 'swifterror'? Type (',' TypeAndValue)?
+//       (',' 'align' i32)? (',', 'addrspace(n))?
 
-// TODO: Clean up when the parser generator no longer introduces ambiguities
-// through the limitation of 1 token lookahead.
-//
-// Structured in this way to allow for naiive 1 token lookahead parser
-// generators.
-//
-// Original production rule.
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    AllocaInst
 //       : "alloca" OptInalloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
@@ -434,13 +510,7 @@ int LLParser::ParseLoad(Instruction *&Inst, PerFunctionState &PFS) {
 bool LLParser::ParseScopeAndOrdering(bool isAtomic, SyncScope::ID &SSID,
 */
 
-// TODO: Clean up when the parser generator no longer introduces ambiguities
-// through the limitation of 1 token lookahead.
-//
-// Structured in this way to allow for naiive 1 token lookahead parser
-// generators.
-//
-// Original production rule.
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    LoadInst
 //       : "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
@@ -464,13 +534,7 @@ LoadInst
 int LLParser::ParseStore(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
-// TODO: Clean up when the parser generator no longer introduces ambiguities
-// through the limitation of 1 token lookahead.
-//
-// Structured in this way to allow for naiive 1 token lookahead parser
-// generators.
-//
-// Original production rule.
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    StoreInst
 //       : "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
@@ -549,13 +613,7 @@ FenceInst
 int LLParser::ParseGetElementPtr(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
-// TODO: Clean up when the parser generator no longer introduces ambiguities
-// through the limitation of 1 token lookahead.
-//
-// Structured in this way to allow for naiive 1 token lookahead parser
-// generators.
-//
-// Original production rule.
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    GetElementPtrInst
 //       : "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
