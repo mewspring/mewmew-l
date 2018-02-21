@@ -493,72 +493,57 @@ OptSwiftError
 
 // ~~~ [ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseLoad
-///   ::= 'load' 'volatile'? TypeAndValue (',' 'align' i32)?
-///   ::= 'load' 'atomic' 'volatile'? TypeAndValue
-///       'singlethread'? AtomicOrdering (',' 'align' i32)?
-int LLParser::ParseLoad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-/*
-/// ParseScopeAndOrdering
-///   if isAtomic: ::= SyncScope? AtomicOrdering
-///   else: ::=
-///
-/// This sets Scope and Ordering to the parsed values.
-bool LLParser::ParseScopeAndOrdering(bool isAtomic, SyncScope::ID &SSID,
-*/
+// ref: ParseLoad
+//
+//   ::= 'load' 'volatile'? TypeAndValue (',' 'align' i32)?
+//   ::= 'load' 'atomic' 'volatile'? TypeAndValue
+//       'singlethread'? AtomicOrdering (',' 'align' i32)?
 
 // TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    LoadInst
 //       : "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
-//       | "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+//       | "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 //    ;
 
 LoadInst
 	: "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList
 	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	| "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	| "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseStore
-///   ::= 'store' 'volatile'? TypeAndValue ',' TypeAndValue (',' 'align' i32)?
-///   ::= 'store' 'atomic' 'volatile'? TypeAndValue ',' TypeAndValue
-///       'singlethread'? AtomicOrdering (',' 'align' i32)?
-int LLParser::ParseStore(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseStore
+//
+//   ::= 'store' 'volatile'? TypeAndValue ',' TypeAndValue (',' 'align' i32)?
+//   ::= 'store' 'atomic' 'volatile'? TypeAndValue ',' TypeAndValue
+//       'singlethread'? AtomicOrdering (',' 'align' i32)?
 
 // TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
 //    StoreInst
 //       : "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
-//       | "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+//       | "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 //    ;
 
 StoreInst
 	: "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	| "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	| "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	| "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseCmpXchg
-///   ::= 'cmpxchg' 'weak'? 'volatile'? TypeAndValue ',' TypeAndValue ','
-///       TypeAndValue 'singlethread'? AtomicOrdering AtomicOrdering
-int LLParser::ParseCmpXchg(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseCmpXchg
+//
+//   ::= 'cmpxchg' 'weak'? 'volatile'? TypeAndValue ',' TypeAndValue ','
+//       TypeAndValue 'singlethread'? AtomicOrdering AtomicOrdering
 
 CmpXchgInst
-	: "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
+	: "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
 ;
 
 OptWeak
@@ -568,15 +553,13 @@ OptWeak
 
 // ~~~ [ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseAtomicRMW
-///   ::= 'atomicrmw' 'volatile'? BinOp TypeAndValue ',' TypeAndValue
-///       'singlethread'? AtomicOrdering
-int LLParser::ParseAtomicRMW(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseAtomicRMW
+//
+//   ::= 'atomicrmw' 'volatile'? BinOp TypeAndValue ',' TypeAndValue
+//       'singlethread'? AtomicOrdering
 
 AtomicRMWInst
-	: "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	: "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 ;
 
 BinOp
@@ -595,23 +578,19 @@ BinOp
 
 // ~~~ [ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseFence
-///   ::= 'fence' 'singlethread'? AtomicOrdering
-int LLParser::ParseFence(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseFence
+//
+//   ::= 'fence' 'singlethread'? AtomicOrdering
 
 FenceInst
-	: "fence" OptScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	: "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseGetElementPtr
-///   ::= 'getelementptr' 'inbounds'? TypeAndValue (',' TypeAndValue)*
-int LLParser::ParseGetElementPtr(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseGetElementPtr
+//
+//   ::= 'getelementptr' 'inbounds'? TypeAndValue (',' TypeAndValue)*
 
 // TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
@@ -640,11 +619,9 @@ GEPIndex
 
 // ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseExtractValue
-///   ::= 'extractvalue' TypeAndValue (',' uint32)+
-int LLParser::ParseExtractValue(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseExtractValue
+//
+//   ::= 'extractvalue' TypeAndValue (',' uint32)+
 
 ExtractValueInst
 	: "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
@@ -652,11 +629,9 @@ ExtractValueInst
 
 // ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-/// ParseInsertValue
-///   ::= 'insertvalue' TypeAndValue ',' TypeAndValue (',' uint32)+
-int LLParser::ParseInsertValue(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseInsertValue
+//
+//   ::= 'insertvalue' TypeAndValue ',' TypeAndValue (',' uint32)+
 
 InsertValueInst
 	: "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
@@ -664,19 +639,15 @@ InsertValueInst
 
 // --- [ cleanuppad ] ----------------------------------------------------------
 
-/*
-/// ParseCleanupPad
-///   ::= 'cleanuppad' within Parent ParamList
-bool LLParser::ParseCleanupPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseCleanupPad
+//
+//   ::= 'cleanuppad' within Parent ParamList
 
 CleanupPadInst
 	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 ;
 
-/*
-bool LLParser::ParseExceptionArgs(SmallVectorImpl<Value *> &Args,
-*/
+// ref: ParseExceptionArgs
 
 ExceptionArgs
 	: empty
@@ -695,11 +666,9 @@ ExceptionArg
 
 // --- [ catchpad ] ------------------------------------------------------------
 
-/*
-/// ParseCatchPad
-///   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
-bool LLParser::ParseCatchPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// ref: ParseCatchPad
+//
+//   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
 
 CatchPadInst
 	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList

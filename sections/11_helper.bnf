@@ -546,7 +546,7 @@ OptVolatile
 bool LLParser::ParseScope(SyncScope::ID &SSID) {
 */
 
-OptScope
+OptSyncScope
 	: empty
 	| "syncscope" "(" string_lit ")"
 ;
