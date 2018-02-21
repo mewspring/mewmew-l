@@ -1,3 +1,5 @@
+// ### [ Syntax part ] #########################################################
+
 // The LLVM IR grammar has been based on the source code of the official LLVM
 // project, as of 2018-02-19 (rev db070bbdacd303ae7da129f59beaf35024d94c53).
 //
