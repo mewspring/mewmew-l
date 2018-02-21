@@ -3,12 +3,10 @@
 // https://llvm.org/docs/LangRef.html#target-triple
 // https://llvm.org/docs/LangRef.html#data-layout
 
-/*
-/// toplevelentity
-///   ::= 'target' 'triple' '=' STRINGCONSTANT
-///   ::= 'target' 'datalayout' '=' STRINGCONSTANT
-bool LLParser::ParseTargetDefinition() {
-*/
+// ref: ParseTargetDefinition
+//
+//   ::= 'target' 'triple' '=' STRINGCONSTANT
+//   ::= 'target' 'datalayout' '=' STRINGCONSTANT
 
 TargetDefinition
 	: "target" "triple" "=" string_lit

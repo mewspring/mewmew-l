@@ -2,9 +2,7 @@
 
 // https://llvm.org/docs/LangRef.html#langref-comdats
 
-/*
-bool LLParser::parseComdat() {
-*/
+// ref: parseComdat
 
 ComdatDef
 	: ComdatName "=" "comdat" SelectionKind

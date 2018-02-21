@@ -2,44 +2,34 @@
 
 // https://llvm.org/docs/LangRef.html#global-variables
 
-/*
-/// ParseUnnamedGlobal:
-///   OptionalVisibility (ALIAS | IFUNC) ...
-///   OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
-///   OptionalDLLStorageClass
-///                                                     ...   -> global variable
-///   GlobalID '=' OptionalVisibility (ALIAS | IFUNC) ...
-///   GlobalID '=' OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
-///                OptionalDLLStorageClass
-///                                                     ...   -> global variable
-bool LLParser::ParseUnnamedGlobal() {
-*/
+// ref: ParseUnnamedGlobal
+//
+//   OptionalVisibility (ALIAS | IFUNC) ...
+//   OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+//   OptionalDLLStorageClass
+//                                                     ...   -> global variable
+//   GlobalID '=' OptionalVisibility (ALIAS | IFUNC) ...
+//   GlobalID '=' OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+//                OptionalDLLStorageClass
+//                                                     ...   -> global variable
 
-/*
-/// ParseNamedGlobal:
-///   GlobalVar '=' OptionalVisibility (ALIAS | IFUNC) ...
-///   GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
-///                 OptionalVisibility OptionalDLLStorageClass
-///                                                     ...   -> global variable
-bool LLParser::ParseNamedGlobal() {
-*/
+// ref: ParseNamedGlobal
+//
+//   GlobalVar '=' OptionalVisibility (ALIAS | IFUNC) ...
+//   GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+//                 OptionalVisibility OptionalDLLStorageClass
+//                                                     ...   -> global variable
 
-/*
-/// ParseGlobal
-///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
-///       OptionalVisibility OptionalDLLStorageClass
-///       OptionalThreadLocal OptionalUnnamedAddr OptionalAddrSpace
-///       OptionalExternallyInitialized GlobalType Type Const OptionalAttrs
-///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
-///       OptionalDLLStorageClass OptionalThreadLocal OptionalUnnamedAddr
-///       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
-///       Const OptionalAttrs
-///
-/// Everything up to and including OptionalUnnamedAddr has been parsed
-/// already.
-///
-bool LLParser::ParseGlobal(const std::string &Name, LocTy NameLoc,
-*/
+// ref: ParseGlobal
+//
+//   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+//       OptionalVisibility OptionalDLLStorageClass
+//       OptionalThreadLocal OptionalUnnamedAddr OptionalAddrSpace
+//       OptionalExternallyInitialized GlobalType Type Const OptionalAttrs
+//   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+//       OptionalDLLStorageClass OptionalThreadLocal OptionalUnnamedAddr
+//       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
+//       Const OptionalAttrs
 
 GlobalDecl
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Attrs FuncAttrs
@@ -53,13 +43,11 @@ GlobalDef
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
 
-/*
-/// ParseOptionalThreadLocal
-///   := empty
-///   := 'thread_local'
-///   := 'thread_local' '(' tlsmodel ')'
-bool LLParser::ParseOptionalThreadLocal(GlobalVariable::ThreadLocalMode &TLM) {
-*/
+// ref: ParseOptionalThreadLocal
+//
+//   := empty
+//   := 'thread_local'
+//   := 'thread_local' '(' tlsmodel ')'
 
 OptThreadLocal
 	: empty
@@ -71,13 +59,11 @@ ThreadLocal
 	| "thread_local" "(" TLSModel ")"
 ;
 
-/*
-/// ParseTLSModel
-///   := 'localdynamic'
-///   := 'initialexec'
-///   := 'localexec'
-bool LLParser::ParseTLSModel(GlobalVariable::ThreadLocalMode &TLM) {
-*/
+// ref: ParseTLSModel
+//
+//   := 'localdynamic'
+//   := 'initialexec'
+//   := 'localexec'
 
 TLSModel
 	: "localdynamic"
@@ -90,12 +76,10 @@ OptExternallyInitialized
 	| "externally_initialized"
 ;
 
-/*
-/// ParseGlobalType
-///   ::= 'constant'
-///   ::= 'global'
-bool LLParser::ParseGlobalType(bool &IsConstant) {
-*/
+// ref: ParseGlobalType
+//
+//   ::= 'constant'
+//   ::= 'global'
 
 GlobalType
 	: "constant"
@@ -115,7 +99,7 @@ AttrList
 Attr
 	: Section
 	| Alignment
-	///   ::= !dbg !57
+	//   ::= !dbg !57
 	| MetadataAttachment
 	| Comdat
 ;
@@ -127,20 +111,15 @@ Attr
 // https://llvm.org/docs/LangRef.html#aliases
 // https://llvm.org/docs/LangRef.html#ifuncs
 
-/*
-/// parseIndirectSymbol:
-///   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
-///                     OptionalVisibility OptionalDLLStorageClass
-///                     OptionalThreadLocal OptionalUnnamedAddr
-//                      'alias|ifunc' IndirectSymbol
-///
-/// IndirectSymbol
-///   ::= TypeAndValue
-///
-/// Everything through OptionalUnnamedAddr has already been parsed.
-///
-bool LLParser::parseIndirectSymbol(const std::string &Name, LocTy NameLoc,
-*/
+// ref: parseIndirectSymbol
+//
+//   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+//                     OptionalVisibility OptionalDLLStorageClass
+//                     OptionalThreadLocal OptionalUnnamedAddr
+//                     'alias|ifunc' IndirectSymbol
+//
+// IndirectSymbol
+//   ::= TypeAndValue
 
 IndirectSymbol
 	: Type "," Type Constant

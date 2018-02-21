@@ -2,11 +2,9 @@
 
 // https://llvm.org/docs/LangRef.html#source-filename
 
-/*
-/// toplevelentity
-///   ::= 'source_filename' '=' STRINGCONSTANT
-bool LLParser::ParseSourceFileName() {
-*/
+// ref: ParseSourceFileName
+//
+//   ::= 'source_filename' '=' STRINGCONSTANT
 
 SourceFilename
 	: "source_filename" "=" string_lit

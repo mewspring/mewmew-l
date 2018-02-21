@@ -2,17 +2,11 @@
 
 // https://llvm.org/docs/LangRef.html#use-list-order-directives
 
-/*
-/// ParseUseListOrder
-///   ::= 'uselistorder' Type Value ',' UseListOrderIndexes
-bool LLParser::ParseUseListOrder(PerFunctionState *PFS) {
-*/
-
-/*
-/// ParseUseListOrderIndexes
-///   ::= '{' uint32 (',' uint32)+ '}'
-bool LLParser::ParseUseListOrderIndexes(SmallVectorImpl<unsigned> &Indexes) {
-*/
+// ref: ParseUseListOrder
+//
+//   ::= 'uselistorder' Type Value ',' UseListOrderIndexes
+//  UseListOrderIndexes
+//   ::= '{' uint32 (',' uint32)+ '}'
 
 UseListOrders
 	: empty
@@ -28,11 +22,9 @@ UseListOrder
 	: "uselistorder" Type Value "," "{" IndexList "}"
 ;
 
-/*
-/// ParseUseListOrderBB
-///   ::= 'uselistorder_bb' @foo ',' %bar ',' UseListOrderIndexes
-bool LLParser::ParseUseListOrderBB() {
-*/
+// ref: ParseUseListOrderBB
+//
+//   ::= 'uselistorder_bb' @foo ',' %bar ',' UseListOrderIndexes
 
 UseListOrderBB
 	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"

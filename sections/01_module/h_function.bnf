@@ -2,11 +2,9 @@
 
 // https://llvm.org/docs/LangRef.html#functions
 
-/*
-/// toplevelentity
-///   ::= 'declare' FunctionHeader
-bool LLParser::ParseDeclare() {
-*/
+// ref: ParseDeclare
+//
+//   ::= 'declare' FunctionHeader
 
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
@@ -16,30 +14,20 @@ FunctionDecl
 
 // https://llvm.org/docs/LangRef.html#functions
 
-/*
-/// toplevelentity
-///   ::= 'define' FunctionHeader (!dbg !56)* '{' ...
-bool LLParser::ParseDefine() {
-*/
-
-/*
-/// ParseOptionalFunctionMetadata
-///   ::= (!dbg !57)*
-bool LLParser::ParseOptionalFunctionMetadata(Function &F) {
-*/
+// ref: ParseDefine
+//
+//   ::= 'define' FunctionHeader (!dbg !56)* '{' ...
 
 FunctionDef
 	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 ;
 
-/*
-/// FunctionHeader
-///   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
-///       OptionalCallingConv OptRetAttrs OptUnnamedAddr Type GlobalName
-///       '(' ArgList ')' OptFuncAttrs OptSection OptionalAlign OptGC
-///       OptionalPrefix OptionalPrologue OptPersonalityFn
-bool LLParser::ParseFunctionHeader(Function *&Fn, bool isDefine) {
-*/
+// ref: ParseFunctionHeader
+//
+//   ::= OptionalLinkage OptionalPreemptionSpecifier OptionalVisibility
+//       OptionalCallingConv OptRetAttrs OptUnnamedAddr Type GlobalName
+//       '(' ArgList ')' OptFuncAttrs OptSection OptionalAlign OptGC
+//       OptionalPrefix OptionalPrologue OptPersonalityFn
 
 // TODO: Add OptAlignment before OptGC once the LR-1 conflict has been resolved,
 // as FuncAttrs also contains "align".
@@ -48,51 +36,48 @@ FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
 ;
 
-/*
-/// ParseOptionalCallingConv
-///   ::= empty
-///   ::= 'ccc'
-///   ::= 'fastcc'
-///   ::= 'intel_ocl_bicc'
-///   ::= 'coldcc'
-///   ::= 'x86_stdcallcc'
-///   ::= 'x86_fastcallcc'
-///   ::= 'x86_thiscallcc'
-///   ::= 'x86_vectorcallcc'
-///   ::= 'arm_apcscc'
-///   ::= 'arm_aapcscc'
-///   ::= 'arm_aapcs_vfpcc'
-///   ::= 'msp430_intrcc'
-///   ::= 'avr_intrcc'
-///   ::= 'avr_signalcc'
-///   ::= 'ptx_kernel'
-///   ::= 'ptx_device'
-///   ::= 'spir_func'
-///   ::= 'spir_kernel'
-///   ::= 'x86_64_sysvcc'
-///   ::= 'win64cc'
-///   ::= 'webkit_jscc'
-///   ::= 'anyregcc'
-///   ::= 'preserve_mostcc'
-///   ::= 'preserve_allcc'
-///   ::= 'ghccc'
-///   ::= 'swiftcc'
-///   ::= 'x86_intrcc'
-///   ::= 'hhvmcc'
-///   ::= 'hhvm_ccc'
-///   ::= 'cxx_fast_tlscc'
-///   ::= 'amdgpu_vs'
-///   ::= 'amdgpu_ls'
-///   ::= 'amdgpu_hs'
-///   ::= 'amdgpu_es'
-///   ::= 'amdgpu_gs'
-///   ::= 'amdgpu_ps'
-///   ::= 'amdgpu_cs'
-///   ::= 'amdgpu_kernel'
-///   ::= 'cc' UINT
-///
-bool LLParser::ParseOptionalCallingConv(unsigned &CC) {
-*/
+// ref: ParseOptionalCallingConv
+//
+//   ::= empty
+//   ::= 'ccc'
+//   ::= 'fastcc'
+//   ::= 'intel_ocl_bicc'
+//   ::= 'coldcc'
+//   ::= 'x86_stdcallcc'
+//   ::= 'x86_fastcallcc'
+//   ::= 'x86_thiscallcc'
+//   ::= 'x86_vectorcallcc'
+//   ::= 'arm_apcscc'
+//   ::= 'arm_aapcscc'
+//   ::= 'arm_aapcs_vfpcc'
+//   ::= 'msp430_intrcc'
+//   ::= 'avr_intrcc'
+//   ::= 'avr_signalcc'
+//   ::= 'ptx_kernel'
+//   ::= 'ptx_device'
+//   ::= 'spir_func'
+//   ::= 'spir_kernel'
+//   ::= 'x86_64_sysvcc'
+//   ::= 'win64cc'
+//   ::= 'webkit_jscc'
+//   ::= 'anyregcc'
+//   ::= 'preserve_mostcc'
+//   ::= 'preserve_allcc'
+//   ::= 'ghccc'
+//   ::= 'swiftcc'
+//   ::= 'x86_intrcc'
+//   ::= 'hhvmcc'
+//   ::= 'hhvm_ccc'
+//   ::= 'cxx_fast_tlscc'
+//   ::= 'amdgpu_vs'
+//   ::= 'amdgpu_ls'
+//   ::= 'amdgpu_hs'
+//   ::= 'amdgpu_es'
+//   ::= 'amdgpu_gs'
+//   ::= 'amdgpu_ps'
+//   ::= 'amdgpu_cs'
+//   ::= 'amdgpu_kernel'
+//   ::= 'cc' UINT
 
 OptCallingConv
 	: empty
@@ -162,11 +147,10 @@ OptPersonality
 	| "personality" Type Constant
 ;
 
-/*
-/// ParseFunctionBody
-///   ::= '{' BasicBlock+ UseListOrderDirective* '}'
-bool LLParser::ParseFunctionBody(Function &Fn) {
-*/
+// ref: ParseFunctionBody
+//
+//   ::= '{' BasicBlock+ UseListOrderDirective* '}'
+
 FunctionBody
 	: "{" BasicBlockList UseListOrders "}"
 ;

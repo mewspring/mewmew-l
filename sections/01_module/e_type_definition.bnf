@@ -2,22 +2,13 @@
 
 // https://llvm.org/docs/LangRef.html#structure-type
 
-/*
-/// ParseUnnamedType:
-///   ::= LocalVarID '=' 'type' type
-bool LLParser::ParseUnnamedType() {
-*/
+// ref: ParseUnnamedType
+//
+//   ::= LocalVarID '=' 'type' type
 
-/*
-/// toplevelentity
-///   ::= LocalVar '=' 'type' type
-bool LLParser::ParseNamedType() {
-*/
-
-/*
-/// ParseStructDefinition - Parse a struct in a 'type' definition.
-bool LLParser::ParseStructDefinition(SMLoc TypeLoc, StringRef Name,
-*/
+// ref: ParseNamedType
+//
+//   ::= LocalVar '=' 'type' type
 
 TypeDef
 	: LocalIdent "=" "type" "opaque"

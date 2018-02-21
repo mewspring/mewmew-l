@@ -2,11 +2,9 @@
 
 // https://llvm.org/docs/LangRef.html#attribute-groups
 
-/*
-/// ParseUnnamedAttrGrp
-///   ::= 'attributes' AttrGrpID '=' '{' AttrValPair+ '}'
-bool LLParser::ParseUnnamedAttrGrp() {
-*/
+// ref: ParseUnnamedAttrGrp
+//
+//   ::= 'attributes' AttrGrpID '=' '{' AttrValPair+ '}'
 
 AttrGroupDef
 	: "attributes" AttrGroupID "=" "{" FuncAttrs "}"

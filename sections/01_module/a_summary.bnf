@@ -7,10 +7,9 @@
 
 // https://llvm.org/docs/LangRef.html#module-structure
 
-/*
-/// Run: module ::= toplevelentity*
-bool LLParser::Run() {
-*/
+// ref: Run
+//
+//   module ::= toplevelentity*
 
 Module
 	: TopLevelEntities
@@ -26,13 +25,9 @@ TopLevelEntityList
 	| TopLevelEntityList TopLevelEntity
 ;
 
-//===----------------------------------------------------------------------===//
-// Top-Level Entities
-//===----------------------------------------------------------------------===//
+// --- [ Top-level Entities ] --------------------------------------------------
 
-/*
-bool LLParser::ParseTopLevelEntities() {
-*/
+// ref: ParseTopLevelEntities
 
 TopLevelEntity
 	: SourceFilename
