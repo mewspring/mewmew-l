@@ -15,7 +15,7 @@ SpecializedMDNode
 	| DIEnumerator
 	| DITemplateTypeParameter
 	| DITemplateValueParameter
-	| DIModule // not in spec as of 2018-02-21
+	| DIModule // not in spec
 	| DINamespace
 	| DIGlobalVariable
 	| DISubprogram
@@ -24,12 +24,12 @@ SpecializedMDNode
 	| DILocation
 	| DILocalVariable
 	| DIExpression
-	| DIGlobalVariableExpression // not in spec as of 2018-02-21
+	| DIGlobalVariableExpression // not in spec
 	| DIObjCProperty
 	| DIImportedEntity
 	| DIMacro
 	| DIMacroFile
-	| GenericDINode // not in spec as of 2018-02-21
+	| GenericDINode // not in spec
 ;
 
 // ~~~ [ DICompileUnit ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
