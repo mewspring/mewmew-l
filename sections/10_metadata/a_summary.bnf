@@ -1,0 +1,120 @@
+// === [ Metadata Nodes and Metadata Strings ] =================================
+
+// https://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings
+
+// --- [ Metadata Tuple ] ------------------------------------------------------
+
+// ref: ParseMDTuple
+//
+//   ::= { Element (',' Element)* }
+// Element
+//   ::= 'null' | TypeAndValue
+
+MDTuple
+	: "!" "{" MDElements "}"
+;
+
+MDElements
+	: empty
+	| MDElementList
+;
+
+MDElementList
+	: MDElement
+	| MDElementList "," MDElement
+;
+
+MDElement
+	: Metadata
+	// Null is a special case since it is typeless.
+	| "null"
+;
+
+// --- [ Metadata ] ------------------------------------------------------------
+
+// ref: ParseMetadata
+//
+//  ::= i32 %local
+//  ::= i32 @global
+//  ::= i32 7
+//  ::= !42
+//  ::= !{...}
+//  ::= !"string"
+//  ::= !DILocation(...)
+
+Metadata
+	: SpecializedMDNode
+	| Type Value
+	| MDString
+	// !{ ... }
+	| MDTuple
+	// !7
+	| MetadataID
+;
+
+// --- [ Metadata String ] -----------------------------------------------------
+
+// ref: ParseMDString
+//
+//   ::= '!' STRINGCONSTANT
+
+MDString
+	: "!" string_lit
+;
+
+// --- [ Metadata Attachment ] -------------------------------------------------
+
+// ref: ParseMetadataAttachment
+//
+//   ::= !dbg !42
+
+MetadataAttachment
+	: MetadataName MDNode
+;
+
+// --- [ Metadata Node ] -------------------------------------------------------
+
+// ref: ParseMDNode
+//
+//  ::= !{ ... }
+//  ::= !7
+//  ::= !DILocation(...)
+
+MDNode
+	: SpecializedMDNode
+	// !{ ... }
+	| MDTuple
+	// !42
+	| MetadataID
+;
+
+// ### [ Helper productions ] ##################################################
+
+// ref: ParseOptionalFunctionMetadata
+//
+//   ::= (!dbg !57)*
+
+MetadataAttachments
+	: empty
+	| MetadataAttachmentList
+;
+
+MetadataAttachmentList
+	: MetadataAttachment
+	| MetadataAttachmentList MetadataAttachment
+;
+
+// ref: ParseInstructionMetadata
+//
+//   ::= !dbg !42 (',' !dbg !57)*
+
+OptCommaSepMetadataAttachmentList
+	: empty
+	| "," CommaSepMetadataAttachmentList
+;
+
+CommaSepMetadataAttachmentList
+	: MetadataAttachment
+	| CommaSepMetadataAttachmentList "," MetadataAttachment
+;
+

@@ -15,11 +15,14 @@ sections/06_constant_expression.bnf: sections/06_constant_expression/a_summary.b
 sections/08_instruction.bnf: sections/08_instruction/a_summary.bnf sections/08_instruction/b_binary_instruction.bnf sections/08_instruction/c_bitwise_instruction.bnf sections/08_instruction/d_vector_instruction.bnf sections/08_instruction/e_aggregate_instruction.bnf sections/08_instruction/f_memory_instruction.bnf sections/08_instruction/g_conversion_instruction.bnf sections/08_instruction/h_other_instruction.bnf
 	cat $^ > $@
 
+sections/10_metadata.bnf: sections/10_metadata/a_summary.bnf sections/10_metadata/b_specialized_metadata_node.bnf
+	cat $^ > $@
+
 gen: ll.bnf
 	gocc -v ll.bnf
 
 clean:
-	rm -f ll.bnf sections/syntax.bnf sections/01_module.bnf sections/06_constant_expression.bnf sections/08_instruction.bnf
+	rm -f ll.bnf sections/syntax.bnf sections/01_module.bnf sections/06_constant_expression.bnf sections/08_instruction.bnf sections/10_metadata.bnf
 	rm -rf errors lexer parser token util
 	rm -f LR1_conflicts.txt LR1_sets.txt first.txt lexer_sets.txt terminals.txt
 

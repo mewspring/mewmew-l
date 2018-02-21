@@ -34,11 +34,9 @@ MetadataNode
 
 // https://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings
 
-/*
-/// ParseStandaloneMetadata:
-///   !42 = !{...}
-bool LLParser::ParseStandaloneMetadata() {
-*/
+// ref: ParseStandaloneMetadata
+//
+//   !42 = !{...}
 
 MetadataDef
 	: MetadataID "=" OptDistinct MDTuple
