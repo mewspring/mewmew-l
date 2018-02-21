@@ -1,0 +1,132 @@
+// --- [ Conversion instructions ] ---------------------------------------------
+
+// ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+TruncInst
+	: "trunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+ZExtInst
+	: "zext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+SExtInst
+	: "sext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+FPTruncInst
+	: "fptrunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+FPExtInst
+	: "fpext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+FPToUIInst
+	: "fptoui" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+FPToSIInst
+	: "fptosi" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+UIToFPInst
+	: "uitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+SIToFPInst
+	: "sitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+PtrToIntInst
+	: "ptrtoint" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+IntToPtrInst
+	: "inttoptr" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+BitCastInst
+	: "bitcast" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCast
+//
+//   ::= CastOpc TypeAndValue 'to' Type
+
+AddrSpaceCastInst
+	: "addrspacecast" Type Value "to" Value OptCommaSepMetadataAttachmentList
+;
+

@@ -1,0 +1,22 @@
+// --- [ Aggregate instructions ] ----------------------------------------------
+
+// ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseExtractValue
+//
+//   ::= 'extractvalue' TypeAndValue (',' uint32)+
+
+ExtractValueInst
+	: "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseInsertValue
+//
+//   ::= 'insertvalue' TypeAndValue ',' TypeAndValue (',' uint32)+
+
+InsertValueInst
+	: "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
+;
+

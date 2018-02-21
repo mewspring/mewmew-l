@@ -1,0 +1,62 @@
+// --- [ Bitwise instructions ] ------------------------------------------------
+
+// ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
+ShlInst
+	: "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
+LShrInst
+	: "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
+AShrInst
+	: "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
+
+AndInst
+	: "and" Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
+
+OrInst
+	: "or" Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLogical
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value {
+
+XorInst
+	: "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+

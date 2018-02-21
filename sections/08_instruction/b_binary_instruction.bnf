@@ -10,36 +10,6 @@ AddInst
 	: "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-// ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-SubInst
-	: "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-MulInst
-	: "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-ShlInst
-	: "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // ref: ParseArithmetic
@@ -48,6 +18,16 @@ ShlInst
 
 FAddInst
 	: "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
+SubInst
+	: "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,6 +40,16 @@ FSubInst
 	: "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
+// ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
+MulInst
+	: "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // ref: ParseArithmetic
@@ -68,36 +58,6 @@ FSubInst
 
 FMulInst
 	: "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-FDivInst
-	: "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-FRemInst
-	: "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseArithmetic
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value
-
-SDivInst
-	: "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,24 +70,24 @@ UDivInst
 	: "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-// ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
 
-LShrInst
-	: "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+SDivInst
+	: "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-// ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
 
-AShrInst
-	: "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+FDivInst
+	: "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,535 +102,21 @@ URemInst
 
 // ~~~ [ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ref: ParseArithmetic
+//
+//  ::= ArithmeticOps TypeAndValue ',' Value
+
 SRemInst
 	: "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 
-// ref: ParseLogical
+// ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseArithmetic
 //
-//  ::= ArithmeticOps TypeAndValue ',' Value {
+//  ::= ArithmeticOps TypeAndValue ',' Value
 
-// ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseLogical
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value {
-
-AndInst
-	: "and" Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseLogical
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value {
-
-OrInst
-	: "or" Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseLogical
-//
-//  ::= ArithmeticOps TypeAndValue ',' Value {
-
-XorInst
-	: "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCompare
-//
-//  ::= 'icmp' IPredicates TypeAndValue ',' Value
-
-ICmpInst
-	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCompare
-//
-//  ::= 'fcmp' FPredicates TypeAndValue ',' Value
-
-FCmpInst
-	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-TruncInst
-	: "trunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-ZExtInst
-	: "zext" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-SExtInst
-	: "sext" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-FPTruncInst
-	: "fptrunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-FPExtInst
-	: "fpext" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-BitCastInst
-	: "bitcast" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-AddrSpaceCastInst
-	: "addrspacecast" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-UIToFPInst
-	: "uitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-SIToFPInst
-	: "sitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-FPToUIInst
-	: "fptoui" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-FPToSIInst
-	: "fptosi" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-IntToPtrInst
-	: "inttoptr" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCast
-//
-//   ::= CastOpc TypeAndValue 'to' Type
-
-PtrToIntInst
-	: "ptrtoint" Type Value "to" Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseSelect
-//
-//   ::= 'select' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-
-SelectInst
-	: "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseVA_Arg
-//
-//   ::= 'va_arg' TypeAndValue ',' Type
-
-VAArgInst
-	: "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseExtractElement
-//
-//   ::= 'extractelement' TypeAndValue ',' TypeAndValue
-
-ExtractElementInst
-	: "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseInsertElement
-//
-//   ::= 'insertelement' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-
-InsertElementInst
-	: "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseShuffleVector
-//
-//   ::= 'shufflevector' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-
-ShuffleVectorInst
-	: "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParsePHI
-//
-//   ::= 'phi' Type '[' Value ',' Value ']' (',' '[' Value ',' Value ']')*
-
-PhiInst
-	: "phi" Type IncList OptCommaSepMetadataAttachmentList
-;
-
-IncList
-	: Inc
-	| IncList Inc
-;
-
-Inc
-	: "[" Value "," LocalIdent "]"
-;
-
-// ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseLandingPad
-//
-//   ::= 'landingpad' Type 'personality' TypeAndValue 'cleanup'? Clause+
-// Clause
-//   ::= 'catch' TypeAndValue
-//   ::= 'filter'
-//   ::= 'filter' TypeAndValue ( ',' TypeAndValue )*
-
-LandingPadInst
-	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
-;
-
-OptCleanup
-	: empty
-	| "cleanup"
-;
-
-Clauses
-	: empty
-	| ClauseList
-;
-
-ClauseList
-	: Clause
-	| ClauseList Clause
-;
-
-Clause
-	: "catch" Type Value
-	| "filter" Type ArrayConst
-;
-
-// ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCall
-//
-//   ::= 'call' OptionalFastMathFlags OptionalCallingConv
-//           OptionalAttrs Type Value ParameterList OptionalAttrs
-//   ::= 'tail' 'call' OptionalFastMathFlags OptionalCallingConv
-//           OptionalAttrs Type Value ParameterList OptionalAttrs
-//   ::= 'musttail' 'call' OptionalFastMathFlags OptionalCallingConv
-//           OptionalAttrs Type Value ParameterList OptionalAttrs
-//   ::= 'notail' 'call'  OptionalFastMathFlags OptionalCallingConv
-//           OptionalAttrs Type Value ParameterList OptionalAttrs
-
-CallInst
-	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
-;
-
-OptTail
-	: empty
-	| "tail"
-	| "musttail"
-	| "notail"
-;
-
-// ~~~ [ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseAlloc
-//
-//   ::= 'alloca' 'inalloca'? 'swifterror'? Type (',' TypeAndValue)?
-//       (',' 'align' i32)? (',', 'addrspace(n))?
-
-// TODO: Simplify when parser generator is not limited by 1 token lookahead.
-//
-//    AllocaInst
-//       : "alloca" OptInalloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
-//    ;
-
-AllocaInst
-	: "alloca" OptInalloca OptSwiftError Type OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-;
-
-OptInalloca
-	: empty
-	| "inalloca"
-;
-
-OptSwiftError
-	: empty
-	| "swifterror"
-;
-
-// ~~~ [ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseLoad
-//
-//   ::= 'load' 'volatile'? TypeAndValue (',' 'align' i32)?
-//   ::= 'load' 'atomic' 'volatile'? TypeAndValue
-//       'singlethread'? AtomicOrdering (',' 'align' i32)?
-
-// TODO: Simplify when parser generator is not limited by 1 token lookahead.
-//
-//    LoadInst
-//       : "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
-//       | "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
-//    ;
-
-LoadInst
-	: "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList
-	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseStore
-//
-//   ::= 'store' 'volatile'? TypeAndValue ',' TypeAndValue (',' 'align' i32)?
-//   ::= 'store' 'atomic' 'volatile'? TypeAndValue ',' TypeAndValue
-//       'singlethread'? AtomicOrdering (',' 'align' i32)?
-
-// TODO: Simplify when parser generator is not limited by 1 token lookahead.
-//
-//    StoreInst
-//       : "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
-//       | "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
-//    ;
-
-StoreInst
-	: "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	| "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseCmpXchg
-//
-//   ::= 'cmpxchg' 'weak'? 'volatile'? TypeAndValue ',' TypeAndValue ','
-//       TypeAndValue 'singlethread'? AtomicOrdering AtomicOrdering
-
-CmpXchgInst
-	: "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
-;
-
-OptWeak
-	: empty
-	| "weak"
-;
-
-// ~~~ [ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseAtomicRMW
-//
-//   ::= 'atomicrmw' 'volatile'? BinOp TypeAndValue ',' TypeAndValue
-//       'singlethread'? AtomicOrdering
-
-AtomicRMWInst
-	: "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-;
-
-BinOp
-	: "xchg"
-	| "add"
-	| "sub"
-	| "and"
-	| "nand"
-	| "or"
-	| "xor"
-	| "max"
-	| "min"
-	| "umax"
-	| "umin"
-;
-
-// ~~~ [ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseFence
-//
-//   ::= 'fence' 'singlethread'? AtomicOrdering
-
-FenceInst
-	: "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseGetElementPtr
-//
-//   ::= 'getelementptr' 'inbounds'? TypeAndValue (',' TypeAndValue)*
-
-// TODO: Simplify when parser generator is not limited by 1 token lookahead.
-//
-//    GetElementPtrInst
-//       : "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
-//    ;
-
-GetElementPtrInst
-	: "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList
-	| "getelementptr" OptInBounds Type "," Type Value "," GEPIndexList OptCommaSepMetadataAttachmentList
-;
-
-GEPIndices
-	: empty
-	| "," GEPIndexList
-;
-
-GEPIndexList
-	: GEPIndex
-	| GEPIndexList "," GEPIndex
-;
-
-GEPIndex
-	: Type Value
-;
-
-// ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseExtractValue
-//
-//   ::= 'extractvalue' TypeAndValue (',' uint32)+
-
-ExtractValueInst
-	: "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
-;
-
-// ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ref: ParseInsertValue
-//
-//   ::= 'insertvalue' TypeAndValue ',' TypeAndValue (',' uint32)+
-
-InsertValueInst
-	: "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
-;
-
-// --- [ cleanuppad ] ----------------------------------------------------------
-
-// ref: ParseCleanupPad
-//
-//   ::= 'cleanuppad' within Parent ParamList
-
-CleanupPadInst
-	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
-;
-
-// ref: ParseExceptionArgs
-
-ExceptionArgs
-	: empty
-	| ExceptionArgList
-;
-
-ExceptionArgList
-	: ExceptionArg
-	| ExceptionArgList "," ExceptionArg
-;
-
-ExceptionArg
-	: ConcreteType Value
-	| MetadataType Metadata
-;
-
-// --- [ catchpad ] ------------------------------------------------------------
-
-// ref: ParseCatchPad
-//
-//   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
-
-CatchPadInst
-	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+FRemInst
+	: "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 ;
 

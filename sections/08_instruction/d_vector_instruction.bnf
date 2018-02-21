@@ -1,0 +1,32 @@
+// --- [ Vector instructions ] -------------------------------------------------
+
+// ~~~ [ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseExtractElement
+//
+//   ::= 'extractelement' TypeAndValue ',' TypeAndValue
+
+ExtractElementInst
+	: "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseInsertElement
+//
+//   ::= 'insertelement' TypeAndValue ',' TypeAndValue ',' TypeAndValue
+
+InsertElementInst
+	: "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseShuffleVector
+//
+//   ::= 'shufflevector' TypeAndValue ',' TypeAndValue ',' TypeAndValue
+
+ShuffleVectorInst
+	: "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+;
+

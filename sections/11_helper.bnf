@@ -578,3 +578,20 @@ UnwindTarget
 	| LabelType LocalIdent
 ;
 
+// ref: ParseExceptionArgs
+
+ExceptionArgs
+	: empty
+	| ExceptionArgList
+;
+
+ExceptionArgList
+	: ExceptionArg
+	| ExceptionArgList "," ExceptionArg
+;
+
+ExceptionArg
+	: ConcreteType Value
+	| MetadataType Metadata
+;
+

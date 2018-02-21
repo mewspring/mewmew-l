@@ -1,0 +1,162 @@
+// --- [ Memory instructions ] -------------------------------------------------
+
+// ~~~ [ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseAlloc
+//
+//   ::= 'alloca' 'inalloca'? 'swifterror'? Type (',' TypeAndValue)?
+//       (',' 'align' i32)? (',', 'addrspace(n))?
+
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
+//
+//    AllocaInst
+//       : "alloca" OptInalloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
+//    ;
+
+AllocaInst
+	: "alloca" OptInalloca OptSwiftError Type OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
+;
+
+OptInalloca
+	: empty
+	| "inalloca"
+;
+
+OptSwiftError
+	: empty
+	| "swifterror"
+;
+
+// ~~~ [ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLoad
+//
+//   ::= 'load' 'volatile'? TypeAndValue (',' 'align' i32)?
+//   ::= 'load' 'atomic' 'volatile'? TypeAndValue
+//       'singlethread'? AtomicOrdering (',' 'align' i32)?
+
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
+//
+//    LoadInst
+//       : "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
+//       | "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+//    ;
+
+LoadInst
+	: "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList
+	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseStore
+//
+//   ::= 'store' 'volatile'? TypeAndValue ',' TypeAndValue (',' 'align' i32)?
+//   ::= 'store' 'atomic' 'volatile'? TypeAndValue ',' TypeAndValue
+//       'singlethread'? AtomicOrdering (',' 'align' i32)?
+
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
+//
+//    StoreInst
+//       : "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
+//       | "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+//    ;
+
+StoreInst
+	: "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	| "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseFence
+//
+//   ::= 'fence' 'singlethread'? AtomicOrdering
+
+FenceInst
+	: "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCmpXchg
+//
+//   ::= 'cmpxchg' 'weak'? 'volatile'? TypeAndValue ',' TypeAndValue ','
+//       TypeAndValue 'singlethread'? AtomicOrdering AtomicOrdering
+
+CmpXchgInst
+	: "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
+;
+
+OptWeak
+	: empty
+	| "weak"
+;
+
+// ~~~ [ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseAtomicRMW
+//
+//   ::= 'atomicrmw' 'volatile'? BinOp TypeAndValue ',' TypeAndValue
+//       'singlethread'? AtomicOrdering
+
+AtomicRMWInst
+	: "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+;
+
+BinOp
+	: "xchg"
+	| "add"
+	| "sub"
+	| "and"
+	| "nand"
+	| "or"
+	| "xor"
+	| "max"
+	| "min"
+	| "umax"
+	| "umin"
+;
+
+// ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseGetElementPtr
+//
+//   ::= 'getelementptr' 'inbounds'? TypeAndValue (',' TypeAndValue)*
+
+// TODO: Simplify when parser generator is not limited by 1 token lookahead.
+//
+//    GetElementPtrInst
+//       : "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
+//    ;
+
+GetElementPtrInst
+	: "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList
+	| "getelementptr" OptInBounds Type "," Type Value "," GEPIndexList OptCommaSepMetadataAttachmentList
+;
+
+GEPIndices
+	: empty
+	| "," GEPIndexList
+;
+
+GEPIndexList
+	: GEPIndex
+	| GEPIndexList "," GEPIndex
+;
+
+GEPIndex
+	: Type Value
+;
+

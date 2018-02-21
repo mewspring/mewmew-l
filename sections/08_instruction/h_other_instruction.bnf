@@ -1,0 +1,139 @@
+// --- [ Other instructions ] --------------------------------------------------
+
+// ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCompare
+//
+//  ::= 'icmp' IPredicates TypeAndValue ',' Value
+
+ICmpInst
+	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCompare
+//
+//  ::= 'fcmp' FPredicates TypeAndValue ',' Value
+
+FCmpInst
+	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParsePHI
+//
+//   ::= 'phi' Type '[' Value ',' Value ']' (',' '[' Value ',' Value ']')*
+
+PhiInst
+	: "phi" Type IncList OptCommaSepMetadataAttachmentList
+;
+
+IncList
+	: Inc
+	| IncList Inc
+;
+
+Inc
+	: "[" Value "," LocalIdent "]"
+;
+
+// ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseSelect
+//
+//   ::= 'select' TypeAndValue ',' TypeAndValue ',' TypeAndValue
+
+SelectInst
+	: "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseCall
+//
+//   ::= 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'tail' 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'musttail' 'call' OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+//   ::= 'notail' 'call'  OptionalFastMathFlags OptionalCallingConv
+//           OptionalAttrs Type Value ParameterList OptionalAttrs
+
+CallInst
+	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
+;
+
+OptTail
+	: empty
+	| "tail"
+	| "musttail"
+	| "notail"
+;
+
+// ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseVA_Arg
+//
+//   ::= 'va_arg' TypeAndValue ',' Type
+
+VAArgInst
+	: "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
+;
+
+// ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseLandingPad
+//
+//   ::= 'landingpad' Type 'personality' TypeAndValue 'cleanup'? Clause+
+// Clause
+//   ::= 'catch' TypeAndValue
+//   ::= 'filter'
+//   ::= 'filter' TypeAndValue ( ',' TypeAndValue )*
+
+LandingPadInst
+	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
+;
+
+OptCleanup
+	: empty
+	| "cleanup"
+;
+
+Clauses
+	: empty
+	| ClauseList
+;
+
+ClauseList
+	: Clause
+	| ClauseList Clause
+;
+
+Clause
+	: "catch" Type Value
+	| "filter" Type ArrayConst
+;
+
+// --- [ catchpad ] ------------------------------------------------------------
+
+// ref: ParseCatchPad
+//
+//   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
+
+CatchPadInst
+	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+;
+
+// --- [ cleanuppad ] ----------------------------------------------------------
+
+// ref: ParseCleanupPad
+//
+//   ::= 'cleanuppad' within Parent ParamList
+
+CleanupPadInst
+	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+;
+
