@@ -12,7 +12,12 @@ bool LLParser::ParseMetadataAttachment(unsigned &Kind, MDNode *&MD) {
 
 OptCommaMetadataAttachmentList
 	: empty
-	| "," MetadataAttachmentList
+	| CommaMetadataAttachmentList
+;
+
+CommaMetadataAttachmentList
+	: "," MetadataAttachment
+	| CommaMetadataAttachmentList "," MetadataAttachment
 ;
 
 MetadataAttachments

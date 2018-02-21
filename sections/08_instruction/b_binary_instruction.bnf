@@ -395,10 +395,14 @@ int LLParser::ParseAlloc(Instruction *&Inst, PerFunctionState &PFS) {
 //    ;
 
 AllocaInst
-	: "alloca" OptInalloca OptSwiftError Type OptCommaAddrSpace OptCommaMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Alignment OptCommaAddrSpace OptCommaMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value OptCommaAddrSpace OptCommaMetadataAttachmentList
-	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment OptCommaAddrSpace OptCommaMetadataAttachmentList
+	: "alloca" OptInalloca OptSwiftError Type OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Alignment OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," AddrSpace OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaMetadataAttachmentList
+	| "alloca" OptInalloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaMetadataAttachmentList
 ;
 
 OptInalloca
@@ -445,59 +449,24 @@ int LLParser::ParseLoad(Instruction *&Inst, PerFunctionState &PFS) {
 bool LLParser::ParseScopeAndOrdering(bool isAtomic, SyncScope::ID &SSID,
 */
 
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    LoadInst
+//       : "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaMetadataAttachmentList
+//       | "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaMetadataAttachmentList
+//    ;
+
 LoadInst
-	: "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaMetadataAttachmentList
-	| "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaMetadataAttachmentList
-;
-
-OptVolatile
-	: empty
-	| "volatile"
-;
-
-/*
-/// ParseOptionalCommaAlign
-///   ::=
-///   ::= ',' align 4
-///
-/// This returns with AteExtraComma set to true if it ate an excess comma at the
-/// end.
-bool LLParser::ParseOptionalCommaAlign(unsigned &Alignment,
-*/
-
-OptCommaAlignment
-	: empty
-	| "," Alignment
-;
-
-/*
-/// ParseScope
-///   ::= syncscope("singlethread" | "<target scope>")?
-///
-/// This sets synchronization scope ID to the ID of the parsed value.
-bool LLParser::ParseScope(SyncScope::ID &SSID) {
-*/
-
-OptScope
-	: empty
-	| "syncscope" "(" string_lit ")"
-;
-
-/*
-/// ParseOrdering
-///   ::= AtomicOrdering
-///
-/// This sets Ordering to the parsed value.
-bool LLParser::ParseOrdering(AtomicOrdering &Ordering) {
-*/
-
-AtomicOrdering
-	: "unordered"
-	| "monotonic"
-	| "acquire"
-	| "release"
-	| "acq_rel"
-	| "seq_cst"
+	: "load" OptVolatile Type "," Type Value OptCommaMetadataAttachmentList
+	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering OptCommaMetadataAttachmentList
+	| "load" "atomic" OptVolatile Type "," Type Value OptScope AtomicOrdering "," Alignment OptCommaMetadataAttachmentList
 ;
 
 // ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -510,9 +479,24 @@ AtomicOrdering
 int LLParser::ParseStore(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    StoreInst
+//       : "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaMetadataAttachmentList
+//       | "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaMetadataAttachmentList
+//    ;
+
 StoreInst
-	: "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaMetadataAttachmentList
-	| "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering OptCommaAlignment OptCommaMetadataAttachmentList
+	: "store" OptVolatile Type Value "," Type Value OptCommaMetadataAttachmentList
+	| "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering OptCommaMetadataAttachmentList
+	| "store" "atomic" OptVolatile Type Value "," Type Value OptScope AtomicOrdering "," Alignment OptCommaMetadataAttachmentList
 ;
 
 // ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -580,8 +564,21 @@ FenceInst
 int LLParser::ParseGetElementPtr(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
+// TODO: Clean up when the parser generator no longer introduces ambiguities
+// through the limitation of 1 token lookahead.
+//
+// Structured in this way to allow for naiive 1 token lookahead parser
+// generators.
+//
+// Original production rule.
+//
+//    GetElementPtrInst
+//       : "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaMetadataAttachmentList
+//    ;
+
 GetElementPtrInst
-	: "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaMetadataAttachmentList
+	: "getelementptr" OptInBounds Type "," Type Value OptCommaMetadataAttachmentList
+	| "getelementptr" OptInBounds Type "," Type Value "," GEPIndexList OptCommaMetadataAttachmentList
 ;
 
 GEPIndices
@@ -661,7 +658,7 @@ ExceptionArgList
 ;
 
 ExceptionArg
-	: Type Value
+	: ConcreteType Value
 	| MetadataType Metadata
 ;
 

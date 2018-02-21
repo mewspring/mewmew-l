@@ -42,7 +42,7 @@ bool LLParser::ParseRet(Instruction *&Inst, BasicBlock *BB,
 
 RetTerm
 	: "ret" VoidType OptCommaMetadataAttachmentList
-	| "ret" Type Value OptCommaMetadataAttachmentList
+	| "ret" ConcreteType Value OptCommaMetadataAttachmentList
 ;
 
 // --- [ br ] ------------------------------------------------------------------
@@ -55,8 +55,8 @@ bool LLParser::ParseBr(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
 BrTerm
-	: "br" Type LocalIdent OptCommaMetadataAttachmentList
-	| "br" Type Value "," Type LocalIdent "," Type LocalIdent OptCommaMetadataAttachmentList
+	: "br" LabelType LocalIdent OptCommaMetadataAttachmentList
+	| "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaMetadataAttachmentList
 ;
 
 // --- [ switch ] --------------------------------------------------------------
@@ -71,7 +71,7 @@ bool LLParser::ParseSwitch(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
 SwitchTerm
-	: "switch" Type Value "," Type LocalIdent "[" Cases "]" OptCommaMetadataAttachmentList
+	: "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaMetadataAttachmentList
 ;
 
 Cases
@@ -85,7 +85,7 @@ CaseList
 ;
 
 Case
-	: Type IntConst "," Type LocalIdent
+	: Type IntConst "," LabelType LocalIdent
 ;
 
 // --- [ indirectbr ] ----------------------------------------------------------
@@ -107,7 +107,7 @@ LabelList
 ;
 
 Label
-	: Type LocalIdent
+	: LabelType LocalIdent
 ;
 
 // --- [ invoke ] --------------------------------------------------------------
@@ -120,7 +120,7 @@ bool LLParser::ParseInvoke(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
 InvokeTerm
-	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" Type LocalIdent "unwind" Type LocalIdent OptCommaMetadataAttachmentList
+	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaMetadataAttachmentList
 ;
 
 // --- [ resume ] --------------------------------------------------------------
@@ -149,7 +149,7 @@ CleanupRetTerm
 
 UnwindTarget
 	: "to" "caller"
-	| Type LocalIdent
+	| LabelType LocalIdent
 ;
 
 // --- [ catchret ] ------------------------------------------------------------
@@ -161,7 +161,7 @@ bool LLParser::ParseCatchRet(Instruction *&Inst, PerFunctionState &PFS) {
 */
 
 CatchRetTerm
-	: "catchret" "from" Value "to" Type LocalIdent OptCommaMetadataAttachmentList
+	: "catchret" "from" Value "to" LabelType LocalIdent OptCommaMetadataAttachmentList
 ;
 
 // --- [ catchswitch ] ---------------------------------------------------------

@@ -462,7 +462,7 @@ bool LLParser::ParseMetadataAsValue(Value *&V, PerFunctionState &PFS) {
 */
 
 Param
-	: Type ParamAttrs Value
+	: ConcreteType ParamAttrs Value
 	| MetadataType Metadata
 ;
 
@@ -531,5 +531,55 @@ BundleInputList
 
 BundleInput
 	: Type Value
+;
+
+OptVolatile
+	: empty
+	| "volatile"
+;
+
+/*
+/// ParseOptionalCommaAlign
+///   ::=
+///   ::= ',' align 4
+///
+/// This returns with AteExtraComma set to true if it ate an excess comma at the
+/// end.
+bool LLParser::ParseOptionalCommaAlign(unsigned &Alignment,
+*/
+
+OptCommaAlignment
+	: empty
+	| "," Alignment
+;
+
+/*
+/// ParseScope
+///   ::= syncscope("singlethread" | "<target scope>")?
+///
+/// This sets synchronization scope ID to the ID of the parsed value.
+bool LLParser::ParseScope(SyncScope::ID &SSID) {
+*/
+
+OptScope
+	: empty
+	| "syncscope" "(" string_lit ")"
+;
+
+/*
+/// ParseOrdering
+///   ::= AtomicOrdering
+///
+/// This sets Ordering to the parsed value.
+bool LLParser::ParseOrdering(AtomicOrdering &Ordering) {
+*/
+
+AtomicOrdering
+	: "unordered"
+	| "monotonic"
+	| "acquire"
+	| "release"
+	| "acq_rel"
+	| "seq_cst"
 ;
 

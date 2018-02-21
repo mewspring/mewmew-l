@@ -25,27 +25,36 @@ bool LLParser::ParseType(Type *&Result, const Twine &Msg, bool AllowVoid) {
 // for metadata values.
 
 Type
-	// Type ::= 'float' | 'void' (etc)
 	: VoidType
+	/// Types '(' ArgTypeListI ')' OptFuncAttrs
+	| FuncType
+	| FirstClassType
+;
+
+FirstClassType
+	: ConcreteType
+	| MetadataType
+;
+
+ConcreteType
+	: IntType
+	// Type ::= 'float' | 'void' (etc)
 	| FloatType
-	| LabelType
-	| MMXType
-	| TokenType
-	| IntType
-	// Type ::= StructType
-	| StructType
-	// Type ::= '[' ... ']'
-	| ArrayType
-	// Type ::= '<' ... '>'
-	| VectorType
-	// Type ::= %foo
-	// Type ::= %4
-	| NamedType
 	// Type ::= Type '*'
 	// Type ::= Type 'addrspace' '(' uint32 ')' '*'
 	| PointerType
-	/// Types '(' ArgTypeListI ')' OptFuncAttrs
-	| FuncType
+	// Type ::= '<' ... '>'
+	| VectorType
+	| LabelType
+	// Type ::= '[' ... ']'
+	| ArrayType
+	// Type ::= StructType
+	| StructType
+	// Type ::= %foo
+	// Type ::= %4
+	| NamedType
+	| MMXType
+	| TokenType
 ;
 
 VoidType
