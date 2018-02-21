@@ -1,24 +1,36 @@
 // === [ Identifiers ] =========================================================
 
+// --- [ Global Identifiers ] --------------------------------------------------
+
 GlobalIdent
 	: global_ident
 ;
+
+// --- [ Local Identifiers ] ---------------------------------------------------
 
 LocalIdent
 	: local_ident
 ;
 
+// --- [ Label Identifiers ] ---------------------------------------------------
+
 LabelIdent
 	: label_ident
 ;
+
+// --- [ Attribute Group Identifiers ] -----------------------------------------
 
 AttrGroupID
 	: attr_group_id
 ;
 
+// --- [ Comdat Identifiers ] --------------------------------------------------
+
 ComdatName
 	: comdat_name
 ;
+
+// --- [ Metadata Identifiers ] ------------------------------------------------
 
 MetadataName
 	: metadata_name
