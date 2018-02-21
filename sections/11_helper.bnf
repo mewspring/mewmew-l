@@ -1,20 +1,18 @@
-/*
-/// ParseOptionalAlignment
-///   ::= empty
-///   ::= 'align' 4
-bool LLParser::ParseOptionalAlignment(unsigned &Alignment) {
-*/
+// ### [ Helper productions ] ##################################################
+
+// ref: ParseOptionalAlignment
+//
+//   ::= empty
+//   ::= 'align' 4
 
 Alignment
 	: "align" int_lit
 ;
 
-/*
-/// ParseOptionalAddrSpace
-///   := empty
-///   := 'addrspace' '(' uint32 ')'
-bool LLParser::ParseOptionalAddrSpace(unsigned &AddrSpace) {
-*/
+// ref: ParseOptionalAddrSpace
+//
+//   := empty
+//   := 'addrspace' '(' uint32 ')'
 
 OptAddrSpace
 	: empty
@@ -25,9 +23,7 @@ AddrSpace
 	: "addrspace" "(" int_lit ")"
 ;
 
-/*
-bool LLParser::parseOptionalComdat(StringRef GlobalName, Comdat *&C) {
-*/
+// ref: parseOptionalComdat
 
 OptComdat
 	: empty
@@ -39,18 +35,9 @@ Comdat
 	| "comdat" "(" ComdatName ")"
 ;
 
-/*
-/// ParseIndexList - This parses the index list for an insert/extractvalue
-/// instruction.  This sets AteExtraComma in the case where we eat an extra
-/// comma at the end of the line and find that it is followed by metadata.
-/// Clients that don't allow metadata can call the version of this function that
-/// only takes one argument.
-///
-/// ParseIndexList
-///    ::=  (',' uint32)+
-///
-bool LLParser::ParseIndexList(SmallVectorImpl<unsigned> &Indices,
-*/
+// ref: ParseIndexList
+//
+//    ::=  (',' uint32)+
 
 Indices
 	: empty
@@ -66,10 +53,7 @@ Index
 	: int_lit
 ;
 
-/*
-/// ParseCmpPredicate - Parse an integer or fp predicate, based on Kind.
-bool LLParser::ParseCmpPredicate(unsigned &P, unsigned Opc) {
-*/
+// ref: ParseCmpPredicate
 
 IPred
 	: "eq"
@@ -123,9 +107,7 @@ OptExact
 	| "exact"
 ;
 
-/*
-FastMathFlags EatFastMathFlagsIfPresent() {
-*/
+// ref: EatFastMathFlagsIfPresent
 
 FastMathFlags
 	: empty
@@ -169,22 +151,20 @@ Elem
 
 // https://llvm.org/docs/LangRef.html#linkage-types
 
-/*
-/// ParseOptionalLinkage
-///   ::= empty
-///   ::= 'private'
-///   ::= 'internal'
-///   ::= 'weak'
-///   ::= 'weak_odr'
-///   ::= 'linkonce'
-///   ::= 'linkonce_odr'
-///   ::= 'available_externally'
-///   ::= 'appending'
-///   ::= 'common'
-///   ::= 'extern_weak'
-///   ::= 'external'
-bool LLParser::ParseOptionalLinkage(unsigned &Res, bool &HasLinkage,
-*/
+// ref: ParseOptionalLinkage
+//
+//   ::= empty
+//   ::= 'private'
+//   ::= 'internal'
+//   ::= 'weak'
+//   ::= 'weak_odr'
+//   ::= 'linkonce'
+//   ::= 'linkonce_odr'
+//   ::= 'available_externally'
+//   ::= 'appending'
+//   ::= 'common'
+//   ::= 'extern_weak'
+//   ::= 'external'
 
 OptLinkage
 	: empty
@@ -215,9 +195,7 @@ ExternLinkage
 
 // https://llvm.org/docs/LangRef.html#runtime-preemption-model
 
-/*
-void LLParser::ParseOptionalDSOLocal(bool &DSOLocal) {
-*/
+// ref: ParseOptionalDSOLocal
 
 OptPreemptionSpecifier
 	: empty
@@ -231,15 +209,12 @@ PreemptionSpecifier
 
 // https://llvm.org/docs/LangRef.html#visibility-styles
 
-/*
-/// ParseOptionalVisibility
-///   ::= empty
-///   ::= 'default'
-///   ::= 'hidden'
-///   ::= 'protected'
-///
-void LLParser::ParseOptionalVisibility(unsigned &Res) {
-*/
+// ref: ParseOptionalVisibility
+//
+//   ::= empty
+//   ::= 'default'
+//   ::= 'hidden'
+//   ::= 'protected'
 
 OptVisibility
 	: empty
@@ -254,14 +229,11 @@ Visibility
 
 // https://llvm.org/docs/LangRef.html#dll-storage-classes
 
-/*
-/// ParseOptionalDLLStorageClass
-///   ::= empty
-///   ::= 'dllimport'
-///   ::= 'dllexport'
-///
-void LLParser::ParseOptionalDLLStorageClass(unsigned &Res) {
-*/
+// ref: ParseOptionalDLLStorageClass
+//
+//   ::= empty
+//   ::= 'dllimport'
+//   ::= 'dllexport'
 
 OptDLLStorageClass
 	: empty
@@ -273,9 +245,7 @@ DLLStorageClass
 	| "dllexport"
 ;
 
-/*
-bool LLParser::ParseOptionalUnnamedAddr(
-*/
+// ref: ParseOptionalUnnamedAddr
 
 OptUnnamedAddr
 	: empty
@@ -287,11 +257,9 @@ UnnamedAddr
 	| "local_unnamed_addr"
 ;
 
-/*
-/// ParseFnAttributeValuePairs
-///   ::= <attr> | <attr> '=' <value>
-bool LLParser::ParseFnAttributeValuePairs(AttrBuilder &B,
-*/
+// ref: ParseFnAttributeValuePairs
+//
+//   ::= <attr> | <attr> '=' <value>
 
 FuncAttrs
 	: empty
@@ -351,19 +319,15 @@ FuncAttr
 	| "writeonly"
 ;
 
-/*
-/// ParseOptionalStackAlignment
-///   ::= empty
-///   ::= 'alignstack' '(' 4 ')'
-bool LLParser::ParseOptionalStackAlignment(unsigned &Alignment) {
-*/
+// ref: ParseOptionalStackAlignment
+//
+//   ::= empty
+//   ::= 'alignstack' '(' 4 ')'
 StackAlignment
 	: "alignstack" "(" int_lit ")"
 ;
 
-/*
-bool LLParser::parseAllocSizeArguments(unsigned &BaseSizeArg,
-*/
+// ref: parseAllocSizeArguments
 
 AllocSize
 	: "allocsize" "(" int_lit ")"
@@ -379,10 +343,7 @@ Section
 	: "section" string_lit
 ;
 
-/*
-/// ParseOptionalParamAttrs - Parse a potentially empty list of parameter attributes.
-bool LLParser::ParseOptionalParamAttrs(AttrBuilder &B) {
-*/
+// ref: ParseOptionalParamAttrs
 
 ParamAttrs
 	: empty
@@ -394,14 +355,10 @@ ParamAttrList
 	| ParamAttrList ParamAttr
 ;
 
-/*
-/// ParseOptionalDerefAttrBytes
-///   ::= empty
-///   ::= AttrKind '(' 4 ')'
-///
-/// where AttrKind is either 'dereferenceable' or 'dereferenceable_or_null'.
-bool LLParser::ParseOptionalDerefAttrBytes(lltok::Kind AttrKind,
-*/
+// ref: ParseOptionalDerefAttrBytes
+//
+//   ::= empty
+//   ::= AttrKind '(' 4 ')'
 
 ParamAttr
 	: string_lit
@@ -430,14 +387,13 @@ Dereferenceable
 	| "dereferenceable_or_null" "(" int_lit ")"
 ;
 
-/*
-/// ParseParameterList
-///    ::= '(' ')'
-///    ::= '(' Arg (',' Arg)* ')'
-///  Arg
-///    ::= Type OptionalAttributes Value OptionalAttributes
-bool LLParser::ParseParameterList(SmallVectorImpl<ParamInfo> &ArgList,
-*/
+// ref: ParseParameterList
+//
+//    ::= '(' ')'
+//    ::= '(' Arg (',' Arg)* ')'
+//  Arg
+//    ::= Type OptionalAttributes Value OptionalAttributes
+
 Args
 	: empty
 	| "..."
@@ -450,26 +406,21 @@ ArgList
 	| ArgList "," Arg
 ;
 
-/*
-/// ParseMetadataAsValue
-///  ::= metadata i32 %local
-///  ::= metadata i32 @global
-///  ::= metadata i32 7
-///  ::= metadata !0
-///  ::= metadata !{...}
-///  ::= metadata !"string"
-bool LLParser::ParseMetadataAsValue(Value *&V, PerFunctionState &PFS) {
-*/
+// ref: ParseMetadataAsValue
+//
+//  ::= metadata i32 %local
+//  ::= metadata i32 @global
+//  ::= metadata i32 7
+//  ::= metadata !0
+//  ::= metadata !{...}
+//  ::= metadata !"string"
 
 Arg
 	: ConcreteType ParamAttrs Value
 	| MetadataType Metadata
 ;
 
-/*
-/// ParseOptionalReturnAttrs - Parse a potentially empty list of return attributes.
-bool LLParser::ParseOptionalReturnAttrs(AttrBuilder &B) {
-*/
+// ref: ParseOptionalReturnAttrs
 
 ReturnAttrs
 	: empty
@@ -492,18 +443,16 @@ ReturnAttr
 	| "zeroext"
 ;
 
-/*
-/// ParseOptionalOperandBundles
-///    ::= empty
-///    ::= '[' OperandBundle [, OperandBundle ]* ']'
-///
-/// OperandBundle
-///    ::= bundle-tag '(' ')'
-///    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
-///
-/// bundle-tag ::= String Constant
-bool LLParser::ParseOptionalOperandBundles(
-*/
+// ref: ParseOptionalOperandBundles
+//
+//    ::= empty
+//    ::= '[' OperandBundle [, OperandBundle ]* ']'
+//
+//  OperandBundle
+//    ::= bundle-tag '(' ')'
+//    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
+//
+//  bundle-tag ::= String Constant
 
 OperandBundles
 	: empty
@@ -538,26 +487,18 @@ OptVolatile
 	| "volatile"
 ;
 
-/*
-/// ParseScope
-///   ::= syncscope("singlethread" | "<target scope>")?
-///
-/// This sets synchronization scope ID to the ID of the parsed value.
-bool LLParser::ParseScope(SyncScope::ID &SSID) {
-*/
+// ref: ParseScope
+//
+//   ::= syncscope("singlethread" | "<target scope>")?
 
 OptSyncScope
 	: empty
 	| "syncscope" "(" string_lit ")"
 ;
 
-/*
-/// ParseOrdering
-///   ::= AtomicOrdering
-///
-/// This sets Ordering to the parsed value.
-bool LLParser::ParseOrdering(AtomicOrdering &Ordering) {
-*/
+// ref: ParseOrdering
+//
+//   ::= AtomicOrdering
 
 AtomicOrdering
 	: "unordered"

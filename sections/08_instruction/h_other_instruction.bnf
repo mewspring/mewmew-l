@@ -88,7 +88,7 @@ VAArgInst
 // ref: ParseLandingPad
 //
 //   ::= 'landingpad' Type 'personality' TypeAndValue 'cleanup'? Clause+
-// Clause
+//  Clause
 //   ::= 'catch' TypeAndValue
 //   ::= 'filter'
 //   ::= 'filter' TypeAndValue ( ',' TypeAndValue )*

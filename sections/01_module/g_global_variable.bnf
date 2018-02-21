@@ -118,7 +118,7 @@ Attr
 //                     OptionalThreadLocal OptionalUnnamedAddr
 //                     'alias|ifunc' IndirectSymbol
 //
-// IndirectSymbol
+//  IndirectSymbol
 //   ::= TypeAndValue
 
 IndirectSymbol

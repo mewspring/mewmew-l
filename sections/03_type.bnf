@@ -16,7 +16,7 @@
 
 Type
 	: VoidType
-	/// Types '(' ArgTypeListI ')' OptFuncAttrs
+	// Types '(' ArgTypeListI ')' OptFuncAttrs
 	| FuncType
 	| FirstClassType
 ;
@@ -66,7 +66,7 @@ FuncType
 // ref: ParseArgumentList
 //
 //   ::= '(' ArgTypeListI ')'
-// ArgTypeListI
+//  ArgTypeListI
 //   ::= empty
 //   ::= '...'
 //   ::= ArgTypeList ',' '...'
