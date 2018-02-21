@@ -539,21 +539,6 @@ OptVolatile
 ;
 
 /*
-/// ParseOptionalCommaAlign
-///   ::=
-///   ::= ',' align 4
-///
-/// This returns with AteExtraComma set to true if it ate an excess comma at the
-/// end.
-bool LLParser::ParseOptionalCommaAlign(unsigned &Alignment,
-*/
-
-OptCommaAlignment
-	: empty
-	| "," Alignment
-;
-
-/*
 /// ParseScope
 ///   ::= syncscope("singlethread" | "<target scope>")?
 ///

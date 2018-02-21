@@ -415,21 +415,6 @@ OptSwiftError
 	| "swifterror"
 ;
 
-/*
-/// ParseOptionalCommaAddrSpace
-///   ::=
-///   ::= ',' addrspace(1)
-///
-/// This returns with AteExtraComma set to true if it ate an excess comma at the
-/// end.
-bool LLParser::ParseOptionalCommaAddrSpace(unsigned &AddrSpace,
-*/
-
-OptCommaAddrSpace
-	: empty
-	| "," AddrSpace
-;
-
 // ~~~ [ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /*
