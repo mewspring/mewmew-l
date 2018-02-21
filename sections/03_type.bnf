@@ -1,28 +1,18 @@
-//===----------------------------------------------------------------------===//
-// Type Parsing.
-//===----------------------------------------------------------------------===//
+// === [ Types ] ===============================================================
 
-/*
-/// ParseType - Parse a type.
-bool LLParser::ParseType(Type *&Result, const Twine &Msg, bool AllowVoid) {
-*/
-
-/*
-  TYPEKEYWORD("void",      Type::getVoidTy(Context));
-  TYPEKEYWORD("half",      Type::getHalfTy(Context));
-  TYPEKEYWORD("float",     Type::getFloatTy(Context));
-  TYPEKEYWORD("double",    Type::getDoubleTy(Context));
-  TYPEKEYWORD("x86_fp80",  Type::getX86_FP80Ty(Context));
-  TYPEKEYWORD("fp128",     Type::getFP128Ty(Context));
-  TYPEKEYWORD("ppc_fp128", Type::getPPC_FP128Ty(Context));
-  TYPEKEYWORD("label",     Type::getLabelTy(Context));
-  TYPEKEYWORD("metadata",  Type::getMetadataTy(Context));
-  TYPEKEYWORD("x86_mmx",   Type::getX86_MMXTy(Context));
-  TYPEKEYWORD("token",     Type::getTokenTy(Context));
-*/
-
-// NOTE: MetadataType has been removed from Type and is instead used directly
-// for metadata values.
+// ref: ParseType
+//
+//  TYPEKEYWORD("void",      Type::getVoidTy(Context));
+//  TYPEKEYWORD("half",      Type::getHalfTy(Context));
+//  TYPEKEYWORD("float",     Type::getFloatTy(Context));
+//  TYPEKEYWORD("double",    Type::getDoubleTy(Context));
+//  TYPEKEYWORD("x86_fp80",  Type::getX86_FP80Ty(Context));
+//  TYPEKEYWORD("fp128",     Type::getFP128Ty(Context));
+//  TYPEKEYWORD("ppc_fp128", Type::getPPC_FP128Ty(Context));
+//  TYPEKEYWORD("label",     Type::getLabelTy(Context));
+//  TYPEKEYWORD("metadata",  Type::getMetadataTy(Context));
+//  TYPEKEYWORD("x86_mmx",   Type::getX86_MMXTy(Context));
+//  TYPEKEYWORD("token",     Type::getTokenTy(Context));
 
 Type
 	: VoidType
@@ -57,9 +47,54 @@ ConcreteType
 	| TokenType
 ;
 
+// --- [ Void Types ] ----------------------------------------------------------
+
 VoidType
 	: "void"
 ;
+
+// --- [ Function Types ] ------------------------------------------------------
+
+// ref: ParseFunctionType
+//
+//  ::= Type ArgumentList OptionalAttrs
+
+FuncType
+	: Type "(" Params ")"
+;
+
+// ref: ParseArgumentList
+//
+//   ::= '(' ArgTypeListI ')'
+// ArgTypeListI
+//   ::= empty
+//   ::= '...'
+//   ::= ArgTypeList ',' '...'
+//   ::= ArgType (',' ArgType)*
+
+Params
+	: empty
+	| "..."
+	| ParamList
+	| ParamList "," "..."
+;
+
+ParamList
+	: Param
+	| ParamList "," Param
+;
+
+Param
+	: Type ParamAttrs
+;
+
+// --- [ Integer Types ] -------------------------------------------------------
+
+IntType
+	: int_type
+;
+
+// --- [ Floating-point Types ] ------------------------------------------------
 
 FloatType
 	: "half"
@@ -70,35 +105,65 @@ FloatType
 	| "ppc_fp128"
 ;
 
-LabelType
-	: "label"
-;
-
-MetadataType
-	: "metadata"
-;
+// --- [ MMX Types ] -----------------------------------------------------------
 
 MMXType
 	: "x86_mmx"
 ;
 
+// --- [ Pointer Types ] -------------------------------------------------------
+
+PointerType
+	: Type OptAddrSpace "*"
+;
+
+// --- [ Vector Types ] --------------------------------------------------------
+
+// ref: ParseArrayVectorType
+//
+//     ::= '<' APSINTVAL 'x' Types '>'
+
+VectorType
+	: "<" int_lit "x" Type ">"
+;
+
+// --- [ Label Types ] ---------------------------------------------------------
+
+LabelType
+	: "label"
+;
+
+// --- [ Token Types ] ---------------------------------------------------------
+
 TokenType
 	: "token"
 ;
 
-IntType
-	: int_type
+// --- [ Metadata Types ] ------------------------------------------------------
+
+MetadataType
+	: "metadata"
 ;
 
-/*
-/// ParseStructType: Handles packed and unpacked types.  </> parsed elsewhere.
-///   StructType
-///     ::= '{' '}'
-///     ::= '{' Type (',' Type)* '}'
-///     ::= '<' '{' '}' '>'
-///     ::= '<' '{' Type (',' Type)* '}' '>'
-bool LLParser::ParseStructBody(SmallVectorImpl<Type*> &Body) {
-*/
+// --- [ Array Types ] ---------------------------------------------------------
+
+// ref: ParseArrayVectorType
+//
+//     ::= '[' APSINTVAL 'x' Types ']'
+
+ArrayType
+	: "[" int_lit "x" Type "]"
+;
+
+// --- [ Structure Types ] -----------------------------------------------------
+
+// ref: ParseStructBody
+//
+//   StructType
+//     ::= '{' '}'
+//     ::= '{' Type (',' Type)* '}'
+//     ::= '<' '{' '}' '>'
+//     ::= '<' '{' Type (',' Type)* '}' '>'
 
 // TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
@@ -123,67 +188,9 @@ Field
 	: Type
 ;
 
-/*
-/// ParseArrayVectorType - Parse an array or vector type, assuming the first
-/// token has already been consumed.
-///   Type
-///     ::= '[' APSINTVAL 'x' Types ']'
-///     ::= '<' APSINTVAL 'x' Types '>'
-bool LLParser::ParseArrayVectorType(Type *&Result, bool isVector) {
-*/
-
-ArrayType
-	: "[" int_lit "x" Type "]"
-;
-
-VectorType
-	: "<" int_lit "x" Type ">"
-;
+// --- [ Named Types ] ---------------------------------------------------------
 
 NamedType
 	: LocalIdent
-;
-
-PointerType
-	: Type OptAddrSpace "*"
-;
-
-/*
-/// ParseFunctionType
-///  ::= Type ArgumentList OptionalAttrs
-bool LLParser::ParseFunctionType(Type *&Result) {
-*/
-
-FuncType
-	: Type "(" Params ")"
-;
-
-/*
-/// ParseArgumentList - Parse the argument list for a function type or function
-/// prototype.
-///   ::= '(' ArgTypeListI ')'
-/// ArgTypeListI
-///   ::= empty
-///   ::= '...'
-///   ::= ArgTypeList ',' '...'
-///   ::= ArgType (',' ArgType)*
-///
-bool LLParser::ParseArgumentList(SmallVectorImpl<ArgInfo> &ArgList,
-*/
-
-Params
-	: empty
-	| "..."
-	| ParamList
-	| ParamList "," "..."
-;
-
-ParamList
-	: Param
-	| ParamList "," Param
-;
-
-Param
-	: Type ParamAttrs
 ;
 
