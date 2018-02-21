@@ -568,3 +568,13 @@ AtomicOrdering
 	| "seq_cst"
 ;
 
+ExceptionScope
+	: "none"
+	| LocalIdent
+;
+
+UnwindTarget
+	: "to" "caller"
+	| LabelType LocalIdent
+;
+

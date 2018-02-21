@@ -1,74 +1,64 @@
 // === [ Terminators ] =========================================================
 
-/*
-/// ParseInstruction - Parse one of the many different instructions.
-///
-int LLParser::ParseInstruction(Instruction *&Inst, BasicBlock *BB,
-*/
+// https://llvm.org/docs/LangRef.html#terminator-instructions
 
-/*
-/// ParseInstructionMetadata
-///   ::= !dbg !42 (',' !dbg !57)*
-bool LLParser::ParseInstructionMetadata(Instruction &Inst) {
-*/
+// ref: ParseInstruction
 
 Terminator
-	: UnreachableTerm
-	| RetTerm
+	: RetTerm
 	| BrTerm
 	| SwitchTerm
 	| IndirectBrTerm
 	| InvokeTerm
 	| ResumeTerm
-	| CleanupRetTerm
-	| CatchRetTerm
 	| CatchSwitchTerm
-;
-
-// --- [ unreachable ] ---------------------------------------------------------
-
-UnreachableTerm
-	: "unreachable"
+	| CatchRetTerm
+	| CleanupRetTerm
+	| UnreachableTerm
 ;
 
 // --- [ ret ] -----------------------------------------------------------------
 
-/*
-/// ParseRet - Parse a return instruction.
-///   ::= 'ret' void (',' !dbg, !1)*
-///   ::= 'ret' TypeAndValue (',' !dbg, !1)*
-bool LLParser::ParseRet(Instruction *&Inst, BasicBlock *BB,
-*/
+// https://llvm.org/docs/LangRef.html#ret-instruction
+
+// ref: ParseRet
+//
+//   ::= 'ret' void (',' !dbg, !1)*
+//   ::= 'ret' TypeAndValue (',' !dbg, !1)*
 
 RetTerm
+	// Void return.
 	: "ret" VoidType OptCommaMetadataAttachmentList
+	// Value return.
 	| "ret" ConcreteType Value OptCommaMetadataAttachmentList
 ;
 
 // --- [ br ] ------------------------------------------------------------------
 
-/*
-/// ParseBr
-///   ::= 'br' TypeAndValue
-///   ::= 'br' TypeAndValue ',' TypeAndValue ',' TypeAndValue
-bool LLParser::ParseBr(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#br-instruction
+
+// ref: ParseBr
+//
+//   ::= 'br' TypeAndValue
+//   ::= 'br' TypeAndValue ',' TypeAndValue ',' TypeAndValue
 
 BrTerm
+	// Unconditional branch.
 	: "br" LabelType LocalIdent OptCommaMetadataAttachmentList
+	// Conditional branch.
 	| "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaMetadataAttachmentList
 ;
 
+
 // --- [ switch ] --------------------------------------------------------------
 
-/*
-/// ParseSwitch
-///  Instruction
-///    ::= 'switch' TypeAndValue ',' TypeAndValue '[' JumpTable ']'
-///  JumpTable
-///    ::= (TypeAndValue ',' TypeAndValue)*
-bool LLParser::ParseSwitch(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#switch-instruction
+
+// ref: ParseSwitch
+//
+//    ::= 'switch' TypeAndValue ',' TypeAndValue '[' JumpTable ']'
+//  JumpTable
+//    ::= (TypeAndValue ',' TypeAndValue)*
 
 SwitchTerm
 	: "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaMetadataAttachmentList
@@ -90,12 +80,11 @@ Case
 
 // --- [ indirectbr ] ----------------------------------------------------------
 
-/*
-/// ParseIndirectBr
-///  Instruction
-///    ::= 'indirectbr' TypeAndValue ',' '[' LabelList ']'
-bool LLParser::ParseIndirectBr(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#indirectbr-instruction
+
+// ref: ParseIndirectBr
+//
+//    ::= 'indirectbr' TypeAndValue ',' '[' LabelList ']'
 
 IndirectBrTerm
 	: "indirectbr" Type Value "," "[" LabelList "]" OptCommaMetadataAttachmentList
@@ -112,12 +101,12 @@ Label
 
 // --- [ invoke ] --------------------------------------------------------------
 
-/*
-/// ParseInvoke
-///   ::= 'invoke' OptionalCallingConv OptionalAttrs Type Value ParamList
-///       OptionalAttrs 'to' TypeAndValue 'unwind' TypeAndValue
-bool LLParser::ParseInvoke(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#invoke-instruction
+
+// ref: ParseInvoke
+//
+//   ::= 'invoke' OptionalCallingConv OptionalAttrs Type Value ParamList
+//       OptionalAttrs 'to' TypeAndValue 'unwind' TypeAndValue
 
 InvokeTerm
 	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaMetadataAttachmentList
@@ -125,59 +114,59 @@ InvokeTerm
 
 // --- [ resume ] --------------------------------------------------------------
 
-/*
-/// ParseResume
-///   ::= 'resume' TypeAndValue
-bool LLParser::ParseResume(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#resume-instruction
+
+// ref: ParseResume
+//
+//   ::= 'resume' TypeAndValue
 
 ResumeTerm
 	: "resume" Type Value OptCommaMetadataAttachmentList
 ;
 
-// --- [ cleanupret ] ----------------------------------------------------------
-
-/*
-/// ParseCleanupRet
-///   ::= 'cleanupret' from Value unwind ('to' 'caller' | TypeAndValue)
-bool LLParser::ParseCleanupRet(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-CleanupRetTerm
-	: "cleanupret" "from" Value "unwind" UnwindTarget OptCommaMetadataAttachmentList
-;
-
-UnwindTarget
-	: "to" "caller"
-	| LabelType LocalIdent
-;
-
-// --- [ catchret ] ------------------------------------------------------------
-
-/*
-/// ParseCatchRet
-///   ::= 'catchret' from Parent Value 'to' TypeAndValue
-bool LLParser::ParseCatchRet(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-CatchRetTerm
-	: "catchret" "from" Value "to" LabelType LocalIdent OptCommaMetadataAttachmentList
-;
-
 // --- [ catchswitch ] ---------------------------------------------------------
 
-/*
-/// ParseCatchSwitch
-///   ::= 'catchswitch' within Parent
-bool LLParser::ParseCatchSwitch(Instruction *&Inst, PerFunctionState &PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#catchswitch-instruction
+
+// ref: ParseCatchSwitch
+//
+//   ::= 'catchswitch' within Parent
 
 CatchSwitchTerm
 	: "catchswitch" "within" ExceptionScope Value "[" LabelList "]" "unwind" UnwindTarget OptCommaMetadataAttachmentList
 ;
 
-ExceptionScope
-	: "none"
-	| LocalIdent
+// --- [ catchret ] ------------------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#catchret-instruction
+
+// ref: ParseCatchRet
+//
+//   ::= 'catchret' from Parent Value 'to' TypeAndValue
+
+CatchRetTerm
+	: "catchret" "from" Value "to" LabelType LocalIdent OptCommaMetadataAttachmentList
+;
+
+// --- [ cleanupret ] ----------------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#cleanupret-instruction
+
+// ref: ParseCleanupRet
+//
+//   ::= 'cleanupret' from Value unwind ('to' 'caller' | TypeAndValue)
+
+CleanupRetTerm
+	: "cleanupret" "from" Value "unwind" UnwindTarget OptCommaMetadataAttachmentList
+;
+
+// --- [ unreachable ] ---------------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#unreachable-instruction
+
+// ref: ParseInstruction
+
+UnreachableTerm
+	: "unreachable"
 ;
 

@@ -616,18 +616,6 @@ CleanupPadInst
 	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" OptCommaMetadataAttachmentList
 ;
 
-// --- [ catchpad ] ------------------------------------------------------------
-
-/*
-/// ParseCatchPad
-///   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
-bool LLParser::ParseCatchPad(Instruction *&Inst, PerFunctionState &PFS) {
-*/
-
-CatchPadInst
-	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaMetadataAttachmentList
-;
-
 /*
 bool LLParser::ParseExceptionArgs(SmallVectorImpl<Value *> &Args,
 */
@@ -645,5 +633,17 @@ ExceptionArgList
 ExceptionArg
 	: ConcreteType Value
 	| MetadataType Metadata
+;
+
+// --- [ catchpad ] ------------------------------------------------------------
+
+/*
+/// ParseCatchPad
+///   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
+bool LLParser::ParseCatchPad(Instruction *&Inst, PerFunctionState &PFS) {
+*/
+
+CatchPadInst
+	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaMetadataAttachmentList
 ;
 

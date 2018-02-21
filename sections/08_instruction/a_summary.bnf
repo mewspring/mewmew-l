@@ -1,10 +1,8 @@
 // === [ Instructions ] ========================================================
 
-/*
-/// ParseInstruction - Parse one of the many different instructions.
-///
-int LLParser::ParseInstruction(Instruction *&Inst, BasicBlock *BB,
-*/
+// https://llvm.org/docs/LangRef.html#instruction-reference
+
+// ref: ParseInstruction
 
 Instructions
 	: empty
@@ -17,10 +15,12 @@ InstructionList
 ;
 
 Instruction
+	// Instructions not producing values.
 	: StoreInst
 	| FenceInst
 	| CmpXchgInst
 	| AtomicRMWInst
+	// Instructions producing values.
 	| LocalIdent "=" ValueInstruction
 	| ValueInstruction
 ;

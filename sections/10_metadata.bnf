@@ -1,14 +1,6 @@
-/*
-/// ParseGlobalObjectMetadataAttachment
-///   ::= !dbg !57
-bool LLParser::ParseGlobalObjectMetadataAttachment(GlobalObject &GO) {
-*/
-
-/*
-/// ParseMetadataAttachment
-///   ::= !dbg !42
-bool LLParser::ParseMetadataAttachment(unsigned &Kind, MDNode *&MD) {
-*/
+// ref: ParseInstructionMetadata
+//
+//   ::= !dbg !42 (',' !dbg !57)*
 
 OptCommaMetadataAttachmentList
 	: empty
@@ -29,6 +21,14 @@ MetadataAttachmentList
 	: MetadataAttachment
 	| MetadataAttachmentList MetadataAttachment
 ;
+
+// ref: ParseGlobalObjectMetadataAttachment
+//
+//   ::= !dbg !57
+
+// ref: ParseMetadataAttachment
+//
+//   ::= !dbg !42
 
 MetadataAttachment
 	: MetadataName MDNode
