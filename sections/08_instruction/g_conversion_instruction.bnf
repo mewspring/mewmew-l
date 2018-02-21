@@ -7,7 +7,7 @@
 //   ::= CastOpc TypeAndValue 'to' Type
 
 TruncInst
-	: "trunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,7 +17,7 @@ TruncInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 ZExtInst
-	: "zext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,7 +27,7 @@ ZExtInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 SExtInst
-	: "sext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,7 +37,7 @@ SExtInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 FPTruncInst
-	: "fptrunc" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +47,7 @@ FPTruncInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 FPExtInst
-	: "fpext" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,7 @@ FPExtInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 FPToUIInst
-	: "fptoui" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +67,7 @@ FPToUIInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 FPToSIInst
-	: "fptosi" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,7 +77,7 @@ FPToSIInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 UIToFPInst
-	: "uitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,7 +87,7 @@ UIToFPInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 SIToFPInst
-	: "sitofp" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,7 +97,7 @@ SIToFPInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 PtrToIntInst
-	: "ptrtoint" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,7 +107,7 @@ PtrToIntInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 IntToPtrInst
-	: "inttoptr" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ IntToPtrInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 BitCastInst
-	: "bitcast" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,6 +127,6 @@ BitCastInst
 //   ::= CastOpc TypeAndValue 'to' Type
 
 AddrSpaceCastInst
-	: "addrspacecast" Type Value "to" Value OptCommaSepMetadataAttachmentList
+	: "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 ;
 

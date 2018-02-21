@@ -32,7 +32,7 @@ PhiInst
 
 IncList
 	: Inc
-	| IncList Inc
+	| IncList "," Inc
 ;
 
 Inc
@@ -63,7 +63,7 @@ SelectInst
 //           OptionalAttrs Type Value ParameterList OptionalAttrs
 
 CallInst
-	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
+	: OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
 ;
 
 OptTail

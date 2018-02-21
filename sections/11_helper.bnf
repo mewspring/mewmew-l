@@ -275,6 +275,7 @@ FuncAttr
 	: "builtin"
 	| AttrGroupID // not used in attribute groups.
 	| string_lit
+	| string_lit "=" string_lit
 	| "align" "=" int_lit // used in attribute groups.
 	| Alignment // used in functions.
 	| "alignstack" "=" int_lit

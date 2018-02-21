@@ -19,7 +19,7 @@ sections/10_metadata.bnf: sections/10_metadata/a_summary.bnf sections/10_metadat
 	cat $^ > $@
 
 gen: ll.bnf
-	gocc -v ll.bnf
+	gocc -zip ll.bnf
 
 clean:
 	rm -f ll.bnf sections/syntax.bnf sections/01_module.bnf sections/06_constant_expression.bnf sections/08_instruction.bnf sections/10_metadata.bnf
