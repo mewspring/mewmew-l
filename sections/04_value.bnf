@@ -1,3 +1,7 @@
+// === [ Values ] ==============================================================
+
+// ref: ParseValue
+
 Value
 	: Constant
 	// %42
@@ -10,10 +14,10 @@ Value
 
 // https://llvm.org/docs/LangRef.html#inline-assembler-expressions
 
-/*
-// ValID ::= 'asm' SideEffect? AlignStack? IntelDialect? STRINGCONSTANT ','
+// ref: ParseValID
+//
+//  ::= 'asm' SideEffect? AlignStack? IntelDialect? STRINGCONSTANT ','
 //             STRINGCONSTANT
-*/
 
 InlineAsm
 	: "asm" OptSideEffect OptAlignStack OptIntelDialect string_lit "," string_lit

@@ -1,8 +1,8 @@
 // === [ Basic blocks ] ========================================================
 
-/*
-ParseBasicBlock
-*/
+// ref: ParseBasicBlock
+//
+//   ::= LabelStr? Instruction*
 
 BasicBlockList
 	: BasicBlock
