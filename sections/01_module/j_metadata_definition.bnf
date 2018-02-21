@@ -2,11 +2,9 @@
 
 // https://llvm.org/docs/LangRef.html#named-metadata
 
-/*
-/// ParseNamedMetadata:
-///   !foo = !{ !1, !2 }
-bool LLParser::ParseNamedMetadata() {
-*/
+// ref: ParseNamedMetadata
+//
+//   !foo = !{ !1, !2 }
 
 NamedMetadataDef
 	: MetadataName "=" "!" "{" MetadataNodes "}"
