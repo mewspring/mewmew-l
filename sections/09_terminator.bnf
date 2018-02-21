@@ -109,7 +109,7 @@ Label
 //       OptionalAttrs 'to' TypeAndValue 'unwind' TypeAndValue
 
 InvokeTerm
-	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 ;
 
 // --- [ resume ] --------------------------------------------------------------

@@ -438,16 +438,16 @@ Dereferenceable
 ///    ::= Type OptionalAttributes Value OptionalAttributes
 bool LLParser::ParseParameterList(SmallVectorImpl<ParamInfo> &ArgList,
 */
-Params
+Args
 	: empty
 	| "..."
-	| ParamList
-	| ParamList "," "..."
+	| ArgList
+	| ArgList "," "..."
 ;
 
-ParamList
-	: Param
-	| ParamList "," Param
+ArgList
+	: Arg
+	| ArgList "," Arg
 ;
 
 /*
@@ -461,7 +461,7 @@ ParamList
 bool LLParser::ParseMetadataAsValue(Value *&V, PerFunctionState &PFS) {
 */
 
-Param
+Arg
 	: ConcreteType ParamAttrs Value
 	| MetadataType Metadata
 ;

@@ -63,7 +63,7 @@ SelectInst
 //           OptionalAttrs Type Value ParameterList OptionalAttrs
 
 CallInst
-	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
+	: "call" OptTail FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
 ;
 
 OptTail

@@ -155,7 +155,7 @@ bool LLParser::ParseFunctionType(Type *&Result) {
 */
 
 FuncType
-	: Type "(" Args ")"
+	: Type "(" Params ")"
 ;
 
 /*
@@ -171,19 +171,19 @@ FuncType
 bool LLParser::ParseArgumentList(SmallVectorImpl<ArgInfo> &ArgList,
 */
 
-Args
+Params
 	: empty
 	| "..."
-	| ArgList
-	| ArgList "," "..."
+	| ParamList
+	| ParamList "," "..."
 ;
 
-ArgList
-	: Arg
-	| ArgList "," Arg
+ParamList
+	: Param
+	| ParamList "," Param
 ;
 
-Arg
+Param
 	: Type ParamAttrs
 ;
 
