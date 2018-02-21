@@ -1,53 +1,108 @@
 // --- [ Conversion expressions ] ----------------------------------------------
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 TruncExpr
 	: "trunc" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 ZExtExpr
 	: "zext" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 SExtExpr
 	: "sext" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 FPTruncExpr
 	: "fptrunc" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 FPExtExpr
 	: "fpext" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 FPToUIExpr
 	: "fptoui" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 FPToSIExpr
 	: "fptosi" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 UIToFPExpr
 	: "uitofp" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 SIToFPExpr
 	: "sitofp" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 PtrToIntExpr
 	: "ptrtoint" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 IntToPtrExpr
 	: "inttoptr" "(" Type Constant "to" Type ")"
 ;
+
+// ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 BitCastExpr
 	: "bitcast" "(" Type Constant "to" Type ")"
 ;
 
+// ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 AddrSpaceCastExpr
 	: "addrspacecast" "(" Type Constant "to" Type ")"
 ;
+

@@ -1,15 +1,19 @@
 // --- [ Memory expressions ] --------------------------------------------------
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 GetElementPtrExpr
 	: "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
 ;
 
-/*
-/// ParseGlobalValueVector
-///   ::= empty
-///   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
-bool LLParser::ParseGlobalValueVector(SmallVectorImpl<Constant *> &Elts,
-*/
+// ref: ParseGlobalValueVector
+//
+//   ::= empty
+//   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
 
 GEPConstIndices
 	: empty

@@ -1,69 +1,87 @@
-//===----------------------------------------------------------------------===//
-// Constants.
-//===----------------------------------------------------------------------===//
+// === [ Constants ] ===========================================================
 
-/*
-/// ParseValID - Parse an abstract value that doesn't necessarily have a
-/// type implied.  For example, if we parse "4" we don't know what integer type
-/// it has.  The value will later be combined with its type and checked for
-/// sanity.  PFS is used to convert function-local operands of metadata (since
-/// metadata operands are not just parsed here but also converted to values).
-/// PFS can be null when we are not parsing metadata values inside a function.
-bool LLParser::ParseValID(ValID &ID, PerFunctionState *PFS) {
-*/
+// https://llvm.org/docs/LangRef.html#constants
+
+// ref: ParseValID
 
 Constant
-	// @42
-	// @foo
-	: GlobalIdent
+	: BoolConst
 	| IntConst
 	| FloatConst
-	| BoolConst
 	| NullConst
-	| UndefConst
-	| ZeroInitializerConst
 	| NoneConst
-	// ValID ::= '{' ConstVector '}'
-	// ValID ::= '<' '{' ConstVector '}' '>' --> Packed Struct.
 	| StructConst
 	| ArrayConst
-	// c "foo"
 	| CharArrayConst
-	// ValID ::= '<' ConstVector '>'         --> Vector.
 	| VectorConst
-	// ValID ::= 'blockaddress' '(' @foo ',' %bar ')'
+	| ZeroInitializerConst
+	// @42
+	// @foo
+	| GlobalIdent
+	| UndefConst
 	| BlockAddressConst
 	| ConstantExpr
 ;
 
-IntConst
-	: int_lit
-;
+// --- [ Boolean Constants ] ---------------------------------------------------
 
-FloatConst
-	: float_lit
-;
+// https://llvm.org/docs/LangRef.html#simple-constants
+
+// ref: ParseValID
 
 BoolConst
 	: "true"
 	| "false"
 ;
 
+// --- [ Integer Constants ] ---------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#simple-constants
+
+// ref: ParseValID
+
+IntConst
+	: int_lit
+;
+
+// --- [ Floating-point Constants ] --------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#simple-constants
+
+// ref: ParseValID
+
+FloatConst
+	: float_lit
+;
+
+// --- [ Null Pointer Constants ] ----------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#simple-constants
+
+// ref: ParseValID
+
 NullConst
 	: "null"
 ;
 
-UndefConst
-	: "undef"
-;
+// --- [ Token Constants ] -----------------------------------------------------
 
-ZeroInitializerConst
-	: "zeroinitializer"
-;
+// https://llvm.org/docs/LangRef.html#simple-constants
+
+// ref: ParseValID
 
 NoneConst
 	: "none"
 ;
+
+// --- [ Structure Constants ] -------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#complex-constants
+
+// ref: ParseValID
+//
+//  ::= '{' ConstVector '}'
+//  ::= '<' '{' ConstVector '}' '>' --> Packed Struct.
 
 // TODO: Simplify when parser generator is not limited by 1 token lookahead.
 //
@@ -79,6 +97,14 @@ StructConst
 	| "<" "{" ElemList "}" ">"
 ;
 
+// --- [ Array Constants ] -----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#complex-constants
+
+// ref: ParseValID
+//
+//  c "foo"
+
 ArrayConst
 	: "[" Elems "]"
 ;
@@ -87,13 +113,45 @@ CharArrayConst
 	: "c" string_lit
 ;
 
+// --- [ Vector Constants ] ----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#complex-constants
+
+// ref: ParseValID
+//
+//  ::= '<' ConstVector '>'         --> Vector.
+
 VectorConst
 	: "<" Elems ">"
+;
+
+// --- [ Zero Initialization Constants ] ---------------------------------------
+
+// https://llvm.org/docs/LangRef.html#complex-constants
+
+// ref: ParseValID
+
+ZeroInitializerConst
+	: "zeroinitializer"
+;
+
+// --- [ Undefined Values ] ----------------------------------------------------
+
+// https://llvm.org/docs/LangRef.html#undefined-values
+
+// ref: ParseValID
+
+UndefConst
+	: "undef"
 ;
 
 // --- [ Addresses of Basic Blocks ] -------------------------------------------
 
 // https://llvm.org/docs/LangRef.html#addresses-of-basic-blocks
+
+// ref: ParseValID
+//
+//  ::= 'blockaddress' '(' @foo ',' %bar ')'
 
 BlockAddressConst
 	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"

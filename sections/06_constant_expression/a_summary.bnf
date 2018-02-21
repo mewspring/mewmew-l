@@ -1,5 +1,9 @@
 // === [ Constant expressions ] ================================================
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ref: ParseValID
+
 ConstantExpr
 	// Binary expressions
 	: AddExpr
@@ -49,3 +53,4 @@ ConstantExpr
 	| FCmpExpr
 	| SelectExpr
 ;
+

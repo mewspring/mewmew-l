@@ -1,8 +1,18 @@
 // --- [ Aggregate expressions ] -----------------------------------------------
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 ExtractValueExpr
 	: "extractvalue" "(" Type Constant Indices ")"
 ;
+
+// ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 InsertValueExpr
 	: "insertvalue" "(" Type Constant "," Type Constant Indices ")"

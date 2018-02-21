@@ -1,24 +1,50 @@
 // --- [ Bitwise expressions ] -------------------------------------------------
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 ShlExpr
 	: "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
 ;
+
+// ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 LShrExpr
 	: "lshr" OptExact "(" Type Constant "," Type Constant ")"
 ;
 
+// ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 AShrExpr
 	: "ashr" OptExact "(" Type Constant "," Type Constant ")"
 ;
+
+// ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 AndExpr
 	: "and" "(" Type Constant "," Type Constant ")"
 ;
 
+// ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 OrExpr
 	: "or" "(" Type Constant "," Type Constant ")"
 ;
+
+// ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 XorExpr
 	: "xor" "(" Type Constant "," Type Constant ")"

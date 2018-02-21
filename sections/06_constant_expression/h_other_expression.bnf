@@ -1,12 +1,26 @@
 // --- [ Other expressions ] ---------------------------------------------------
 
+// https://llvm.org/docs/LangRef.html#constant-expressions
+
+// ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 ICmpExpr
 	: "icmp" IPred "(" Type Constant "," Type Constant ")"
 ;
 
+// ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
+
 FCmpExpr
 	: "fcmp" FPred "(" Type Constant "," Type Constant ")"
 ;
+
+// ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// ref: ParseValID
 
 SelectExpr
 	: "select" "(" Type Constant "," Type Constant "," Type Constant ")"
