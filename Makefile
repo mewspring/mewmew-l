@@ -16,10 +16,11 @@ sections/08_instruction.bnf: sections/08_instruction/a_summary.bnf sections/08_i
 	cat $^ > $@
 
 gen: ll.bnf
-	gocc ll.bnf
+	gocc -zip ll.bnf
 
 clean:
 	rm -f ll.bnf sections/syntax.bnf sections/01_module.bnf sections/06_constant_expression.bnf sections/08_instruction.bnf
 	rm -rf errors lexer parser token util
+	rm -f LR1_conflicts.txt LR1_sets.txt first.txt lexer_sets.txt terminals.txt
 
 .PHONY: all gen clean
