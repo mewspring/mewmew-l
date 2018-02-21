@@ -16,10 +16,10 @@ InstructionList
 
 Instruction
 	// Instructions not producing values.
-	: StoreInst
-	| FenceInst
-	| CmpXchgInst
-	| AtomicRMWInst
+	: StoreInst OptCommaSepMetadataAttachmentList
+	| FenceInst OptCommaSepMetadataAttachmentList
+	| CmpXchgInst OptCommaSepMetadataAttachmentList
+	| AtomicRMWInst OptCommaSepMetadataAttachmentList
 	// Instructions producing values.
 	| LocalIdent "=" ValueInstruction
 	| ValueInstruction
@@ -27,59 +27,59 @@ Instruction
 
 ValueInstruction
 	// Binary instructions
-	: AddInst
-	| FAddInst
-	| SubInst
-	| FSubInst
-	| MulInst
-	| FMulInst
-	| UDivInst
-	| SDivInst
-	| FDivInst
-	| URemInst
-	| SRemInst
-	| FRemInst
+	: AddInst OptCommaSepMetadataAttachmentList
+	| FAddInst OptCommaSepMetadataAttachmentList
+	| SubInst OptCommaSepMetadataAttachmentList
+	| FSubInst OptCommaSepMetadataAttachmentList
+	| MulInst OptCommaSepMetadataAttachmentList
+	| FMulInst OptCommaSepMetadataAttachmentList
+	| UDivInst OptCommaSepMetadataAttachmentList
+	| SDivInst OptCommaSepMetadataAttachmentList
+	| FDivInst OptCommaSepMetadataAttachmentList
+	| URemInst OptCommaSepMetadataAttachmentList
+	| SRemInst OptCommaSepMetadataAttachmentList
+	| FRemInst OptCommaSepMetadataAttachmentList
 	// Bitwise instructions
-	| ShlInst
-	| LShrInst
-	| AShrInst
-	| AndInst
-	| OrInst
-	| XorInst
+	| ShlInst OptCommaSepMetadataAttachmentList
+	| LShrInst OptCommaSepMetadataAttachmentList
+	| AShrInst OptCommaSepMetadataAttachmentList
+	| AndInst OptCommaSepMetadataAttachmentList
+	| OrInst OptCommaSepMetadataAttachmentList
+	| XorInst OptCommaSepMetadataAttachmentList
 	// Vector instructions
-	| ExtractElementInst
-	| InsertElementInst
-	| ShuffleVectorInst
+	| ExtractElementInst OptCommaSepMetadataAttachmentList
+	| InsertElementInst OptCommaSepMetadataAttachmentList
+	| ShuffleVectorInst OptCommaSepMetadataAttachmentList
 	// Aggregate instructions
-	| ExtractValueInst
-	| InsertValueInst
+	| ExtractValueInst OptCommaSepMetadataAttachmentList
+	| InsertValueInst OptCommaSepMetadataAttachmentList
 	// Memory instructions
-	| AllocaInst
-	| LoadInst
-	| GetElementPtrInst
+	| AllocaInst OptCommaSepMetadataAttachmentList
+	| LoadInst OptCommaSepMetadataAttachmentList
+	| GetElementPtrInst OptCommaSepMetadataAttachmentList
 	// Conversion instructions
-	| TruncInst
-	| ZExtInst
-	| SExtInst
-	| FPTruncInst
-	| FPExtInst
-	| FPToUIInst
-	| FPToSIInst
-	| UIToFPInst
-	| SIToFPInst
-	| PtrToIntInst
-	| IntToPtrInst
-	| BitCastInst
-	| AddrSpaceCastInst
+	| TruncInst OptCommaSepMetadataAttachmentList
+	| ZExtInst OptCommaSepMetadataAttachmentList
+	| SExtInst OptCommaSepMetadataAttachmentList
+	| FPTruncInst OptCommaSepMetadataAttachmentList
+	| FPExtInst OptCommaSepMetadataAttachmentList
+	| FPToUIInst OptCommaSepMetadataAttachmentList
+	| FPToSIInst OptCommaSepMetadataAttachmentList
+	| UIToFPInst OptCommaSepMetadataAttachmentList
+	| SIToFPInst OptCommaSepMetadataAttachmentList
+	| PtrToIntInst OptCommaSepMetadataAttachmentList
+	| IntToPtrInst OptCommaSepMetadataAttachmentList
+	| BitCastInst OptCommaSepMetadataAttachmentList
+	| AddrSpaceCastInst OptCommaSepMetadataAttachmentList
 	// Other instructions
-	| ICmpInst
-	| FCmpInst
-	| PhiInst
-	| SelectInst
-	| CallInst
-	| VAArgInst
-	| LandingPadInst
-	| CatchPadInst
-	| CleanupPadInst
+	| ICmpInst OptCommaSepMetadataAttachmentList
+	| FCmpInst OptCommaSepMetadataAttachmentList
+	| PhiInst OptCommaSepMetadataAttachmentList
+	| SelectInst OptCommaSepMetadataAttachmentList
+	| CallInst OptCommaSepMetadataAttachmentList
+	| VAArgInst OptCommaSepMetadataAttachmentList
+	| LandingPadInst OptCommaSepMetadataAttachmentList
+	| CatchPadInst OptCommaSepMetadataAttachmentList
+	| CleanupPadInst OptCommaSepMetadataAttachmentList
 ;
 

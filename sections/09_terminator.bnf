@@ -5,16 +5,16 @@
 // ref: ParseInstruction
 
 Terminator
-	: RetTerm
-	| BrTerm
-	| SwitchTerm
-	| IndirectBrTerm
-	| InvokeTerm
-	| ResumeTerm
-	| CatchSwitchTerm
-	| CatchRetTerm
-	| CleanupRetTerm
-	| UnreachableTerm
+	: RetTerm OptCommaSepMetadataAttachmentList
+	| BrTerm OptCommaSepMetadataAttachmentList
+	| SwitchTerm OptCommaSepMetadataAttachmentList
+	| IndirectBrTerm OptCommaSepMetadataAttachmentList
+	| InvokeTerm OptCommaSepMetadataAttachmentList
+	| ResumeTerm OptCommaSepMetadataAttachmentList
+	| CatchSwitchTerm OptCommaSepMetadataAttachmentList
+	| CatchRetTerm OptCommaSepMetadataAttachmentList
+	| CleanupRetTerm OptCommaSepMetadataAttachmentList
+	| UnreachableTerm OptCommaSepMetadataAttachmentList
 ;
 
 // --- [ ret ] -----------------------------------------------------------------
@@ -28,9 +28,9 @@ Terminator
 
 RetTerm
 	// Void return.
-	: "ret" VoidType OptCommaSepMetadataAttachmentList
+	: "ret" VoidType
 	// Value return.
-	| "ret" ConcreteType Value OptCommaSepMetadataAttachmentList
+	| "ret" ConcreteType Value
 ;
 
 // --- [ br ] ------------------------------------------------------------------
@@ -44,9 +44,9 @@ RetTerm
 
 BrTerm
 	// Unconditional branch.
-	: "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	: "br" LabelType LocalIdent
 	// Conditional branch.
-	| "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	| "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent
 ;
 
 
@@ -61,7 +61,7 @@ BrTerm
 //    ::= (TypeAndValue ',' TypeAndValue)*
 
 SwitchTerm
-	: "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
+	: "switch" Type Value "," LabelType LocalIdent "[" Cases "]"
 ;
 
 Cases
@@ -87,7 +87,7 @@ Case
 //    ::= 'indirectbr' TypeAndValue ',' '[' LabelList ']'
 
 IndirectBrTerm
-	: "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
+	: "indirectbr" Type Value "," "[" LabelList "]"
 ;
 
 LabelList
@@ -109,7 +109,7 @@ Label
 //       OptionalAttrs 'to' TypeAndValue 'unwind' TypeAndValue
 
 InvokeTerm
-	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Params ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent
 ;
 
 // --- [ resume ] --------------------------------------------------------------
@@ -121,7 +121,7 @@ InvokeTerm
 //   ::= 'resume' TypeAndValue
 
 ResumeTerm
-	: "resume" Type Value OptCommaSepMetadataAttachmentList
+	: "resume" Type Value
 ;
 
 // --- [ catchswitch ] ---------------------------------------------------------
@@ -133,7 +133,7 @@ ResumeTerm
 //   ::= 'catchswitch' within Parent
 
 CatchSwitchTerm
-	: "catchswitch" "within" ExceptionScope Value "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	: "catchswitch" "within" ExceptionScope Value "[" LabelList "]" "unwind" UnwindTarget
 ;
 
 // --- [ catchret ] ------------------------------------------------------------
@@ -145,7 +145,7 @@ CatchSwitchTerm
 //   ::= 'catchret' from Parent Value 'to' TypeAndValue
 
 CatchRetTerm
-	: "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	: "catchret" "from" Value "to" LabelType LocalIdent
 ;
 
 // --- [ cleanupret ] ----------------------------------------------------------
@@ -157,7 +157,7 @@ CatchRetTerm
 //   ::= 'cleanupret' from Value unwind ('to' 'caller' | TypeAndValue)
 
 CleanupRetTerm
-	: "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	: "cleanupret" "from" Value "unwind" UnwindTarget
 ;
 
 // --- [ unreachable ] ---------------------------------------------------------
