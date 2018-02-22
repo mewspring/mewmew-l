@@ -25,9 +25,9 @@ MDElementList
 ;
 
 MDElement
-	: Metadata
 	// Null is a special case since it is typeless.
-	| "null"
+	: "null"
+	| Metadata
 ;
 
 // --- [ Metadata ] ------------------------------------------------------------
@@ -43,13 +43,13 @@ MDElement
 //  ::= !DILocation(...)
 
 Metadata
-	: SpecializedMDNode
-	| Type Value
+	: Type Value
 	| MDString
 	// !{ ... }
 	| MDTuple
 	// !7
 	| MetadataID
+	| SpecializedMDNode
 ;
 
 // --- [ Metadata String ] -----------------------------------------------------
@@ -81,11 +81,11 @@ MetadataAttachment
 //  ::= !DILocation(...)
 
 MDNode
-	: SpecializedMDNode
 	// !{ ... }
-	| MDTuple
+	: MDTuple
 	// !42
 	| MetadataID
+	| SpecializedMDNode
 ;
 
 // ### [ Helper productions ] ##################################################
