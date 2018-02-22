@@ -14,9 +14,7 @@ type MDField interface {
 	isMDField()
 }
 
-type MDNull struct{}
-
-func (MDNull) isMDField() {}
+func (NullConst) isMDField() {}
 
 // Metadata
 func (MDTypeValue) isMDField() {}
@@ -508,7 +506,7 @@ type IntOrMDField interface {
 func (IntConst) isIntOrMDField() {}
 
 // MDField
-func (MDNull) isIntOrMDField() {}
+func (NullConst) isIntOrMDField() {}
 
 // Metadata
 func (MDTypeValue) isIntOrMDField() {}

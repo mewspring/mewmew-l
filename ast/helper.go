@@ -274,3 +274,54 @@ func (Alignment) isParamAttribute()       {}
 func (Dereferenceable) isParamAttribute() {}
 func (ParamAttrString) isParamAttribute() {}
 func (ParamAttr) isParamAttribute()       {}
+
+//go:generate stringer -linecomment -type IPred
+
+type IPred uint8
+
+// Integer predicates.
+const (
+	IPredEQ  IPred = iota // eq
+	IPredNE               // ne
+	IPredUGT              // ugt
+	IPredUGE              // uge
+	IPredULT              // ult
+	IPredULE              // ule
+	IPredSGT              // sgt
+	IPredSGE              // sge
+	IPredSLT              // slt
+	IPredSLE              // sle
+)
+
+//go:generate stringer -linecomment -type FPred
+
+type FPred uint8
+
+// Floating-point predicates.
+const (
+	FPredFalse FPred = iota // false
+	FPredOEQ                // oeq
+	FPredOGT                // ogt
+	FPredOGE                // oge
+	FPredOLT                // olt
+	FPredOLE                // ole
+	FPredONE                // one
+	FPredORD                // ord
+	FPredUEQ                // ueq
+	FPredUGT                // ugt
+	FPredUGE                // uge
+	FPredULT                // ult
+	FPredULE                // ule
+	FPredUNE                // une
+	FPredUNO                // uno
+	FPredTrue               // true
+)
+
+//go:generate stringer -linecomment -type OverflowFlag
+
+type OverflowFlag uint8
+
+const (
+	OverflowFlagNUW OverflowFlag = iota // nuw
+	OverflowFlagNSW                     // nsw
+)
