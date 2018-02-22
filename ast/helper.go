@@ -325,3 +325,72 @@ const (
 	OverflowFlagNUW OverflowFlag = iota // nuw
 	OverflowFlagNSW                     // nsw
 )
+
+type TypeValue struct {
+	Type  Type
+	Value Value
+}
+
+type SyncScope string
+
+func (s SyncScope) String() string {
+	return fmt.Sprintf("syncscope(%q)", string(s))
+}
+
+//go:generate stringer -linecomment -type AtomicOrdering
+
+type AtomicOrdering uint8
+
+const (
+	AtomicOrderingNone      AtomicOrdering = iota // none
+	AtomicOrderingUnordered                       // unordered
+	AtomicOrderingMonotonic                       // monotonic
+	AtomicOrderingAcquire                         // acquire
+	AtomicOrderingRelease                         // release
+	AtomicOrderingAcqRel                          // acq_rel
+	AtomicOrderingSeqCst                          // seq_cst
+)
+
+type ExceptionScope interface {
+	isExceptionScope()
+}
+
+func (NoneConst) isExceptionScope()  {}
+func (LocalIdent) isExceptionScope() {}
+
+type Argument interface {
+	isArgument()
+}
+
+type Arg struct {
+	X          TypeValue
+	ParamAttrs []ParamAttribute
+}
+
+type MetadataValue struct {
+	Metadata Metadata
+}
+
+func (Arg) isArgument()           {} // used as function argument
+func (TypeValue) isArgument()     {} // used as exception argument
+func (MetadataValue) isArgument() {}
+
+//go:generate stringer -linecomment -type FastMathFlag
+
+type FastMathFlag uint8
+
+const (
+	FastMathFlagAFn      FastMathFlag = iota // afn
+	FastMathFlagARcp                         // arcp
+	FastMathFlagContract                     // contract
+	FastMathFlagFast                         // fast
+	FastMathFlagNInf                         // ninf
+	FastMathFlagNNaN                         // nnan
+	FastMathFlagNSZ                          // nsz
+	FastMathFlagReassoc                      // reassoc
+)
+
+type OperandBundle struct {
+	Tag    string
+	Inputs []TypeValue
+}
