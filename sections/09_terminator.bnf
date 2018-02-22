@@ -133,7 +133,12 @@ ResumeTerm
 //   ::= 'catchswitch' within Parent
 
 CatchSwitchTerm
-	: "catchswitch" "within" ExceptionScope Value "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	: "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+;
+
+UnwindTarget
+	: "to" "caller"
+	| LabelType LocalIdent
 ;
 
 // --- [ catchret ] ------------------------------------------------------------

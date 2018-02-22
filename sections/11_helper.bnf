@@ -516,11 +516,6 @@ ExceptionScope
 	| LocalIdent
 ;
 
-UnwindTarget
-	: "to" "caller"
-	| LabelType LocalIdent
-;
-
 // ref: ParseExceptionArgs
 
 ExceptionArgs
