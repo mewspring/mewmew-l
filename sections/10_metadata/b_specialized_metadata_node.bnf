@@ -334,7 +334,7 @@ DISubrangeFieldList
 ;
 
 DISubrangeField
-	: "count:" IntLitOrMDField
+	: "count:" IntOrMDField
 	| "lowerBound:" int_lit
 ;
 
@@ -1115,7 +1115,7 @@ TemplateParamsField
 
 // ref: ParseMDField(MDSignedOrMDField &)
 
-IntLitOrMDField
+IntOrMDField
 	: int_lit
 	| MDField
 ;
