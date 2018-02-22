@@ -999,7 +999,7 @@ GenericDINodeFieldList
 GenericDINodeField
 	: TagField
 	| "header:" string_lit
-	| "operands:" MDElement
+	| "operands:" MDFields
 ;
 
 // ### [ Helper productions ] ##################################################
@@ -1014,13 +1014,6 @@ DwarfLang
 
 FileField
 	: "file:" MDField
-;
-
-// ref: ParseMDField(MDField &)
-
-MDField
-	: Metadata
-	| "null"
 ;
 
 IsOptimizedField

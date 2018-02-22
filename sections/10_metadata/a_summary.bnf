@@ -5,26 +5,32 @@
 // --- [ Metadata Tuple ] ------------------------------------------------------
 
 // ref: ParseMDTuple
+
+MDTuple
+	: "!" MDFields
+;
+
+// ref: ParseMDNodeVector
 //
 //   ::= { Element (',' Element)* }
 //  Element
 //   ::= 'null' | TypeAndValue
 
-MDTuple
-	: "!" "{" MDElements "}"
+// ref: ParseMDField(MDFieldList &)
+
+MDFields
+	: "{" "}"
+	| "{" MDFieldList "}"
 ;
 
-MDElements
-	: empty
-	| MDElementList
+MDFieldList
+	: MDField
+	| MDFieldList "," MDField
 ;
 
-MDElementList
-	: MDElement
-	| MDElementList "," MDElement
-;
+// ref: ParseMDField(MDField &)
 
-MDElement
+MDField
 	// Null is a special case since it is typeless.
 	: "null"
 	| Metadata

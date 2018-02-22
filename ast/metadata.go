@@ -7,49 +7,49 @@ import "fmt"
 // --- [ Metadata Tuple ] ------------------------------------------------------
 
 type MDTuple struct {
-	Elems []MDElement
+	Fields []MDField
 }
 
-type MDElement interface {
-	isMDElement()
+type MDField interface {
+	isMDField()
 }
 
 type MDNull struct{}
 
-func (MDNull) isMDElement() {}
+func (MDNull) isMDField() {}
 
 // Metadata
-func (MDTypeValue) isMDElement() {}
-func (MDString) isMDElement()    {}
-func (MDTuple) isMDElement()     {}
-func (MetadataID) isMDElement()  {}
+func (MDTypeValue) isMDField() {}
+func (MDString) isMDField()    {}
+func (MDTuple) isMDField()     {}
+func (MetadataID) isMDField()  {}
 
 // SpecializedMDNode
-func (DICompileUnit) isMDElement()              {}
-func (DIFile) isMDElement()                     {}
-func (DIBasicType) isMDElement()                {}
-func (DISubroutineType) isMDElement()           {}
-func (DIDerivedType) isMDElement()              {}
-func (DICompositeType) isMDElement()            {}
-func (DISubrange) isMDElement()                 {}
-func (DIEnumerator) isMDElement()               {}
-func (DITemplateTypeParameter) isMDElement()    {}
-func (DITemplateValueParameter) isMDElement()   {}
-func (DIModule) isMDElement()                   {}
-func (DINamespace) isMDElement()                {}
-func (DIGlobalVariable) isMDElement()           {}
-func (DISubprogram) isMDElement()               {}
-func (DILexicalBlock) isMDElement()             {}
-func (DILexicalBlockFile) isMDElement()         {}
-func (DILocation) isMDElement()                 {}
-func (DILocalVariable) isMDElement()            {}
-func (DIExpression) isMDElement()               {}
-func (DIGlobalVariableExpression) isMDElement() {}
-func (DIObjCProperty) isMDElement()             {}
-func (DIImportedEntity) isMDElement()           {}
-func (DIMacro) isMDElement()                    {}
-func (DIMacroFile) isMDElement()                {}
-func (GenericDINode) isMDElement()              {}
+func (DICompileUnit) isMDField()              {}
+func (DIFile) isMDField()                     {}
+func (DIBasicType) isMDField()                {}
+func (DISubroutineType) isMDField()           {}
+func (DIDerivedType) isMDField()              {}
+func (DICompositeType) isMDField()            {}
+func (DISubrange) isMDField()                 {}
+func (DIEnumerator) isMDField()               {}
+func (DITemplateTypeParameter) isMDField()    {}
+func (DITemplateValueParameter) isMDField()   {}
+func (DIModule) isMDField()                   {}
+func (DINamespace) isMDField()                {}
+func (DIGlobalVariable) isMDField()           {}
+func (DISubprogram) isMDField()               {}
+func (DILexicalBlock) isMDField()             {}
+func (DILexicalBlockFile) isMDField()         {}
+func (DILocation) isMDField()                 {}
+func (DILocalVariable) isMDField()            {}
+func (DIExpression) isMDField()               {}
+func (DIGlobalVariableExpression) isMDField() {}
+func (DIObjCProperty) isMDField()             {}
+func (DIImportedEntity) isMDField()           {}
+func (DIMacro) isMDField()                    {}
+func (DIMacroFile) isMDField()                {}
+func (GenericDINode) isMDField()              {}
 
 // --- [ Metadata ] ------------------------------------------------------------
 
@@ -155,103 +155,287 @@ type SpecializedMDNode interface {
 
 // ~~~ [ DICompileUnit ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DICompileUnit struct{}
+type DICompileUnit struct {
+	Language              DwarfLang
+	File                  MDField
+	Producer              MDStringField
+	IsOptimized           MDBoolField
+	Flags                 MDStringField
+	RuntimeVersion        MDUnsignedField
+	SplitDebugFilename    MDStringField
+	EmissionKind          EmissionKindField
+	Enums                 MDField
+	RetainedTypes         MDField
+	Globals               MDField
+	Imports               MDField
+	Macros                MDField
+	DwoId                 MDUnsignedField
+	SplitDebugInlining    MDBoolField
+	DebugInfoForProfiling MDBoolField
+	GnuPubnames           MDBoolField
+}
 
 // ~~~ [ DIFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIFile struct{}
+type DIFile struct {
+	Filename     MDStringField
+	Directory    MDStringField
+	Checksumkind ChecksumKindField
+	Checksum     MDStringField
+}
 
 // ~~~ [ DIBasicType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIBasicType struct{}
+type DIBasicType struct {
+	Tag      DwarfTagField
+	Name     MDStringField
+	Size     MDUnsignedField
+	Align    MDUnsignedField
+	Encoding DwarfAttEncodingField
+}
 
 // ~~~ [ DISubroutineType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DISubroutineType struct{}
+type DISubroutineType struct {
+	Flags DIFlagField
+	CC    DwarfCCField
+	Types MDField
+}
 
 // ~~~ [ DIDerivedType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIDerivedType struct{}
+type DIDerivedType struct {
+	Tag               DwarfTagField
+	Name              MDStringField
+	File              MDField
+	Line              LineField
+	Scope             MDField
+	BaseType          MDField
+	Size              MDUnsignedField
+	Align             MDUnsignedField
+	Offset            MDUnsignedField
+	Flags             DIFlagField
+	ExtraData         MDField
+	DwarfAddressSpace MDUnsignedField
+}
 
 // ~~~ [ DICompositeType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DICompositeType struct{}
+type DICompositeType struct {
+	Tag            DwarfTagField
+	Name           MDStringField
+	File           MDField
+	Line           LineField
+	Scope          MDField
+	BaseType       MDField
+	Size           MDUnsignedField
+	Align          MDUnsignedField
+	Offset         MDUnsignedField
+	Flags          DIFlagField
+	Elements       MDField
+	RuntimeLang    DwarfLang
+	VtableHolder   MDField
+	TemplateParams MDField
+	Identifier     MDStringField
+	Discriminator  MDField
+}
 
 // ~~~ [ DISubrange ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DISubrange struct{}
+type DISubrange struct {
+	Count      MDSignedOrMDField
+	LowerBound MDSignedField
+}
 
 // ~~~ [ DIEnumerator ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIEnumerator struct{}
+type DIEnumerator struct {
+	Name       MDStringField
+	Value      MDSignedOrUnsignedField
+	IsUnsigned MDBoolField
+}
 
 // ~~~ [ DITemplateTypeParameter ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DITemplateTypeParameter struct{}
+type DITemplateTypeParameter struct {
+	Name MDStringField
+	Type MDField
+}
 
 // ~~~ [ DITemplateValueParameter ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DITemplateValueParameter struct{}
+type DITemplateValueParameter struct {
+	Tag   DwarfTagField
+	Name  MDStringField
+	Type  MDField
+	Value MDField
+}
 
 // ~~~ [ DIModule ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIModule struct{}
+type DIModule struct {
+	Scope        MDField
+	Name         MDStringField
+	ConfigMacros MDStringField
+	IncludePath  MDStringField
+	Isysroot     MDStringField
+}
 
 // ~~~ [ DINamespace ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DINamespace struct{}
+type DINamespace struct {
+	Scope         MDField
+	Name          MDStringField
+	ExportSymbols MDBoolField
+}
 
 // ~~~ [ DIGlobalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIGlobalVariable struct{}
+type DIGlobalVariable struct {
+	Name         MDStringField
+	Scope        MDField
+	LinkageName  MDStringField
+	File         MDField
+	Line         LineField
+	Type         MDField
+	IsLocal      MDBoolField
+	IsDefinition MDBoolField
+	Declaration  MDField
+	Align        MDUnsignedField
+}
 
 // ~~~ [ DISubprogram ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DISubprogram struct{}
+type DISubprogram struct {
+	Scope          MDField
+	Name           MDStringField
+	LinkageName    MDStringField
+	File           MDField
+	Line           LineField
+	Type           MDField
+	IsLocal        MDBoolField
+	IsDefinition   MDBoolField
+	ScopeLine      LineField
+	ContainingType MDField
+	Virtuality     DwarfVirtualityField
+	VirtualIndex   MDUnsignedField
+	ThisAdjustment MDSignedField
+	Flags          DIFlagField
+	IsOptimized    MDBoolField
+	Unit           MDField
+	TemplateParams MDField
+	Declaration    MDField
+	Variables      MDField
+	ThrownTypes    MDField
+}
 
 // ~~~ [ DILexicalBlock ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DILexicalBlock struct{}
+type DILexicalBlock struct {
+	Scope  MDField
+	File   MDField
+	Line   LineField
+	Column ColumnField
+}
 
 // ~~~ [ DILexicalBlockFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DILexicalBlockFile struct{}
+type DILexicalBlockFile struct {
+	Scope         MDField
+	File          MDField
+	Discriminator MDUnsignedField
+}
 
 // ~~~ [ DILocation ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DILocation struct{}
+type DILocation struct {
+	Line      LineField
+	Column    ColumnField
+	Scope     MDField
+	InlinedAt MDField
+}
 
 // ~~~ [ DILocalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DILocalVariable struct{}
+type DILocalVariable struct {
+	Scope MDField
+	Name  MDStringField
+	Arg   MDUnsignedField
+	File  MDField
+	Line  LineField
+	Type  MDField
+	Flags DIFlagField
+	Align MDUnsignedField
+}
 
 // ~~~ [ DIExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIExpression struct{}
+type DIExpression struct {
+	Fields []DIExpressionField
+}
+
+type DIExpressionField interface {
+	isDIExpressionField()
+}
+
+func (IntLit) isDIExpressionField()  {}
+func (DwarfOp) isDIExpressionField() {}
 
 // ~~~ [ DIGlobalVariableExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIGlobalVariableExpression struct{}
+type DIGlobalVariableExpression struct {
+	Var  MDField
+	Expr MDField
+}
 
 // ~~~ [ DIObjCProperty ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIObjCProperty struct{}
+type DIObjCProperty struct {
+	Name       MDStringField
+	File       MDField
+	Line       LineField
+	Setter     MDStringField
+	Getter     MDStringField
+	Attributes MDUnsignedField
+	Type       MDField
+}
 
 // ~~~ [ DIImportedEntity ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIImportedEntity struct{}
+type DIImportedEntity struct {
+	Tag    DwarfTagField
+	Scope  MDField
+	Entity MDField
+	File   MDField
+	Line   LineField
+	Name   MDStringField
+}
 
 // ~~~ [ DIMacro ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIMacro struct{}
+type DIMacro struct {
+	Type  DwarfMacinfoTypeField
+	Line  LineField
+	Name  MDStringField
+	Value MDStringField
+}
 
 // ~~~ [ DIMacroFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type DIMacroFile struct{}
+type DIMacroFile struct {
+	Type  DwarfMacinfoTypeField
+	Line  LineField
+	File  MDField
+	Nodes MDField
+}
 
 // ~~~ [ GenericDINode ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type GenericDINode struct{}
+type GenericDINode struct {
+	Tag      DwarfTagField
+	Header   MDStringField
+	Operands []MDField
+}
 
 func (DICompileUnit) isSpecializedMDNode()              {}
 func (DIFile) isSpecializedMDNode()                     {}
@@ -278,3 +462,95 @@ func (DIImportedEntity) isSpecializedMDNode()           {}
 func (DIMacro) isSpecializedMDNode()                    {}
 func (DIMacroFile) isSpecializedMDNode()                {}
 func (GenericDINode) isSpecializedMDNode()              {}
+
+// ___ [ Helpers ] _____________________________________________________________
+
+type DwarfLang int64
+
+// TODO: Define DwarfLang enum.
+
+//go:generate stringer -linecomment -type EmissionKind
+
+type EmissionKind int64
+
+// TODO: Set proper value for emission kind (not iota).
+
+const (
+	EmissionKindNoDebug        EmissionKind = iota // NoDebug
+	EmissionKindFullDebug                          // FullDebug
+	EmissionKindLineTablesOnly                     // LineTablesOnly
+)
+
+type ChecksumKind int64
+
+// TODO: Define ChecksumKind enum.
+
+type DwarfTag int64
+
+// TODO: Define DwarfTag enum.
+
+type DwarfAttEncoding int64
+
+// TODO: Define DwarfAttEncoding enum.
+
+type DIFlag int64
+
+// TODO: Define DIFlag enum.
+
+type DwarfCC int64
+
+// TODO: Define DwarfCC enum.
+
+type IntLitOrMDField interface {
+	isIntLitOrMDField()
+}
+
+func (IntLit) isIntLitOrMDField() {}
+
+// MDField
+func (MDNull) isIntLitOrMDField() {}
+
+// Metadata
+func (MDTypeValue) isIntLitOrMDField() {}
+func (MDString) isIntLitOrMDField()    {}
+func (MDTuple) isIntLitOrMDField()     {}
+func (MetadataID) isIntLitOrMDField()  {}
+
+// SpecializedMDNode
+func (DICompileUnit) isIntLitOrMDField()              {}
+func (DIFile) isIntLitOrMDField()                     {}
+func (DIBasicType) isIntLitOrMDField()                {}
+func (DISubroutineType) isIntLitOrMDField()           {}
+func (DIDerivedType) isIntLitOrMDField()              {}
+func (DICompositeType) isIntLitOrMDField()            {}
+func (DISubrange) isIntLitOrMDField()                 {}
+func (DIEnumerator) isIntLitOrMDField()               {}
+func (DITemplateTypeParameter) isIntLitOrMDField()    {}
+func (DITemplateValueParameter) isIntLitOrMDField()   {}
+func (DIModule) isIntLitOrMDField()                   {}
+func (DINamespace) isIntLitOrMDField()                {}
+func (DIGlobalVariable) isIntLitOrMDField()           {}
+func (DISubprogram) isIntLitOrMDField()               {}
+func (DILexicalBlock) isIntLitOrMDField()             {}
+func (DILexicalBlockFile) isIntLitOrMDField()         {}
+func (DILocation) isIntLitOrMDField()                 {}
+func (DILocalVariable) isIntLitOrMDField()            {}
+func (DIExpression) isIntLitOrMDField()               {}
+func (DIGlobalVariableExpression) isIntLitOrMDField() {}
+func (DIObjCProperty) isIntLitOrMDField()             {}
+func (DIImportedEntity) isIntLitOrMDField()           {}
+func (DIMacro) isIntLitOrMDField()                    {}
+func (DIMacroFile) isIntLitOrMDField()                {}
+func (GenericDINode) isIntLitOrMDField()              {}
+
+type DwarfVirtuality int64
+
+// TODO: Define DwarfVirtuality enum.
+
+type DwarfOp int64
+
+// TODO: Define DwarfOp enum.
+
+type DwarfMacinfo int64
+
+// TODO: Define DwarfMacinfo enum.
