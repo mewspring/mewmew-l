@@ -119,7 +119,7 @@ type InsertValueExpr struct {
 
 type GetElementPtrExpr struct {
 	InBounds bool
-	Elem     Type
+	ElemType Type
 	Src      TypeConstant
 	Indices  []GEPConstIndex
 }
