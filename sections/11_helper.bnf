@@ -120,14 +120,14 @@ FastMathFlagList
 ;
 
 FastMathFlag
-	: "fast"
-	| "nnan"
-	| "ninf"
-	| "nsz"
+	: "afn"
 	| "arcp"
 	| "contract"
+	| "fast"
+	| "ninf"
+	| "nnan"
+	| "nsz"
 	| "reassoc"
-	| "afn"
 ;
 
 OptInBounds

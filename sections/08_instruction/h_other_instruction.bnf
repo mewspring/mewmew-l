@@ -68,9 +68,9 @@ CallInst
 
 OptTail
 	: empty
-	| "tail"
 	| "musttail"
 	| "notail"
+	| "tail"
 ;
 
 // ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,7 +124,7 @@ Clause
 //   ::= 'catchpad' ParamList 'to' TypeAndValue 'unwind' TypeAndValue
 
 CatchPadInst
-	: "catchpad" "within" LocalIdent Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	: "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 ;
 
 // --- [ cleanuppad ] ----------------------------------------------------------
@@ -134,6 +134,6 @@ CatchPadInst
 //   ::= 'cleanuppad' within Parent ParamList
 
 CleanupPadInst
-	: "cleanuppad" "within" ExceptionScope Value "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	: "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 ;
 
