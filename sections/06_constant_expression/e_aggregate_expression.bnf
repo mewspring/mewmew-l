@@ -8,6 +8,7 @@
 
 ExtractValueExpr
 	: "extractvalue" "(" Type Constant Indices ")"
+	<< &ast.ExtractValueExpr{X: astx.TypeConst($2, $3), Indices: $4.([]int64)}, nil >>
 ;
 
 // ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,5 +17,6 @@ ExtractValueExpr
 
 InsertValueExpr
 	: "insertvalue" "(" Type Constant "," Type Constant Indices ")"
+	<< &ast.InsertValueExpr{X: astx.TypeConst($2, $3), Elem: astx.TypeConst($5, $6), Indices: $7.([]int64)}, nil >>
 ;
 
