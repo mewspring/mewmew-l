@@ -368,6 +368,7 @@ type Arg struct {
 }
 
 type MetadataValue struct {
+	// metadata type is implicit.
 	Metadata Metadata
 }
 
@@ -393,4 +394,9 @@ const (
 type OperandBundle struct {
 	Tag    string
 	Inputs []TypeValue
+}
+
+type Label struct {
+	// label type is implicit.
+	LocalIdent
 }
