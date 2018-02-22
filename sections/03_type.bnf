@@ -63,31 +63,6 @@ FuncType
 	: Type "(" Params ")"
 ;
 
-// ref: ParseArgumentList
-//
-//   ::= '(' ArgTypeListI ')'
-//  ArgTypeListI
-//   ::= empty
-//   ::= '...'
-//   ::= ArgTypeList ',' '...'
-//   ::= ArgType (',' ArgType)*
-
-Params
-	: empty
-	| "..."
-	| ParamList
-	| ParamList "," "..."
-;
-
-ParamList
-	: Param
-	| ParamList "," Param
-;
-
-Param
-	: Type ParamAttrs
-;
-
 // --- [ Integer Types ] -------------------------------------------------------
 
 IntType

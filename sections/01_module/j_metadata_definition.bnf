@@ -1,4 +1,4 @@
-// --- [ Named Metadata ] ------------------------------------------------------
+// ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#named-metadata
 
@@ -28,7 +28,7 @@ MetadataNode
 	| DIExpression
 ;
 
-// --- [ Standalone Metadata ] -------------------------------------------------
+// ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#metadata-nodes-and-metadata-strings
 

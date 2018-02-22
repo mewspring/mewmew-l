@@ -1,4 +1,4 @@
-// --- [ Target Definition ] ---------------------------------------------------
+// ~~~ [ Target Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#target-triple
 // https://llvm.org/docs/LangRef.html#data-layout

@@ -1,4 +1,4 @@
-// --- [ Global Variable Declaration or Definition ] ---------------------------
+// ~~~ [ Global Variable Declaration ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#global-variables
 
@@ -32,13 +32,15 @@
 //       Const OptionalAttrs
 
 GlobalDecl
-	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Attrs FuncAttrs
+	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
 	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
 	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
 
+// ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 GlobalDef
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized GlobalType Type Constant Attrs FuncAttrs
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
 ;
@@ -66,8 +68,8 @@ ThreadLocal
 //   := 'localexec'
 
 TLSModel
-	: "localdynamic"
-	| "initialexec"
+	: "initialexec"
+	| "localdynamic"
 	| "localexec"
 ;
 
@@ -81,32 +83,32 @@ OptExternallyInitialized
 //   ::= 'constant'
 //   ::= 'global'
 
-GlobalType
+Immutable
 	: "constant"
 	| "global"
 ;
 
-Attrs
+GlobalAttrs
 	: empty
-	| "," AttrList
+	| "," GlobalAttrList
 ;
 
-AttrList
-	: Attr
-	| AttrList "," Attr
+GlobalAttrList
+	: GlobalAttr
+	| GlobalAttrList "," GlobalAttr
 ;
 
-Attr
+GlobalAttr
 	: Section
+	| Comdat
 	| Alignment
 	//   ::= !dbg !57
 	| MetadataAttachment
-	| Comdat
 ;
 
 // TODO: Move indirect symbols to alias and ifunc.
 
-// --- [ Indirect Symbol ] -----------------------------------------------------
+// ~~~ [ Indirect Symbol ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#aliases
 // https://llvm.org/docs/LangRef.html#ifuncs
@@ -123,13 +125,5 @@ Attr
 
 IndirectSymbol
 	: Type "," Type Constant
-	| Type "," IndirectCast Constant
-;
-
-IndirectCast
-	: "bitcast"
-	| "getelementptr"
-	| "addrspacecast"
-	| "inttoptr"
 ;
 

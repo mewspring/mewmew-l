@@ -1,4 +1,4 @@
-// --- [ Module-level Inline Assembly ] ----------------------------------------
+// ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#module-level-inline-assembly
 

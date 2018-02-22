@@ -1,4 +1,4 @@
-// --- [ Comdat Definition ] ---------------------------------------------------
+// ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#langref-comdats
 

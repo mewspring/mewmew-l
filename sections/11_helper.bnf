@@ -172,15 +172,15 @@ OptLinkage
 ;
 
 Linkage
-	: "private"
+	: "appending"
+	| "available_externally"
+	| "common"
 	| "internal"
-	| "weak"
-	| "weak_odr"
 	| "linkonce"
 	| "linkonce_odr"
-	| "available_externally"
-	| "appending"
-	| "common"
+	| "private"
+	| "weak"
+	| "weak_odr"
 ;
 
 OptExternLinkage
@@ -241,8 +241,8 @@ OptDLLStorageClass
 ;
 
 DLLStorageClass
-	: "dllimport"
-	| "dllexport"
+	: "dllexport"
+	| "dllimport"
 ;
 
 // ref: ParseOptionalUnnamedAddr
@@ -253,9 +253,11 @@ OptUnnamedAddr
 ;
 
 UnnamedAddr
-	: "unnamed_addr"
-	| "local_unnamed_addr"
+	: "local_unnamed_addr"
+	| "unnamed_addr"
 ;
+
+// ___ [ Function Attribute ] __________________________________________________
 
 // ref: ParseFnAttributeValuePairs
 //
@@ -272,22 +274,21 @@ FuncAttrList
 ;
 
 FuncAttr
-	: "builtin"
-	| AttrGroupID // not used in attribute groups.
+	: AttrGroupID // not used in attribute groups.
+	| "align" "=" int_lit // used in attribute groups.
+	| "alignstack" "=" int_lit
+	| Alignment // used in functions.
+	| AllocSize
+	| StackAlignment
 	| string_lit
 	| string_lit "=" string_lit
-	| "align" "=" int_lit // used in attribute groups.
-	| Alignment // used in functions.
-	| "alignstack" "=" int_lit
-	| StackAlignment
-	| AllocSize
 	| "alwaysinline"
 	| "argmemonly"
 	| "builtin"
 	| "cold"
 	| "convergent"
-	| "inaccessiblememonly"
 	| "inaccessiblemem_or_argmemonly"
+	| "inaccessiblememonly"
 	| "inlinehint"
 	| "jumptable"
 	| "minsize"
@@ -297,27 +298,34 @@ FuncAttr
 	| "noimplicitfloat"
 	| "noinline"
 	| "nonlazybind"
+	| "norecurse"
 	| "noredzone"
 	| "noreturn"
-	| "norecurse"
 	| "nounwind"
 	| "optnone"
 	| "optsize"
 	| "readnone"
 	| "readonly"
 	| "returns_twice"
+	| "safestack"
+	| "sanitize_address"
+	| "sanitize_hwaddress"
+	| "sanitize_memory"
+	| "sanitize_thread"
 	| "speculatable"
 	| "ssp"
 	| "sspreq"
 	| "sspstrong"
-	| "safestack"
-	| "sanitize_address"
-	| "sanitize_hwaddress"
-	| "sanitize_thread"
-	| "sanitize_memory"
 	| "strictfp"
 	| "uwtable"
 	| "writeonly"
+;
+
+// ref: parseAllocSizeArguments
+
+AllocSize
+	: "allocsize" "(" int_lit ")"
+	| "allocsize" "(" int_lit "," int_lit ")"
 ;
 
 // ref: ParseOptionalStackAlignment
@@ -326,13 +334,6 @@ FuncAttr
 //   ::= 'alignstack' '(' 4 ')'
 StackAlignment
 	: "alignstack" "(" int_lit ")"
-;
-
-// ref: parseAllocSizeArguments
-
-AllocSize
-	: "allocsize" "(" int_lit ")"
-	| "allocsize" "(" int_lit "," int_lit ")"
 ;
 
 OptSection
@@ -362,10 +363,10 @@ ParamAttrList
 //   ::= AttrKind '(' 4 ')'
 
 ParamAttr
-	: string_lit
-	| Alignment
-	| "byval"
+	: Alignment
 	| Dereferenceable
+	| string_lit
+	| "byval"
 	| "inalloca"
 	| "inreg"
 	| "nest"
@@ -434,9 +435,9 @@ ReturnAttrList
 ;
 
 ReturnAttr
-	: string_lit
+	: Alignment
 	| Dereferenceable
-	| Alignment
+	| string_lit
 	| "inreg"
 	| "noalias"
 	| "nonnull"
@@ -535,5 +536,31 @@ ExceptionArgList
 ExceptionArg
 	: ConcreteType Value
 	| MetadataType Metadata
+;
+
+// ref: ParseArgumentList
+//
+//   ::= '(' ArgTypeListI ')'
+//  ArgTypeListI
+//   ::= empty
+//   ::= '...'
+//   ::= ArgTypeList ',' '...'
+//   ::= ArgType (',' ArgType)*
+
+Params
+	: empty
+	| "..."
+	| ParamList
+	| ParamList "," "..."
+;
+
+ParamList
+	: Param
+	| ParamList "," Param
+;
+
+Param
+	: Type ParamAttrs
+	| Type LocalIdent ParamAttrs
 ;
 

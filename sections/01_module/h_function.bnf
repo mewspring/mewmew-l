@@ -1,4 +1,4 @@
-// --- [ Function Declaration ] ------------------------------------------------
+// ~~~ [ Function Declaration ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#functions
 
@@ -10,7 +10,7 @@ FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
 ;
 
-// --- [ Function Definition ] -------------------------------------------------
+// ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // https://llvm.org/docs/LangRef.html#functions
 
@@ -85,45 +85,45 @@ OptCallingConv
 ;
 
 CallingConv
-	: "ccc"
-	| "fastcc"
-	| "coldcc"
-	| "x86_stdcallcc"
-	| "x86_fastcallcc"
-	| "x86_regcallcc"
-	| "x86_thiscallcc"
-	| "x86_vectorcallcc"
-	| "arm_apcscc"
-	| "arm_aapcscc"
-	| "arm_aapcs_vfpcc"
-	| "msp430_intrcc"
-	| "avr_intrcc"
-	| "avr_signalcc"
-	| "ptx_kernel"
-	| "ptx_device"
-	| "spir_kernel"
-	| "spir_func"
-	| "intel_ocl_bicc"
-	| "x86_64_sysvcc"
-	| "win64cc"
-	| "webkit_jscc"
-	| "anyregcc"
-	| "preserve_mostcc"
-	| "preserve_allcc"
-	| "ghccc"
-	| "swiftcc"
-	| "x86_intrcc"
-	| "hhvmcc"
-	| "hhvm_ccc"
-	| "cxx_fast_tlscc"
-	| "amdgpu_vs"
-	| "amdgpu_ls"
-	| "amdgpu_hs"
+	: "amdgpu_cs"
 	| "amdgpu_es"
 	| "amdgpu_gs"
-	| "amdgpu_ps"
-	| "amdgpu_cs"
+	| "amdgpu_hs"
 	| "amdgpu_kernel"
+	| "amdgpu_ls"
+	| "amdgpu_ps"
+	| "amdgpu_vs"
+	| "anyregcc"
+	| "arm_aapcs_vfpcc"
+	| "arm_aapcscc"
+	| "arm_apcscc"
+	| "avr_intrcc"
+	| "avr_signalcc"
+	| "ccc"
+	| "coldcc"
+	| "cxx_fast_tlscc"
+	| "fastcc"
+	| "ghccc"
+	| "hhvm_ccc"
+	| "hhvmcc"
+	| "intel_ocl_bicc"
+	| "msp430_intrcc"
+	| "preserve_allcc"
+	| "preserve_mostcc"
+	| "ptx_device"
+	| "ptx_kernel"
+	| "spir_func"
+	| "spir_kernel"
+	| "swiftcc"
+	| "webkit_jscc"
+	| "win64cc"
+	| "x86_64_sysvcc"
+	| "x86_fastcallcc"
+	| "x86_intrcc"
+	| "x86_regcallcc"
+	| "x86_stdcallcc"
+	| "x86_thiscallcc"
+	| "x86_vectorcallcc"
 	| "cc" int_lit
 ;
 
