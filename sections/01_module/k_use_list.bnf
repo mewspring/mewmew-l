@@ -14,12 +14,12 @@ UseListOrders
 ;
 
 UseListOrderList
-	: UseListOrder
-	| UseListOrderList UseListOrder
+	: UseListOrder                    << astx.NewUseListOrderList($0) >>
+	| UseListOrderList UseListOrder   << astx.AppendUseListOrder($0, $1) >>
 ;
 
 UseListOrder
-	: "uselistorder" Type Value "," "{" IndexList "}"
+	: "uselistorder" Type Value "," "{" IndexList "}"   << astx.NewUseListOrder($1, $2, $5) >>
 ;
 
 // ref: ParseUseListOrderBB
@@ -27,6 +27,6 @@ UseListOrder
 //   ::= 'uselistorder_bb' @foo ',' %bar ',' UseListOrderIndexes
 
 UseListOrderBB
-	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
+	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"   << astx.NewUseListOrder($1, $3, $6) >>
 ;
 

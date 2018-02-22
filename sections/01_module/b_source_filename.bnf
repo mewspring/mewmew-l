@@ -7,6 +7,6 @@
 //   ::= 'source_filename' '=' STRINGCONSTANT
 
 SourceFilename
-	: "source_filename" "=" string_lit
+	: "source_filename" "=" string_lit   << astx.NewSourceFilename($2) >>
 ;
 

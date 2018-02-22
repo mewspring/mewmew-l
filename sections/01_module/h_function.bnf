@@ -7,7 +7,7 @@
 //   ::= 'declare' FunctionHeader
 
 FunctionDecl
-	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
+	: "declare" MetadataAttachments OptExternLinkage FunctionHeader   << astx.NewFunction($2, $3, nil, $1) >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +19,7 @@ FunctionDecl
 //   ::= 'define' FunctionHeader (!dbg !56)* '{' ...
 
 FunctionDef
-	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
+	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody   << astx.NewFunction($1, $2, $4, $3) >>
 ;
 
 // ref: ParseFunctionHeader
@@ -33,7 +33,7 @@ FunctionDef
 // as FuncAttrs also contains "align".
 
 FunctionHeader
-	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
+	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality   << astx.NewFunctionHeader($0, $1, $2, $3, $4, $5, $6, $8, $10, $11, $12, $13, $14, $15, $16, $17) >>
 ;
 
 // ref: ParseOptionalCallingConv
@@ -80,71 +80,71 @@ FunctionHeader
 //   ::= 'cc' UINT
 
 OptCallingConv
-	: empty
+	: empty         << ast.CallingConvNone, nil >>
 	| CallingConv
 ;
 
 CallingConv
-	: "amdgpu_cs"
-	| "amdgpu_es"
-	| "amdgpu_gs"
-	| "amdgpu_hs"
-	| "amdgpu_kernel"
-	| "amdgpu_ls"
-	| "amdgpu_ps"
-	| "amdgpu_vs"
-	| "anyregcc"
-	| "arm_aapcs_vfpcc"
-	| "arm_aapcscc"
-	| "arm_apcscc"
-	| "avr_intrcc"
-	| "avr_signalcc"
-	| "ccc"
-	| "coldcc"
-	| "cxx_fast_tlscc"
-	| "fastcc"
-	| "ghccc"
-	| "hhvm_ccc"
-	| "hhvmcc"
-	| "intel_ocl_bicc"
-	| "msp430_intrcc"
-	| "preserve_allcc"
-	| "preserve_mostcc"
-	| "ptx_device"
-	| "ptx_kernel"
-	| "spir_func"
-	| "spir_kernel"
-	| "swiftcc"
-	| "webkit_jscc"
-	| "win64cc"
-	| "x86_64_sysvcc"
-	| "x86_fastcallcc"
-	| "x86_intrcc"
-	| "x86_regcallcc"
-	| "x86_stdcallcc"
-	| "x86_thiscallcc"
-	| "x86_vectorcallcc"
-	| "cc" int_lit
+	: "amdgpu_cs"          << ast.CallingConvAmdGPU_CS, nil >>
+	| "amdgpu_es"          << ast.CallingConvAmdGPU_ES, nil >>
+	| "amdgpu_gs"          << ast.CallingConvAmdGPU_GS, nil >>
+	| "amdgpu_hs"          << ast.CallingConvAmdGPU_HS, nil >>
+	| "amdgpu_kernel"      << ast.CallingConvAmdGPU_Kernel, nil >>
+	| "amdgpu_ls"          << ast.CallingConvAmdGPU_LS, nil >>
+	| "amdgpu_ps"          << ast.CallingConvAmdGPU_PS, nil >>
+	| "amdgpu_vs"          << ast.CallingConvAmdGPU_VS, nil >>
+	| "anyregcc"           << ast.CallingConvAnyReg, nil >>
+	| "arm_aapcs_vfpcc"    << ast.CallingConvARM_AAPCS_VFP, nil >>
+	| "arm_aapcscc"        << ast.CallingConvARM_AAPCS, nil >>
+	| "arm_apcscc"         << ast.CallingConvARM_APCS, nil >>
+	| "avr_intrcc"         << ast.CallingConvAVR_Intr, nil >>
+	| "avr_signalcc"       << ast.CallingConvAVR_Signal, nil >>
+	| "ccc"                << ast.CallingConvC, nil >>
+	| "coldcc"             << ast.CallingConvCold, nil >>
+	| "cxx_fast_tlscc"     << ast.CallingConvCXX_Fast_TLS, nil >>
+	| "fastcc"             << ast.CallingConvFast, nil >>
+	| "ghccc"              << ast.CallingConvGHC, nil >>
+	| "hhvm_ccc"           << ast.CallingConvHHVM_C, nil >>
+	| "hhvmcc"             << ast.CallingConvHHVM, nil >>
+	| "intel_ocl_bicc"     << ast.CallingConvIntel_OCL_BI, nil >>
+	| "msp430_intrcc"      << ast.CallingConvMSP430_Intr, nil >>
+	| "preserve_allcc"     << ast.CallingConvPreserveAll, nil >>
+	| "preserve_mostcc"    << ast.CallingConvPreserveMost, nil >>
+	| "ptx_device"         << ast.CallingConvPTX_Device, nil >>
+	| "ptx_kernel"         << ast.CallingConvPTX_Kernel, nil >>
+	| "spir_func"          << ast.CallingConvSPIR_Func, nil >>
+	| "spir_kernel"        << ast.CallingConvSPIR_Kernel, nil >>
+	| "swiftcc"            << ast.CallingConvSwift, nil >>
+	| "webkit_jscc"        << ast.CallingConvWebKitJS, nil >>
+	| "win64cc"            << ast.CallingConvWin64, nil >>
+	| "x86_64_sysvcc"      << ast.CallingConvX86_64_SysV, nil >>
+	| "x86_fastcallcc"     << ast.CallingConvX86_FastCall, nil >>
+	| "x86_intrcc"         << ast.CallingConvX86_Intr, nil >>
+	| "x86_regcallcc"      << ast.CallingConvX86_RegCall, nil >>
+	| "x86_stdcallcc"      << ast.CallingConvX86_StdCall, nil >>
+	| "x86_thiscallcc"     << ast.CallingConvX86_ThisCall, nil >>
+	| "x86_vectorcallcc"   << ast.CallingConvX86_VectorCall, nil >>
+	| "cc" int_lit         << astx.NewCallingConv($1) >>
 ;
 
 OptGC
-	: empty
-	| "gc" string_lit
+	: empty             << "", nil >>
+	| "gc" string_lit   << astx.NewString($1) >>
 ;
 
 OptPrefix
 	: empty
-	| "prefix" Type Constant
+	| "prefix" Type Constant   << astx.NewTypeConstant($1, $2) >>
 ;
 
 OptPrologue
 	: empty
-	| "prologue" Type Constant
+	| "prologue" Type Constant   << astx.NewTypeConstant($1, $2) >>
 ;
 
 OptPersonality
 	: empty
-	| "personality" Type Constant
+	| "personality" Type Constant   << astx.NewTypeConstant($1, $2) >>
 ;
 
 // ref: ParseFunctionBody
@@ -152,6 +152,6 @@ OptPersonality
 //   ::= '{' BasicBlock+ UseListOrderDirective* '}'
 
 FunctionBody
-	: "{" BasicBlockList UseListOrders "}"
+	: "{" BasicBlockList UseListOrders "}"   << astx.NewFunctionBody($1, $2) >>
 ;
 

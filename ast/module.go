@@ -5,7 +5,7 @@ import "fmt"
 // === [ Module ] ==============================================================
 
 type Module struct {
-	TopLevelEntities []TopLevelEntity
+	Entities []TopLevelEntity
 }
 
 // --- [ Top-level Entities ] --------------------------------------------------
@@ -38,16 +38,16 @@ func (t TargetTriple) String() string {
 	return fmt.Sprintf("target triple = %q", t.TargetTriple)
 }
 
-type TargetDataLayout struct {
+type DataLayout struct {
 	DataLayout string
 }
 
-func (t TargetDataLayout) String() string {
+func (t DataLayout) String() string {
 	return fmt.Sprintf("target datalayout = %q", t.DataLayout)
 }
 
-func (TargetTriple) isTargetDefinition()     {}
-func (TargetDataLayout) isTargetDefinition() {}
+func (TargetTriple) isTargetDefinition() {}
+func (DataLayout) isTargetDefinition()   {}
 
 // ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -73,8 +73,8 @@ func (t TypeDef) String() string {
 // ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type ComdatDef struct {
-	Name          ComdatName
-	SelectionKind SelectionKind
+	Name ComdatName
+	Kind SelectionKind
 }
 
 //go:generate stringer -linecomment -type SelectionKind
@@ -94,13 +94,13 @@ const (
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
 	Name                  GlobalIdent
-	Linkage               Linkage
-	PreemptionSpecifier   PreemptionSpecifier
-	Visibility            Visibility
-	DLLStorageClass       DLLStorageClass
-	ThreadLocal           *ThreadLocal
-	UnnamedAddr           UnnamedAddr
-	AddrSpace             AddrSpace
+	Linkage               Linkage             // zero value if not present
+	Preemption            PreemptionSpecifier // zero value if not present
+	Visibility            Visibility          // zero value if not present
+	DLLStorageClass       DLLStorageClass     // zero value if not present
+	ThreadLocal           *ThreadLocal        // nil if not present
+	UnnamedAddr           UnnamedAddr         // zero value if not present
+	AddrSpace             AddrSpace           // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Type                  Type
@@ -110,7 +110,7 @@ type Global struct {
 }
 
 type ThreadLocal struct {
-	Model TLSModel
+	Model TLSModel // zero value if not present
 }
 
 func (t ThreadLocal) String() string {
@@ -144,45 +144,46 @@ func (MetadataAttachment) isGlobalAttribute() {}
 
 // An IndirectSymbol is an alias or an ifunc.
 type IndirectSymbol struct {
-	Name                GlobalIdent
-	Linkage             Linkage
-	PreemptionSpecifier PreemptionSpecifier
-	Visibility          Visibility
-	DLLStorageClass     DLLStorageClass
-	ThreadLocal         *ThreadLocal
-	UnnamedAddr         UnnamedAddr
-	Type                Type
-	PtrType             Type
-	Value               Constant // aliasee or resolver
+	Name            GlobalIdent
+	Linkage         Linkage
+	Preemption      PreemptionSpecifier
+	Visibility      Visibility
+	DLLStorageClass DLLStorageClass
+	ThreadLocal     *ThreadLocal
+	UnnamedAddr     UnnamedAddr
+	Alias           bool // alias if true, ifunc otherwise.
+	Type            Type
+	PtrType         Type
+	Value           Constant // aliasee or resolver
 }
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type Function struct {
-	Linakge  Linkage
-	Header   FunctionHeader
+	Linkage  Linkage
+	Header   *FunctionHeader
 	Body     *FunctionBody // nil if declaration
 	Metadata []MetadataAttachment
 }
 
 type FunctionHeader struct {
-	PreemptionSpecifier PreemptionSpecifier
-	Visibility          Visibility
-	DLLStorageClass     DLLStorageClass
-	CallingConv         CallingConv
-	ReturnAttrs         []ReturnAttribute
-	RetType             Type
-	Callee              GlobalIdent
-	Params              []Param
-	Variadic            bool
-	UnnamedAddr         UnnamedAddr
-	FuncAttrs           []FuncAttribute
-	Section             *Section // nil if not present
-	Comdat              *Comdat  // nil if not present
-	GC                  string
-	Prefix              *TypeConstant // nil if not present
-	Prologue            *TypeConstant // nil if not present
-	Personality         *TypeConstant // nil if not present
+	Preemption      PreemptionSpecifier
+	Visibility      Visibility
+	DLLStorageClass DLLStorageClass
+	CallingConv     CallingConv
+	ReturnAttrs     []ReturnAttribute
+	RetType         Type
+	Name            GlobalIdent
+	Params          []*Param
+	Variadic        bool
+	UnnamedAddr     UnnamedAddr
+	FuncAttrs       []FuncAttribute
+	Section         *Section      // nil if not present
+	Comdat          *Comdat       // nil if not present
+	GC              string        // empty if not present
+	Prefix          *TypeConstant // nil if not present
+	Prologue        *TypeConstant // nil if not present
+	Personality     *TypeConstant // nil if not present
 }
 
 //go:generate stringer -linecomment -type CallingConv
@@ -280,20 +281,20 @@ type UseListOrderBB struct {
 	Indices []int64
 }
 
-func (SourceFilename) isTopLevelEntity() {}
+func (*SourceFilename) isTopLevelEntity() {}
 
 // TargetDefinition
-func (TargetTriple) isTopLevelEntity()     {}
-func (TargetDataLayout) isTopLevelEntity() {}
+func (*TargetTriple) isTopLevelEntity() {}
+func (*DataLayout) isTopLevelEntity()   {}
 
-func (ModuleAsm) isTopLevelEntity()        {}
-func (TypeDef) isTopLevelEntity()          {}
-func (ComdatDef) isTopLevelEntity()        {}
-func (Global) isTopLevelEntity()           {}
-func (IndirectSymbol) isTopLevelEntity()   {}
-func (Function) isTopLevelEntity()         {}
-func (AttrGroupDef) isTopLevelEntity()     {}
-func (NamedMetadataDef) isTopLevelEntity() {}
-func (MetadataDef) isTopLevelEntity()      {}
-func (UseListOrder) isTopLevelEntity()     {}
-func (UseListOrderBB) isTopLevelEntity()   {}
+func (*ModuleAsm) isTopLevelEntity()        {}
+func (*TypeDef) isTopLevelEntity()          {}
+func (*ComdatDef) isTopLevelEntity()        {}
+func (*Global) isTopLevelEntity()           {}
+func (*IndirectSymbol) isTopLevelEntity()   {}
+func (*Function) isTopLevelEntity()         {}
+func (*AttrGroupDef) isTopLevelEntity()     {}
+func (*NamedMetadataDef) isTopLevelEntity() {}
+func (*MetadataDef) isTopLevelEntity()      {}
+func (*UseListOrder) isTopLevelEntity()     {}
+func (*UseListOrderBB) isTopLevelEntity()   {}

@@ -9,7 +9,7 @@
 //   ::= 'target' 'datalayout' '=' STRINGCONSTANT
 
 TargetDefinition
-	: "target" "triple" "=" string_lit
-	| "target" "datalayout" "=" string_lit
+	: "target" "triple" "=" string_lit       << astx.NewTargetTriple($3) >>
+	| "target" "datalayout" "=" string_lit   << astx.NewDataLayout($3) >>
 ;
 

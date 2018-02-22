@@ -5,14 +5,14 @@
 // ref: parseComdat
 
 ComdatDef
-	: ComdatName "=" "comdat" SelectionKind
+	: ComdatName "=" "comdat" SelectionKind   << astx.NewComdatDef($0, $3) >>
 ;
 
 SelectionKind
-	: "any"
-	| "exactmatch"
-	| "largest"
-	| "noduplicates"
-	| "samesize"
+	: "any"            << ast.SelectionKindAny, nil >>
+	| "exactmatch"     << ast.SelectionKindExactMatch, nil >>
+	| "largest"        << ast.SelectionKindLargest, nil >>
+	| "noduplicates"   << ast.SelectionKindNoDuplicates, nil >>
+	| "samesize"       << ast.SelectionKindSameSize, nil >>
 ;
 

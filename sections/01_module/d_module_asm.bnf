@@ -7,6 +7,6 @@
 //   ::= 'module' 'asm' STRINGCONSTANT
 
 ModuleAsm
-	: "module" "asm" string_lit
+	: "module" "asm" string_lit   << astx.NewModuleAsm($2) >>
 ;
 

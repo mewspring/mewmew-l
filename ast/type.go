@@ -51,7 +51,7 @@ type MMXType struct{}
 
 type PointerType struct {
 	ElemType  Type
-	AddrSpace AddrSpace
+	AddrSpace AddrSpace // zero value if not present
 }
 
 type AddrSpace int64
@@ -93,9 +93,9 @@ type StructType struct {
 	Fields []Type
 }
 
-type Opaque struct{}
+type OpaqueType struct{}
 
-func (Opaque) String() string {
+func (OpaqueType) String() string {
 	return "opaque"
 }
 
@@ -117,5 +117,5 @@ func (TokenType) isType()    {}
 func (MetadataType) isType() {}
 func (ArrayType) isType()    {}
 func (StructType) isType()   {}
-func (Opaque) isType()       {}
+func (OpaqueType) isType()   {}
 func (NamedType) isType()    {}

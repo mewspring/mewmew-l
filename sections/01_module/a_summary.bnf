@@ -13,8 +13,15 @@
 //
 //   module ::= toplevelentity*
 
+<<
+import (
+	"github.com/mewmew/l/ast"
+	"github.com/mewmew/l/astx"
+)
+>>
+
 Module
-	: TopLevelEntities
+	: TopLevelEntities   << astx.NewModule($0) >>
 ;
 
 TopLevelEntities
@@ -23,8 +30,8 @@ TopLevelEntities
 ;
 
 TopLevelEntityList
-	: TopLevelEntity
-	| TopLevelEntityList TopLevelEntity
+	: TopLevelEntity                      << astx.NewTopLevelEntityList($0) >>
+	| TopLevelEntityList TopLevelEntity   << astx.ApppendTopLevelEntity($0, $1) >>
 ;
 
 // --- [ Top-level Entities ] --------------------------------------------------

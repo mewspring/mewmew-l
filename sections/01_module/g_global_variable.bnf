@@ -32,17 +32,17 @@
 //       Const OptionalAttrs
 
 GlobalDecl
-	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
-	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
-	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
+	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs   << astx.NewGlobal($0, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, (ast.Constant)(nil), $12, $13) >>
+	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol                                                       << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, true, $9) >>
+	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol                                                       << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
 ;
 
 // ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 GlobalDef
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs   << astx.NewGlobal($0, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) >>
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol                                                                << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol                                                                << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
 ;
 
 // ref: ParseOptionalThreadLocal
@@ -52,13 +52,13 @@ GlobalDef
 //   := 'thread_local' '(' tlsmodel ')'
 
 OptThreadLocal
-	: empty
+	: empty         << (*ast.ThreadLocal)(nil), nil >>
 	| ThreadLocal
 ;
 
 ThreadLocal
-	: "thread_local"
-	| "thread_local" "(" TLSModel ")"
+	: "thread_local"                    << astx.NewThreadLocal(ast.TLSModelNone) >>
+	| "thread_local" "(" TLSModel ")"   << astx.NewThreadLocal($2) >>
 ;
 
 // ref: ParseTLSModel
@@ -68,14 +68,14 @@ ThreadLocal
 //   := 'localexec'
 
 TLSModel
-	: "initialexec"
-	| "localdynamic"
-	| "localexec"
+	: "initialexec"    << ast.TLSModelInitialExec, nil >>
+	| "localdynamic"   << ast.TLSModelLocalDynamic, nil >>
+	| "localexec"      << ast.TLSModelLocalExec, nil >>
 ;
 
 OptExternallyInitialized
-	: empty
-	| "externally_initialized"
+	: empty                      << false, nil >>
+	| "externally_initialized"   << true, nil >>
 ;
 
 // ref: ParseGlobalType
@@ -84,18 +84,18 @@ OptExternallyInitialized
 //   ::= 'global'
 
 Immutable
-	: "constant"
-	| "global"
+	: "constant"   << true, nil >>
+	| "global"     << false, nil >>
 ;
 
 GlobalAttrs
-	: empty
-	| "," GlobalAttrList
+	: empty               << ([]ast.GlobalAttribute)(nil), nil >>
+	| "," GlobalAttrList   << $1, nil >>
 ;
 
 GlobalAttrList
-	: GlobalAttr
-	| GlobalAttrList "," GlobalAttr
+	: GlobalAttr                      << astx.NewGlobalAttrList($0) >>
+	| GlobalAttrList "," GlobalAttr   << astx.AppendGlobalAttr($0, $2) >>
 ;
 
 GlobalAttr
@@ -124,6 +124,6 @@ GlobalAttr
 //   ::= TypeAndValue
 
 IndirectSymbol
-	: Type "," Type Constant
+	: Type "," Type Constant   << astx.NewIndirectSymbolBody($0, $2, $3) >>
 ;
 

@@ -7,7 +7,7 @@
 //   !foo = !{ !1, !2 }
 
 NamedMetadataDef
-	: MetadataName "=" "!" "{" MetadataNodes "}"
+	: MetadataName "=" "!" "{" MetadataNodes "}"   << astx.NewNamedMetadataDef($0, $4) >>
 ;
 
 MetadataNodes
@@ -16,8 +16,8 @@ MetadataNodes
 ;
 
 MetadataNodeList
-	: MetadataNode
-	| MetadataNodeList "," MetadataNode
+	: MetadataNode                        << astx.NewMetadataNodeList($0) >>
+	| MetadataNodeList "," MetadataNode   << astx.AppendMetadataNode($0, $2) >>
 ;
 
 MetadataNode
@@ -37,12 +37,12 @@ MetadataNode
 //   !42 = !{...}
 
 MetadataDef
-	: MetadataID "=" OptDistinct MDTuple
-	| MetadataID "=" OptDistinct SpecializedMDNode
+	: MetadataID "=" OptDistinct MDTuple             << astx.NewMetadataDef($0, $2, $3) >>
+	| MetadataID "=" OptDistinct SpecializedMDNode   << astx.NewMetadataDef($0, $2, $3) >>
 ;
 
 OptDistinct
-	: empty
-	| "distinct"
+	: empty        << false, nil >>
+	| "distinct"   << true, nil >>
 ;
 

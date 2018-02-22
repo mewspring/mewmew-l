@@ -164,8 +164,8 @@ type LoadInst struct {
 	Volatile       bool
 	ElemType       Type
 	Src            TypeValue
-	SyncScope      SyncScope // empty if not present
-	AtomicOrdering AtomicOrdering
+	SyncScope      SyncScope      // empty if not present
+	AtomicOrdering AtomicOrdering // zero value if not present
 	Alignment      Alignment
 	Metadata       []MetadataAttachment
 }
@@ -175,8 +175,8 @@ type StoreInst struct {
 	Volatile       bool
 	Src            TypeValue
 	Dst            TypeValue
-	SyncScope      SyncScope // empty if not present
-	AtomicOrdering AtomicOrdering
+	SyncScope      SyncScope      // empty if not present
+	AtomicOrdering AtomicOrdering // zero value if not present
 	Alignment      Alignment
 	Metadata       []MetadataAttachment
 }
@@ -355,7 +355,7 @@ type CallInst struct {
 	Callee         TypeValue
 	Args           []Argument
 	FuncAttrs      []FuncAttribute
-	OperandBundles []OperandBundle
+	OperandBundles []*OperandBundle
 	Metadata       []MetadataAttachment
 }
 

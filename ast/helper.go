@@ -75,7 +75,7 @@ func (s Section) String() string {
 }
 
 type Comdat struct {
-	Name ComdatName
+	Name ComdatName // empty if not present
 }
 
 func (c Comdat) String() string {
@@ -283,14 +283,14 @@ type IPred uint8
 const (
 	IPredEQ  IPred = iota // eq
 	IPredNE               // ne
-	IPredUGT              // ugt
-	IPredUGE              // uge
-	IPredULT              // ult
-	IPredULE              // ule
-	IPredSGT              // sgt
 	IPredSGE              // sge
-	IPredSLT              // slt
+	IPredSGT              // sgt
 	IPredSLE              // sle
+	IPredSLT              // slt
+	IPredUGE              // uge
+	IPredUGT              // ugt
+	IPredULE              // ule
+	IPredULT              // ult
 )
 
 //go:generate stringer -linecomment -type FPred
@@ -301,20 +301,20 @@ type FPred uint8
 const (
 	FPredFalse FPred = iota // false
 	FPredOEQ                // oeq
-	FPredOGT                // ogt
 	FPredOGE                // oge
-	FPredOLT                // olt
+	FPredOGT                // ogt
 	FPredOLE                // ole
+	FPredOLT                // olt
 	FPredONE                // one
 	FPredORD                // ord
+	FPredTrue               // true
 	FPredUEQ                // ueq
-	FPredUGT                // ugt
 	FPredUGE                // uge
-	FPredULT                // ult
+	FPredUGT                // ugt
 	FPredULE                // ule
+	FPredULT                // ult
 	FPredUNE                // une
 	FPredUNO                // uno
-	FPredTrue               // true
 )
 
 //go:generate stringer -linecomment -type OverflowFlag
@@ -322,8 +322,8 @@ const (
 type OverflowFlag uint8
 
 const (
-	OverflowFlagNUW OverflowFlag = iota // nuw
-	OverflowFlagNSW                     // nsw
+	OverflowFlagNSW OverflowFlag = iota // nsw
+	OverflowFlagNUW                     // nuw
 )
 
 type TypeValue struct {
@@ -343,12 +343,12 @@ type AtomicOrdering uint8
 
 const (
 	AtomicOrderingNone      AtomicOrdering = iota // none
-	AtomicOrderingUnordered                       // unordered
-	AtomicOrderingMonotonic                       // monotonic
-	AtomicOrderingAcquire                         // acquire
-	AtomicOrderingRelease                         // release
 	AtomicOrderingAcqRel                          // acq_rel
+	AtomicOrderingAcquire                         // acquire
+	AtomicOrderingMonotonic                       // monotonic
+	AtomicOrderingRelease                         // release
 	AtomicOrderingSeqCst                          // seq_cst
+	AtomicOrderingUnordered                       // unordered
 )
 
 type ExceptionScope interface {
@@ -393,7 +393,7 @@ const (
 
 type OperandBundle struct {
 	Tag    string
-	Inputs []TypeValue
+	Inputs []*TypeValue
 }
 
 type Label struct {

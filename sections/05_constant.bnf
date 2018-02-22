@@ -30,8 +30,8 @@ Constant
 // ref: ParseValID
 
 BoolConst
-	: "true"
-	| "false"
+	: "true"    << ast.BoolConst(true), nil >>
+	| "false"   << ast.BoolConst(false), nil >>
 ;
 
 // --- [ Integer Constants ] ---------------------------------------------------
@@ -41,7 +41,7 @@ BoolConst
 // ref: ParseValID
 
 IntConst
-	: int_lit
+	: int_lit   << astx.NewIntConst($0) >>
 ;
 
 // --- [ Floating-point Constants ] --------------------------------------------
@@ -51,7 +51,7 @@ IntConst
 // ref: ParseValID
 
 FloatConst
-	: float_lit
+	: float_lit   << astx.NewFloatConst($0) >>
 ;
 
 // --- [ Null Pointer Constants ] ----------------------------------------------
@@ -61,7 +61,7 @@ FloatConst
 // ref: ParseValID
 
 NullConst
-	: "null"
+	: "null"   << &ast.NullConst{}, nil >>
 ;
 
 // --- [ Token Constants ] -----------------------------------------------------
@@ -71,7 +71,7 @@ NullConst
 // ref: ParseValID
 
 NoneConst
-	: "none"
+	: "none"   << &ast.NoneConst{}, nil >>
 ;
 
 // --- [ Structure Constants ] -------------------------------------------------
@@ -91,10 +91,10 @@ NoneConst
 //    ;
 
 StructConst
-	: "{" "}"
-	| "{" ElemList "}"
-	| "<" "{" "}" ">"
-	| "<" "{" ElemList "}" ">"
+	: "{" "}"                         << astx.StructConst(([]*ast.TypeConst)(nil), false) >>
+	| "{" TypeConstList "}"           << astx.StructConst($1, false) >>
+	| "<" "{" "}" ">"                 << astx.StructConst(([]*ast.TypeConst)(nil), true) >>
+	| "<" "{" TypeConstList "}" ">"   << astx.StructConst($2, true) >>
 ;
 
 // --- [ Array Constants ] -----------------------------------------------------
@@ -106,11 +106,11 @@ StructConst
 //  c "foo"
 
 ArrayConst
-	: "[" Elems "]"
+	: "[" TypeConsts "]"   << astx.NewArrayConst($1) >>
 ;
 
 CharArrayConst
-	: "c" string_lit
+	: "c" string_lit   << astx.NewCharArrayConst($1) >>
 ;
 
 // --- [ Vector Constants ] ----------------------------------------------------
@@ -122,7 +122,7 @@ CharArrayConst
 //  ::= '<' ConstVector '>'         --> Vector.
 
 VectorConst
-	: "<" Elems ">"
+	: "<" TypeConsts ">"   << astx.NewVectorConst($1) >>
 ;
 
 // --- [ Zero Initialization Constants ] ---------------------------------------
@@ -132,7 +132,7 @@ VectorConst
 // ref: ParseValID
 
 ZeroInitializerConst
-	: "zeroinitializer"
+	: "zeroinitializer"   << &ast.ZeroInitializerConst{}, nil >>
 ;
 
 // --- [ Undefined Values ] ----------------------------------------------------
@@ -142,7 +142,7 @@ ZeroInitializerConst
 // ref: ParseValID
 
 UndefConst
-	: "undef"
+	: "undef"   << &ast.UndefConst{}, nil >>
 ;
 
 // --- [ Addresses of Basic Blocks ] -------------------------------------------
@@ -154,6 +154,6 @@ UndefConst
 //  ::= 'blockaddress' '(' @foo ',' %bar ')'
 
 BlockAddressConst
-	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"
+	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"   << astx.NewBlockAddressConst($2, $4) >>
 ;
 
