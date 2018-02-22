@@ -226,7 +226,7 @@ func (Dereferenceable) isReturnAttribute()  {}
 func (ReturnAttrString) isReturnAttribute() {}
 func (ReturnAttr) isReturnAttribute()       {}
 
-type TypeConstant struct {
+type TypeConst struct {
 	Type  Type
 	Const Constant
 }

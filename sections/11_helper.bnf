@@ -174,7 +174,7 @@ OptComdat
 
 Comdat
 	: "comdat"                      << &ast.Comdat{} >>
-	| "comdat" "(" ComdatName ")"   << &ast.Comdat{Name: astx.ComdatName($2)} >>
+	| "comdat" "(" ComdatName ")"   << &ast.Comdat{Name: $2.(ast.ComdatName)} >>
 ;
 
 Dereferenceable
@@ -415,7 +415,7 @@ OperandBundleList
 ;
 
 OperandBundle
-	: string_lit "(" TypeValues ")"   << &ast.OperandBundle{Tag: astx.Int($0), Inputs: astx.TypeValues($2)}, nil >>
+	: string_lit "(" TypeValues ")"   << &ast.OperandBundle{Tag: astx.Int($0), Inputs: $2.([]*ast.TypeValue)}, nil >>
 ;
 
 OptVolatile
@@ -465,7 +465,7 @@ IndexList
 ;
 
 Index
-	: int_lit   << astx.NewInt($0) >>
+	: int_lit   << astx.Int($0), nil >>
 ;
 
 TypeValues
@@ -474,26 +474,26 @@ TypeValues
 ;
 
 TypeValueList
-	: TypeValue
-	| TypeValueList TypeValue
+	: TypeValue                 << astx.NewTypeValueList($0) >>
+	| TypeValueList TypeValue   << astx.AppendTypeValue($0, $1) >>
 ;
 
 TypeValue
-	: Type Value
+	: Type Value   << &ast.TypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)}, nil >>
 ;
 
 TypeConsts
-	: empty
+	: empty           << ([]*ast.TypeConst)(nil), nil >>
 	| TypeConstList
 ;
 
 TypeConstList
-	: TypeConst
-	| TypeConstList "," TypeConst
+	: TypeConst                     << astx.NewTypeConstList($0) >>
+	| TypeConstList "," TypeConst   << astx.AppendTypeConst($0, $1) >>
 ;
 
 TypeConst
-	: Type Constant
+	: Type Constant   << &ast.TypeConst{Type: $0.(ast.Type), Value: $1.(ast.Constant)}, nil >>
 ;
 
 // ref: ParseParameterList
@@ -504,15 +504,15 @@ TypeConst
 //    ::= Type OptionalAttributes Value OptionalAttributes
 
 Args
-	: empty
-	| "..."
-	| ArgList
-	| ArgList "," "..."
+	: empty               << ([]ast.Argument)(nil), nil >>
+	| "..."               << ([]ast.Argument)(nil), nil >>
+	| ArgList             << $0, nil >>
+	| ArgList "," "..."   << $0, nil >>
 ;
 
 ArgList
-	: Arg
-	| ArgList "," Arg
+	: Arg               << astx.NewArgList($0) >>
+	| ArgList "," Arg   << astx.AppendArgList($0, $2) >>
 ;
 
 // ref: ParseMetadataAsValue
@@ -525,25 +525,25 @@ ArgList
 //  ::= metadata !"string"
 
 Arg
-	: ConcreteType ParamAttrs Value
-	| MetadataType Metadata
+	: ConcreteType ParamAttrs Value   << &ast.Arg{X: ast.TypeValue{Type: $0.(ast.Type), Value: $2.(ast.Value)}, ParamAttrs: $1.([]ParamAttribute)}, nil >>
+	| MetadataType Metadata           << &ast.MetadataValue{Metadata: $1.(ast.Metadata)} >>
 ;
 
 // ref: ParseExceptionArgs
 
 ExceptionArgs
-	: empty
+	: empty              << ([]ast.ExceptionArg)(nil), nil >>
 	| ExceptionArgList
 ;
 
 ExceptionArgList
-	: ExceptionArg
-	| ExceptionArgList "," ExceptionArg
+	: ExceptionArg                        << astx.NewExceptionArgList($0) >>
+	| ExceptionArgList "," ExceptionArg   << astx.AppendExceptionArg($0, $2) >>
 ;
 
 ExceptionArg
-	: ConcreteType Value
-	| MetadataType Metadata
+	: ConcreteType Value      << &ast.TypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)} >>
+	| MetadataType Metadata   << &ast.MetadataValue{Metadata: $1.(ast.Metadata)} >>
 ;
 
 // ref: ParseArgumentList
@@ -556,19 +556,19 @@ ExceptionArg
 //   ::= ArgType (',' ArgType)*
 
 Params
-	: empty
-	| "..."
-	| ParamList
-	| ParamList "," "..."
+	: empty                 << &astx.Params{}, nil >>
+	| "..."                 << &astx.Params{Variadic: true}, nil >>
+	| ParamList             << &astx.Params{Params: $0.([]*ast.Param)}, nil >>
+	| ParamList "," "..."   << &astx.Params{Params: $0.([]*ast.Param), Variadic: true}, nil >>
 ;
 
 ParamList
-	: Param
-	| ParamList "," Param
+	: Param                 << astx.NewParamList($0) >>
+	| ParamList "," Param   << astx.AppendParam($0, $2) >>
 ;
 
 Param
-	: Type ParamAttrs
-	| Type LocalIdent ParamAttrs
+	: Type ParamAttrs              << &ast.Param{Type: $0.(ast.Type), ParamAttrs: $1.([]ast.ParamAttribute)}, nil >>
+	| Type LocalIdent ParamAttrs   << &ast.Param{Type: $0.(ast.Type), Name: $1.(ast.LocalIdent), ParamAttrs: $2.([]ast.ParamAttribute)}, nil >>
 ;
 

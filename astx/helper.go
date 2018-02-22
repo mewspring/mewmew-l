@@ -7,17 +7,9 @@ import (
 	"github.com/mewmew/l/token"
 )
 
-func NewString(stringLit interface{}) (string, error) {
-	return String(stringLit), nil
-}
-
 func String(stringLit interface{}) string {
 	s := stringLit.(*token.Token)
 	return string(s.Lit)
-}
-
-func NewInt(intLit interface{}) (int64, error) {
-	return Int(intLit), nil
 }
 
 func Int(intLit interface{}) int64 {
@@ -29,12 +21,11 @@ func Int(intLit interface{}) int64 {
 	return x
 }
 
-func ComdatName(comdatName interface{}) ast.ComdatName {
-	return comdatName.(ast.ComdatName)
-}
-
-func TypeValues(typeVals interface{}) []*ast.TypeValue {
-	return typeVals.([]*ast.TypeValue)
+func TypeConst(typ, val interface{}) *ast.TypeConst {
+	return &ast.TypeConst{
+		Type:  typ.(ast.Type),
+		Const: val.(ast.Constant),
+	}
 }
 
 func NewFuncAttrList(funcAttr interface{}) ([]ast.FuncAttribute, error) {

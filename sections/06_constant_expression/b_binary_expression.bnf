@@ -8,6 +8,7 @@
 
 AddExpr
 	: "add" OverflowFlags "(" Type Constant "," Type Constant ")"
+	<< &ast.AddExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,6 +17,7 @@ AddExpr
 
 FAddExpr
 	: "fadd" "(" Type Constant "," Type Constant ")"
+	<< &ast.FAddExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,6 +26,7 @@ FAddExpr
 
 SubExpr
 	: "sub" OverflowFlags "(" Type Constant "," Type Constant ")"
+	<< &ast.SubExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,6 +35,7 @@ SubExpr
 
 FSubExpr
 	: "fsub" "(" Type Constant "," Type Constant ")"
+	<< &ast.FSubExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,6 +44,7 @@ FSubExpr
 
 MulExpr
 	: "mul" OverflowFlags "(" Type Constant "," Type Constant ")"
+	<< &ast.MulExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +53,7 @@ MulExpr
 
 FMulExpr
 	: "fmul" "(" Type Constant "," Type Constant ")"
+	<< &ast.FMulExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,6 +62,7 @@ FMulExpr
 
 UDivExpr
 	: "udiv" OptExact "(" Type Constant "," Type Constant ")"
+	<< &ast.UDivExpr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,6 +71,7 @@ UDivExpr
 
 SDivExpr
 	: "sdiv" OptExact "(" Type Constant "," Type Constant ")"
+	<< &ast.SDivExpr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,6 +80,7 @@ SDivExpr
 
 FDivExpr
 	: "fdiv" "(" Type Constant "," Type Constant ")"
+	<< &ast.FDivExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,6 +89,7 @@ FDivExpr
 
 URemExpr
 	: "urem" "(" Type Constant "," Type Constant ")"
+	<< &ast.URemExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,6 +98,7 @@ URemExpr
 
 SRemExpr
 	: "srem" "(" Type Constant "," Type Constant ")"
+	<< &ast.SRemExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,5 +107,6 @@ SRemExpr
 
 FRemExpr
 	: "frem" "(" Type Constant "," Type Constant ")"
+	<< &ast.FRemExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
