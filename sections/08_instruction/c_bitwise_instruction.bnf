@@ -2,6 +2,8 @@
 
 // ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#shl-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -11,6 +13,8 @@ ShlInst
 ;
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#lshr-instruction
 
 // ref: ParseArithmetic
 //
@@ -22,6 +26,8 @@ LShrInst
 
 // ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#ashr-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -31,6 +37,8 @@ AShrInst
 ;
 
 // ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#and-instruction
 
 // ref: ParseLogical
 //
@@ -42,6 +50,8 @@ AndInst
 
 // ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#or-instruction
+
 // ref: ParseLogical
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value {
@@ -51,6 +61,8 @@ OrInst
 ;
 
 // ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#xor-instruction
 
 // ref: ParseLogical
 //

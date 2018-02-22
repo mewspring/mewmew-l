@@ -2,6 +2,8 @@
 
 // ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#extractvalue-instruction
+
 // ref: ParseExtractValue
 //
 //   ::= 'extractvalue' TypeAndValue (',' uint32)+
@@ -11,6 +13,8 @@ ExtractValueInst
 ;
 
 // ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#insertvalue-instruction
 
 // ref: ParseInsertValue
 //

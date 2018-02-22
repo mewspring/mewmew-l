@@ -2,6 +2,8 @@
 
 // ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#icmp-instruction
+
 // ref: ParseCompare
 //
 //  ::= 'icmp' IPredicates TypeAndValue ',' Value
@@ -12,6 +14,8 @@ ICmpInst
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#fcmp-instruction
+
 // ref: ParseCompare
 //
 //  ::= 'fcmp' FPredicates TypeAndValue ',' Value
@@ -21,6 +25,8 @@ FCmpInst
 ;
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#phi-instruction
 
 // ref: ParsePHI
 //
@@ -41,6 +47,8 @@ Inc
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#select-instruction
+
 // ref: ParseSelect
 //
 //   ::= 'select' TypeAndValue ',' TypeAndValue ',' TypeAndValue
@@ -50,6 +58,8 @@ SelectInst
 ;
 
 // ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#call-instruction
 
 // ref: ParseCall
 //
@@ -75,6 +85,8 @@ OptTail
 
 // ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#va_arg-instruction
+
 // ref: ParseVA_Arg
 //
 //   ::= 'va_arg' TypeAndValue ',' Type
@@ -84,6 +96,8 @@ VAArgInst
 ;
 
 // ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#landingpad-instruction
 
 // ref: ParseLandingPad
 //

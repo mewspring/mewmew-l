@@ -2,6 +2,8 @@
 
 // ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#trunc-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -11,6 +13,8 @@ TruncInst
 ;
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#zext-instruction
 
 // ref: ParseCast
 //
@@ -22,6 +26,8 @@ ZExtInst
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#sext-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -31,6 +37,8 @@ SExtInst
 ;
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#fptrunc-instruction
 
 // ref: ParseCast
 //
@@ -42,6 +50,8 @@ FPTruncInst
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#fpext-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -51,6 +61,8 @@ FPExtInst
 ;
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#fptoui-instruction
 
 // ref: ParseCast
 //
@@ -62,6 +74,8 @@ FPToUIInst
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#fptosi-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -71,6 +85,8 @@ FPToSIInst
 ;
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#uitofp-instruction
 
 // ref: ParseCast
 //
@@ -82,6 +98,8 @@ UIToFPInst
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#sitofp-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -91,6 +109,8 @@ SIToFPInst
 ;
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#ptrtoint-instruction
 
 // ref: ParseCast
 //
@@ -102,6 +122,8 @@ PtrToIntInst
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#inttoptr-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -112,6 +134,8 @@ IntToPtrInst
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#bitcast-instruction
+
 // ref: ParseCast
 //
 //   ::= CastOpc TypeAndValue 'to' Type
@@ -121,6 +145,8 @@ BitCastInst
 ;
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#addrspacecast-instruction
 
 // ref: ParseCast
 //

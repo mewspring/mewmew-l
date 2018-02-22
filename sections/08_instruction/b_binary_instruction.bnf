@@ -2,6 +2,8 @@
 
 // ~~~ [ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#add-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -11,6 +13,8 @@ AddInst
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#fadd-instruction
 
 // ref: ParseArithmetic
 //
@@ -22,6 +26,8 @@ FAddInst
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#sub-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -31,6 +37,8 @@ SubInst
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#fsub-instruction
 
 // ref: ParseArithmetic
 //
@@ -42,6 +50,8 @@ FSubInst
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#mul-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -51,6 +61,8 @@ MulInst
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#fmul-instruction
 
 // ref: ParseArithmetic
 //
@@ -62,6 +74,8 @@ FMulInst
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#udiv-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -71,6 +85,8 @@ UDivInst
 ;
 
 // ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#sdiv-instruction
 
 // ref: ParseArithmetic
 //
@@ -82,6 +98,8 @@ SDivInst
 
 // ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#fdiv-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -91,6 +109,8 @@ FDivInst
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#urem-instruction
 
 // ref: ParseArithmetic
 //
@@ -102,6 +122,8 @@ URemInst
 
 // ~~~ [ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#srem-instruction
+
 // ref: ParseArithmetic
 //
 //  ::= ArithmeticOps TypeAndValue ',' Value
@@ -111,6 +133,8 @@ SRemInst
 ;
 
 // ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#frem-instruction
 
 // ref: ParseArithmetic
 //

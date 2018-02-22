@@ -2,6 +2,8 @@
 
 // ~~~ [ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#extractelement-instruction
+
 // ref: ParseExtractElement
 //
 //   ::= 'extractelement' TypeAndValue ',' TypeAndValue
@@ -12,6 +14,8 @@ ExtractElementInst
 
 // ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#insertelement-instruction
+
 // ref: ParseInsertElement
 //
 //   ::= 'insertelement' TypeAndValue ',' TypeAndValue ',' TypeAndValue
@@ -21,6 +25,8 @@ InsertElementInst
 ;
 
 // ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#shufflevector-instruction
 
 // ref: ParseShuffleVector
 //

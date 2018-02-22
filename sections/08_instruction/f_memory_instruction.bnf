@@ -2,6 +2,8 @@
 
 // ~~~ [ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#alloca-instruction
+
 // ref: ParseAlloc
 //
 //   ::= 'alloca' 'inalloca'? 'swifterror'? Type (',' TypeAndValue)?
@@ -36,6 +38,8 @@ OptSwiftError
 
 // ~~~ [ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#load-instruction
+
 // ref: ParseLoad
 //
 //   ::= 'load' 'volatile'? TypeAndValue (',' 'align' i32)?
@@ -57,6 +61,8 @@ LoadInst
 ;
 
 // ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#store-instruction
 
 // ref: ParseStore
 //
@@ -80,6 +86,8 @@ StoreInst
 
 // ~~~ [ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// https://llvm.org/docs/LangRef.html#fence-instruction
+
 // ref: ParseFence
 //
 //   ::= 'fence' 'singlethread'? AtomicOrdering
@@ -89,6 +97,8 @@ FenceInst
 ;
 
 // ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#cmpxchg-instruction
 
 // ref: ParseCmpXchg
 //
@@ -105,6 +115,8 @@ OptWeak
 ;
 
 // ~~~ [ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#atomicrmw-instruction
 
 // ref: ParseAtomicRMW
 //
@@ -130,6 +142,8 @@ BinOp
 ;
 
 // ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// https://llvm.org/docs/LangRef.html#getelementptr-instruction
 
 // ref: ParseGetElementPtr
 //
