@@ -171,7 +171,7 @@ type FunctionHeader struct {
 	Variadic        bool
 	UnnamedAddr     UnnamedAddr
 	FuncAttrs       []FuncAttribute
-	Section         *Section   // nil if not present
+	Section         Section    // empty if not present
 	Comdat          *Comdat    // nil if not present
 	GC              string     // empty if not present
 	Prefix          *TypeConst // nil if not present
