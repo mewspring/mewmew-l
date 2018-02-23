@@ -30,13 +30,13 @@ type NoneConst struct{}
 
 type StructConst struct {
 	Packed bool
-	Fields []TypeConstant
+	Fields []*TypeConst
 }
 
 // --- [ Array Constants ] -----------------------------------------------------
 
 type ArrayConst struct {
-	Elems []TypeConstant
+	Elems []*TypeConst
 }
 
 type CharArrayConst struct {
@@ -46,7 +46,7 @@ type CharArrayConst struct {
 // --- [ Vector Constants ] ----------------------------------------------------
 
 type VectorConst struct {
-	Elems []TypeConstant
+	Elems []*TypeConst
 }
 
 // --- [ Zero Initialization Constants ] ---------------------------------------

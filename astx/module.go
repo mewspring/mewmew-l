@@ -206,9 +206,9 @@ func NewFunctionHeader(preemptionSpecifier, visibility, dllStorageClass, calling
 	s := section.(*ast.Section)
 	c := comdat.(*ast.Comdat)
 	garbage := gc.(string)
-	pre := prefix.(*ast.TypeConstant)
-	pro := prologue.(*ast.TypeConstant)
-	person := personality.(*ast.TypeConstant)
+	pre := prefix.(*ast.TypeConst)
+	pro := prologue.(*ast.TypeConst)
+	person := personality.(*ast.TypeConst)
 	return &ast.FunctionHeader{
 		Preemption:      preemption,
 		Visibility:      v,

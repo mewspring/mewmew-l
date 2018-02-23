@@ -398,5 +398,5 @@ type OperandBundle struct {
 
 type Label struct {
 	// label type is implicit.
-	LocalIdent
+	Name LocalIdent
 }

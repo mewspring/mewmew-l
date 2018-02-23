@@ -7,6 +7,7 @@
 Terminator
 	: RetTerm
 	| BrTerm
+	| CondBrTerm
 	| SwitchTerm
 	| IndirectBrTerm
 	| InvokeTerm
@@ -29,8 +30,10 @@ Terminator
 RetTerm
 	// Void return.
 	: "ret" VoidType OptCommaSepMetadataAttachmentList
+	<< &ast.RetTerm{Metadata: $2.([]*ast.MetadataAttachment)}, nil >>
 	// Value return.
 	| "ret" ConcreteType Value OptCommaSepMetadataAttachmentList
+	<< &ast.RetTerm{X: astx.TypeValue($1, $2), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ br ] ------------------------------------------------------------------
@@ -42,13 +45,17 @@ RetTerm
 //   ::= 'br' TypeAndValue
 //   ::= 'br' TypeAndValue ',' TypeAndValue ',' TypeAndValue
 
+// Unconditional branch.
 BrTerm
-	// Unconditional branch.
 	: "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList
-	// Conditional branch.
-	| "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	<< &ast.BrTerm{Target: astx.Label($1, $2), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
+// Conditional branch.
+CondBrTerm
+	: "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	<< &ast.CondBrTerm{Cond: astx.TypeValue($1, $2), TargetTrue: astx.Label($4, $5), TargetFalse: astx.Label($7, $8), Metadata: $9.([]*ast.MetadataAttachment)}, nil >>
+;
 
 // --- [ switch ] --------------------------------------------------------------
 
@@ -62,20 +69,21 @@ BrTerm
 
 SwitchTerm
 	: "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
+	<< &ast.SwitchTerm{X: astx.TypeValue($1, $2), Default: astx.Label($4, $5), Cases: $7.([]*ast.Case), Metadata: $9.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 Cases
-	: empty
+	: empty      << ([]*ast.Case)(nil), nil >>
 	| CaseList
 ;
 
 CaseList
-	: Case
-	| CaseList Case
+	: Case            << astx.NewCaseList($0) >>
+	| CaseList Case   << astx.AppendCase($0, $1) >>
 ;
 
 Case
-	: Type IntConst "," LabelType LocalIdent
+	: Type IntConst "," LabelType LocalIdent   << &ast.Case{X: astx.TypeConst($0, $1), Target: astx.Label($3, $4)}, nil >>
 ;
 
 // --- [ indirectbr ] ----------------------------------------------------------
@@ -88,15 +96,16 @@ Case
 
 IndirectBrTerm
 	: "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
+	<< &ast.IndirectBrTerm{Addr: astx.TypeValue($1, $2), Targets: $5.([]ast.Label), Metadata: $7.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 LabelList
-	: Label
-	| LabelList "," Label
+	: Label                 << astx.NewLabelList($0) >>
+	| LabelList "," Label   << astx.AppendLabel($0, $2) >>
 ;
 
 Label
-	: LabelType LocalIdent
+	: LabelType LocalIdent   << &ast{Name: $1.(ast.LocalIdent)}, nil >>
 ;
 
 // --- [ invoke ] --------------------------------------------------------------
@@ -110,6 +119,7 @@ Label
 
 InvokeTerm
 	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	<< &ast.InvokeTerm{CallingConv: $1.(ast.CallingConv), ReturnAttrs: $2.([]ast.ReturnAttribute), Callee: ast.TypeValue($3, $4), Args: $6.([]ast.Argument), FuncAttrs: $8.([]ast.FuncAttribute), OperandBundles: $9.([]*ast.OperandBundle), Normal: astx.Label($11, $12), Exception: astx.Label($14, $15), Metadata: $16.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ resume ] --------------------------------------------------------------
@@ -122,6 +132,7 @@ InvokeTerm
 
 ResumeTerm
 	: "resume" Type Value OptCommaSepMetadataAttachmentList
+	<< &ast.ResumeTerm{X: astx.TypeValue($1, $2), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ catchswitch ] ---------------------------------------------------------
@@ -134,11 +145,12 @@ ResumeTerm
 
 CatchSwitchTerm
 	: "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	<< &ast.CatchSwitchTerm{Scope: $2.(ast.ExceptionScope), Handlers: $4.([]*ast.Label), UnwindTarget: $7.(ast.UnwindTarget), Metadata: $8.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 UnwindTarget
-	: "to" "caller"
-	| LabelType LocalIdent
+	: "to" "caller"          << ast.UnwindToCaller{}, nil >>
+	| LabelType LocalIdent   << astx.Label($0, $1) >>
 ;
 
 // --- [ catchret ] ------------------------------------------------------------
@@ -151,6 +163,7 @@ UnwindTarget
 
 CatchRetTerm
 	: "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	<< &ast.CatchRetTerm{From: $2.(ast.Value), To: astx.Label($4, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ cleanupret ] ----------------------------------------------------------
@@ -163,6 +176,7 @@ CatchRetTerm
 
 CleanupRetTerm
 	: "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	<< &ast.CleanupRetTerm{From: $2.(ast.Value), UnwindTarget: $4.(ast.UnwindTarget), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ unreachable ] ---------------------------------------------------------
@@ -173,5 +187,6 @@ CleanupRetTerm
 
 UnreachableTerm
 	: "unreachable" OptCommaSepMetadataAttachmentList
+	<< &ast.UnreachableTerm{Metadata: $1.([]*ast.MetadataAttachment)}, nil >>
 ;
 

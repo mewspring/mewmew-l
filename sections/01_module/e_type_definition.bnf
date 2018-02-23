@@ -16,6 +16,6 @@ TypeDef
 ;
 
 OpaqueType
-	: "opaque"   << ast.Opaque{}, nil >>
+	: "opaque"   << ast.OpaqueType{}, nil >>
 ;
 
