@@ -10,6 +10,7 @@
 
 TruncInst
 	: "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.TruncInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,6 +23,7 @@ TruncInst
 
 ZExtInst
 	: "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.ZExtInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,6 +36,7 @@ ZExtInst
 
 SExtInst
 	: "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.SExtInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,6 +49,7 @@ SExtInst
 
 FPTruncInst
 	: "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.FPTruncInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,6 +62,7 @@ FPTruncInst
 
 FPExtInst
 	: "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.FPExtInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,6 +75,7 @@ FPExtInst
 
 FPToUIInst
 	: "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.FPToUIInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,6 +88,7 @@ FPToUIInst
 
 FPToSIInst
 	: "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.FPToSIInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -94,6 +101,7 @@ FPToSIInst
 
 UIToFPInst
 	: "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.UIToFPInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,6 +114,7 @@ UIToFPInst
 
 SIToFPInst
 	: "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.SIToFPInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,6 +127,7 @@ SIToFPInst
 
 PtrToIntInst
 	: "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.PtrToIntInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -130,6 +140,7 @@ PtrToIntInst
 
 IntToPtrInst
 	: "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.IntToPtrInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,6 +153,7 @@ IntToPtrInst
 
 BitCastInst
 	: "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.BitCastInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,5 +166,6 @@ BitCastInst
 
 AddrSpaceCastInst
 	: "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList
+	<< &ast.AddrSpaceCastInst{From: astx.TypeValue($1, $2), To: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 

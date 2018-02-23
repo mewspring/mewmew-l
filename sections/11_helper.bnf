@@ -478,6 +478,11 @@ TypeValueList
 	| TypeValueList TypeValue   << astx.AppendTypeValue($0, $1) >>
 ;
 
+CommaSepTypeValueList
+	: TypeValue                             << astx.NewTypeValueList($0) >>
+	| CommaSepTypeValueList "," TypeValue   << astx.AppendTypeValue($0, $2) >>
+;
+
 TypeValue
 	: Type Value   << &ast.TypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)}, nil >>
 ;

@@ -10,6 +10,7 @@
 
 ICmpInst
 	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
+	<< &ast.ICmpInst{IPred: $1.(ast.IPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,6 +23,7 @@ ICmpInst
 
 FCmpInst
 	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
+	<< &ast.FCmpInst{FPred: $1.(ast.FPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,15 +36,16 @@ FCmpInst
 
 PhiInst
 	: "phi" Type IncList OptCommaSepMetadataAttachmentList
+	<< &ast.PhiInst{Type: $1.(ast.Type), Incs: $2.([]*ast.Incoming), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 IncList
-	: Inc
-	| IncList "," Inc
+	: Inc               << astx.NewIncList($0) >>
+	| IncList "," Inc   << astx.AppendInc($0, $2) >>
 ;
 
 Inc
-	: "[" Value "," LocalIdent "]"
+	: "[" Value "," LocalIdent "]"   << &ast.Incoming{X: $1.(ast.Value), Pred: $3.(ast.LocalIdent)}, nil >>
 ;
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,6 +58,7 @@ Inc
 
 SelectInst
 	: "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	<< &ast.SelectInst{Cond: astx.TypeValue($1, $2), X: astx.TypeValue($4, $5), Y: astx.TypeValue($7, $8), Metadata: $9.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,13 +78,14 @@ SelectInst
 
 CallInst
 	: OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
+	<< &ast.CallInst{Tail: $0.(ast.Tail), FastMathFlags: $2.([]ast.FastMathFlag), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), Callee: astx.TypeValue($5, $6), Args: $8.([]ast.Argument), FuncAttrs: $10.([]ast.FuncAttribute), OperandBundles: $11.([]*ast.OperandBundle), Metadata: $12.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 OptTail
-	: empty
-	| "musttail"
-	| "notail"
-	| "tail"
+	: empty        << ast.TailNone, nil >>
+	| "musttail"   << ast.TailMustTail, nil >>
+	| "notail"     << ast.TailNoTail, nil >>
+	| "tail"       << ast.TailTail, nil >>
 ;
 
 // ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,6 +98,7 @@ OptTail
 
 VAArgInst
 	: "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
+	<< &ast.VAArgInst{ArgList: astx.TypeValue($1, $2), ArgType: $4.(ast.Type), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,26 +115,27 @@ VAArgInst
 
 LandingPadInst
 	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
+	<< &ast.LandingPadInst{Type: $1.(ast.Type), Cleanup: $2.(bool), Clauses: $3.([]*ast.Clause), Metadata: $4.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 OptCleanup
-	: empty
-	| "cleanup"
+	: empty       << false, nil >>
+	| "cleanup"   << true, nil >>
 ;
 
 Clauses
-	: empty
+	: empty        << ([]*ast.Clause)(nil), nil >>
 	| ClauseList
 ;
 
 ClauseList
-	: Clause
-	| ClauseList Clause
+	: Clause              << astx.NewClauseList($0) >>
+	| ClauseList Clause   << astx.AppendClause($0, $1) >>
 ;
 
 Clause
-	: "catch" Type Value
-	| "filter" Type ArrayConst
+	: "catch" Type Value         << &ast.Clause{Catch: true, X: astx.TypeValue($1, $2)}, nil >>
+	| "filter" Type ArrayConst   << &ast.Clause{X: astx.TypeValue($1, $2)}, nil >>
 ;
 
 // --- [ catchpad ] ------------------------------------------------------------
@@ -139,6 +146,7 @@ Clause
 
 CatchPadInst
 	: "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	<< &ast.CatchPadInst{Scope: $2.(ast.LocalIdent), Args: $4.([]ast.Argument), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ cleanuppad ] ----------------------------------------------------------
@@ -149,5 +157,6 @@ CatchPadInst
 
 CleanupPadInst
 	: "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	<< &ast.CleanupPadInst{Scope: $2.(ast.ExceptionScope), Args: $4.([]ast.Argument), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
