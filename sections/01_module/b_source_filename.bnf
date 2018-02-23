@@ -8,6 +8,6 @@
 
 SourceFilename
 	: "source_filename" "=" string_lit
-	<< &ast.SourceFilename{Name: astx.String($2)}, nil >>
+	<< ast.SourceFilename(astx.String($2)), nil >>
 ;
 

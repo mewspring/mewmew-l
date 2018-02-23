@@ -16,12 +16,10 @@ type TopLevelEntity interface {
 
 // ~~~ [ Source Filename ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type SourceFilename struct {
-	Name string
-}
+type SourceFilename string // empty if not present
 
 func (s SourceFilename) String() string {
-	return fmt.Sprintf("source_filename = %q", s.Name)
+	return fmt.Sprintf("source_filename = %q", string(s))
 }
 
 // ~~~ [ Target Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,20 +28,16 @@ type TargetDefinition interface {
 	isTargetDefinition()
 }
 
-type TargetTriple struct {
-	TargetTriple string
-}
+type TargetTriple string // empty if not present
 
 func (t TargetTriple) String() string {
-	return fmt.Sprintf("target triple = %q", t.TargetTriple)
+	return fmt.Sprintf("target triple = %q", string(t))
 }
 
-type DataLayout struct {
-	DataLayout string
-}
+type DataLayout string // empty if not present
 
 func (t DataLayout) String() string {
-	return fmt.Sprintf("target datalayout = %q", t.DataLayout)
+	return fmt.Sprintf("target datalayout = %q", string(t))
 }
 
 func (TargetTriple) isTargetDefinition() {}
@@ -51,12 +45,10 @@ func (DataLayout) isTargetDefinition()   {}
 
 // ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type ModuleAsm struct {
-	Asm string
-}
+type ModuleAsm string // empty if not present
 
-func (m ModuleAsm) String() string {
-	return fmt.Sprintf("module asm %q", m.Asm)
+func (asm ModuleAsm) String() string {
+	return fmt.Sprintf("module asm %q", string(asm))
 }
 
 // ~~~ [ Type Defintion ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,7 +58,7 @@ type TypeDef struct {
 	Type Type
 }
 
-func (t TypeDef) String() string {
+func (t *TypeDef) String() string {
 	return fmt.Sprintf("%s = type %s", t.Name, t.Type)
 }
 

@@ -95,7 +95,7 @@ type StructType struct {
 
 type OpaqueType struct{}
 
-func (OpaqueType) String() string {
+func (*OpaqueType) String() string {
 	return "opaque"
 }
 
@@ -105,17 +105,17 @@ type NamedType struct {
 	Name LocalIdent
 }
 
-func (VoidType) isType()     {}
-func (FuncType) isType()     {}
-func (IntType) isType()      {}
-func (FloatType) isType()    {}
-func (MMXType) isType()      {}
-func (PointerType) isType()  {}
-func (VectorType) isType()   {}
-func (LabelType) isType()    {}
-func (TokenType) isType()    {}
-func (MetadataType) isType() {}
-func (ArrayType) isType()    {}
-func (StructType) isType()   {}
-func (OpaqueType) isType()   {}
-func (NamedType) isType()    {}
+func (*VoidType) isType()     {}
+func (*FuncType) isType()     {}
+func (*IntType) isType()      {}
+func (*FloatType) isType()    {}
+func (*MMXType) isType()      {}
+func (*PointerType) isType()  {}
+func (*VectorType) isType()   {}
+func (*LabelType) isType()    {}
+func (*TokenType) isType()    {}
+func (*MetadataType) isType() {}
+func (*ArrayType) isType()    {}
+func (*StructType) isType()   {}
+func (*OpaqueType) isType()   {}
+func (*NamedType) isType()    {}
