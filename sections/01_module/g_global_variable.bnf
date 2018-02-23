@@ -31,18 +31,38 @@
 //       OptionalAddrSpace OptionalExternallyInitialized GlobalType Type
 //       Const OptionalAttrs
 
+// https://llvm.org/docs/LangRef.html#aliases
+// https://llvm.org/docs/LangRef.html#ifuncs
+
+// ref: parseIndirectSymbol
+//
+//   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
+//                     OptionalVisibility OptionalDLLStorageClass
+//                     OptionalThreadLocal OptionalUnnamedAddr
+//                     'alias|ifunc' IndirectSymbol
+//
+//  IndirectSymbol
+//   ::= TypeAndValue
+
 GlobalDecl
-	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs   << astx.NewGlobal($0, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, (ast.Constant)(nil), $12, $13) >>
-	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol                                                       << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, true, $9) >>
-	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol                                                       << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
+	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
+	<< &ast.Global{Name: $0.(ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.PreemptionSpecifier), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), AddrSpace: $8.(ast.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(ast.Type), GlobalAttrs: $12.([]ast.GlobalAttribute), FuncAttrs: $13.(ast.FuncAttribute)}, nil >>
+	| GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
+	<< &ast.IndirectSymbol{Name: $0.(ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.PreemptionSpecifier), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Value: astx.TypeConst($10, $11)}, nil >>
+;
+
+Alias
+	: "alias"   << true, nil >>
+	| "ifunc"   << false, nil >>
 ;
 
 // ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 GlobalDef
-	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs   << astx.NewGlobal($0, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) >>
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "alias" IndirectSymbol                                                                << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
-	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr "ifunc" IndirectSymbol                                                                << astx.NewIndirectSymbol($0, $2, $3, $4, $5, $6, $7, false, $9) >>
+	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
+	<< &ast.Global{Name: $0.(ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.PreemptionSpecifier), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), AddrSpace: $8.(ast.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(ast.Type), Init: $12.(ast.Constant), GlobalAttrs: $13.([]ast.GlobalAttribute), FuncAttrs: $14.(ast.FuncAttribute)}, nil >>
+	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
+	<< &ast.IndirectSymbol{Name: $0.(ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.PreemptionSpecifier), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Value: astx.TypeConst($10, $11)}, nil >>
 ;
 
 // ref: ParseOptionalThreadLocal
@@ -52,13 +72,16 @@ GlobalDef
 //   := 'thread_local' '(' tlsmodel ')'
 
 OptThreadLocal
-	: empty         << (*ast.ThreadLocal)(nil), nil >>
+	: empty
+	<< (*ast.ThreadLocal)(nil), nil >>
 	| ThreadLocal
 ;
 
 ThreadLocal
-	: "thread_local"                    << astx.NewThreadLocal(ast.TLSModelNone) >>
-	| "thread_local" "(" TLSModel ")"   << astx.NewThreadLocal($2) >>
+	: "thread_local"
+	<< &ast.ThreadLocal{}, nil >>
+	| "thread_local" "(" TLSModel ")"
+	<< &ast.ThreadLocal{Model: $2.(ast.TLSModel)}, nil >>
 ;
 
 // ref: ParseTLSModel
@@ -89,13 +112,17 @@ Immutable
 ;
 
 GlobalAttrs
-	: empty               << ([]ast.GlobalAttribute)(nil), nil >>
-	| "," GlobalAttrList   << $1, nil >>
+	: empty
+	<< ([]ast.GlobalAttribute)(nil), nil >>
+	| "," GlobalAttrList
+	<< $1, nil >>
 ;
 
 GlobalAttrList
-	: GlobalAttr                      << astx.NewGlobalAttrList($0) >>
-	| GlobalAttrList "," GlobalAttr   << astx.AppendGlobalAttr($0, $2) >>
+	: GlobalAttr
+	<< []ast.GlobalAttribute{$0.(ast.GlobalAttribute)}, nil >>
+	| GlobalAttrList "," GlobalAttr
+	<< append($0.([]ast.GlobalAttribute), $2.(ast.GlobalAttribute)), nil >>
 ;
 
 GlobalAttr
@@ -104,26 +131,5 @@ GlobalAttr
 	| Alignment
 	//   ::= !dbg !57
 	| MetadataAttachment
-;
-
-// TODO: Move indirect symbols to alias and ifunc.
-
-// ~~~ [ Indirect Symbol ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// https://llvm.org/docs/LangRef.html#aliases
-// https://llvm.org/docs/LangRef.html#ifuncs
-
-// ref: parseIndirectSymbol
-//
-//   ::= GlobalVar '=' OptionalLinkage OptionalPreemptionSpecifier
-//                     OptionalVisibility OptionalDLLStorageClass
-//                     OptionalThreadLocal OptionalUnnamedAddr
-//                     'alias|ifunc' IndirectSymbol
-//
-//  IndirectSymbol
-//   ::= TypeAndValue
-
-IndirectSymbol
-	: Type "," Type Constant   << astx.NewIndirectSymbolBody($0, $2, $3) >>
 ;
 

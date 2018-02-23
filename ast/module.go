@@ -153,8 +153,7 @@ type IndirectSymbol struct {
 	UnnamedAddr     UnnamedAddr
 	Alias           bool // alias if true, ifunc otherwise.
 	Type            Type
-	PtrType         Type
-	Value           Constant // aliasee or resolver
+	Value           *TypeConst // aliasee or resolver
 }
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
