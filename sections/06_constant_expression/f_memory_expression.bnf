@@ -17,17 +17,21 @@ GetElementPtrExpr
 //   ::= [inrange] TypeAndValue (',' [inrange] TypeAndValue)*
 
 GEPConstIndices
-	: empty               << ([]*ast.GEPConstIndex)(nil), nil >>
+	: empty
+	<< ([]*ast.GEPConstIndex)(nil), nil >>
 	| GEPConstIndexList
 ;
 
 GEPConstIndexList
-	: GEPConstIndex                         << astx.NewGEPConstIndexList($0) >>
-	| GEPConstIndexList "," GEPConstIndex   << astx.AppendGEPConstIndex($0, $2) >>
+	: GEPConstIndex
+	<< []*ast.GEPConstIndex{$0.(*ast.GEPConstIndex)}, nil >>
+	| GEPConstIndexList "," GEPConstIndex
+	<< append($0.([]*ast.GEPConstIndex), $2.(*ast.GEPConstIndex)), nil >>
 ;
 
 GEPConstIndex
-	: OptInrange Type Constant   << &ast.GEPConstIndex{InRange: $0.(bool), Index: astx.TypeConst($1, $2)}, nil >>
+	: OptInrange Type Constant
+	<< &ast.GEPConstIndex{InRange: $0.(bool), Index: astx.TypeConst($1, $2)}, nil >>
 ;
 
 OptInrange

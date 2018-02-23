@@ -40,12 +40,15 @@ PhiInst
 ;
 
 IncList
-	: Inc               << astx.NewIncList($0) >>
-	| IncList "," Inc   << astx.AppendInc($0, $2) >>
+	: Inc
+	<< []*ast.Incoming{$0.(*ast.Incoming)}, nil >>
+	| IncList "," Inc
+	<< append($0.([]*ast.Incoming), $2.(*ast.Incoming)), nil >>
 ;
 
 Inc
-	: "[" Value "," LocalIdent "]"   << &ast.Incoming{X: $1.(ast.Value), Pred: $3.(ast.LocalIdent)}, nil >>
+	: "[" Value "," LocalIdent "]"
+	<< &ast.Incoming{X: $1.(ast.Value), Pred: $3.(ast.LocalIdent)}, nil >>
 ;
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,18 +127,23 @@ OptCleanup
 ;
 
 Clauses
-	: empty        << ([]*ast.Clause)(nil), nil >>
+	: empty
+	<< ([]*ast.Clause)(nil), nil >>
 	| ClauseList
 ;
 
 ClauseList
-	: Clause              << astx.NewClauseList($0) >>
-	| ClauseList Clause   << astx.AppendClause($0, $1) >>
+	: Clause
+	<< []*ast.Clause{$0.(*ast.Clause)}, nil >>
+	| ClauseList Clause
+	<< append($0.([]*ast.Clause), $1.(*ast.Clause)), nil >>
 ;
 
 Clause
-	: "catch" Type Value         << &ast.Clause{Catch: true, X: astx.TypeValue($1, $2)}, nil >>
-	| "filter" Type ArrayConst   << &ast.Clause{X: astx.TypeValue($1, $2)}, nil >>
+	: "catch" Type Value
+	<< &ast.Clause{Catch: true, X: astx.TypeValue($1, $2)}, nil >>
+	| "filter" Type ArrayConst
+	<< &ast.Clause{X: astx.TypeValue($1, $2)}, nil >>
 ;
 
 // --- [ catchpad ] ------------------------------------------------------------

@@ -5,13 +5,16 @@
 // ref: ParseInstruction
 
 Instructions
-	: empty             << ([]ast.Instruction)(nil), nil >>
+	: empty
+	<< ([]ast.Instruction)(nil), nil >>
 	| InstructionList
 ;
 
 InstructionList
-	: Instruction                   << astx.NewInstructionList($0) >>
-	| InstructionList Instruction   << astx.ApppendInstruction($0, $1) >>
+	: Instruction
+	<< []ast.Instruction{$0.(ast.Instruction)}, nil >>
+	| InstructionList Instruction
+	<< append($0.([]ast.Instruction), $1.(ast.Instruction)), nil >>
 ;
 
 Instruction
@@ -21,7 +24,8 @@ Instruction
 	| CmpXchgInst
 	| AtomicRMWInst
 	// Instructions producing values.
-	| LocalIdent "=" ValueInstruction   << &ast.ValueInstruction{Name: $0.(ast.LocalIdent), Inst: $1.(ast.Instruction)}, nil >>
+	| LocalIdent "=" ValueInstruction
+	<< &ast.ValueInstruction{Name: $0.(ast.LocalIdent), Inst: $2.(ast.Instruction)}, nil >>
 	| ValueInstruction
 ;
 
