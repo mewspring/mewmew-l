@@ -129,10 +129,12 @@ type GlobalAttribute interface {
 	isGlobalAttribute()
 }
 
-func (Section) isGlobalAttribute()            {}
-func (Comdat) isGlobalAttribute()             {}
-func (Alignment) isGlobalAttribute()          {}
-func (MetadataAttachment) isGlobalAttribute() {}
+func (Section) isGlobalAttribute()             {}
+func (*Comdat) isGlobalAttribute()             {}
+func (Alignment) isGlobalAttribute()           {}
+func (*MetadataAttachment) isGlobalAttribute() {}
+
+// ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // An IndirectSymbol is an alias or an ifunc.
 type IndirectSymbol struct {
@@ -154,7 +156,7 @@ type Function struct {
 	Linkage  Linkage
 	Header   *FunctionHeader
 	Body     *FunctionBody // nil if declaration
-	Metadata []MetadataAttachment
+	Metadata []*MetadataAttachment
 }
 
 type FunctionHeader struct {

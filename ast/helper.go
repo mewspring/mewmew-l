@@ -66,12 +66,10 @@ const (
 	UnnamedAddrUnnamedAddr                         // unnamed_addr
 )
 
-type Section struct {
-	Name string
-}
+type Section string // empty if not present
 
 func (s Section) String() string {
-	return fmt.Sprintf("section %q", s.Name)
+	return fmt.Sprintf("section %q", string(s))
 }
 
 type Comdat struct {
@@ -363,7 +361,7 @@ type Argument interface {
 }
 
 type Arg struct {
-	X          TypeValue
+	X          *TypeValue
 	ParamAttrs []ParamAttribute
 }
 
@@ -372,9 +370,9 @@ type MetadataValue struct {
 	Metadata Metadata
 }
 
-func (Arg) isArgument()           {} // used as function argument
-func (TypeValue) isArgument()     {} // used as exception argument
-func (MetadataValue) isArgument() {}
+func (*Arg) isArgument()           {} // used as function argument
+func (*TypeValue) isArgument()     {} // used as exception argument
+func (*MetadataValue) isArgument() {}
 
 //go:generate stringer -linecomment -type FastMathFlag
 
