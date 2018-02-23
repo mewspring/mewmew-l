@@ -7,7 +7,8 @@
 //   ::= 'declare' FunctionHeader
 
 FunctionDecl
-	: "declare" MetadataAttachments OptExternLinkage FunctionHeader   << astx.NewFunction($2, $3, nil, $1) >>
+	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
+	<< &ast.Function{Linkage: $2.(ast.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +20,8 @@ FunctionDecl
 //   ::= 'define' FunctionHeader (!dbg !56)* '{' ...
 
 FunctionDef
-	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody   << astx.NewFunction($1, $2, $4, $3) >>
+	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
+	<< &ast.Function{Linkage: $1.(ast.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ref: ParseFunctionHeader
@@ -33,7 +35,8 @@ FunctionDef
 // as FuncAttrs also contains "align".
 
 FunctionHeader
-	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality   << astx.NewFunctionHeader($0, $1, $2, $3, $4, $5, $6, $8, $10, $11, $12, $13, $14, $15, $16, $17) >>
+	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
+	<< &ast.FunctionHeader{Preemption: $0.(ast.PreemptionSpecifier), Visibility: $1.(ast.Visibility), DLLStorageClass: $2.(ast.DLLStorageClass), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), RetType: $5.(ast.Type), Name: $6.(ast.GlobalIdent), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ast.UnnamedAddr), FuncAttrs: $11.([]ast.FuncAttribute), Section: $12.(ast.Section), Comdat: $13.(*ast.Comdat), GC: $14.(ast.string), Prefix: $15.(*ast.TypeConst), Prologue: $16.(*ast.TypeConst), Personality: 17.(*ast.TypeConst)}, nil >>
 ;
 
 // ref: ParseOptionalCallingConv
@@ -128,23 +131,31 @@ CallingConv
 ;
 
 OptGC
-	: empty             << "", nil >>
-	| "gc" string_lit   << astx.String($1), nil >>
+	: empty
+	<< "", nil >>
+	| "gc" string_lit
+	<< astx.String($1), nil >>
 ;
 
 OptPrefix
 	: empty
-	| "prefix" Type Constant   << astx.NewTypeConstant($1, $2) >>
+	<< (*ast.TypeConst)(nil), nil >>
+	| "prefix" Type Constant
+	<< astx.TypeConst($1, $2), nil >>
 ;
 
 OptPrologue
 	: empty
-	| "prologue" Type Constant   << astx.NewTypeConstant($1, $2) >>
+	<< (*ast.TypeConst)(nil), nil >>
+	| "prologue" Type Constant
+	<< astx.TypeConst($1, $2), nil >>
 ;
 
 OptPersonality
 	: empty
-	| "personality" Type Constant   << astx.NewTypeConstant($1, $2) >>
+	<< (*ast.TypeConst)(nil), nil >>
+	| "personality" Type Constant
+	<< astx.TypeConst($1, $2), nil >>
 ;
 
 // ref: ParseFunctionBody
@@ -152,6 +163,7 @@ OptPersonality
 //   ::= '{' BasicBlock+ UseListOrderDirective* '}'
 
 FunctionBody
-	: "{" BasicBlockList UseListOrders "}"   << astx.NewFunctionBody($1, $2) >>
+	: "{" BasicBlockList UseListOrders "}"
+	<< &ast.FunctionBody{Blocks: $1.([]*ast.BasicBlock), $2.([]*ast.UseListOrder)}, nil >>
 ;
 

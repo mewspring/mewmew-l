@@ -227,8 +227,8 @@ const (
 )
 
 type FunctionBody struct {
-	Blocks        []BasicBlock
-	UseListOrders []UseListOrder
+	Blocks        []*BasicBlock
+	UseListOrders []*UseListOrder
 }
 
 // ~~~ [ Attribute Group Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

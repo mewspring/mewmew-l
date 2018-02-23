@@ -50,6 +50,7 @@ TopLevelEntity
 	| ComdatDef
 	| GlobalDecl
 	| GlobalDef
+	| IndirectSymbolDef
 	| FunctionDecl
 	| FunctionDef
 	| AttrGroupDef
