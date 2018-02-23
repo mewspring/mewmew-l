@@ -40,7 +40,6 @@ const (
 	FloatTypeX86_FP80                   // x86_fp80
 	FloatTypeFP128                      // fp128
 	FloatTypePPC_FP128                  // ppc_fp128
-
 )
 
 // --- [ MMX Types ] -----------------------------------------------------------

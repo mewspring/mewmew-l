@@ -6,15 +6,19 @@
 
 BasicBlockList
 	: BasicBlock
+	<< []*ast.BasicBlock{$0.(*ast.BasicBlock)}, nil >>
 	| BasicBlockList BasicBlock
+	<< append($0.([]*ast.BasicBlock), $1.(*ast.BasicBlock)), nil >>
 ;
 
 BasicBlock
 	: OptLabelIdent Instructions Terminator
+	<< &ast.BasicBlock{Name: $0.(ast.LabelIdent), Insts: $1.([]ast.Instruction), Term: $2.(ast.Terminator)}, nil >>
 ;
 
 OptLabelIdent
 	: empty
+	<< ast.LabelIdent(""), nil >>
 	| LabelIdent
 ;
 

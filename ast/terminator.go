@@ -72,8 +72,8 @@ type UnwindTarget interface {
 // UnwindToCaller specifies the caller as an unwind target.
 type UnwindToCaller struct{}
 
-func (UnwindToCaller) isUnwindTarget() {}
-func (Label) isUnwindTarget()          {}
+func (*UnwindToCaller) isUnwindTarget() {}
+func (*Label) isUnwindTarget()          {}
 
 type CatchRetTerm struct {
 	From     Value // catchpad
