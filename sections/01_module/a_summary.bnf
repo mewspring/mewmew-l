@@ -21,17 +21,21 @@ import (
 >>
 
 Module
-	: TopLevelEntities   << astx.NewModule($0) >>
+	: TopLevelEntities
+	<< &ast.Module{Entities: $0.([]ast.TopLevelEntity)}, nil >>
 ;
 
 TopLevelEntities
 	: empty
+	<< ([]ast.TopLevelEntity)(nil), nil >>
 	| TopLevelEntityList
 ;
 
 TopLevelEntityList
-	: TopLevelEntity                      << astx.NewTopLevelEntityList($0) >>
-	| TopLevelEntityList TopLevelEntity   << astx.ApppendTopLevelEntity($0, $1) >>
+	: TopLevelEntity
+	<< []ast.TopLevelEntity{$0.(ast.TopLevelEntity)}, nil >>
+	| TopLevelEntityList TopLevelEntity
+	<< append($0.([]ast.TopLevelEntity), $1.(ast.TopLevelEntity)), nil >>
 ;
 
 // --- [ Top-level Entities ] --------------------------------------------------

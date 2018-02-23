@@ -7,6 +7,7 @@
 //   ::= 'source_filename' '=' STRINGCONSTANT
 
 SourceFilename
-	: "source_filename" "=" string_lit   << astx.NewSourceFilename($2) >>
+	: "source_filename" "=" string_lit
+	<< &ast.SourceFilename{Name: astx.String($2)}, nil >>
 ;
 

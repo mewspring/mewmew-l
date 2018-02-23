@@ -5,7 +5,8 @@
 // ref: parseComdat
 
 ComdatDef
-	: ComdatName "=" "comdat" SelectionKind   << astx.NewComdatDef($0, $3) >>
+	: ComdatName "=" "comdat" SelectionKind
+	<< ast.ComdatDef{Name: $0.(ast.ComdatName), Kind: $3.(ast.SelectionKind)}, nil >>
 ;
 
 SelectionKind

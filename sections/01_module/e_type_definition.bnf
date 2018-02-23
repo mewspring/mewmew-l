@@ -11,11 +11,14 @@
 //   ::= LocalVar '=' 'type' type
 
 TypeDef
-	: LocalIdent "=" "type" OpaqueType   << ast.NewTypeDef($0, $3) >>
-	| LocalIdent "=" "type" Type         << ast.NewTypeDef($0, $3) >>
+	: LocalIdent "=" "type" OpaqueType
+	<< ast.TypeDef{Name: $0.(ast.LocalIdent), Type: $3.(ast.Type)}, nil >>
+	| LocalIdent "=" "type" Type
+	<< ast.TypeDef{Name: $0.(ast.LocalIdent), Type: $3.(ast.Type)}, nil >>
 ;
 
 OpaqueType
-	: "opaque"   << ast.OpaqueType{}, nil >>
+	: "opaque"
+	<< &ast.OpaqueType{}, nil >>
 ;
 
