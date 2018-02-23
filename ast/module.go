@@ -280,7 +280,7 @@ func (*SourceFilename) isTopLevelEntity() {}
 func (*TargetTriple) isTopLevelEntity() {}
 func (*DataLayout) isTopLevelEntity()   {}
 
-func (*ModuleAsm) isTopLevelEntity()        {}
+func (ModuleAsm) isTopLevelEntity()         {}
 func (*TypeDef) isTopLevelEntity()          {}
 func (*ComdatDef) isTopLevelEntity()        {}
 func (*Global) isTopLevelEntity()           {}

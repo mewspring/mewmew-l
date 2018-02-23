@@ -10,16 +10,20 @@
 
 UseListOrders
 	: empty
+	<< ([]*ast.UseListOrder)(nil), nil >>
 	| UseListOrderList
 ;
 
 UseListOrderList
-	: UseListOrder                    << astx.NewUseListOrderList($0) >>
-	| UseListOrderList UseListOrder   << astx.AppendUseListOrder($0, $1) >>
+	: UseListOrder
+	<< []*ast.UseListOrder{$0.(*ast.UseListOrder)}, nil >>
+	| UseListOrderList UseListOrder
+	<< append($0.([]*ast.UseListOrder), $1.(*ast.UseListOrder)), nil >>
 ;
 
 UseListOrder
-	: "uselistorder" Type Value "," "{" IndexList "}"   << astx.NewUseListOrder($1, $2, $5) >>
+	: "uselistorder" Type Value "," "{" IndexList "}"
+	<< &ast.UseListOrder{Type: $1.(ast.Type), Value: $2.(ast.Value), Indices: $5.([]int64)}, nil >>
 ;
 
 // ref: ParseUseListOrderBB
@@ -27,6 +31,7 @@ UseListOrder
 //   ::= 'uselistorder_bb' @foo ',' %bar ',' UseListOrderIndexes
 
 UseListOrderBB
-	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"   << astx.NewUseListOrder($1, $3, $6) >>
+	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
+	<< &ast.UseListOrderBB{Func: $1.(ast.GlobalIdent), Block: $3.(ast.LocalIdent), Indices: $6.([]int64)}, nil >>
 ;
 

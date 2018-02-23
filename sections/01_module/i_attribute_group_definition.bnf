@@ -7,6 +7,7 @@
 //   ::= 'attributes' AttrGrpID '=' '{' AttrValPair+ '}'
 
 AttrGroupDef
-	: "attributes" AttrGroupID "=" "{" FuncAttrs "}"   << astx.NewAttrGroupDef($1, $4) >>
+	: "attributes" AttrGroupID "=" "{" FuncAttrs "}"
+	<< &ast.AttrGroupDef{Name: $1.(ast.AttrGroupID), FuncAttrs: $4.([]ast.FuncAttribute)}, nil >>
 ;
 
