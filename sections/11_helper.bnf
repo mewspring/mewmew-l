@@ -29,7 +29,7 @@ FuncAttr
 	| Alignment
 	| AllocSize
 	| StackAlignment
-	| string_lit                        << ast.FuncAttrString(astx.String($0)) >>
+	| string_lit                        << ast.FuncAttrString(astx.String($0)), nil >>
 	| string_lit "=" string_lit         << &ast.FuncAttrPair{Key: astx.String($0), Value: astx.String($2)}, nil >>
 	| "alwaysinline"                    << ast.FuncAttrAlwaysInline, nil >>
 	| "argmemonly"                      << ast.FuncAttrArgMemOnly, nil >>
@@ -90,7 +90,7 @@ ReturnAttrList
 ReturnAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << ast.ReturnAttrString($0), nil >>
+	| string_lit        << ast.ReturnAttrString(astx.String($0)), nil >>
 	| "inreg"           << ast.ReturnAttrInReg, nil >>
 	| "noalias"         << ast.ReturnAttrNoAlias, nil >>
 	| "nonnull"         << ast.ReturnAttrNonNull, nil >>
@@ -123,7 +123,7 @@ ParamAttrList
 ParamAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << ast.ParamAttrString($0), nil >>
+	| string_lit        << ast.ParamAttrString(astx.String($0)), nil >>
 	| "byval"           << ast.ParamAttrByval, nil >>
 	| "inalloca"        << ast.ParamAttrInAlloca, nil >>
 	| "inreg"           << ast.ParamAttrInReg, nil >>
@@ -189,9 +189,9 @@ OptComdat
 
 Comdat
 	: "comdat"
-	<< &ast.Comdat{} >>
+	<< &ast.Comdat{}, nil >>
 	| "comdat" "(" ComdatName ")"
-	<< &ast.Comdat{Name: $2.(ast.ComdatName)} >>
+	<< &ast.Comdat{Name: $2.(ast.ComdatName)}, nil >>
 ;
 
 Dereferenceable
@@ -279,7 +279,7 @@ PreemptionSpecifier
 
 OptSection
 	: empty
-	<< (*ast.Section)(nil) >>
+	<< (*ast.Section)(nil), nil >>
 	| Section
 ;
 
@@ -446,7 +446,7 @@ OperandBundleList
 
 OperandBundle
 	: string_lit "(" TypeValues ")"
-	<< &ast.OperandBundle{Tag: astx.Int($0), Inputs: $2.([]*ast.TypeValue)}, nil >>
+	<< &ast.OperandBundle{Tag: astx.String($0), Inputs: $2.([]*ast.TypeValue)}, nil >>
 ;
 
 OptVolatile
@@ -503,7 +503,7 @@ IndexList
 
 Index
 	: int_lit
-	<< astx.Int($0) >>
+	<< astx.Int($0), nil >>
 ;
 
 TypeValues
@@ -528,7 +528,7 @@ CommaSepTypeValueList
 
 TypeValue
 	: Type Value
-	<< &ast.TypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)}, nil >>
+	<< astx.TypeValue($0, $1), nil >>
 ;
 
 TypeConsts
@@ -546,7 +546,7 @@ TypeConstList
 
 TypeConst
 	: Type Constant
-	<< &ast.TypeConst{Type: $0.(ast.Type), Value: $1.(ast.Constant)}, nil >>
+	<< &ast.TypeConst{Type: $0.(ast.Type), Const: $1.(ast.Constant)}, nil >>
 ;
 
 // ref: ParseParameterList
@@ -585,7 +585,7 @@ ArgList
 
 Arg
 	: ConcreteType ParamAttrs Value
-	<< &ast.Arg{X: ast.TypeValue{Type: $0.(ast.Type), Value: $2.(ast.Value)}, ParamAttrs: $1.([]ParamAttribute)}, nil >>
+	<< &ast.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ast.ParamAttribute)}, nil >>
 	| MetadataType Metadata
 	<< &ast.MetadataValue{Metadata: $1.(ast.Metadata)}, nil >>
 ;
@@ -594,22 +594,22 @@ Arg
 
 ExceptionArgs
 	: empty
-	<< ([]ast.ExceptionArg)(nil), nil >>
+	<< ([]ast.Argument)(nil), nil >>
 	| ExceptionArgList
 ;
 
 ExceptionArgList
 	: ExceptionArg
-	<< []ast.ExceptionArg{$0.(ast.ExceptionArg)}, nil >>
+	<< []ast.Argument{$0.(ast.Argument)}, nil >>
 	| ExceptionArgList "," ExceptionArg
-	<< append($0.([]ast.ExceptionArg), $2.(ast.ExceptionArg)), nil >>
+	<< append($0.([]ast.Argument), $2.(ast.Argument)), nil >>
 ;
 
 ExceptionArg
 	: ConcreteType Value
-	<< &ast.TypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)} >>
+	<< astx.TypeValue($0, $1), nil >>
 	| MetadataType Metadata
-	<< &ast.MetadataValue{Metadata: $1.(ast.Metadata)} >>
+	<< &ast.MetadataValue{Metadata: $1.(ast.Metadata)}, nil >>
 ;
 
 // ref: ParseArgumentList

@@ -8,12 +8,12 @@
 
 NamedMetadataDef
 	: MetadataName "=" "!" "{" MetadataNodes "}"
-	<< &ast.NamedMetadataDef{Name: $0.(ast.MetadataName), $4.([]ast.MetadataNode)}, nil >>
+	<< &ast.NamedMetadataDef{Name: $0.(ast.MetadataName), Nodes: $4.([]ast.MetadataNode)}, nil >>
 ;
 
 MetadataNodes
 	: empty
-	<< ([]MetadataNode)(nil), nil >>
+	<< ([]ast.MetadataNode)(nil), nil >>
 	| MetadataNodeList
 ;
 

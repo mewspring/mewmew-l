@@ -36,7 +36,7 @@ FunctionDef
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
-	<< &ast.FunctionHeader{Preemption: $0.(ast.PreemptionSpecifier), Visibility: $1.(ast.Visibility), DLLStorageClass: $2.(ast.DLLStorageClass), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), RetType: $5.(ast.Type), Name: $6.(ast.GlobalIdent), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ast.UnnamedAddr), FuncAttrs: $11.([]ast.FuncAttribute), Section: $12.(ast.Section), Comdat: $13.(*ast.Comdat), GC: $14.(ast.string), Prefix: $15.(*ast.TypeConst), Prologue: $16.(*ast.TypeConst), Personality: 17.(*ast.TypeConst)}, nil >>
+	<< &ast.FunctionHeader{Preemption: $0.(ast.PreemptionSpecifier), Visibility: $1.(ast.Visibility), DLLStorageClass: $2.(ast.DLLStorageClass), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), RetType: $5.(ast.Type), Name: $6.(ast.GlobalIdent), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ast.UnnamedAddr), FuncAttrs: $11.([]ast.FuncAttribute), Section: $12.(ast.Section), Comdat: $13.(*ast.Comdat), GC: $14.(string), Prefix: $15.(*ast.TypeConst), Prologue: $16.(*ast.TypeConst), Personality: $17.(*ast.TypeConst)}, nil >>
 ;
 
 // ref: ParseOptionalCallingConv
@@ -164,6 +164,6 @@ OptPersonality
 
 FunctionBody
 	: "{" BasicBlockList UseListOrders "}"
-	<< &ast.FunctionBody{Blocks: $1.([]*ast.BasicBlock), $2.([]*ast.UseListOrder)}, nil >>
+	<< &ast.FunctionBody{Blocks: $1.([]*ast.BasicBlock), UseListOrders: $2.([]*ast.UseListOrder)}, nil >>
 ;
 

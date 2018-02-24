@@ -17,7 +17,7 @@ type VoidType struct{}
 
 type FuncType struct {
 	RetType  Type
-	Params   []Param
+	Params   []*Param
 	Variadic bool
 }
 

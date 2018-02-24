@@ -62,7 +62,7 @@ VoidType
 
 FuncType
 	: Type "(" Params ")"
-	<< $ast.FuncType{RetType: $0.(ast.Type), Params: $2.(*astx.Params).Params, Variadic: $2.(*astx.Params).Variadic}, nil >>
+	<< &ast.FuncType{RetType: $0.(ast.Type), Params: $2.(*astx.Params).Params, Variadic: $2.(*astx.Params).Variadic}, nil >>
 ;
 
 // --- [ Integer Types ] -------------------------------------------------------

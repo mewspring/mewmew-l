@@ -126,7 +126,7 @@ Label
 
 InvokeTerm
 	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
-	<< &ast.InvokeTerm{CallingConv: $1.(ast.CallingConv), ReturnAttrs: $2.([]ast.ReturnAttribute), Callee: ast.TypeValue($3, $4), Args: $6.([]ast.Argument), FuncAttrs: $8.([]ast.FuncAttribute), OperandBundles: $9.([]*ast.OperandBundle), Normal: astx.Label($11, $12), Exception: astx.Label($14, $15), Metadata: $16.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.InvokeTerm{CallingConv: $1.(ast.CallingConv), ReturnAttrs: $2.([]ast.ReturnAttribute), Callee: astx.TypeValue($3, $4), Args: $6.([]ast.Argument), FuncAttrs: $8.([]ast.FuncAttribute), OperandBundles: $9.([]*ast.OperandBundle), Normal: astx.Label($11, $12), Exception: astx.Label($14, $15), Metadata: $16.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ resume ] --------------------------------------------------------------
@@ -159,7 +159,7 @@ UnwindTarget
 	: "to" "caller"
 	<< &ast.UnwindToCaller{}, nil >>
 	| LabelType LocalIdent
-	<< astx.Label($0, $1) >>
+	<< astx.Label($0, $1), nil >>
 ;
 
 // --- [ catchret ] ------------------------------------------------------------

@@ -224,6 +224,19 @@ const (
 	CallingConvX86_StdCall                       // x86_stdcallcc
 	CallingConvX86_ThisCall                      // x86_thiscallcc
 	CallingConvX86_VectorCall                    // x86_vectorcallcc
+	// Calling conventions defined through cc NNN.
+	CallingConvHiPE           // cc 11
+	CallingConvWebKit_JS      // cc 12
+	CallingConvAVR_Builtin    // cc 86
+	CallingConvAMDGPU_VS      // cc 87
+	CallingConvAMDGPU_GS      // cc 88
+	CallingConvAMDGPU_PS      // cc 89
+	CallingConvAMDGPU_CS      // cc 90
+	CallingConvAMDGPU_Kernel  // cc 91
+	CallingConvAMDGPU_HS      // cc 93
+	CallingConvMSP430_Builtin // cc 94
+	CallingConvAMDGPU_LS      // cc 95
+	CallingConvAMDGPU_ES      // cc 96
 )
 
 type FunctionBody struct {

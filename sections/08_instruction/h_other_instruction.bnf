@@ -10,7 +10,7 @@
 
 ICmpInst
 	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.ICmpInst{IPred: $1.(ast.IPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.ICmpInst{Pred: $1.(ast.IPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ ICmpInst
 
 FCmpInst
 	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FCmpInst{FPred: $1.(ast.FPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FCmpInst{Pred: $1.(ast.FPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
