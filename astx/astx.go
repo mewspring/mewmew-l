@@ -12,18 +12,21 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Params is a list of optionally variadic function parameters.
 type Params struct {
 	Params   []*ast.Param
 	Variadic bool
 }
 
-func String(stringLit interface{}) string {
-	s := stringLit.(*token.Token)
+// String returns the string literal corresponding to the given token.
+func String(tok interface{}) string {
+	s := tok.(*token.Token)
 	return string(s.Lit)
 }
 
-func Int(intLit interface{}) int64 {
-	s := String(intLit)
+// Int returns the integer literal corresponding to the given token.
+func Int(tok interface{}) int64 {
+	s := String(tok)
 	x, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		panic(err)
@@ -31,6 +34,7 @@ func Int(intLit interface{}) int64 {
 	return x
 }
 
+// TypeValue returns a type-value pair based on the given type and value.
 func TypeValue(typ, value interface{}) *ast.TypeValue {
 	return &ast.TypeValue{
 		Type:  typ.(ast.Type),
@@ -38,6 +42,7 @@ func TypeValue(typ, value interface{}) *ast.TypeValue {
 	}
 }
 
+// TypeConst returns a type-constant pair based on the given type and constant.
 func TypeConst(typ, val interface{}) *ast.TypeConst {
 	return &ast.TypeConst{
 		Type:  typ.(ast.Type),
@@ -45,6 +50,7 @@ func TypeConst(typ, val interface{}) *ast.TypeConst {
 	}
 }
 
+// Label returns a label based on the given label type and name.
 func Label(typ, name interface{}) *ast.Label {
 	s := String(typ)
 	if s != "label" {
@@ -55,6 +61,7 @@ func Label(typ, name interface{}) *ast.Label {
 	}
 }
 
+// NewIntType returns a new integer type corresponding to the given token.
 func NewIntType(tok interface{}) (*ast.IntType, error) {
 	s := String(tok)
 	if !strings.HasPrefix(s, "i") {
@@ -70,6 +77,7 @@ func NewIntType(tok interface{}) (*ast.IntType, error) {
 	}, nil
 }
 
+// NewIntConst returns a new integer constant corresponding to the given token.
 func NewIntConst(tok interface{}) (ast.IntConst, error) {
 	s := String(tok)
 	x, err := strconv.ParseInt(s, 10, 64)
@@ -79,6 +87,8 @@ func NewIntConst(tok interface{}) (ast.IntConst, error) {
 	return ast.IntConst(x), nil
 }
 
+// NewFloatConst returns a new floating-point constant corresponding to the
+// given token.
 func NewFloatConst(tok interface{}) (ast.FloatConst, error) {
 	s := String(tok)
 	x, err := strconv.ParseFloat(s, 64)
@@ -88,11 +98,13 @@ func NewFloatConst(tok interface{}) (ast.FloatConst, error) {
 	return ast.FloatConst(x), nil
 }
 
-func NewCallingConv(cc interface{}) (ast.CallingConv, error) {
+// NewCallingConv returns a new calling convention corresponding to the given
+// token.
+func NewCallingConv(tok interface{}) (ast.CallingConv, error) {
 	// ref: include/llvm/IR/CallingConv.h
 	// (rev db070bbdacd303ae7da129f59beaf35024d94c53)
-	c := Int(cc)
-	switch c {
+	cc := Int(tok)
+	switch cc {
 	case 0:
 		return ast.CallingConvC, nil
 	case 8:
@@ -178,6 +190,6 @@ func NewCallingConv(cc interface{}) (ast.CallingConv, error) {
 	case 96:
 		return ast.CallingConvAMDGPU_ES, nil
 	default:
-		panic(fmt.Errorf("support for calling convention ID %d not yet implemented", c))
+		panic(fmt.Errorf("support for calling convention ID %d not yet implemented", cc))
 	}
 }
