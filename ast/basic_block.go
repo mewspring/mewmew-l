@@ -1,7 +1,7 @@
 package ast
 
 type BasicBlock struct {
-	Name  LabelIdent // empty if unnamed
+	Name  *LabelIdent // nil if unnamed
 	Insts []Instruction
 	Term  Terminator
 }

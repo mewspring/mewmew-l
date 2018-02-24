@@ -1,6 +1,9 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // === [ Types ] ===============================================================
 
@@ -13,6 +16,10 @@ type Type interface {
 
 type VoidType struct{}
 
+func (*VoidType) String() string {
+	return "void"
+}
+
 // --- [ Function Types ] ------------------------------------------------------
 
 type FuncType struct {
@@ -21,10 +28,33 @@ type FuncType struct {
 	Variadic bool
 }
 
+func (t *FuncType) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v (", t.RetType)
+	for i, param := range t.Params {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(param.Type.String())
+	}
+	if t.Variadic {
+		if len(t.Params) > 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString("...")
+	}
+	buf.WriteString(")")
+	return buf.String()
+}
+
 // --- [ Integer Types ] -------------------------------------------------------
 
 type IntType struct {
 	BitSize int64
+}
+
+func (t *IntType) String() string {
+	return fmt.Sprintf("i%d", t.BitSize)
 }
 
 // --- [ Floating-point Types ] ------------------------------------------------
@@ -46,11 +76,25 @@ const (
 
 type MMXType struct{}
 
+func (t *MMXType) String() string {
+	return "x86_mmx"
+}
+
 // --- [ Pointer Types ] -------------------------------------------------------
 
 type PointerType struct {
 	ElemType  Type
 	AddrSpace AddrSpace // zero value if not present
+}
+
+func (t *PointerType) String() string {
+	buf := &strings.Builder{}
+	buf.WriteString(t.ElemType.String())
+	if t.AddrSpace != 0 {
+		fmt.Fprintf(buf, " %v", t.AddrSpace)
+	}
+	buf.WriteString("*")
+	return buf.String()
 }
 
 type AddrSpace int64
@@ -66,17 +110,33 @@ type VectorType struct {
 	ElemType Type
 }
 
+func (t *VectorType) String() string {
+	return fmt.Sprintf("<%d x %v>", t.Len, t.ElemType)
+}
+
 // --- [ Label Types ] ---------------------------------------------------------
 
 type LabelType struct{}
+
+func (t *LabelType) String() string {
+	return "label"
+}
 
 // --- [ Token Types ] ---------------------------------------------------------
 
 type TokenType struct{}
 
+func (t *TokenType) String() string {
+	return "token"
+}
+
 // --- [ Metadata Types ] ------------------------------------------------------
 
 type MetadataType struct{}
+
+func (t *MetadataType) String() string {
+	return "metadata"
+}
 
 // --- [ Array Types ] ---------------------------------------------------------
 
@@ -85,11 +145,34 @@ type ArrayType struct {
 	ElemType Type
 }
 
+func (t *ArrayType) String() string {
+	return fmt.Sprintf("[%d x %v]", t.Len, t.ElemType)
+}
+
 // --- [ Structure Types ] -----------------------------------------------------
 
 type StructType struct {
 	Packed bool
 	Fields []Type
+}
+
+func (t *StructType) String() string {
+	buf := &strings.Builder{}
+	if t.Packed {
+		buf.WriteString("<")
+	}
+	buf.WriteString("{")
+	for i, field := range t.Fields {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(field.String())
+	}
+	buf.WriteString("}")
+	if t.Packed {
+		buf.WriteString(">")
+	}
+	return buf.String()
 }
 
 type OpaqueType struct{}
@@ -101,7 +184,11 @@ func (*OpaqueType) String() string {
 // --- [ Named Types ] ---------------------------------------------------------
 
 type NamedType struct {
-	Name LocalIdent
+	Name *LocalIdent
+}
+
+func (t *NamedType) String() string {
+	return t.Name.String()
 }
 
 func (*VoidType) isType()     {}

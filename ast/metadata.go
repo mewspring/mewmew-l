@@ -14,40 +14,40 @@ type MDField interface {
 	isMDField()
 }
 
-func (NullConst) isMDField() {}
+func (*NullConst) isMDField() {}
 
 // Metadata
-func (MDTypeValue) isMDField() {}
-func (MDString) isMDField()    {}
-func (MDTuple) isMDField()     {}
-func (MetadataID) isMDField()  {}
+func (*MDTypeValue) isMDField() {}
+func (*MDString) isMDField()    {}
+func (*MDTuple) isMDField()     {}
+func (*MetadataID) isMDField()  {}
 
 // SpecializedMDNode
-func (DICompileUnit) isMDField()              {}
-func (DIFile) isMDField()                     {}
-func (DIBasicType) isMDField()                {}
-func (DISubroutineType) isMDField()           {}
-func (DIDerivedType) isMDField()              {}
-func (DICompositeType) isMDField()            {}
-func (DISubrange) isMDField()                 {}
-func (DIEnumerator) isMDField()               {}
-func (DITemplateTypeParameter) isMDField()    {}
-func (DITemplateValueParameter) isMDField()   {}
-func (DIModule) isMDField()                   {}
-func (DINamespace) isMDField()                {}
-func (DIGlobalVariable) isMDField()           {}
-func (DISubprogram) isMDField()               {}
-func (DILexicalBlock) isMDField()             {}
-func (DILexicalBlockFile) isMDField()         {}
-func (DILocation) isMDField()                 {}
-func (DILocalVariable) isMDField()            {}
-func (DIExpression) isMDField()               {}
-func (DIGlobalVariableExpression) isMDField() {}
-func (DIObjCProperty) isMDField()             {}
-func (DIImportedEntity) isMDField()           {}
-func (DIMacro) isMDField()                    {}
-func (DIMacroFile) isMDField()                {}
-func (GenericDINode) isMDField()              {}
+func (*DICompileUnit) isMDField()              {}
+func (*DIFile) isMDField()                     {}
+func (*DIBasicType) isMDField()                {}
+func (*DISubroutineType) isMDField()           {}
+func (*DIDerivedType) isMDField()              {}
+func (*DICompositeType) isMDField()            {}
+func (*DISubrange) isMDField()                 {}
+func (*DIEnumerator) isMDField()               {}
+func (*DITemplateTypeParameter) isMDField()    {}
+func (*DITemplateValueParameter) isMDField()   {}
+func (*DIModule) isMDField()                   {}
+func (*DINamespace) isMDField()                {}
+func (*DIGlobalVariable) isMDField()           {}
+func (*DISubprogram) isMDField()               {}
+func (*DILexicalBlock) isMDField()             {}
+func (*DILexicalBlockFile) isMDField()         {}
+func (*DILocation) isMDField()                 {}
+func (*DILocalVariable) isMDField()            {}
+func (*DIExpression) isMDField()               {}
+func (*DIGlobalVariableExpression) isMDField() {}
+func (*DIObjCProperty) isMDField()             {}
+func (*DIImportedEntity) isMDField()           {}
+func (*DIMacro) isMDField()                    {}
+func (*DIMacroFile) isMDField()                {}
+func (*GenericDINode) isMDField()              {}
 
 // --- [ Metadata ] ------------------------------------------------------------
 
@@ -60,50 +60,52 @@ type MDTypeValue struct {
 	Value Value
 }
 
-func (MDTypeValue) isMetadata() {}
-func (MDString) isMetadata()    {}
-func (MDTuple) isMetadata()     {}
-func (MetadataID) isMetadata()  {}
+func (*MDTypeValue) isMetadata() {}
+func (*MDString) isMetadata()    {}
+func (*MDTuple) isMetadata()     {}
+func (*MetadataID) isMetadata()  {}
 
 // SpecializedMDNode
-func (DICompileUnit) isMetadata()              {}
-func (DIFile) isMetadata()                     {}
-func (DIBasicType) isMetadata()                {}
-func (DISubroutineType) isMetadata()           {}
-func (DIDerivedType) isMetadata()              {}
-func (DICompositeType) isMetadata()            {}
-func (DISubrange) isMetadata()                 {}
-func (DIEnumerator) isMetadata()               {}
-func (DITemplateTypeParameter) isMetadata()    {}
-func (DITemplateValueParameter) isMetadata()   {}
-func (DIModule) isMetadata()                   {}
-func (DINamespace) isMetadata()                {}
-func (DIGlobalVariable) isMetadata()           {}
-func (DISubprogram) isMetadata()               {}
-func (DILexicalBlock) isMetadata()             {}
-func (DILexicalBlockFile) isMetadata()         {}
-func (DILocation) isMetadata()                 {}
-func (DILocalVariable) isMetadata()            {}
-func (DIExpression) isMetadata()               {}
-func (DIGlobalVariableExpression) isMetadata() {}
-func (DIObjCProperty) isMetadata()             {}
-func (DIImportedEntity) isMetadata()           {}
-func (DIMacro) isMetadata()                    {}
-func (DIMacroFile) isMetadata()                {}
-func (GenericDINode) isMetadata()              {}
+func (*DICompileUnit) isMetadata()              {}
+func (*DIFile) isMetadata()                     {}
+func (*DIBasicType) isMetadata()                {}
+func (*DISubroutineType) isMetadata()           {}
+func (*DIDerivedType) isMetadata()              {}
+func (*DICompositeType) isMetadata()            {}
+func (*DISubrange) isMetadata()                 {}
+func (*DIEnumerator) isMetadata()               {}
+func (*DITemplateTypeParameter) isMetadata()    {}
+func (*DITemplateValueParameter) isMetadata()   {}
+func (*DIModule) isMetadata()                   {}
+func (*DINamespace) isMetadata()                {}
+func (*DIGlobalVariable) isMetadata()           {}
+func (*DISubprogram) isMetadata()               {}
+func (*DILexicalBlock) isMetadata()             {}
+func (*DILexicalBlockFile) isMetadata()         {}
+func (*DILocation) isMetadata()                 {}
+func (*DILocalVariable) isMetadata()            {}
+func (*DIExpression) isMetadata()               {}
+func (*DIGlobalVariableExpression) isMetadata() {}
+func (*DIObjCProperty) isMetadata()             {}
+func (*DIImportedEntity) isMetadata()           {}
+func (*DIMacro) isMetadata()                    {}
+func (*DIMacroFile) isMetadata()                {}
+func (*GenericDINode) isMetadata()              {}
 
 // --- [ Metadata String ] -----------------------------------------------------
 
-type MDString string
+type MDString struct {
+	Value string
+}
 
 // --- [ Metadata Attachment ] -------------------------------------------------
 
 type MetadataAttachment struct {
-	Name   MetadataName
+	Name   *MetadataName
 	MDNode MDNode
 }
 
-func (m MetadataAttachment) String() string {
+func (m *MetadataAttachment) String() string {
 	// !dbg !42
 	return fmt.Sprintf("%s %s", m.Name, m.MDNode)
 }
@@ -115,35 +117,35 @@ type MDNode interface {
 	isMDNode()
 }
 
-func (MDTuple) isMDNode()    {}
-func (MetadataID) isMDNode() {}
+func (*MDTuple) isMDNode()    {}
+func (*MetadataID) isMDNode() {}
 
 // SpecializedMDNode
-func (DICompileUnit) isMDNode()              {}
-func (DIFile) isMDNode()                     {}
-func (DIBasicType) isMDNode()                {}
-func (DISubroutineType) isMDNode()           {}
-func (DIDerivedType) isMDNode()              {}
-func (DICompositeType) isMDNode()            {}
-func (DISubrange) isMDNode()                 {}
-func (DIEnumerator) isMDNode()               {}
-func (DITemplateTypeParameter) isMDNode()    {}
-func (DITemplateValueParameter) isMDNode()   {}
-func (DIModule) isMDNode()                   {}
-func (DINamespace) isMDNode()                {}
-func (DIGlobalVariable) isMDNode()           {}
-func (DISubprogram) isMDNode()               {}
-func (DILexicalBlock) isMDNode()             {}
-func (DILexicalBlockFile) isMDNode()         {}
-func (DILocation) isMDNode()                 {}
-func (DILocalVariable) isMDNode()            {}
-func (DIExpression) isMDNode()               {}
-func (DIGlobalVariableExpression) isMDNode() {}
-func (DIObjCProperty) isMDNode()             {}
-func (DIImportedEntity) isMDNode()           {}
-func (DIMacro) isMDNode()                    {}
-func (DIMacroFile) isMDNode()                {}
-func (GenericDINode) isMDNode()              {}
+func (*DICompileUnit) isMDNode()              {}
+func (*DIFile) isMDNode()                     {}
+func (*DIBasicType) isMDNode()                {}
+func (*DISubroutineType) isMDNode()           {}
+func (*DIDerivedType) isMDNode()              {}
+func (*DICompositeType) isMDNode()            {}
+func (*DISubrange) isMDNode()                 {}
+func (*DIEnumerator) isMDNode()               {}
+func (*DITemplateTypeParameter) isMDNode()    {}
+func (*DITemplateValueParameter) isMDNode()   {}
+func (*DIModule) isMDNode()                   {}
+func (*DINamespace) isMDNode()                {}
+func (*DIGlobalVariable) isMDNode()           {}
+func (*DISubprogram) isMDNode()               {}
+func (*DILexicalBlock) isMDNode()             {}
+func (*DILexicalBlockFile) isMDNode()         {}
+func (*DILocation) isMDNode()                 {}
+func (*DILocalVariable) isMDNode()            {}
+func (*DIExpression) isMDNode()               {}
+func (*DIGlobalVariableExpression) isMDNode() {}
+func (*DIObjCProperty) isMDNode()             {}
+func (*DIImportedEntity) isMDNode()           {}
+func (*DIMacro) isMDNode()                    {}
+func (*DIMacroFile) isMDNode()                {}
+func (*GenericDINode) isMDNode()              {}
 
 // --- [ Specialized Metadata Nodes ] ------------------------------------------
 
@@ -376,8 +378,8 @@ type DIExpressionField interface {
 	isDIExpressionField()
 }
 
-func (IntConst) isDIExpressionField() {}
-func (DwarfOp) isDIExpressionField()  {}
+func (*IntConst) isDIExpressionField() {}
+func (DwarfOp) isDIExpressionField()   {}
 
 // ~~~ [ DIGlobalVariableExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -435,31 +437,31 @@ type GenericDINode struct {
 	Operands []MDField
 }
 
-func (DICompileUnit) isSpecializedMDNode()              {}
-func (DIFile) isSpecializedMDNode()                     {}
-func (DIBasicType) isSpecializedMDNode()                {}
-func (DISubroutineType) isSpecializedMDNode()           {}
-func (DIDerivedType) isSpecializedMDNode()              {}
-func (DICompositeType) isSpecializedMDNode()            {}
-func (DISubrange) isSpecializedMDNode()                 {}
-func (DIEnumerator) isSpecializedMDNode()               {}
-func (DITemplateTypeParameter) isSpecializedMDNode()    {}
-func (DITemplateValueParameter) isSpecializedMDNode()   {}
-func (DIModule) isSpecializedMDNode()                   {}
-func (DINamespace) isSpecializedMDNode()                {}
-func (DIGlobalVariable) isSpecializedMDNode()           {}
-func (DISubprogram) isSpecializedMDNode()               {}
-func (DILexicalBlock) isSpecializedMDNode()             {}
-func (DILexicalBlockFile) isSpecializedMDNode()         {}
-func (DILocation) isSpecializedMDNode()                 {}
-func (DILocalVariable) isSpecializedMDNode()            {}
-func (DIExpression) isSpecializedMDNode()               {}
-func (DIGlobalVariableExpression) isSpecializedMDNode() {}
-func (DIObjCProperty) isSpecializedMDNode()             {}
-func (DIImportedEntity) isSpecializedMDNode()           {}
-func (DIMacro) isSpecializedMDNode()                    {}
-func (DIMacroFile) isSpecializedMDNode()                {}
-func (GenericDINode) isSpecializedMDNode()              {}
+func (*DICompileUnit) isSpecializedMDNode()              {}
+func (*DIFile) isSpecializedMDNode()                     {}
+func (*DIBasicType) isSpecializedMDNode()                {}
+func (*DISubroutineType) isSpecializedMDNode()           {}
+func (*DIDerivedType) isSpecializedMDNode()              {}
+func (*DICompositeType) isSpecializedMDNode()            {}
+func (*DISubrange) isSpecializedMDNode()                 {}
+func (*DIEnumerator) isSpecializedMDNode()               {}
+func (*DITemplateTypeParameter) isSpecializedMDNode()    {}
+func (*DITemplateValueParameter) isSpecializedMDNode()   {}
+func (*DIModule) isSpecializedMDNode()                   {}
+func (*DINamespace) isSpecializedMDNode()                {}
+func (*DIGlobalVariable) isSpecializedMDNode()           {}
+func (*DISubprogram) isSpecializedMDNode()               {}
+func (*DILexicalBlock) isSpecializedMDNode()             {}
+func (*DILexicalBlockFile) isSpecializedMDNode()         {}
+func (*DILocation) isSpecializedMDNode()                 {}
+func (*DILocalVariable) isSpecializedMDNode()            {}
+func (*DIExpression) isSpecializedMDNode()               {}
+func (*DIGlobalVariableExpression) isSpecializedMDNode() {}
+func (*DIObjCProperty) isSpecializedMDNode()             {}
+func (*DIImportedEntity) isSpecializedMDNode()           {}
+func (*DIMacro) isSpecializedMDNode()                    {}
+func (*DIMacroFile) isSpecializedMDNode()                {}
+func (*GenericDINode) isSpecializedMDNode()              {}
 
 // ___ [ Helpers ] _____________________________________________________________
 
@@ -503,43 +505,43 @@ type IntOrMDField interface {
 	isIntOrMDField()
 }
 
-func (IntConst) isIntOrMDField() {}
+func (*IntConst) isIntOrMDField() {}
 
 // MDField
-func (NullConst) isIntOrMDField() {}
+func (*NullConst) isIntOrMDField() {}
 
 // Metadata
-func (MDTypeValue) isIntOrMDField() {}
-func (MDString) isIntOrMDField()    {}
-func (MDTuple) isIntOrMDField()     {}
-func (MetadataID) isIntOrMDField()  {}
+func (*MDTypeValue) isIntOrMDField() {}
+func (*MDString) isIntOrMDField()    {}
+func (*MDTuple) isIntOrMDField()     {}
+func (*MetadataID) isIntOrMDField()  {}
 
 // SpecializedMDNode
-func (DICompileUnit) isIntOrMDField()              {}
-func (DIFile) isIntOrMDField()                     {}
-func (DIBasicType) isIntOrMDField()                {}
-func (DISubroutineType) isIntOrMDField()           {}
-func (DIDerivedType) isIntOrMDField()              {}
-func (DICompositeType) isIntOrMDField()            {}
-func (DISubrange) isIntOrMDField()                 {}
-func (DIEnumerator) isIntOrMDField()               {}
-func (DITemplateTypeParameter) isIntOrMDField()    {}
-func (DITemplateValueParameter) isIntOrMDField()   {}
-func (DIModule) isIntOrMDField()                   {}
-func (DINamespace) isIntOrMDField()                {}
-func (DIGlobalVariable) isIntOrMDField()           {}
-func (DISubprogram) isIntOrMDField()               {}
-func (DILexicalBlock) isIntOrMDField()             {}
-func (DILexicalBlockFile) isIntOrMDField()         {}
-func (DILocation) isIntOrMDField()                 {}
-func (DILocalVariable) isIntOrMDField()            {}
-func (DIExpression) isIntOrMDField()               {}
-func (DIGlobalVariableExpression) isIntOrMDField() {}
-func (DIObjCProperty) isIntOrMDField()             {}
-func (DIImportedEntity) isIntOrMDField()           {}
-func (DIMacro) isIntOrMDField()                    {}
-func (DIMacroFile) isIntOrMDField()                {}
-func (GenericDINode) isIntOrMDField()              {}
+func (*DICompileUnit) isIntOrMDField()              {}
+func (*DIFile) isIntOrMDField()                     {}
+func (*DIBasicType) isIntOrMDField()                {}
+func (*DISubroutineType) isIntOrMDField()           {}
+func (*DIDerivedType) isIntOrMDField()              {}
+func (*DICompositeType) isIntOrMDField()            {}
+func (*DISubrange) isIntOrMDField()                 {}
+func (*DIEnumerator) isIntOrMDField()               {}
+func (*DITemplateTypeParameter) isIntOrMDField()    {}
+func (*DITemplateValueParameter) isIntOrMDField()   {}
+func (*DIModule) isIntOrMDField()                   {}
+func (*DINamespace) isIntOrMDField()                {}
+func (*DIGlobalVariable) isIntOrMDField()           {}
+func (*DISubprogram) isIntOrMDField()               {}
+func (*DILexicalBlock) isIntOrMDField()             {}
+func (*DILexicalBlockFile) isIntOrMDField()         {}
+func (*DILocation) isIntOrMDField()                 {}
+func (*DILocalVariable) isIntOrMDField()            {}
+func (*DIExpression) isIntOrMDField()               {}
+func (*DIGlobalVariableExpression) isIntOrMDField() {}
+func (*DIObjCProperty) isIntOrMDField()             {}
+func (*DIImportedEntity) isIntOrMDField()           {}
+func (*DIMacro) isIntOrMDField()                    {}
+func (*DIMacroFile) isIntOrMDField()                {}
+func (*GenericDINode) isIntOrMDField()              {}
 
 type DwarfVirtuality int64
 

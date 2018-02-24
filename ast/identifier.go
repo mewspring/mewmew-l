@@ -4,34 +4,48 @@ package ast
 
 // --- [ Global Identifiers ] --------------------------------------------------
 
-type GlobalIdent string
+type GlobalIdent struct {
+	Ident string
+}
 
-func (l GlobalIdent) String() string {
-	return string(l)
+func (i *GlobalIdent) String() string {
+	return i.Ident
 }
 
 // --- [ Local Identifiers ] ---------------------------------------------------
 
-type LocalIdent string
+type LocalIdent struct {
+	Ident string
+}
 
-func (l LocalIdent) String() string {
-	return string(l)
+func (i *LocalIdent) String() string {
+	return i.Ident
 }
 
 // --- [ Label Identifiers ] ---------------------------------------------------
 
-type LabelIdent string
+type LabelIdent struct {
+	Ident string
+}
 
 // --- [ Attribute Group Identifiers ] -----------------------------------------
 
-type AttrGroupID string
+type AttrGroupID struct {
+	ID string
+}
 
 // --- [ Comdat Identifiers ] --------------------------------------------------
 
-type ComdatName string
+type ComdatName struct {
+	Name string
+}
 
 // --- [ Metadata Identifiers ] ------------------------------------------------
 
-type MetadataName string
+type MetadataName struct {
+	Name string
+}
 
-type MetadataID string
+type MetadataID struct {
+	ID string
+}

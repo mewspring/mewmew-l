@@ -10,8 +10,8 @@
 
 TargetDefinition
 	: "target" "triple" "=" string_lit
-	<< ast.TargetTriple(astx.String($3)), nil >>
+	<< &ast.TargetTriple{TargetTriple: astx.String($3)}, nil >>
 	| "target" "datalayout" "=" string_lit
-	<< ast.DataLayout(astx.String($3)), nil >>
+	<< &ast.DataLayout{DataLayout: astx.String($3)}, nil >>
 ;
 

@@ -8,15 +8,21 @@ type Constant interface {
 
 // --- [ Boolean Constants ] ---------------------------------------------------
 
-type BoolConst bool
+type BoolConst struct {
+	X bool
+}
 
 // --- [ Integer Constants ] ---------------------------------------------------
 
-type IntConst int64
+type IntConst struct {
+	X int64
+}
 
 // --- [ Floating-point Constants ] --------------------------------------------
 
-type FloatConst float64
+type FloatConst struct {
+	X float64
+}
 
 // --- [ Null Pointer Constants ] ----------------------------------------------
 

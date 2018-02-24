@@ -8,6 +8,6 @@
 
 ModuleAsm
 	: "module" "asm" string_lit
-	<< ast.ModuleAsm(astx.String($2)), nil >>
+	<< &ast.ModuleAsm{Asm: astx.String($2)}, nil >>
 ;
 

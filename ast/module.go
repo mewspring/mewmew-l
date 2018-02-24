@@ -16,10 +16,12 @@ type TopLevelEntity interface {
 
 // ~~~ [ Source Filename ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type SourceFilename string // empty if not present
+type SourceFilename struct {
+	Name string
+}
 
-func (s SourceFilename) String() string {
-	return fmt.Sprintf("source_filename = %q", string(s))
+func (s *SourceFilename) String() string {
+	return fmt.Sprintf("source_filename = %q", s.Name)
 }
 
 // ~~~ [ Target Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,33 +30,39 @@ type TargetDefinition interface {
 	isTargetDefinition()
 }
 
-type TargetTriple string // empty if not present
-
-func (t TargetTriple) String() string {
-	return fmt.Sprintf("target triple = %q", string(t))
+type TargetTriple struct {
+	TargetTriple string
 }
 
-type DataLayout string // empty if not present
-
-func (t DataLayout) String() string {
-	return fmt.Sprintf("target datalayout = %q", string(t))
+func (t *TargetTriple) String() string {
+	return fmt.Sprintf("target triple = %q", t.TargetTriple)
 }
 
-func (TargetTriple) isTargetDefinition() {}
-func (DataLayout) isTargetDefinition()   {}
+type DataLayout struct {
+	DataLayout string
+}
+
+func (t *DataLayout) String() string {
+	return fmt.Sprintf("target datalayout = %q", t.DataLayout)
+}
+
+func (*TargetTriple) isTargetDefinition() {}
+func (*DataLayout) isTargetDefinition()   {}
 
 // ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type ModuleAsm string // empty if not present
+type ModuleAsm struct {
+	Asm string
+}
 
-func (asm ModuleAsm) String() string {
-	return fmt.Sprintf("module asm %q", string(asm))
+func (a *ModuleAsm) String() string {
+	return fmt.Sprintf("module asm %q", a.Asm)
 }
 
 // ~~~ [ Type Defintion ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type TypeDef struct {
-	Name LocalIdent
+	Name *LocalIdent
 	Type Type
 }
 
@@ -65,7 +73,7 @@ func (t *TypeDef) String() string {
 // ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type ComdatDef struct {
-	Name ComdatName
+	Name *ComdatName
 	Kind SelectionKind
 }
 
@@ -85,14 +93,14 @@ const (
 
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
-	Name                  GlobalIdent
-	Linkage               Linkage             // zero value if not present
-	Preemption            PreemptionSpecifier // zero value if not present
-	Visibility            Visibility          // zero value if not present
-	DLLStorageClass       DLLStorageClass     // zero value if not present
-	ThreadLocal           *ThreadLocal        // nil if not present
-	UnnamedAddr           UnnamedAddr         // zero value if not present
-	AddrSpace             AddrSpace           // zero value if not present
+	Name                  *GlobalIdent
+	Linkage               Linkage         // zero value if not present
+	Preemption            Preemption      // zero value if not present
+	Visibility            Visibility      // zero value if not present
+	DLLStorageClass       DLLStorageClass // zero value if not present
+	ThreadLocal           *ThreadLocal    // nil if not present
+	UnnamedAddr           UnnamedAddr     // zero value if not present
+	AddrSpace             AddrSpace       // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Type                  Type
@@ -129,18 +137,18 @@ type GlobalAttribute interface {
 	isGlobalAttribute()
 }
 
-func (Section) isGlobalAttribute()             {}
+func (*Section) isGlobalAttribute()            {}
 func (*Comdat) isGlobalAttribute()             {}
-func (Alignment) isGlobalAttribute()           {}
+func (*Alignment) isGlobalAttribute()          {}
 func (*MetadataAttachment) isGlobalAttribute() {}
 
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // An IndirectSymbol is an alias or an ifunc.
 type IndirectSymbol struct {
-	Name            GlobalIdent
+	Name            *GlobalIdent
 	Linkage         Linkage
-	Preemption      PreemptionSpecifier
+	Preemption      Preemption
 	Visibility      Visibility
 	DLLStorageClass DLLStorageClass
 	ThreadLocal     *ThreadLocal
@@ -160,18 +168,18 @@ type Function struct {
 }
 
 type FunctionHeader struct {
-	Preemption      PreemptionSpecifier
+	Preemption      Preemption
 	Visibility      Visibility
 	DLLStorageClass DLLStorageClass
 	CallingConv     CallingConv
 	ReturnAttrs     []ReturnAttribute
 	RetType         Type
-	Name            GlobalIdent
+	Name            *GlobalIdent
 	Params          []*Param
 	Variadic        bool
 	UnnamedAddr     UnnamedAddr
 	FuncAttrs       []FuncAttribute
-	Section         Section    // empty if not present
+	Section         *Section   // nil if not present
 	Comdat          *Comdat    // nil if not present
 	GC              string     // empty if not present
 	Prefix          *TypeConst // nil if not present
@@ -247,14 +255,14 @@ type FunctionBody struct {
 // ~~~ [ Attribute Group Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type AttrGroupDef struct {
-	Name      AttrGroupID
+	Name      *AttrGroupID
 	FuncAttrs []FuncAttribute
 }
 
 // ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type NamedMetadataDef struct {
-	Name  MetadataName
+	Name  *MetadataName
 	Nodes []MetadataNode
 }
 
@@ -262,13 +270,13 @@ type MetadataNode interface {
 	isMetadataNode()
 }
 
-func (MetadataID) isMetadataNode()   {}
-func (DIExpression) isMetadataNode() {}
+func (*MetadataID) isMetadataNode()   {}
+func (*DIExpression) isMetadataNode() {}
 
 // ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type MetadataDef struct {
-	Name     MetadataID
+	Name     *MetadataID
 	Distinct bool
 	Node     MDNode // MDTuple or SpecializedMDNode
 }
@@ -282,8 +290,8 @@ type UseListOrder struct {
 }
 
 type UseListOrderBB struct {
-	Func    GlobalIdent
-	Block   LocalIdent
+	Func    *GlobalIdent
+	Block   *LocalIdent
 	Indices []int64
 }
 
@@ -293,7 +301,7 @@ func (*SourceFilename) isTopLevelEntity() {}
 func (*TargetTriple) isTopLevelEntity() {}
 func (*DataLayout) isTopLevelEntity()   {}
 
-func (ModuleAsm) isTopLevelEntity()         {}
+func (*ModuleAsm) isTopLevelEntity()        {}
 func (*TypeDef) isTopLevelEntity()          {}
 func (*ComdatDef) isTopLevelEntity()        {}
 func (*Global) isTopLevelEntity()           {}

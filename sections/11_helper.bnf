@@ -641,8 +641,8 @@ ParamList
 
 Param
 	: Type ParamAttrs
-	<< &ast.Param{Type: $0.(ast.Type), ParamAttrs: $1.([]ast.ParamAttribute)}, nil >>
-	| Type LocalIdent ParamAttrs
-	<< &ast.Param{Type: $0.(ast.Type), Name: $1.(ast.LocalIdent), ParamAttrs: $2.([]ast.ParamAttribute)}, nil >>
+	<< &ast.Param{Type: $0.(ast.Type), Attrs: $1.([]ast.ParamAttribute)}, nil >>
+	| Type ParamAttrs LocalIdent
+	<< &ast.Param{Type: $0.(ast.Type), Name: $2.(ast.LocalIdent), Attrs: $1.([]ast.ParamAttribute)}, nil >>
 ;
 

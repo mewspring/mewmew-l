@@ -7,7 +7,7 @@ type Instruction interface {
 }
 
 type ValueInstruction struct {
-	Name LocalIdent
+	Name *LocalIdent
 	Inst Instruction
 }
 
@@ -161,8 +161,8 @@ type AllocaInst struct {
 	SwiftError bool
 	ElemType   Type
 	NElems     *TypeValue // nil if not present
-	Alignment  Alignment
-	AddrSpace  AddrSpace
+	Alignment  *Alignment // nil if not present
+	AddrSpace  *AddrSpace // nil if not present
 	Metadata   []*MetadataAttachment
 }
 
@@ -171,9 +171,9 @@ type LoadInst struct {
 	Volatile       bool
 	ElemType       Type
 	Src            *TypeValue
-	SyncScope      SyncScope      // empty if not present
+	SyncScope      *SyncScope     // nil if not present
 	AtomicOrdering AtomicOrdering // zero value if not present
-	Alignment      Alignment
+	Alignment      *Alignment     // nil if not present
 	Metadata       []*MetadataAttachment
 }
 
@@ -182,14 +182,14 @@ type StoreInst struct {
 	Volatile       bool
 	Src            *TypeValue
 	Dst            *TypeValue
-	SyncScope      SyncScope      // empty if not present
+	SyncScope      *SyncScope     // nil if not present
 	AtomicOrdering AtomicOrdering // zero value if not present
-	Alignment      Alignment
+	Alignment      *Alignment     // nil if not present
 	Metadata       []*MetadataAttachment
 }
 
 type FenceInst struct {
-	SyncScope      SyncScope // empty if not present
+	SyncScope      *SyncScope // nil if not present
 	AtomicOrdering AtomicOrdering
 	Metadata       []*MetadataAttachment
 }
@@ -200,7 +200,7 @@ type CmpXchgInst struct {
 	Ptr       *TypeValue
 	Cmp       *TypeValue
 	New       *TypeValue
-	SyncScope SyncScope // empty if not present
+	SyncScope *SyncScope // nil if not present
 	Success   AtomicOrdering
 	Failure   AtomicOrdering
 	Metadata  []*MetadataAttachment
@@ -211,7 +211,7 @@ type AtomicRMWInst struct {
 	Op             BinOp
 	Ptr            *TypeValue
 	X              *TypeValue
-	SyncScope      SyncScope // empty if not present
+	SyncScope      *SyncScope // nil if not present
 	AtomicOrdering AtomicOrdering
 	Metadata       []*MetadataAttachment
 }
@@ -345,7 +345,7 @@ type PhiInst struct {
 
 type Incoming struct {
 	X    Value
-	Pred LocalIdent
+	Pred *LocalIdent
 }
 
 type SelectInst struct {
@@ -398,7 +398,7 @@ type Clause struct {
 // --- [ catchpad ] ------------------------------------------------------------
 
 type CatchPadInst struct {
-	Scope    LocalIdent
+	Scope    *LocalIdent
 	Args     []Argument
 	Metadata []*MetadataAttachment
 }

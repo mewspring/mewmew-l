@@ -25,14 +25,14 @@ const (
 	LinkageExternWeak // extern_weak
 )
 
-//go:generate stringer -linecomment -type PreemptionSpecifier
+//go:generate stringer -linecomment -type Preemption
 
-type PreemptionSpecifier uint8
+type Preemption uint8
 
 const (
-	PreemptionSpecifierNone           PreemptionSpecifier = iota // none
-	PreemptionSpecifierDSOLocal                                  // dso_local
-	PreemptionSpecifierDSOPreemptable                            // dso_preemptable
+	PreemptionNone           Preemption = iota // none
+	PreemptionDSOLocal                         // dso_local
+	PreemptionDSOPreemptable                   // dso_preemptable
 )
 
 //go:generate stringer -linecomment -type Visibility
@@ -66,28 +66,32 @@ const (
 	UnnamedAddrUnnamedAddr                         // unnamed_addr
 )
 
-type Section string // empty if not present
+type Section struct {
+	Name string
+}
 
-func (s Section) String() string {
-	return fmt.Sprintf("section %q", string(s))
+func (s *Section) String() string {
+	return fmt.Sprintf("section %q", s.Name)
 }
 
 type Comdat struct {
-	Name ComdatName // empty if not present
+	Name *ComdatName // nil if not present
 }
 
-func (c Comdat) String() string {
-	if len(c.Name) == 0 {
+func (c *Comdat) String() string {
+	if c.Name == nil {
 		return "comdat"
 	}
 	return fmt.Sprintf("comdat(%s)", c.Name)
 }
 
-type Alignment int64
+type Alignment struct {
+	Align int64
+}
 
-func (a Alignment) String() string {
+func (a *Alignment) String() string {
 	// Note, printed as `align = 8` in attribute groups.
-	return fmt.Sprintf("align %d", int64(a))
+	return fmt.Sprintf("align %d", a.Align)
 }
 
 // ___ [ Function Attribute ] __________________________________________________
@@ -101,7 +105,7 @@ type AllocSize struct {
 	N        int64
 }
 
-func (a AllocSize) String() string {
+func (a *AllocSize) String() string {
 	switch a.N {
 	case 0, 1:
 		return fmt.Sprintf("allocsize(%d)", a.BaseSize)
@@ -110,16 +114,20 @@ func (a AllocSize) String() string {
 	}
 }
 
-type StackAlignment int64
-
-func (a StackAlignment) String() string {
-	return fmt.Sprintf("alignstack(%d)", int64(a))
+type StackAlignment struct {
+	Align int64
 }
 
-type FuncAttrString string
+func (a *StackAlignment) String() string {
+	return fmt.Sprintf("alignstack(%d)", a.Align)
+}
 
-func (a FuncAttrString) String() string {
-	return strconv.Quote(string(a))
+type FuncAttrString struct {
+	Value string
+}
+
+func (a *FuncAttrString) String() string {
+	return strconv.Quote(a.Value)
 }
 
 type FuncAttrPair struct {
@@ -127,7 +135,7 @@ type FuncAttrPair struct {
 	Value string
 }
 
-func (a FuncAttrPair) String() string {
+func (a *FuncAttrPair) String() string {
 	return fmt.Sprintf("%q = %q", a.Key, a.Value)
 }
 
@@ -175,13 +183,13 @@ const (
 	FuncAttrWriteOnly                                   // writeonly
 )
 
-func (AttrGroupID) isFuncAttribute()    {}
-func (Alignment) isFuncAttribute()      {}
-func (AllocSize) isFuncAttribute()      {}
-func (StackAlignment) isFuncAttribute() {}
-func (FuncAttrString) isFuncAttribute() {}
-func (FuncAttrPair) isFuncAttribute()   {}
-func (FuncAttr) isFuncAttribute()       {}
+func (*AttrGroupID) isFuncAttribute()    {}
+func (*Alignment) isFuncAttribute()      {}
+func (*AllocSize) isFuncAttribute()      {}
+func (*StackAlignment) isFuncAttribute() {}
+func (*FuncAttrString) isFuncAttribute() {}
+func (*FuncAttrPair) isFuncAttribute()   {}
+func (FuncAttr) isFuncAttribute()        {}
 
 // ___ [ Return Attribute ] ____________________________________________________
 
@@ -194,17 +202,19 @@ type Dereferenceable struct {
 	Null bool
 }
 
-func (d Dereferenceable) String() string {
+func (d *Dereferenceable) String() string {
 	if d.Null {
 		return fmt.Sprintf("dereferenceable_or_null(%d)", d.N)
 	}
 	return fmt.Sprintf("dereferenceable(%d)", d.N)
 }
 
-type ReturnAttrString string
+type ReturnAttrString struct {
+	Value string
+}
 
-func (a ReturnAttrString) String() string {
-	return strconv.Quote(string(a))
+func (a *ReturnAttrString) String() string {
+	return strconv.Quote(a.Value)
 }
 
 //go:generate stringer -linecomment -type ReturnAttr
@@ -219,10 +229,10 @@ const (
 	ReturnAttrZeroExt
 )
 
-func (Alignment) isReturnAttribute()        {}
-func (Dereferenceable) isReturnAttribute()  {}
-func (ReturnAttrString) isReturnAttribute() {}
-func (ReturnAttr) isReturnAttribute()       {}
+func (*Alignment) isReturnAttribute()        {}
+func (*Dereferenceable) isReturnAttribute()  {}
+func (*ReturnAttrString) isReturnAttribute() {}
+func (ReturnAttr) isReturnAttribute()        {}
 
 type TypeConst struct {
 	Type  Type
@@ -230,19 +240,21 @@ type TypeConst struct {
 }
 
 type Param struct {
-	Type       Type
-	Name       LocalIdent // empty if unnamed.
-	ParamAttrs []ParamAttribute
+	Type  Type
+	Name  *LocalIdent // nil if unnamed.
+	Attrs []ParamAttribute
 }
 
 type ParamAttribute interface {
 	isParamAttribute()
 }
 
-type ParamAttrString string
+type ParamAttrString struct {
+	Value string
+}
 
-func (a ParamAttrString) String() string {
-	return strconv.Quote(string(a))
+func (a *ParamAttrString) String() string {
+	return strconv.Quote(a.Value)
 }
 
 //go:generate stringer -linecomment -type ParamAttr
@@ -268,10 +280,10 @@ const (
 	ParamAttrZeroExt                     // zeroext
 )
 
-func (Alignment) isParamAttribute()       {}
-func (Dereferenceable) isParamAttribute() {}
-func (ParamAttrString) isParamAttribute() {}
-func (ParamAttr) isParamAttribute()       {}
+func (*Alignment) isParamAttribute()       {}
+func (*Dereferenceable) isParamAttribute() {}
+func (*ParamAttrString) isParamAttribute() {}
+func (ParamAttr) isParamAttribute()        {}
 
 //go:generate stringer -linecomment -type IPred
 
@@ -329,10 +341,12 @@ type TypeValue struct {
 	Value Value
 }
 
-type SyncScope string
+type SyncScope struct {
+	Scope string
+}
 
-func (s SyncScope) String() string {
-	return fmt.Sprintf("syncscope(%q)", string(s))
+func (s *SyncScope) String() string {
+	return fmt.Sprintf("syncscope(%q)", s.Scope)
 }
 
 //go:generate stringer -linecomment -type AtomicOrdering
@@ -353,8 +367,8 @@ type ExceptionScope interface {
 	isExceptionScope()
 }
 
-func (NoneConst) isExceptionScope()  {}
-func (LocalIdent) isExceptionScope() {}
+func (*NoneConst) isExceptionScope()  {}
+func (*LocalIdent) isExceptionScope() {}
 
 type Argument interface {
 	isArgument()
@@ -396,5 +410,5 @@ type OperandBundle struct {
 
 type Label struct {
 	// label type is implicit.
-	Name LocalIdent
+	Name *LocalIdent
 }
