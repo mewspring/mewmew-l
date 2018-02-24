@@ -66,8 +66,8 @@ type UndefConst struct{}
 // --- [ Addresses of Basic Blocks ] -------------------------------------------
 
 type BlockAddressConst struct {
-	Func  GlobalIdent
-	Block LocalIdent
+	Func  *GlobalIdent
+	Block *LocalIdent
 }
 
 func (*BoolConst) isConstant()            {}

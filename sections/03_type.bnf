@@ -179,6 +179,6 @@ TypeList
 
 NamedType
 	: LocalIdent
-	<< &ast.NamedType{Name: $0.(ast.LocalIdent)}, nil >>
+	<< &ast.NamedType{Name: $0.(*ast.LocalIdent)}, nil >>
 ;
 

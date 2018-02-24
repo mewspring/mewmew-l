@@ -23,13 +23,13 @@ FuncAttr
 	// not used in attribute groups.
 	: AttrGroupID
 	// used in attribute groups.
-	| "align" "=" int_lit               << ast.Alignment(astx.Int($2)), nil >>
-	| "alignstack" "=" int_lit          << ast.StackAlignment(astx.Int($2)), nil >>
+	| "align" "=" int_lit               << &ast.Alignment{Align: astx.Int($2)}, nil >>
+	| "alignstack" "=" int_lit          << &ast.StackAlignment{Align: astx.Int($2)}, nil >>
 	// used in functions.
 	| Alignment
 	| AllocSize
 	| StackAlignment
-	| string_lit                        << ast.FuncAttrString(astx.String($0)), nil >>
+	| string_lit                        << &ast.FuncAttrString{Value: astx.String($0)}, nil >>
 	| string_lit "=" string_lit         << &ast.FuncAttrPair{Key: astx.String($0), Value: astx.String($2)}, nil >>
 	| "alwaysinline"                    << ast.FuncAttrAlwaysInline, nil >>
 	| "argmemonly"                      << ast.FuncAttrArgMemOnly, nil >>
@@ -90,7 +90,7 @@ ReturnAttrList
 ReturnAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << ast.ReturnAttrString(astx.String($0)), nil >>
+	| string_lit        << &ast.ReturnAttrString{Value: astx.String($0)}, nil >>
 	| "inreg"           << ast.ReturnAttrInReg, nil >>
 	| "noalias"         << ast.ReturnAttrNoAlias, nil >>
 	| "nonnull"         << ast.ReturnAttrNonNull, nil >>
@@ -123,7 +123,7 @@ ParamAttrList
 ParamAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << ast.ParamAttrString(astx.String($0)), nil >>
+	| string_lit        << &ast.ParamAttrString{Value: astx.String($0)}, nil >>
 	| "byval"           << ast.ParamAttrByval, nil >>
 	| "inalloca"        << ast.ParamAttrInAlloca, nil >>
 	| "inreg"           << ast.ParamAttrInReg, nil >>
@@ -167,7 +167,7 @@ AddrSpace
 
 Alignment
 	: "align" int_lit
-	<< ast.Alignment(astx.Int($1)), nil >>
+	<< &ast.Alignment{Align: astx.Int($1)}, nil >>
 ;
 
 // ref: parseAllocSizeArguments
@@ -191,7 +191,7 @@ Comdat
 	: "comdat"
 	<< &ast.Comdat{}, nil >>
 	| "comdat" "(" ComdatName ")"
-	<< &ast.Comdat{Name: $2.(ast.ComdatName)}, nil >>
+	<< &ast.Comdat{Name: $2.(*ast.ComdatName)}, nil >>
 ;
 
 Dereferenceable
@@ -268,13 +268,13 @@ ExternLinkage
 // ref: ParseOptionalDSOLocal
 
 OptPreemptionSpecifier
-	: empty                 << ast.PreemptionSpecifierNone, nil >>
+	: empty                 << ast.PreemptionNone, nil >>
 	| PreemptionSpecifier
 ;
 
 PreemptionSpecifier
-	: "dso_local"         << ast.PreemptionSpecifierDSOLocal, nil >>
-	| "dso_preemptable"   << ast.PreemptionSpecifierDSOPreemptable, nil >>
+	: "dso_local"         << ast.PreemptionDSOLocal, nil >>
+	| "dso_preemptable"   << ast.PreemptionDSOPreemptable, nil >>
 ;
 
 OptSection
@@ -284,7 +284,8 @@ OptSection
 ;
 
 Section
-	: "section" string_lit   << ast.Section(astx.String($1)), nil >>
+	: "section" string_lit
+	<< &ast.Section{Name: astx.String($1)}, nil >>
 ;
 
 // ref: ParseOptionalStackAlignment
@@ -292,7 +293,8 @@ Section
 //   ::= empty
 //   ::= 'alignstack' '(' 4 ')'
 StackAlignment
-	: "alignstack" "(" int_lit ")"   << ast.StackAlignment(astx.Int($2)), nil >>
+	: "alignstack" "(" int_lit ")"
+	<< &ast.StackAlignment{Align: astx.Int($2)}, nil >>
 ;
 
 // ref: ParseOptionalUnnamedAddr
@@ -460,9 +462,9 @@ OptVolatile
 
 OptSyncScope
 	: empty
-	<< ast.SyncScope(""), nil >>
+	<< (*ast.SyncScope)(nil), nil >>
 	| "syncscope" "(" string_lit ")"
-	<< ast.SyncScope(astx.String($2)), nil >>
+	<< &ast.SyncScope{Scope: astx.String($2)}, nil >>
 ;
 
 // ref: ParseOrdering
@@ -643,6 +645,6 @@ Param
 	: Type ParamAttrs
 	<< &ast.Param{Type: $0.(ast.Type), Attrs: $1.([]ast.ParamAttribute)}, nil >>
 	| Type ParamAttrs LocalIdent
-	<< &ast.Param{Type: $0.(ast.Type), Name: $2.(ast.LocalIdent), Attrs: $1.([]ast.ParamAttribute)}, nil >>
+	<< &ast.Param{Type: $0.(ast.Type), Name: $2.(*ast.LocalIdent), Attrs: $1.([]ast.ParamAttribute)}, nil >>
 ;
 

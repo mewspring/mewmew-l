@@ -32,6 +32,6 @@ UseListOrder
 
 UseListOrderBB
 	: "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
-	<< &ast.UseListOrderBB{Func: $1.(ast.GlobalIdent), Block: $3.(ast.LocalIdent), Indices: $6.([]int64)}, nil >>
+	<< &ast.UseListOrderBB{Func: $1.(*ast.GlobalIdent), Block: $3.(*ast.LocalIdent), Indices: $6.([]int64)}, nil >>
 ;
 

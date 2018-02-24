@@ -4,46 +4,46 @@
 
 GlobalIdent
 	: global_ident
-	<< ast.GlobalIdent(astx.String($0)), nil >>
+	<< &ast.GlobalIdent{Ident: astx.String($0)}, nil >>
 ;
 
 // --- [ Local Identifiers ] ---------------------------------------------------
 
 LocalIdent
 	: local_ident
-	<< ast.LocalIdent(astx.String($0)), nil >>
+	<< &ast.LocalIdent{Ident: astx.String($0)}, nil >>
 ;
 
 // --- [ Label Identifiers ] ---------------------------------------------------
 
 LabelIdent
 	: label_ident
-	<< ast.LabelIdent(astx.String($0)), nil >>
+	<< &ast.LabelIdent{Ident: astx.String($0)}, nil >>
 ;
 
 // --- [ Attribute Group Identifiers ] -----------------------------------------
 
 AttrGroupID
 	: attr_group_id
-	<< ast.AttrGroupID(astx.String($0)), nil >>
+	<< &ast.AttrGroupID{astx.String($0)}, nil >>
 ;
 
 // --- [ Comdat Identifiers ] --------------------------------------------------
 
 ComdatName
 	: comdat_name
-	<< ast.ComdatName(astx.String($0)), nil >>
+	<< &ast.ComdatName{Name: astx.String($0)}, nil >>
 ;
 
 // --- [ Metadata Identifiers ] ------------------------------------------------
 
 MetadataName
 	: metadata_name
-	<< ast.MetadataName(astx.String($0)), nil >>
+	<< &ast.MetadataName{Name: astx.String($0)}, nil >>
 ;
 
 MetadataID
 	: metadata_id
-	<< ast.MetadataID(astx.String($0)), nil >>
+	<< &ast.MetadataID{astx.String($0)}, nil >>
 ;
 

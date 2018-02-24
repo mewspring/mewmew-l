@@ -48,7 +48,7 @@ IncList
 
 Inc
 	: "[" Value "," LocalIdent "]"
-	<< &ast.Incoming{X: $1.(ast.Value), Pred: $3.(ast.LocalIdent)}, nil >>
+	<< &ast.Incoming{X: $1.(ast.Value), Pred: $3.(*ast.LocalIdent)}, nil >>
 ;
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,7 +154,7 @@ Clause
 
 CatchPadInst
 	: "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
-	<< &ast.CatchPadInst{Scope: $2.(ast.LocalIdent), Args: $4.([]ast.Argument), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.CatchPadInst{Scope: $2.(*ast.LocalIdent), Args: $4.([]ast.Argument), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // --- [ cleanuppad ] ----------------------------------------------------------

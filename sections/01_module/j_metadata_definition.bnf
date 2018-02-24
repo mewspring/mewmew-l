@@ -8,7 +8,7 @@
 
 NamedMetadataDef
 	: MetadataName "=" "!" "{" MetadataNodes "}"
-	<< &ast.NamedMetadataDef{Name: $0.(ast.MetadataName), Nodes: $4.([]ast.MetadataNode)}, nil >>
+	<< &ast.NamedMetadataDef{Name: $0.(*ast.MetadataName), Nodes: $4.([]ast.MetadataNode)}, nil >>
 ;
 
 MetadataNodes
@@ -42,9 +42,9 @@ MetadataNode
 
 MetadataDef
 	: MetadataID "=" OptDistinct MDTuple
-	<< &ast.MetadataDef{Name: $0.(ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
+	<< &ast.MetadataDef{Name: $0.(*ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
 	| MetadataID "=" OptDistinct SpecializedMDNode
-	<< &ast.MetadataDef{Name: $0.(ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
+	<< &ast.MetadataDef{Name: $0.(*ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
 ;
 
 OptDistinct

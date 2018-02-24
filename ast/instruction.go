@@ -162,7 +162,7 @@ type AllocaInst struct {
 	ElemType   Type
 	NElems     *TypeValue // nil if not present
 	Alignment  *Alignment // nil if not present
-	AddrSpace  *AddrSpace // nil if not present
+	AddrSpace  AddrSpace  // zero if not present
 	Metadata   []*MetadataAttachment
 }
 

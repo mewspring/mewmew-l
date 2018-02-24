@@ -31,9 +31,9 @@ Constant
 
 BoolConst
 	: "true"
-	<< ast.BoolConst(true), nil >>
+	<< &ast.BoolConst{X: true}, nil >>
 	| "false"
-	<< ast.BoolConst(false), nil >>
+	<< &ast.BoolConst{X: false}, nil >>
 ;
 
 // --- [ Integer Constants ] ---------------------------------------------------
@@ -170,6 +170,6 @@ UndefConst
 
 BlockAddressConst
 	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"
-	<< &ast.BlockAddressConst{Func: $2.(ast.GlobalIdent), Block: $4.(ast.LocalIdent)}, nil >>
+	<< &ast.BlockAddressConst{Func: $2.(*ast.GlobalIdent), Block: $4.(*ast.LocalIdent)}, nil >>
 ;
 

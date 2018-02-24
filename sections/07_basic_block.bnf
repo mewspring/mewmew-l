@@ -13,12 +13,12 @@ BasicBlockList
 
 BasicBlock
 	: OptLabelIdent Instructions Terminator
-	<< &ast.BasicBlock{Name: $0.(ast.LabelIdent), Insts: $1.([]ast.Instruction), Term: $2.(ast.Terminator)}, nil >>
+	<< &ast.BasicBlock{Name: $0.(*ast.LabelIdent), Insts: $1.([]ast.Instruction), Term: $2.(ast.Terminator)}, nil >>
 ;
 
 OptLabelIdent
 	: empty
-	<< ast.LabelIdent(""), nil >>
+	<< (*ast.LabelIdent)(nil), nil >>
 	| LabelIdent
 ;
 

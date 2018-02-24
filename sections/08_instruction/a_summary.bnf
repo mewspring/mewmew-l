@@ -25,7 +25,7 @@ Instruction
 	| AtomicRMWInst
 	// Instructions producing values.
 	| LocalIdent "=" ValueInstruction
-	<< &ast.ValueInstruction{Name: $0.(ast.LocalIdent), Inst: $2.(ast.Instruction)}, nil >>
+	<< &ast.ValueInstruction{Name: $0.(*ast.LocalIdent), Inst: $2.(ast.Instruction)}, nil >>
 	| ValueInstruction
 ;
 

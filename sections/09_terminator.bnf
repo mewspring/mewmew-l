@@ -112,7 +112,7 @@ LabelList
 
 Label
 	: LabelType LocalIdent
-	<< &ast.Label{Name: $1.(ast.LocalIdent)}, nil >>
+	<< &ast.Label{Name: $1.(*ast.LocalIdent)}, nil >>
 ;
 
 // --- [ invoke ] --------------------------------------------------------------
