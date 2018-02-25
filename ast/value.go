@@ -1,6 +1,9 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // === [ Values ] ==============================================================
 
@@ -17,6 +20,22 @@ type InlineAsm struct {
 	IntelDialect bool
 	Asm          string
 	Constraint   string
+}
+
+func (v *InlineAsm) String() string {
+	buf := &strings.Builder{}
+	buf.WriteString("asm")
+	if v.SideEffect {
+		buf.WriteString(" sideeffect")
+	}
+	if v.AlignStack {
+		buf.WriteString(" alignstack")
+	}
+	if v.IntelDialect {
+		buf.WriteString(" inteldialect")
+	}
+	fmt.Fprintf(buf, " %q, %q", v.Asm, v.Constraint)
+	return buf.String()
 }
 
 // Constant
