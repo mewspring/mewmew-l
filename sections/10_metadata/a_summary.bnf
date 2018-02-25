@@ -21,12 +21,16 @@ MDTuple
 
 MDFields
 	: "{" "}"
+	<< ([]ast.MDField)(nil), nil >>
 	| "{" MDFieldList "}"
+	<< $1, nil >>
 ;
 
 MDFieldList
 	: MDField
+	<< []ast.MDField{$0.(ast.MDField)}, nil >>
 	| MDFieldList "," MDField
+	<< append($0.([]ast.MDField), $2.(ast.MDField)), nil >>
 ;
 
 // ref: ParseMDField(MDField &)

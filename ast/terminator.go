@@ -90,3 +90,15 @@ type CleanupRetTerm struct {
 type UnreachableTerm struct {
 	Metadata []*MetadataAttachment
 }
+
+func (*RetTerm) isTerminator()         {}
+func (*BrTerm) isTerminator()          {}
+func (*CondBrTerm) isTerminator()      {}
+func (*SwitchTerm) isTerminator()      {}
+func (*IndirectBrTerm) isTerminator()  {}
+func (*InvokeTerm) isTerminator()      {}
+func (*ResumeTerm) isTerminator()      {}
+func (*CatchSwitchTerm) isTerminator() {}
+func (*CatchRetTerm) isTerminator()    {}
+func (*CleanupRetTerm) isTerminator()  {}
+func (*UnreachableTerm) isTerminator() {}

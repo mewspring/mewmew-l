@@ -638,7 +638,7 @@ ParamList
 	: Param
 	<< []*ast.Param{$0.(*ast.Param)}, nil >>
 	| ParamList "," Param
-	<< append($0.([]*ast.Param), $1.(*ast.Param)), nil >>
+	<< append($0.([]*ast.Param), $2.(*ast.Param)), nil >>
 ;
 
 Param

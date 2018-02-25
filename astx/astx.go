@@ -52,9 +52,8 @@ func TypeConst(typ, val interface{}) *ast.TypeConst {
 
 // Label returns a label based on the given label type and name.
 func Label(typ, name interface{}) *ast.Label {
-	s := String(typ)
-	if s != "label" {
-		panic(errors.Errorf(`invalid label type, expected "label", got %q`, s))
+	if _, ok := typ.(*ast.LabelType); !ok {
+		panic(errors.Errorf(`invalid label type, expected *ast.LabelType, got %T`, typ))
 	}
 	return &ast.Label{
 		Name: name.(*ast.LocalIdent),

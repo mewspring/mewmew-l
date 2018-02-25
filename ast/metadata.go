@@ -101,13 +101,13 @@ type MDString struct {
 // --- [ Metadata Attachment ] -------------------------------------------------
 
 type MetadataAttachment struct {
-	Name   *MetadataName
-	MDNode MDNode
+	Name *MetadataName
+	Node MDNode
 }
 
 func (m *MetadataAttachment) String() string {
 	// !dbg !42
-	return fmt.Sprintf("%s %s", m.Name, m.MDNode)
+	return fmt.Sprintf("%s %s", m.Name, m.Node)
 }
 
 // --- [ Metadata Node ] -------------------------------------------------------
