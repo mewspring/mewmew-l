@@ -102,9 +102,9 @@ StructConst
 	| "{" TypeConstList "}"
 	<< &ast.StructConst{Fields: $1.([]*ast.TypeConst)}, nil >>
 	| "<" "{" "}" ">"
-	<< &ast.StructConst{Packed: true, Fields: $1.([]*ast.TypeConst)}, nil >>
+	<< &ast.StructConst{Packed: true}, nil >>
 	| "<" "{" TypeConstList "}" ">"
-	<< &ast.StructConst{Packed: true, Fields: $1.([]*ast.TypeConst)}, nil >>
+	<< &ast.StructConst{Packed: true, Fields: $2.([]*ast.TypeConst)}, nil >>
 ;
 
 // --- [ Array Constants ] -----------------------------------------------------
