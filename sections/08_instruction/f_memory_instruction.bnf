@@ -62,10 +62,12 @@ OptSwiftError
 //    ;
 
 LoadInst
+	// Load.
 	: "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList
 	<< &ast.LoadInst{Volatile: $1.(bool), ElemType: $2.(ast.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
 	<< &ast.LoadInst{Volatile: $1.(bool), ElemType: $2.(ast.Type), Src: astx.TypeValue($4, $5), Alignment: $7.(*ast.Alignment), Metadata: $8.([]*ast.MetadataAttachment)}, nil >>
+	// Atomic load.
 	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 	<< &ast.LoadInst{Atomic: true, Volatile: $2.(bool), ElemType: $3.(ast.Type), Src: astx.TypeValue($5, $6), SyncScope: $7.(*ast.SyncScope), AtomicOrdering: $8.(ast.AtomicOrdering), Metadata: $9.([]*ast.MetadataAttachment)}, nil >>
 	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList

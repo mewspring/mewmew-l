@@ -81,7 +81,6 @@ type SwitchTerm struct {
 func (term *SwitchTerm) String() string {
 	buf := &strings.Builder{}
 	// "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
-	//
 	fmt.Fprintf(buf, "switch %v, %v [\n", term.X, term.Default)
 	for _, c := range term.Cases {
 		fmt.Fprintf(buf, "\t%v\n", c)
