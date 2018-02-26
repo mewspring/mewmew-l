@@ -3,6 +3,7 @@ package ast
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 //go:generate stringer -linecomment -type Linkage
@@ -90,13 +91,14 @@ type Alignment struct {
 }
 
 func (a *Alignment) String() string {
-	// Note, printed as `align = 8` in attribute groups.
+	// Note, alignment is printed as `align = 8` in attribute groups.
 	return fmt.Sprintf("align %d", a.Align)
 }
 
 // ___ [ Function Attribute ] __________________________________________________
 
 type FuncAttribute interface {
+	fmt.Stringer
 	isFuncAttribute()
 }
 
@@ -194,6 +196,7 @@ func (FuncAttr) isFuncAttribute()        {}
 // ___ [ Return Attribute ] ____________________________________________________
 
 type ReturnAttribute interface {
+	fmt.Stringer
 	isReturnAttribute()
 }
 
@@ -241,11 +244,25 @@ type TypeConst struct {
 
 type Param struct {
 	Type  Type
-	Name  *LocalIdent // nil if unnamed.
 	Attrs []ParamAttribute
+	Name  *LocalIdent // nil if unnamed.
+}
+
+func (param *Param) String() string {
+	// Type ParamAttrs OptLocalIdent
+	buf := &strings.Builder{}
+	buf.WriteString(param.Type.String())
+	for _, attr := range param.Attrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	if param.Name != nil {
+		fmt.Fprintf(buf, " %v", param.Name)
+	}
+	return buf.String()
 }
 
 type ParamAttribute interface {
+	fmt.Stringer
 	isParamAttribute()
 }
 

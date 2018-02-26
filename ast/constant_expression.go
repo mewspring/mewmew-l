@@ -311,9 +311,17 @@ type TruncExpr struct {
 	To   Type
 }
 
+func (c *TruncExpr) String() string {
+	return fmt.Sprintf("trunc (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type ZExtExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *ZExtExpr) String() string {
+	return fmt.Sprintf("zext (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 type SExtExpr struct {
@@ -321,9 +329,17 @@ type SExtExpr struct {
 	To   Type
 }
 
+func (c *SExtExpr) String() string {
+	return fmt.Sprintf("sext (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type FPTruncExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *FPTruncExpr) String() string {
+	return fmt.Sprintf("fptrunc (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 type FPExtExpr struct {
@@ -331,9 +347,17 @@ type FPExtExpr struct {
 	To   Type
 }
 
+func (c *FPExtExpr) String() string {
+	return fmt.Sprintf("fpext (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type FPToUIExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *FPToUIExpr) String() string {
+	return fmt.Sprintf("fptoui (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 type FPToSIExpr struct {
@@ -341,9 +365,17 @@ type FPToSIExpr struct {
 	To   Type
 }
 
+func (c *FPToSIExpr) String() string {
+	return fmt.Sprintf("fptosi (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type UIToFPExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *UIToFPExpr) String() string {
+	return fmt.Sprintf("uitofp (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 type SIToFPExpr struct {
@@ -351,9 +383,17 @@ type SIToFPExpr struct {
 	To   Type
 }
 
+func (c *SIToFPExpr) String() string {
+	return fmt.Sprintf("sitofp (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type PtrToIntExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *PtrToIntExpr) String() string {
+	return fmt.Sprintf("ptrtoint (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 type IntToPtrExpr struct {
@@ -361,14 +401,26 @@ type IntToPtrExpr struct {
 	To   Type
 }
 
+func (c *IntToPtrExpr) String() string {
+	return fmt.Sprintf("inttoptr (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type BitCastExpr struct {
 	From *TypeConst
 	To   Type
 }
 
+func (c *BitCastExpr) String() string {
+	return fmt.Sprintf("bitcast (%v %v to %v)", c.From.Type, c.From.Const, c.To)
+}
+
 type AddrSpaceCastExpr struct {
 	From *TypeConst
 	To   Type
+}
+
+func (c *AddrSpaceCastExpr) String() string {
+	return fmt.Sprintf("addrspacecast (%v %v to %v)", c.From.Type, c.From.Const, c.To)
 }
 
 // --- [ Other expressions ] ---------------------------------------------------

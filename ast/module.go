@@ -1,6 +1,9 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // === [ Module ] ==============================================================
 
@@ -8,9 +11,18 @@ type Module struct {
 	Entities []TopLevelEntity
 }
 
+func (m *Module) String() string {
+	buf := &strings.Builder{}
+	for _, entity := range m.Entities {
+		fmt.Println(buf, entity.String())
+	}
+	return buf.String()
+}
+
 // --- [ Top-level Entities ] --------------------------------------------------
 
 type TopLevelEntity interface {
+	fmt.Stringer
 	isTopLevelEntity()
 }
 
@@ -77,6 +89,10 @@ type ComdatDef struct {
 	Kind SelectionKind
 }
 
+func (c *ComdatDef) String() string {
+	return fmt.Sprintf("%v = comdat %v", c.Name, c.Kind)
+}
+
 //go:generate stringer -linecomment -type SelectionKind
 
 type SelectionKind uint8
@@ -109,6 +125,54 @@ type Global struct {
 	FuncAttrs             []FuncAttribute
 }
 
+func (g *Global) String() string {
+	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility
+	// OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace
+	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v =", g.Name)
+	if g.Linkage != LinkageNone {
+		fmt.Fprintf(buf, " %v", g.Linkage)
+	}
+	if g.Preemption != PreemptionNone {
+		fmt.Fprintf(buf, " %v", g.Preemption)
+	}
+	if g.Visibility != VisibilityNone {
+		fmt.Fprintf(buf, " %v", g.Visibility)
+	}
+	if g.DLLStorageClass != DLLStorageClassNone {
+		fmt.Fprintf(buf, " %v", g.DLLStorageClass)
+	}
+	if g.ThreadLocal != nil {
+		fmt.Fprintf(buf, " %v", g.ThreadLocal)
+	}
+	if g.UnnamedAddr != UnnamedAddrNone {
+		fmt.Fprintf(buf, " %v", g.UnnamedAddr)
+	}
+	if g.AddrSpace != 0 {
+		fmt.Fprintf(buf, " %v", g.AddrSpace)
+	}
+	if g.ExternallyInitialized {
+		buf.WriteString(" externallyinitialized")
+	}
+	if g.Immutable {
+		buf.WriteString(" constant")
+	} else {
+		buf.WriteString(" global")
+	}
+	fmt.Fprintf(buf, " %v", g.Type)
+	if g.Init != nil {
+		fmt.Fprintf(buf, " %v", g.Init)
+	}
+	for _, attr := range g.GlobalAttrs {
+		fmt.Fprintf(buf, ", %v", attr)
+	}
+	for _, attr := range g.FuncAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	return buf.String()
+}
+
 type ThreadLocal struct {
 	Model TLSModel // zero value if not present
 }
@@ -134,6 +198,7 @@ const (
 )
 
 type GlobalAttribute interface {
+	fmt.Stringer
 	isGlobalAttribute()
 }
 
@@ -167,11 +232,42 @@ type Function struct {
 	Metadata []*MetadataAttachment
 }
 
+func (f *Function) String() string {
+	buf := &strings.Builder{}
+	if f.Body == nil {
+		// Function declaration.
+		//
+		//    "declare" MetadataAttachments OptExternLinkage FunctionHeader
+		buf.WriteString("declare")
+		for _, md := range f.Metadata {
+			fmt.Fprintf(buf, " %v", md)
+		}
+		if f.Linkage != LinkageNone {
+			fmt.Fprintf(buf, " %v", f.Linkage)
+		}
+		fmt.Fprintf(buf, " %v", f.Header)
+		return buf.String()
+	}
+	// Function definition.
+	//
+	//    "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
+	buf.WriteString("define")
+	if f.Linkage != LinkageNone {
+		fmt.Fprintf(buf, " %v", f.Linkage)
+	}
+	fmt.Fprintf(buf, " %v", f.Header)
+	for _, md := range f.Metadata {
+		fmt.Fprintf(buf, " %v", md)
+	}
+	fmt.Fprintf(buf, " %v", f.Body)
+	return buf.String()
+}
+
 type FunctionHeader struct {
-	Preemption      Preemption
-	Visibility      Visibility
-	DLLStorageClass DLLStorageClass
-	CallingConv     CallingConv
+	Preemption      Preemption      // zero value if not present
+	Visibility      Visibility      // zero value if not present
+	DLLStorageClass DLLStorageClass // zero value if not present
+	CallingConv     CallingConv     // zero value if not present
 	ReturnAttrs     []ReturnAttribute
 	RetType         Type
 	Name            *GlobalIdent
@@ -185,6 +281,68 @@ type FunctionHeader struct {
 	Prefix          *TypeConst // nil if not present
 	Prologue        *TypeConst // nil if not present
 	Personality     *TypeConst // nil if not present
+}
+
+func (hdr *FunctionHeader) String() string {
+	// OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv
+	// ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs
+	// OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
+	buf := &strings.Builder{}
+	if hdr.Preemption != PreemptionNone {
+		fmt.Fprintf(buf, " %v", hdr.Preemption)
+	}
+	if hdr.Visibility != VisibilityNone {
+		fmt.Fprintf(buf, " %v", hdr.Visibility)
+	}
+	if hdr.DLLStorageClass != DLLStorageClassNone {
+		fmt.Fprintf(buf, " %v", hdr.DLLStorageClass)
+	}
+	if hdr.CallingConv != CallingConvNone {
+		fmt.Fprintf(buf, " %v", hdr.CallingConv)
+	}
+	for _, attr := range hdr.ReturnAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	fmt.Fprintf(buf, " %v", hdr.RetType)
+	fmt.Fprintf(buf, " %v(", hdr.Name)
+	for i, param := range hdr.Params {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(param.String())
+	}
+	if hdr.Variadic {
+		if len(hdr.Params) > 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString("...")
+	}
+	buf.WriteString(")")
+	if hdr.UnnamedAddr != UnnamedAddrNone {
+		fmt.Fprintf(buf, " %v", hdr.UnnamedAddr)
+	}
+	for _, attr := range hdr.FuncAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	if hdr.Section != nil {
+		fmt.Fprintf(buf, " %v", hdr.Section)
+	}
+	if hdr.Comdat != nil {
+		fmt.Fprintf(buf, " %v", hdr.Comdat)
+	}
+	if len(hdr.GC) > 0 {
+		fmt.Fprintf(buf, " gc %q", hdr.GC)
+	}
+	if hdr.Prefix != nil {
+		fmt.Fprintf(buf, " prefix %v %v", hdr.Prefix.Type, hdr.Prefix.Const)
+	}
+	if hdr.Prologue != nil {
+		fmt.Fprintf(buf, " prologue %v %v", hdr.Prologue.Type, hdr.Prologue.Const)
+	}
+	if hdr.Personality != nil {
+		fmt.Fprintf(buf, " personality %v %v", hdr.Personality.Type, hdr.Personality.Const)
+	}
+	return buf.String()
 }
 
 //go:generate stringer -linecomment -type CallingConv
@@ -252,11 +410,43 @@ type FunctionBody struct {
 	UseListOrders []*UseListOrder
 }
 
+func (body *FunctionBody) String() string {
+	buf := &strings.Builder{}
+	buf.WriteString("{\n")
+	for _, block := range body.Blocks {
+		fmt.Fprintf(buf, "%v\n", block)
+	}
+	for _, useList := range body.UseListOrders {
+		fmt.Fprintf(buf, "%v\n", useList)
+	}
+	buf.WriteString("}")
+	return buf.String()
+}
+
 // ~~~ [ Attribute Group Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type AttrGroupDef struct {
 	Name      *AttrGroupID
 	FuncAttrs []FuncAttribute
+}
+
+func (def *AttrGroupDef) String() string {
+	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "attributes %v = {", def.Name)
+	for i, attr := range def.FuncAttrs {
+		if i != 0 {
+			buf.WriteString(" ")
+		}
+		// Note, alignment is printed as `align = 8` in attribute groups.
+		if attr, ok := attr.(*Alignment); ok {
+			fmt.Fprintf(buf, "align = %d", attr.Align)
+			continue
+		}
+		buf.WriteString(attr.String())
+	}
+	buf.WriteString("}")
+	return buf.String()
 }
 
 // ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -289,10 +479,38 @@ type UseListOrder struct {
 	Indices []int64
 }
 
+func (u *UseListOrder) String() string {
+	//  "uselistorder" Type Value "," "{" IndexList "}"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "uselistorder %v %v, {", u.Type, u.Value)
+	for i, index := range u.Indices {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		fmt.Fprintf(buf, "%v", index)
+	}
+	buf.WriteString("}")
+	return buf.String()
+}
+
 type UseListOrderBB struct {
 	Func    *GlobalIdent
 	Block   *LocalIdent
 	Indices []int64
+}
+
+func (u *UseListOrderBB) String() string {
+	//  "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "uselistorder_bb %v, %v, {", u.Func, u.Block)
+	for i, index := range u.Indices {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		fmt.Fprintf(buf, "%v", index)
+	}
+	buf.WriteString("}")
+	return buf.String()
 }
 
 func (*SourceFilename) isTopLevelEntity() {}
