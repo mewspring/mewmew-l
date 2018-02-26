@@ -30,7 +30,7 @@ func (term *RetTerm) String() string {
 	// Value return.
 	//
 	//    "ret" ConcreteType Value OptCommaSepMetadataAttachmentList
-	fmt.Fprintf(buf, "ret %v %v", term.X.Type, term.X.Value)
+	fmt.Fprintf(buf, "ret %v", term.X)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -46,7 +46,7 @@ type BrTerm struct {
 func (term *BrTerm) String() string {
 	buf := &strings.Builder{}
 	// "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList
-	fmt.Fprintf(buf, "br label %v", term.Target.Name)
+	fmt.Fprintf(buf, "br %v", term.Target)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -64,7 +64,7 @@ type CondBrTerm struct {
 func (term *CondBrTerm) String() string {
 	buf := &strings.Builder{}
 	// "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
-	fmt.Fprintf(buf, "br %v %v, label %v, label %v", term.Cond.Type, term.Cond.Value, term.TargetTrue.Name, term.TargetFalse.Name)
+	fmt.Fprintf(buf, "br %v, %v, %v", term.Cond, term.TargetTrue, term.TargetFalse)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -82,10 +82,9 @@ func (term *SwitchTerm) String() string {
 	buf := &strings.Builder{}
 	// "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
 	//
-	fmt.Fprintf(buf, "switch %v %v, label %v [\n", term.X.Type, term.X.Value, term.Default.Name)
+	fmt.Fprintf(buf, "switch %v, %v [\n", term.X, term.Default)
 	for _, c := range term.Cases {
-		// Case : Type IntConst "," LabelType LocalIdent
-		fmt.Fprintf(buf, "\t%v %v, label %v\n", c.X.Type, c.X.Const, c.Target.Name)
+		fmt.Fprintf(buf, "\t%v\n", c)
 	}
 	buf.WriteString("]")
 	for _, md := range term.Metadata {
@@ -99,6 +98,11 @@ type Case struct {
 	Target *Label
 }
 
+func (c *Case) String() string {
+	// Type IntConst "," LabelType LocalIdent
+	return fmt.Sprintf("%v, %v", c.X, c.Target)
+}
+
 type IndirectBrTerm struct {
 	Addr     *TypeValue
 	Targets  []*Label
@@ -108,12 +112,12 @@ type IndirectBrTerm struct {
 func (term *IndirectBrTerm) String() string {
 	buf := &strings.Builder{}
 	// "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
-	fmt.Fprintf(buf, "indirectbr %v %v, [")
+	fmt.Fprintf(buf, "indirectbr %v, [", term.Addr)
 	for i, target := range term.Targets {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		fmt.Fprintf(buf, "label %v", target.Name)
+		buf.WriteString(target.String())
 	}
 	buf.WriteString("]")
 	for _, md := range term.Metadata {
@@ -163,7 +167,7 @@ func (term *InvokeTerm) String() string {
 		}
 		buf.WriteString("]")
 	}
-	fmt.Fprintf(buf, " to label %v unwind label %v", term.Normal.Name, term.Exception.Name)
+	fmt.Fprintf(buf, " to %v unwind %v", term.Normal, term.Exception)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -178,7 +182,7 @@ type ResumeTerm struct {
 func (term *ResumeTerm) String() string {
 	// "resume" Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "resume %v %v", term.X.Type, term.X.Value)
+	fmt.Fprintf(buf, "resume %v", term.X, term.X)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
