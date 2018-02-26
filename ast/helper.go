@@ -385,6 +385,7 @@ const (
 )
 
 type ExceptionScope interface {
+	fmt.Stringer
 	isExceptionScope()
 }
 
@@ -463,4 +464,8 @@ func (o *OperandBundle) String() string {
 type Label struct {
 	// label type is implicit.
 	Name *LocalIdent
+}
+
+func (l *Label) String() string {
+	return fmt.Sprintf("label %v", l.Name)
 }

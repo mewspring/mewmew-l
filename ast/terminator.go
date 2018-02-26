@@ -163,7 +163,7 @@ func (term *InvokeTerm) String() string {
 		}
 		buf.WriteString("]")
 	}
-
+	fmt.Fprintf(buf, " to label %v unwind label %v", term.Normal.Name, term.Exception.Name)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -175,6 +175,16 @@ type ResumeTerm struct {
 	Metadata []*MetadataAttachment
 }
 
+func (term *ResumeTerm) String() string {
+	// "resume" Type Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "resume %v %v", term.X.Type, term.X.Value)
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type CatchSwitchTerm struct {
 	Scope        ExceptionScope
 	Handlers     []*Label
@@ -182,12 +192,34 @@ type CatchSwitchTerm struct {
 	Metadata     []*MetadataAttachment
 }
 
+func (term *CatchSwitchTerm) String() string {
+	buf := &strings.Builder{}
+	// "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "catchswitch within %v [", term.Scope)
+	for i, handler := range term.Handlers {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(handler.String())
+	}
+	fmt.Fprintf(buf, "] unwind %v", term.UnwindTarget)
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type UnwindTarget interface {
+	fmt.Stringer
 	isUnwindTarget()
 }
 
 // UnwindToCaller specifies the caller as an unwind target.
 type UnwindToCaller struct{}
+
+func (*UnwindToCaller) String() string {
+	return "to caller"
+}
 
 func (*UnwindToCaller) isUnwindTarget() {}
 func (*Label) isUnwindTarget()          {}
@@ -198,10 +230,30 @@ type CatchRetTerm struct {
 	Metadata []*MetadataAttachment
 }
 
+func (term *CatchRetTerm) String() string {
+	buf := &strings.Builder{}
+	// "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "catchret from %v to %v", term.From, term.To)
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type CleanupRetTerm struct {
 	From         Value // cleanuppad
 	UnwindTarget UnwindTarget
 	Metadata     []*MetadataAttachment
+}
+
+func (term *CleanupRetTerm) String() string {
+	// "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "cleanupret from %v unwind %v", term.From, term.UnwindTarget)
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type UnreachableTerm struct {
