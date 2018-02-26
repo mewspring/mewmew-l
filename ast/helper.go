@@ -358,6 +358,10 @@ type TypeValue struct {
 	Value Value
 }
 
+func (v *TypeValue) String() string {
+	return fmt.Sprintf("%v %v", v.Type, v.Value)
+}
+
 type SyncScope struct {
 	Scope string
 }
@@ -388,6 +392,7 @@ func (*NoneConst) isExceptionScope()  {}
 func (*LocalIdent) isExceptionScope() {}
 
 type Argument interface {
+	fmt.Stringer
 	isArgument()
 }
 
@@ -396,9 +401,25 @@ type Arg struct {
 	ParamAttrs []ParamAttribute
 }
 
+func (a *Arg) String() string {
+	// ConcreteType ParamAttrs Value
+	buf := &strings.Builder{}
+	buf.WriteString(a.X.Type.String())
+	for _, attr := range a.ParamAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	fmt.Fprintf(buf, " %v", a.X.Value)
+	return buf.String()
+}
+
 type MetadataValue struct {
 	// metadata type is implicit.
 	Metadata Metadata
+}
+
+func (a *MetadataValue) String() string {
+	// MetadataType Metadata
+	return fmt.Sprintf("metadata %v", a.Metadata)
 }
 
 func (*Arg) isArgument()           {} // used as function argument
@@ -423,6 +444,20 @@ const (
 type OperandBundle struct {
 	Tag    string
 	Inputs []*TypeValue
+}
+
+func (o *OperandBundle) String() string {
+	// string_lit "(" TypeValues ")"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%q(", o.Tag)
+	for i, input := range o.Inputs {
+		if i != 0 {
+			buf.WriteString(" ")
+		}
+		buf.WriteString(input.String())
+	}
+	buf.WriteString(")")
+	return buf.String()
 }
 
 type Label struct {

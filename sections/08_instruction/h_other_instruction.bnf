@@ -81,7 +81,7 @@ SelectInst
 
 CallInst
 	: OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
-	<< &ast.CallInst{Tail: $0.(ast.Tail), FastMathFlags: $2.([]ast.FastMathFlag), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), Callee: astx.TypeValue($5, $6), Args: $8.([]ast.Argument), FuncAttrs: $10.([]ast.FuncAttribute), OperandBundles: $11.([]*ast.OperandBundle), Metadata: $12.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.CallInst{Tail: $0.(ast.Tail), FastMathFlags: $2.([]ast.FastMathFlag), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), RetType: $5.(ast.Type), Callee: $6.(ast.Value), Args: $8.([]ast.Argument), FuncAttrs: $10.([]ast.FuncAttribute), OperandBundles: $11.([]*ast.OperandBundle), Metadata: $12.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 OptTail

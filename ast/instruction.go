@@ -359,7 +359,8 @@ type CallInst struct {
 	FastMathFlags  []FastMathFlag
 	CallingConv    CallingConv
 	ReturnAttrs    []ReturnAttribute
-	Callee         *TypeValue
+	RetType        Type
+	Callee         Value
 	Args           []Argument
 	FuncAttrs      []FuncAttribute
 	OperandBundles []*OperandBundle

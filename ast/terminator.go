@@ -105,16 +105,69 @@ type IndirectBrTerm struct {
 	Metadata []*MetadataAttachment
 }
 
+func (term *IndirectBrTerm) String() string {
+	buf := &strings.Builder{}
+	// "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "indirectbr %v %v, [")
+	for i, target := range term.Targets {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		fmt.Fprintf(buf, "label %v", target.Name)
+	}
+	buf.WriteString("]")
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type InvokeTerm struct {
 	CallingConv    CallingConv
 	ReturnAttrs    []ReturnAttribute
-	Callee         *TypeValue
+	RetType        Type
+	Callee         Value
 	Args           []Argument
 	FuncAttrs      []FuncAttribute
 	OperandBundles []*OperandBundle
 	Normal         *Label
 	Exception      *Label
 	Metadata       []*MetadataAttachment
+}
+
+func (term *InvokeTerm) String() string {
+	buf := &strings.Builder{}
+	// "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
+	buf.WriteString("invoke")
+	if term.CallingConv != CallingConvNone {
+		fmt.Fprintf(buf, " %v", term.CallingConv)
+	}
+	for _, attr := range term.ReturnAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	fmt.Fprintf(buf, "%v %v(", term.RetType, term.Callee)
+	for i, arg := range term.Args {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(arg.String())
+	}
+	buf.WriteString(")")
+	for _, attr := range term.FuncAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	if len(term.OperandBundles) > 0 {
+		buf.WriteString("[")
+		for _, operandBundle := range term.OperandBundles {
+			fmt.Fprintf(buf, " %v", operandBundle)
+		}
+		buf.WriteString("]")
+	}
+
+	for _, md := range term.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type ResumeTerm struct {

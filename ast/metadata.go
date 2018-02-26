@@ -52,6 +52,7 @@ func (*GenericDINode) isMDField()              {}
 // --- [ Metadata ] ------------------------------------------------------------
 
 type Metadata interface {
+	fmt.Stringer
 	isMetadata()
 }
 
