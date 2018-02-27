@@ -573,6 +573,20 @@ type FenceInst struct {
 	Metadata       []*MetadataAttachment
 }
 
+func (inst *FenceInst) String() string {
+	buf := &strings.Builder{}
+	// "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf.WriteString("fence")
+	if inst.SyncScope != nil {
+		fmt.Fprintf(buf, " %v", inst.SyncScope)
+	}
+	fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type CmpXchgInst struct {
 	Weak      bool
 	Volatile  bool
@@ -583,6 +597,28 @@ type CmpXchgInst struct {
 	Success   AtomicOrdering
 	Failure   AtomicOrdering
 	Metadata  []*MetadataAttachment
+}
+
+func (inst *CmpXchgInst) String() string {
+	buf := &strings.Builder{}
+	// "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf.WriteString("cmpxchg")
+	if inst.Weak {
+		buf.WriteString(" weak")
+	}
+	if inst.Volatile {
+		buf.WriteString(" volatile")
+	}
+	fmt.Fprintf(buf, " %v, %v, %v", inst.Ptr, inst.Cmp, inst.New)
+	if inst.SyncScope != nil {
+		fmt.Fprintf(buf, " %v", inst.SyncScope)
+	}
+	fmt.Fprintf(buf, " %v", inst.Success)
+	fmt.Fprintf(buf, " %v", inst.Failure)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type AtomicRMWInst struct {

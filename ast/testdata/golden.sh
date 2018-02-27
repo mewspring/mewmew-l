@@ -12,7 +12,7 @@ golden_file=$1.golden
 cp ${ll_file} ${golden_file}
 
 # Remove comments.
-sar -i '(^|[\n]);[^\n]*[\n]' '${1}' ${golden_file}
+sar -i '(^|[\n])[ \t]*;[^\n]*[\n]' '${1}' ${golden_file}
 
 # Replace spaces with tabs.
 sar -i '[\n]    ' '\n\t\t' ${golden_file}

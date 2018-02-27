@@ -134,6 +134,7 @@ func TestParse(t *testing.T) {
 		{path: "testdata/coreutils/who.ll"},
 		{path: "testdata/coreutils/whoami.ll"},
 		{path: "testdata/coreutils/yes.ll"},
+		{path: "testdata/sqlite/shell.ll"},
 	}
 	for _, g := range golden {
 		buf, err := ioutil.ReadFile(g.path)
