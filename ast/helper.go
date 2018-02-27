@@ -242,6 +242,10 @@ type TypeConst struct {
 	Const Constant
 }
 
+func (c *TypeConst) String() string {
+	return fmt.Sprintf("%v %v", c.Type, c.Const)
+}
+
 type Param struct {
 	Type  Type
 	Attrs []ParamAttribute

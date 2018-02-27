@@ -409,6 +409,32 @@ type AllocaInst struct {
 	Metadata   []*MetadataAttachment
 }
 
+func (inst *AllocaInst) String() string {
+	buf := &strings.Builder{}
+	// "alloca" OptInAlloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
+	buf.WriteString("load")
+	if inst.InAlloca {
+		buf.WriteString(" inalloca")
+	}
+	if inst.SwiftError {
+		buf.WriteString(" swifterror")
+	}
+	fmt.Fprintf(buf, " %v", inst.ElemType)
+	if inst.NElems != nil {
+		fmt.Fprintf(buf, ", %v", inst.NElems)
+	}
+	if inst.Alignment != nil {
+		fmt.Fprintf(buf, ", %v", inst.Alignment)
+	}
+	if inst.AddrSpace != 0 {
+		fmt.Fprintf(buf, ", %v", inst.AddrSpace)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type LoadInst struct {
 	Atomic         bool
 	Volatile       bool
@@ -430,7 +456,7 @@ func (inst *LoadInst) String() string {
 		if inst.Volatile {
 			buf.WriteString(" volatile")
 		}
-		fmt.Fprintf(buf, "%v, %v", inst.ElemType, inst.Src)
+		fmt.Fprintf(buf, " %v, %v", inst.ElemType, inst.Src)
 		if inst.SyncScope != nil {
 			fmt.Fprintf(buf, " %v", inst.SyncScope)
 		}
@@ -450,7 +476,7 @@ func (inst *LoadInst) String() string {
 	if inst.Volatile {
 		buf.WriteString(" volatile")
 	}
-	fmt.Fprintf(buf, "%v, %v", inst.ElemType, inst.Src)
+	fmt.Fprintf(buf, " %v, %v", inst.ElemType, inst.Src)
 	if inst.Alignment != nil {
 		fmt.Fprintf(buf, " %v", inst.Alignment)
 	}
@@ -469,6 +495,46 @@ type StoreInst struct {
 	AtomicOrdering AtomicOrdering // zero value if not present
 	Alignment      *Alignment     // nil if not present
 	Metadata       []*MetadataAttachment
+}
+
+func (inst *StoreInst) String() string {
+	buf := &strings.Builder{}
+	if inst.Atomic {
+		// Atomic store.
+		//
+		// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+		buf.WriteString("store atomic")
+		if inst.Volatile {
+			buf.WriteString(" volatile")
+		}
+		fmt.Fprintf(buf, " %v, %v", inst.Src, inst.Dst)
+		if inst.SyncScope != nil {
+			fmt.Fprintf(buf, " %v", inst.SyncScope)
+		}
+		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
+		if inst.Alignment != nil {
+			fmt.Fprintf(buf, ", %v", inst.Alignment)
+		}
+		for _, md := range inst.Metadata {
+			fmt.Fprintf(buf, ", %v", md)
+		}
+		return buf.String()
+	}
+	// Store.
+	//
+	// "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
+	buf.WriteString("store")
+	if inst.Volatile {
+		buf.WriteString(" volatile")
+	}
+	fmt.Fprintf(buf, " %v, %v", inst.Src, inst.Dst)
+	if inst.Alignment != nil {
+		fmt.Fprintf(buf, ", %v", inst.Alignment)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type FenceInst struct {
@@ -525,6 +591,23 @@ type GetElementPtrInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *GetElementPtrInst) String() string {
+	buf := &strings.Builder{}
+	// "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
+	buf.WriteString("getelementptr")
+	if inst.InBounds {
+		buf.WriteString(" inbounds")
+	}
+	fmt.Fprintf(buf, " %v, %v", inst.ElemType, inst.Src)
+	for _, index := range inst.Indices {
+		fmt.Fprintf(buf, ", %v", index)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 // --- [ Conversion instructions ] ---------------------------------------------
 
 type TruncInst struct {
@@ -533,10 +616,28 @@ type TruncInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *TruncInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "trunc %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type ZExtInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *ZExtInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "zext %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type SExtInst struct {
@@ -545,10 +646,28 @@ type SExtInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *SExtInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "sext %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type FPTruncInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *FPTruncInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "fptrunc %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type FPExtInst struct {
@@ -557,10 +676,28 @@ type FPExtInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *FPExtInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "fpext %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type FPToUIInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *FPToUIInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "fptoui %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type FPToSIInst struct {
@@ -569,10 +706,28 @@ type FPToSIInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *FPToSIInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "fptosi %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type UIToFPInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *UIToFPInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "uitofp %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type SIToFPInst struct {
@@ -581,10 +736,28 @@ type SIToFPInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *SIToFPInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "sitofp %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type PtrToIntInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *PtrToIntInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "ptrtoint %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type IntToPtrInst struct {
@@ -593,16 +766,43 @@ type IntToPtrInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *IntToPtrInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "inttoptr %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type BitCastInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
 }
 
+func (inst *BitCastInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "bitcast %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type AddrSpaceCastInst struct {
 	From     *TypeValue
 	To       Type
 	Metadata []*MetadataAttachment
+}
+
+func (inst *AddrSpaceCastInst) String() string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "addrspacecast %v to %v", inst.From, inst.To)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 // --- [ Other instructions ] --------------------------------------------------
@@ -614,8 +814,8 @@ type ICmpInst struct {
 }
 
 func (inst *ICmpInst) String() string {
-	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
+	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -631,8 +831,8 @@ type FCmpInst struct {
 }
 
 func (inst *FCmpInst) String() string {
-	// "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
+	// "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf.WriteString("fcmp")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -650,15 +850,46 @@ type PhiInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *PhiInst) String() string {
+	buf := &strings.Builder{}
+	// "phi" Type IncList OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "phi %v ", inst.Type)
+	for i, inc := range inst.Incs {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(inc.String())
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type Incoming struct {
 	X    Value
 	Pred *LocalIdent
+}
+
+func (inc *Incoming) String() string {
+	// "[" Value "," LocalIdent "]"
+	return fmt.Sprintf("[%v, %v]", inc.X, inc.Pred)
 }
 
 type SelectInst struct {
 	Cond     *TypeValue
 	X, Y     *TypeValue
 	Metadata []*MetadataAttachment
+}
+
+func (inst *SelectInst) String() string {
+	buf := &strings.Builder{}
+	// "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "select %v, %v, %v", inst.Cond, inst.X, inst.Y)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 type CallInst struct {
@@ -675,8 +906,43 @@ type CallInst struct {
 }
 
 func (inst *CallInst) String() string {
+	buf := &strings.Builder{}
 	// OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
-	// TODO: continue here.
+	if inst.Tail != TailNone {
+		fmt.Fprintf(buf, "%v ", inst.Tail)
+	}
+	buf.WriteString("call")
+	for _, flag := range inst.FastMathFlags {
+		fmt.Fprintf(buf, " %v", flag)
+	}
+	if inst.CallingConv != CallingConvNone {
+		fmt.Fprintf(buf, " %v", inst.CallingConv)
+	}
+	for _, attr := range inst.ReturnAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	fmt.Fprintf(buf, "%v %v(", inst.RetType, inst.Callee)
+	for i, arg := range inst.Args {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(arg.String())
+	}
+	buf.WriteString(")")
+	for _, attr := range inst.FuncAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	if len(inst.OperandBundles) > 0 {
+		buf.WriteString("[")
+		for _, operandBundle := range inst.OperandBundles {
+			fmt.Fprintf(buf, " %v", operandBundle)
+		}
+		buf.WriteString("]")
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 //go:generate stringer -linecomment -type Tail

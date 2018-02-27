@@ -83,7 +83,7 @@ func (term *SwitchTerm) String() string {
 	// "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
 	fmt.Fprintf(buf, "switch %v, %v [\n", term.X, term.Default)
 	for _, c := range term.Cases {
-		fmt.Fprintf(buf, "\t%v\n", c)
+		fmt.Fprintf(buf, "\t\t%v\n", c)
 	}
 	buf.WriteString("]")
 	for _, md := range term.Metadata {
