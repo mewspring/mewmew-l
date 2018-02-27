@@ -9,6 +9,8 @@ import (
 
 type Instruction interface {
 	fmt.Stringer
+	// isInstruction ensures that only instructions can be assigned to the
+	// ast.Instruction interface.
 	isInstruction()
 }
 
@@ -23,6 +25,8 @@ func (v *ValueInstruction) String() string {
 }
 
 // --- [ Binary instructions ] -------------------------------------------------
+
+// ~~~[ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type AddInst struct {
 	OverflowFlags []OverflowFlag
@@ -44,6 +48,8 @@ func (inst *AddInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FAddInst struct {
 	FastMathFlags []FastMathFlag
 	X, Y          *TypeValue
@@ -63,6 +69,8 @@ func (inst *FAddInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type SubInst struct {
 	OverflowFlags []OverflowFlag
@@ -84,6 +92,8 @@ func (inst *SubInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FSubInst struct {
 	FastMathFlags []FastMathFlag
 	X, Y          *TypeValue
@@ -103,6 +113,8 @@ func (inst *FSubInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type MulInst struct {
 	OverflowFlags []OverflowFlag
@@ -124,6 +136,8 @@ func (inst *MulInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FMulInst struct {
 	FastMathFlags []FastMathFlag
 	X, Y          *TypeValue
@@ -143,6 +157,8 @@ func (inst *FMulInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type UDivInst struct {
 	Exact    bool
@@ -164,6 +180,8 @@ func (inst *UDivInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type SDivInst struct {
 	Exact    bool
 	X, Y     *TypeValue
@@ -183,6 +201,8 @@ func (inst *SDivInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type FDivInst struct {
 	FastMathFlags []FastMathFlag
@@ -204,6 +224,8 @@ func (inst *FDivInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type URemInst struct {
 	X, Y     *TypeValue
 	Metadata []*MetadataAttachment
@@ -219,6 +241,8 @@ func (inst *URemInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type SRemInst struct {
 	X, Y     *TypeValue
 	Metadata []*MetadataAttachment
@@ -233,6 +257,8 @@ func (inst *SRemInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type FRemInst struct {
 	FastMathFlags []FastMathFlag
@@ -256,6 +282,8 @@ func (inst *FRemInst) String() string {
 
 // --- [ Bitwise instructions ] ------------------------------------------------
 
+// ~~~[ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type ShlInst struct {
 	OverflowFlags []OverflowFlag
 	X, Y          *TypeValue
@@ -275,6 +303,8 @@ func (inst *ShlInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type LShrInst struct {
 	Exact    bool
@@ -296,6 +326,8 @@ func (inst *LShrInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type AShrInst struct {
 	Exact    bool
 	X, Y     *TypeValue
@@ -316,6 +348,8 @@ func (inst *AShrInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type AndInst struct {
 	X, Y     *TypeValue
 	Metadata []*MetadataAttachment
@@ -331,6 +365,8 @@ func (inst *AndInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type OrInst struct {
 	X, Y     *TypeValue
 	Metadata []*MetadataAttachment
@@ -345,6 +381,8 @@ func (inst *OrInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type XorInst struct {
 	X, Y     *TypeValue
@@ -363,6 +401,8 @@ func (inst *XorInst) String() string {
 
 // --- [ Vector instructions ] -------------------------------------------------
 
+// ~~~[ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type ExtractElementInst struct {
 	X        *TypeValue
 	Index    *TypeValue
@@ -378,6 +418,8 @@ func (inst *ExtractElementInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type InsertElementInst struct {
 	X        *TypeValue
@@ -395,6 +437,8 @@ func (inst *InsertElementInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type ShuffleVectorInst struct {
 	X, Y     *TypeValue
@@ -414,6 +458,8 @@ func (inst *ShuffleVectorInst) String() string {
 
 // --- [ Aggregate instructions ] ----------------------------------------------
 
+// ~~~[ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type ExtractValueInst struct {
 	X        *TypeValue
 	Indices  []int64
@@ -432,6 +478,8 @@ func (inst *ExtractValueInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type InsertValueInst struct {
 	X        *TypeValue
@@ -454,6 +502,8 @@ func (inst *InsertValueInst) String() string {
 }
 
 // --- [ Memory instructions ] -------------------------------------------------
+
+// ~~~[ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type AllocaInst struct {
 	InAlloca   bool
@@ -490,6 +540,8 @@ func (inst *AllocaInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type LoadInst struct {
 	Atomic         bool
@@ -529,6 +581,8 @@ func (inst *LoadInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type StoreInst struct {
 	Atomic         bool
 	Volatile       bool
@@ -567,6 +621,8 @@ func (inst *StoreInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FenceInst struct {
 	SyncScope      *SyncScope // nil if not present
 	AtomicOrdering AtomicOrdering
@@ -586,6 +642,8 @@ func (inst *FenceInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type CmpXchgInst struct {
 	Weak      bool
@@ -621,6 +679,8 @@ func (inst *CmpXchgInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type AtomicRMWInst struct {
 	Volatile       bool
 	Op             BinOp
@@ -629,6 +689,24 @@ type AtomicRMWInst struct {
 	SyncScope      *SyncScope // nil if not present
 	AtomicOrdering AtomicOrdering
 	Metadata       []*MetadataAttachment
+}
+
+func (inst *AtomicRMWInst) String() string {
+	buf := &strings.Builder{}
+	// "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf.WriteString("atomicrmw")
+	if inst.Volatile {
+		buf.WriteString(" volatile")
+	}
+	fmt.Fprintf(buf, " %v %v, %v", inst.Op, inst.Ptr, inst.X)
+	if inst.SyncScope != nil {
+		fmt.Fprintf(buf, " %v", inst.SyncScope)
+	}
+	fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 //go:generate stringer -linecomment -type BinOp
@@ -648,6 +726,8 @@ const (
 	BinOpXChg              // xchg
 	BinOpXor               // xor
 )
+
+// ~~~[ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type GetElementPtrInst struct {
 	InBounds bool
@@ -676,6 +756,8 @@ func (inst *GetElementPtrInst) String() string {
 
 // --- [ Conversion instructions ] ---------------------------------------------
 
+// ~~~[ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type TruncInst struct {
 	From     *TypeValue
 	To       Type
@@ -690,6 +772,8 @@ func (inst *TruncInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type ZExtInst struct {
 	From     *TypeValue
@@ -706,6 +790,8 @@ func (inst *ZExtInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type SExtInst struct {
 	From     *TypeValue
 	To       Type
@@ -720,6 +806,8 @@ func (inst *SExtInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type FPTruncInst struct {
 	From     *TypeValue
@@ -736,6 +824,8 @@ func (inst *FPTruncInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FPExtInst struct {
 	From     *TypeValue
 	To       Type
@@ -750,6 +840,8 @@ func (inst *FPExtInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type FPToUIInst struct {
 	From     *TypeValue
@@ -766,6 +858,8 @@ func (inst *FPToUIInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type FPToSIInst struct {
 	From     *TypeValue
 	To       Type
@@ -780,6 +874,8 @@ func (inst *FPToSIInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type UIToFPInst struct {
 	From     *TypeValue
@@ -796,6 +892,8 @@ func (inst *UIToFPInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type SIToFPInst struct {
 	From     *TypeValue
 	To       Type
@@ -810,6 +908,8 @@ func (inst *SIToFPInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type PtrToIntInst struct {
 	From     *TypeValue
@@ -826,6 +926,8 @@ func (inst *PtrToIntInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type IntToPtrInst struct {
 	From     *TypeValue
 	To       Type
@@ -841,6 +943,8 @@ func (inst *IntToPtrInst) String() string {
 	return buf.String()
 }
 
+// ~~~[ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type BitCastInst struct {
 	From     *TypeValue
 	To       Type
@@ -855,6 +959,8 @@ func (inst *BitCastInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type AddrSpaceCastInst struct {
 	From     *TypeValue
@@ -873,6 +979,8 @@ func (inst *AddrSpaceCastInst) String() string {
 
 // --- [ Other instructions ] --------------------------------------------------
 
+// ~~~[ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type ICmpInst struct {
 	Pred     IPred
 	X, Y     *TypeValue
@@ -888,6 +996,8 @@ func (inst *ICmpInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type FCmpInst struct {
 	FastMathFlags []FastMathFlag
@@ -909,6 +1019,8 @@ func (inst *FCmpInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type PhiInst struct {
 	Type     Type
@@ -942,6 +1054,8 @@ func (inc *Incoming) String() string {
 	return fmt.Sprintf("[ %v, %v ]", inc.X, inc.Pred)
 }
 
+// ~~~[ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type SelectInst struct {
 	Cond     *TypeValue
 	X, Y     *TypeValue
@@ -957,6 +1071,8 @@ func (inst *SelectInst) String() string {
 	}
 	return buf.String()
 }
+
+// ~~~[ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type CallInst struct {
 	Tail           Tail
@@ -1022,11 +1138,25 @@ const (
 	TailTail                 // tail
 )
 
+// ~~~[ vaarg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 type VAArgInst struct {
 	ArgList  *TypeValue
 	ArgType  Type
 	Metadata []*MetadataAttachment
 }
+
+func (inst *VAArgInst) String() string {
+	buf := &strings.Builder{}
+	// "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "va_arg %v, %v", inst.ArgList, inst.ArgType)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
+// ~~~[ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type LandingPadInst struct {
 	Type     Type
@@ -1035,12 +1165,39 @@ type LandingPadInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *LandingPadInst) String() string {
+	buf := &strings.Builder{}
+	// "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "landingpad %v", inst.Type)
+	if inst.Cleanup {
+		buf.WriteString(" cleanup")
+	}
+	for _, clause := range inst.Clauses {
+		fmt.Fprintf(buf, " %v", clause)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type Clause struct {
 	Catch bool // catch if true, filter otherwise
 	X     *TypeValue
 }
 
-// --- [ catchpad ] ------------------------------------------------------------
+func (clause *Clause) String() string {
+	buf := &strings.Builder{}
+	if clause.Catch {
+		buf.WriteString("catch")
+	} else {
+		buf.WriteString("filter")
+	}
+	fmt.Fprintf(buf, " %v", clause.X)
+	return buf.String()
+}
+
+// ~~~[ catchpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type CatchPadInst struct {
 	Scope    *LocalIdent
@@ -1048,7 +1205,24 @@ type CatchPadInst struct {
 	Metadata []*MetadataAttachment
 }
 
-// --- [ cleanuppad ] ----------------------------------------------------------
+func (inst *CatchPadInst) String() string {
+	buf := &strings.Builder{}
+	// "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "catchpad within %v [", inst.Scope)
+	for i, arg := range inst.Args {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(arg.String())
+	}
+	buf.WriteString("]")
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
+// ~~~[ cleanuppad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type CleanupPadInst struct {
 	Scope    ExceptionScope
@@ -1056,6 +1230,25 @@ type CleanupPadInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *CleanupPadInst) String() string {
+	buf := &strings.Builder{}
+	// "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "cleanuppad within %v [", inst.Scope)
+	for i, arg := range inst.Args {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(arg.String())
+	}
+	buf.WriteString("]")
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
+// isInstruction ensures that only instructions can be assigned to the
+// ast.Instruction interface.
 func (*ValueInstruction) isInstruction()   {}
 func (*AddInst) isInstruction()            {}
 func (*FAddInst) isInstruction()           {}
@@ -1109,3 +1302,59 @@ func (*VAArgInst) isInstruction()          {}
 func (*LandingPadInst) isInstruction()     {}
 func (*CatchPadInst) isInstruction()       {}
 func (*CleanupPadInst) isInstruction()     {}
+
+// Ensure that each instruction implements the ast.Instruction interface.
+var (
+	_ Instruction = (*AddInst)(nil)
+	_ Instruction = (*FAddInst)(nil)
+	_ Instruction = (*SubInst)(nil)
+	_ Instruction = (*FSubInst)(nil)
+	_ Instruction = (*MulInst)(nil)
+	_ Instruction = (*FMulInst)(nil)
+	_ Instruction = (*UDivInst)(nil)
+	_ Instruction = (*SDivInst)(nil)
+	_ Instruction = (*FDivInst)(nil)
+	_ Instruction = (*URemInst)(nil)
+	_ Instruction = (*SRemInst)(nil)
+	_ Instruction = (*FRemInst)(nil)
+	_ Instruction = (*ShlInst)(nil)
+	_ Instruction = (*LShrInst)(nil)
+	_ Instruction = (*AShrInst)(nil)
+	_ Instruction = (*AndInst)(nil)
+	_ Instruction = (*OrInst)(nil)
+	_ Instruction = (*XorInst)(nil)
+	_ Instruction = (*ExtractElementInst)(nil)
+	_ Instruction = (*InsertElementInst)(nil)
+	_ Instruction = (*ShuffleVectorInst)(nil)
+	_ Instruction = (*ExtractValueInst)(nil)
+	_ Instruction = (*InsertValueInst)(nil)
+	_ Instruction = (*AllocaInst)(nil)
+	_ Instruction = (*LoadInst)(nil)
+	_ Instruction = (*StoreInst)(nil)
+	_ Instruction = (*FenceInst)(nil)
+	_ Instruction = (*CmpXchgInst)(nil)
+	_ Instruction = (*AtomicRMWInst)(nil)
+	_ Instruction = (*GetElementPtrInst)(nil)
+	_ Instruction = (*TruncInst)(nil)
+	_ Instruction = (*ZExtInst)(nil)
+	_ Instruction = (*SExtInst)(nil)
+	_ Instruction = (*FPTruncInst)(nil)
+	_ Instruction = (*FPExtInst)(nil)
+	_ Instruction = (*FPToUIInst)(nil)
+	_ Instruction = (*FPToSIInst)(nil)
+	_ Instruction = (*UIToFPInst)(nil)
+	_ Instruction = (*SIToFPInst)(nil)
+	_ Instruction = (*PtrToIntInst)(nil)
+	_ Instruction = (*IntToPtrInst)(nil)
+	_ Instruction = (*BitCastInst)(nil)
+	_ Instruction = (*AddrSpaceCastInst)(nil)
+	_ Instruction = (*ICmpInst)(nil)
+	_ Instruction = (*FCmpInst)(nil)
+	_ Instruction = (*PhiInst)(nil)
+	_ Instruction = (*SelectInst)(nil)
+	_ Instruction = (*CallInst)(nil)
+	_ Instruction = (*VAArgInst)(nil)
+	_ Instruction = (*LandingPadInst)(nil)
+	_ Instruction = (*CatchPadInst)(nil)
+	_ Instruction = (*CleanupPadInst)(nil)
+)

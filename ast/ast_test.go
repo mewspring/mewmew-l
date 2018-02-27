@@ -27,6 +27,7 @@ func TestParse(t *testing.T) {
 	golden := []struct {
 		path string
 	}{
+		// Coreutils.
 		{path: "testdata/coreutils/[.ll"},
 		{path: "testdata/coreutils/b2sum.ll"},
 		{path: "testdata/coreutils/base32.ll"},
@@ -134,6 +135,7 @@ func TestParse(t *testing.T) {
 		{path: "testdata/coreutils/who.ll"},
 		{path: "testdata/coreutils/whoami.ll"},
 		{path: "testdata/coreutils/yes.ll"},
+		// SQLite.
 		{path: "testdata/sqlite/shell.ll"},
 	}
 	for _, g := range golden {
