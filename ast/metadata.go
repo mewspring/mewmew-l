@@ -17,10 +17,10 @@ type MDField interface {
 func (*NullConst) isMDField() {}
 
 // Metadata
-func (*MDTypeValue) isMDField() {}
-func (*MDString) isMDField()    {}
-func (*MDTuple) isMDField()     {}
-func (*MetadataID) isMDField()  {}
+func (*TypeValue) isMDField()  {}
+func (*MDString) isMDField()   {}
+func (*MDTuple) isMDField()    {}
+func (*MetadataID) isMDField() {}
 
 // SpecializedMDNode
 func (*DICompileUnit) isMDField()              {}
@@ -56,15 +56,10 @@ type Metadata interface {
 	isMetadata()
 }
 
-type MDTypeValue struct {
-	Type  Type
-	Value Value
-}
-
-func (*MDTypeValue) isMetadata() {}
-func (*MDString) isMetadata()    {}
-func (*MDTuple) isMetadata()     {}
-func (*MetadataID) isMetadata()  {}
+func (*TypeValue) isMetadata()  {}
+func (*MDString) isMetadata()   {}
+func (*MDTuple) isMetadata()    {}
+func (*MetadataID) isMetadata() {}
 
 // SpecializedMDNode
 func (*DICompileUnit) isMetadata()              {}
@@ -477,9 +472,9 @@ type EmissionKind int64
 // TODO: Set proper value for emission kind (not iota).
 
 const (
-	EmissionKindNoDebug        EmissionKind = iota // NoDebug
-	EmissionKindFullDebug                          // FullDebug
+	EmissionKindFullDebug      EmissionKind = iota // FullDebug
 	EmissionKindLineTablesOnly                     // LineTablesOnly
+	EmissionKindNoDebug                            // NoDebug
 )
 
 type ChecksumKind int64
@@ -512,10 +507,10 @@ func (*IntConst) isIntOrMDField() {}
 func (*NullConst) isIntOrMDField() {}
 
 // Metadata
-func (*MDTypeValue) isIntOrMDField() {}
-func (*MDString) isIntOrMDField()    {}
-func (*MDTuple) isIntOrMDField()     {}
-func (*MetadataID) isIntOrMDField()  {}
+func (*TypeValue) isIntOrMDField()  {}
+func (*MDString) isIntOrMDField()   {}
+func (*MDTuple) isIntOrMDField()    {}
+func (*MetadataID) isIntOrMDField() {}
 
 // SpecializedMDNode
 func (*DICompileUnit) isIntOrMDField()              {}

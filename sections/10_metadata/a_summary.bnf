@@ -55,7 +55,7 @@ MDField
 
 Metadata
 	: Type Value
-	<< &ast.MDTypeValue{Type: $0.(ast.Type), Value: $1.(ast.Value)}, nil >>
+	<< astx.TypeValue($0, $1), nil >>
 	| MDString
 	// !{ ... }
 	| MDTuple

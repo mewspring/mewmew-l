@@ -189,3 +189,8 @@ func NewCallingConv(tok interface{}) (ast.CallingConv, error) {
 		panic(fmt.Errorf("support for calling convention ID %d not yet implemented", cc))
 	}
 }
+
+type SpecializedMDField struct {
+	Key   string
+	Value interface{}
+}

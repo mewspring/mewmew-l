@@ -458,7 +458,22 @@ type NamedMetadataDef struct {
 	Nodes []MetadataNode
 }
 
+func (def *NamedMetadataDef) String() string {
+	// MetadataName "=" "!" "{" MetadataNodes "}"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v = !{", def.Name)
+	for i, node := range def.Nodes {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(node.String())
+	}
+	buf.WriteString("}")
+	return buf.String()
+}
+
 type MetadataNode interface {
+	fmt.Stringer
 	isMetadataNode()
 }
 

@@ -64,36 +64,55 @@ SpecializedMDNode
 
 DICompileUnit
 	: "!DICompileUnit" "(" DICompileUnitFields ")"
+	<< astx.NewDICompileUnit($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DICompileUnitFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DICompileUnitFieldList
 ;
 
 DICompileUnitFieldList
 	: DICompileUnitField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DICompileUnitFieldList "," DICompileUnitField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DICompileUnitField
 	: "language:" DwarfLang
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| FileField
 	| "producer:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| IsOptimizedField
 	| "flags:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "runtimeVersion:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "splitDebugFilename:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "emissionKind:" EmissionKind
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "enums:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "retainedTypes:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "globals:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "imports:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "macros:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "dwoId:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "splitDebugInlining:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "debugInfoForProfiling:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "gnuPubnames:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,23 +132,31 @@ DICompileUnitField
 
 DIFile
 	: "!DIFile" "(" DIFileFields ")"
+	<< astx.NewDIFile($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIFileFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIFileFieldList
 ;
 
 DIFileFieldList
 	: DIFileField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIFileFieldList "," DIFileField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIFileField
 	: "filename:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "directory:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "checksumkind:" ChecksumKind
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "checksum:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIBasicType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,16 +175,20 @@ DIFileField
 
 DIBasicType
 	: "!DIBasicType" "(" DIBasicTypeFields ")"
+	<< astx.NewDIBasicType($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIBasicTypeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIBasicTypeFieldList
 ;
 
 DIBasicTypeFieldList
 	: DIBasicTypeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIBasicTypeFieldList "," DIBasicTypeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIBasicTypeField
@@ -166,6 +197,7 @@ DIBasicTypeField
 	| SizeField
 	| AlignField
 	| "encoding:" DwarfAttEncoding
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DISubroutineType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,22 +212,28 @@ DIBasicTypeField
 
 DISubroutineType
 	: "!DISubroutineType" "(" DISubroutineTypeFields ")"
+	<< astx.NewDISubroutineType($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DISubroutineTypeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DISubroutineTypeFieldList
 ;
 
 DISubroutineTypeFieldList
 	: DISubroutineTypeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DISubroutineTypeFieldList "," DISubroutineTypeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DISubroutineTypeField
 	: FlagsField
 	| "cc:" DwarfCC
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "types:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIDerivedType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,16 +262,20 @@ DISubroutineTypeField
 
 DIDerivedType
 	: "!DIDerivedType" "(" DIDerivedTypeFields ")"
+	<< astx.NewDIDerivedType($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIDerivedTypeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIDerivedTypeFieldList
 ;
 
 DIDerivedTypeFieldList
 	: DIDerivedTypeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIDerivedTypeFieldList "," DIDerivedTypeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIDerivedTypeField
@@ -248,7 +290,9 @@ DIDerivedTypeField
 	| OffsetField
 	| FlagsField
 	| "extraData:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "dwarfAddressSpace:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DICompositeType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -276,16 +320,20 @@ DIDerivedTypeField
 
 DICompositeType
 	: "!DICompositeType" "(" DICompositeTypeFields ")"
+	<< astx.NewDICompositeType($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DICompositeTypeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DICompositeTypeFieldList
 ;
 
 DICompositeTypeFieldList
 	: DICompositeTypeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DICompositeTypeFieldList "," DICompositeTypeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DICompositeTypeField
@@ -300,11 +348,16 @@ DICompositeTypeField
 	| OffsetField
 	| FlagsField
 	| "elements:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "runtimeLang:" DwarfLang
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "vtableHolder:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| TemplateParamsField
 	| "identifier:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "discriminator:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DISubrange ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -321,21 +374,27 @@ DICompositeTypeField
 
 DISubrange
 	: "!DISubrange" "(" DISubrangeFields ")"
+	<< astx.NewDISubrange($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DISubrangeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DISubrangeFieldList
 ;
 
 DISubrangeFieldList
 	: DISubrangeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DISubrangeFieldList "," DISubrangeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DISubrangeField
 	: "count:" IntOrMDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "lowerBound:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIEnumerator ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -352,22 +411,28 @@ DISubrangeField
 
 DIEnumerator
 	: "!DIEnumerator" "(" DIEnumeratorFields ")"
+	<< astx.NewDIEnumerator($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIEnumeratorFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIEnumeratorFieldList
 ;
 
 DIEnumeratorFieldList
 	: DIEnumeratorField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIEnumeratorFieldList "," DIEnumeratorField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIEnumeratorField
 	: NameField
 	| "value:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "isUnsigned:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DITemplateTypeParameter ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -383,16 +448,20 @@ DIEnumeratorField
 
 DITemplateTypeParameter
 	: "!DITemplateTypeParameter" "(" DITemplateTypeParameterFields ")"
+	<< astx.NewDITemplateTypeParameter($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DITemplateTypeParameterFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DITemplateTypeParameterFieldList
 ;
 
 DITemplateTypeParameterFieldList
 	: DITemplateTypeParameterField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DITemplateTypeParameterFieldList "," DITemplateTypeParameterField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DITemplateTypeParameterField
@@ -416,16 +485,20 @@ DITemplateTypeParameterField
 
 DITemplateValueParameter
 	: "!DITemplateValueParameter" "(" DITemplateValueParameterFields ")"
+	<< astx.NewDITemplateValueParameter($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DITemplateValueParameterFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DITemplateValueParameterFieldList
 ;
 
 DITemplateValueParameterFieldList
 	: DITemplateValueParameterField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DITemplateValueParameterFieldList "," DITemplateValueParameterField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DITemplateValueParameterField
@@ -433,6 +506,7 @@ DITemplateValueParameterField
 	| NameField
 	| TypeField
 	| "value:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIModule ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -450,24 +524,31 @@ DITemplateValueParameterField
 
 DIModule
 	: "!DIModule" "(" DIModuleFields ")"
+	<< astx.NewDIModule($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIModuleFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIModuleFieldList
 ;
 
 DIModuleFieldList
 	: DIModuleField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIModuleFieldList "," DIModuleField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIModuleField
 	: ScopeField
 	| NameField
 	| "configMacros:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "includePath:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "isysroot:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DINamespace ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -484,22 +565,27 @@ DIModuleField
 
 DINamespace
 	: "!DINamespace" "(" DINamespaceFields ")"
+	<< astx.NewDINamespace($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DINamespaceFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DINamespaceFieldList
 ;
 
 DINamespaceFieldList
 	: DINamespaceField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DINamespaceFieldList "," DINamespaceField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DINamespaceField
 	: ScopeField
 	| NameField
 	| "exportSymbols:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIGlobalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -525,16 +611,20 @@ DINamespaceField
 
 DIGlobalVariable
 	: "!DIGlobalVariable" "(" DIGlobalVariableFields ")"
+	<< astx.NewDIGlobalVariable($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIGlobalVariableFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIGlobalVariableFieldList
 ;
 
 DIGlobalVariableFieldList
 	: DIGlobalVariableField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIGlobalVariableFieldList "," DIGlobalVariableField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIGlobalVariableField
@@ -587,16 +677,20 @@ DIGlobalVariableField
 
 DISubprogram
 	: "!DISubprogram" "(" DISubprogramFields ")"
+	<< astx.NewDISubprogram($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DISubprogramFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DISubprogramFieldList
 ;
 
 DISubprogramFieldList
 	: DISubprogramField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DISubprogramFieldList "," DISubprogramField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DISubprogramField
@@ -609,17 +703,25 @@ DISubprogramField
 	| IsLocalField
 	| IsDefinitionField
 	| "scopeLine:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "containingType:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "virtuality:" DwarfVirtuality
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "virtualIndex:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "thisAdjustment:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| FlagsField
 	| IsOptimizedField
 	| "unit:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| TemplateParamsField
 	| DeclarationField
 	| "variables:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "thrownTypes:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DILexicalBlock ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -637,16 +739,20 @@ DISubprogramField
 
 DILexicalBlock
 	: "!DILexicalBlock" "(" DILexicalBlockFields ")"
+	<< astx.NewDILexicalBlock($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DILexicalBlockFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DILexicalBlockFieldList
 ;
 
 DILexicalBlockFieldList
 	: DILexicalBlockField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DILexicalBlockFieldList "," DILexicalBlockField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DILexicalBlockField
@@ -670,22 +776,27 @@ DILexicalBlockField
 
 DILexicalBlockFile
 	: "!DILexicalBlockFile" "(" DILexicalBlockFileFields ")"
+	<< astx.NewDILexicalBlockFile($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DILexicalBlockFileFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DILexicalBlockFileFieldList
 ;
 
 DILexicalBlockFileFieldList
 	: DILexicalBlockFileField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DILexicalBlockFileFieldList "," DILexicalBlockFileField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DILexicalBlockFileField
 	: ScopeField
 	| FileField
 	| "discriminator:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DILocation ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -703,16 +814,20 @@ DILexicalBlockFileField
 
 DILocation
 	: "!DILocation" "(" DILocationFields ")"
+	<< astx.NewDILocation($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DILocationFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DILocationFieldList
 ;
 
 DILocationFieldList
 	: DILocationField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DILocationFieldList "," DILocationField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DILocationField
@@ -720,6 +835,7 @@ DILocationField
 	| ColumnField
 	| ScopeField
 	| "inlinedAt:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DILocalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -746,22 +862,27 @@ DILocationField
 
 DILocalVariable
 	: "!DILocalVariable" "(" DILocalVariableFields ")"
+	<< astx.NewDILocalVariable($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DILocalVariableFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DILocalVariableFieldList
 ;
 
 DILocalVariableFieldList
 	: DILocalVariableField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DILocalVariableFieldList "," DILocalVariableField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DILocalVariableField
 	: ScopeField
 	| NameField
 	| "arg:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| FileField
 	| LineField
 	| TypeField
@@ -779,16 +900,20 @@ DILocalVariableField
 
 DIExpression
 	: "!DIExpression" "(" DIExpressionFields ")"
+	<< &ast.DIExpression{Fields: $2.([]ast.DIExpressionField)}, nil >>
 ;
 
 DIExpressionFields
 	: empty
+	<< ([]ast.DIExpressionField)(nil), nil >>
 	| DIExpressionFieldList
 ;
 
 DIExpressionFieldList
 	: DIExpressionField
+	<< []ast.DIExpressionField{$0.(ast.DIExpressionField)}, nil >>
 	| DIExpressionFieldList "," DIExpressionField
+	<< append($0.([]ast.DIExpressionField), $2.(ast.DIExpressionField)), nil >>
 ;
 
 DIExpressionField
@@ -807,21 +932,27 @@ DIExpressionField
 
 DIGlobalVariableExpression
 	: "!DIGlobalVariableExpression" "(" DIGlobalVariableExpressionFields ")"
+	<< astx.NewDIGlobalVariableExpression($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIGlobalVariableExpressionFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIGlobalVariableExpressionFieldList
 ;
 
 DIGlobalVariableExpressionFieldList
 	: DIGlobalVariableExpressionField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIGlobalVariableExpressionFieldList "," DIGlobalVariableExpressionField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIGlobalVariableExpressionField
 	: "var:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "expr:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIObjCProperty ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -843,16 +974,20 @@ DIGlobalVariableExpressionField
 
 DIObjCProperty
 	: "!DIObjCProperty" "(" DIObjCPropertyFields ")"
+	<< astx.NewDIObjCProperty($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIObjCPropertyFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIObjCPropertyFieldList
 ;
 
 DIObjCPropertyFieldList
 	: DIObjCPropertyField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIObjCPropertyFieldList "," DIObjCPropertyField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIObjCPropertyField
@@ -860,8 +995,11 @@ DIObjCPropertyField
 	| FileField
 	| LineField
 	| "setter:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "getter:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "attributes:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| TypeField
 ;
 
@@ -883,22 +1021,27 @@ DIObjCPropertyField
 
 DIImportedEntity
 	: "!DIImportedEntity" "(" DIImportedEntityFields ")"
+	<< astx.NewDIImportedEntity($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIImportedEntityFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIImportedEntityFieldList
 ;
 
 DIImportedEntityFieldList
 	: DIImportedEntityField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIImportedEntityFieldList "," DIImportedEntityField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIImportedEntityField
 	: TagField
 	| ScopeField
 	| "entity:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| FileField
 	| LineField
 	| NameField
@@ -919,16 +1062,20 @@ DIImportedEntityField
 
 DIMacro
 	: "!DIMacro" "(" DIMacroFields ")"
+	<< astx.NewDIMacro($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIMacroFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIMacroFieldList
 ;
 
 DIMacroFieldList
 	: DIMacroField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIMacroFieldList "," DIMacroField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIMacroField
@@ -936,6 +1083,7 @@ DIMacroField
 	| LineField
 	| NameField
 	| "value:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ DIMacroFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -953,16 +1101,20 @@ DIMacroField
 
 DIMacroFile
 	: "!DIMacroFile" "(" DIMacroFileFields ")"
+	<< astx.NewDIMacroFile($2.([]*astx.SpecializedMDField)) >>
 ;
 
 DIMacroFileFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| DIMacroFileFieldList
 ;
 
 DIMacroFileFieldList
 	: DIMacroFileField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| DIMacroFileFieldList "," DIMacroFileField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 DIMacroFileField
@@ -970,6 +1122,7 @@ DIMacroFileField
 	| LineField
 	| FileField
 	| "nodes:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ~~~ [ GenericDINode ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -984,22 +1137,28 @@ DIMacroFileField
 
 GenericDINode
 	: "!GenericDINode" "(" GenericDINodeFields ")"
+	<< astx.NewGenericDINode($2.([]*astx.SpecializedMDField)) >>
 ;
 
 GenericDINodeFields
 	: empty
+	<< ([]*astx.SpecializedMDField)(nil), nil >>
 	| GenericDINodeFieldList
 ;
 
 GenericDINodeFieldList
 	: GenericDINodeField
+	<< []*astx.SpecializedMDField{$0.(*astx.SpecializedMDField)}, nil >>
 	| GenericDINodeFieldList "," GenericDINodeField
+	<< append($0.([]*astx.SpecializedMDField), $2.(*astx.SpecializedMDField)), nil >>
 ;
 
 GenericDINodeField
 	: TagField
 	| "header:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 	| "operands:" MDFields
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ### [ Helper productions ] ##################################################
@@ -1008,23 +1167,26 @@ GenericDINodeField
 
 DwarfLang
 	: int_lit
+	<< ast.DwarfLang(astx.Int($0)), nil >>
 	// DW_LANG_foo
 	| dwarf_lang
 ;
 
 FileField
 	: "file:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 IsOptimizedField
 	: "isOptimized:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 EmissionKind
-	: int_lit
-	| "NoDebug"
-	| "FullDebug"
-	| "LineTablesOnly"
+	: int_lit            << ast.EmissionKind(astx.Int($0)), nil >>
+	| "FullDebug"        << ast.EmissionKindFullDebug, nil >>
+	| "LineTablesOnly"   << ast.EmissionKindLineTablesOnly, nil >>
+	| "NoDebug"          << ast.EmissionKindNoDebug, nil >>
 ;
 
 ChecksumKind
@@ -1034,38 +1196,45 @@ ChecksumKind
 
 TagField
 	: "tag:" DwarfTag
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(DwarfTagField &)
 
 DwarfTag
 	: int_lit
+	<< ast.DwarfTag(astx.Int($0)), nil >>
 	// DW_TAG_foo
 	| dwarf_tag
 ;
 
 NameField
 	: "name:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 SizeField
 	: "size:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 AlignField
 	: "align:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(DwarfAttEncodingField &)
 
 DwarfAttEncoding
 	: int_lit
+	<< ast.DwarfAttEncoding(astx.Int($0)), nil >>
 	// DW_ATE_foo
 	| dwarf_att_encoding
 ;
 
 FlagsField
 	: "flags:" DIFlagList
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(DIFlagField &)
@@ -1081,6 +1250,7 @@ DIFlagList
 
 DIFlag
 	: int_lit
+	<< ast.DIFlag(astx.Int($0)), nil >>
 	// DIFlagFoo
 	| di_flag
 ;
@@ -1089,67 +1259,80 @@ DIFlag
 
 DwarfCC
 	: int_lit
+	<< ast.DwarfCC(astx.Int($0)), nil >>
 	// DW_CC_foo
 	| dwarf_cc
 ;
 
 LineField
 	: "line:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 ScopeField
 	: "scope:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 BaseTypeField
 	: "baseType:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 OffsetField
 	: "offset:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 TemplateParamsField
 	: "templateParams:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(MDSignedOrMDField &)
 
 IntOrMDField
-	: int_lit
+	: IntConst
 	| MDField
 ;
 
 TypeField
 	: "type:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 LinkageNameField
 	: "linkageName:" StringLit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 IsLocalField
 	: "isLocal:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 IsDefinitionField
 	: "isDefinition:" BoolConst
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 DeclarationField
 	: "declaration:" MDField
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(DwarfVirtualityField &)
 
 DwarfVirtuality
 	: int_lit
+	<< ast.DwarfVirtuality(astx.Int($0)), nil >>
 	// DW_VIRTUALITY_foo
 	| dwarf_virtuality
 ;
 
 ColumnField
 	: "column:" int_lit
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 DwarfOp
@@ -1159,12 +1342,14 @@ DwarfOp
 
 TypeMacinfoField
 	: "type:" DwarfMacinfo
+	<< &astx.SpecializedMDField{Key: astx.UnquoteString($0), Value: $1}, nil >>
 ;
 
 // ref: ParseMDField(DwarfMacinfoTypeField &)
 
 DwarfMacinfo
 	: int_lit
+	<< ast.DwarfMacinfo(astx.Int($0)), nil >>
 	// DW_MACINFO_foo
 	| dwarf_macinfo
 ;
