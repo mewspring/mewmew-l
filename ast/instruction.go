@@ -40,8 +40,8 @@ type AddInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AddInst) String() string {
-	buf := &strings.Builder{}
 	// "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("add")
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -64,8 +64,8 @@ type FAddInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FAddInst) String() string {
-	buf := &strings.Builder{}
 	// "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fadd")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -88,8 +88,8 @@ type SubInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SubInst) String() string {
-	buf := &strings.Builder{}
 	// "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("sub")
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -112,8 +112,8 @@ type FSubInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FSubInst) String() string {
-	buf := &strings.Builder{}
 	// "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fsub")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -136,8 +136,8 @@ type MulInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *MulInst) String() string {
-	buf := &strings.Builder{}
 	// "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("mul")
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -160,8 +160,8 @@ type FMulInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FMulInst) String() string {
-	buf := &strings.Builder{}
 	// "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fmul")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -184,8 +184,8 @@ type UDivInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *UDivInst) String() string {
-	buf := &strings.Builder{}
 	// "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("udiv")
 	if inst.Exact {
 		buf.WriteString(" exact")
@@ -208,8 +208,8 @@ type SDivInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SDivInst) String() string {
-	buf := &strings.Builder{}
 	// "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("sdiv")
 	if inst.Exact {
 		buf.WriteString(" exact")
@@ -232,8 +232,8 @@ type FDivInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FDivInst) String() string {
-	buf := &strings.Builder{}
 	// "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fdiv")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -255,8 +255,8 @@ type URemInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *URemInst) String() string {
-	buf := &strings.Builder{}
 	// "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "urem %v, %v", inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -274,8 +274,8 @@ type SRemInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SRemInst) String() string {
-	buf := &strings.Builder{}
 	// "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "srem %v, %v", inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -294,8 +294,8 @@ type FRemInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FRemInst) String() string {
-	buf := &strings.Builder{}
 	// "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("frem")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -320,8 +320,8 @@ type ShlInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ShlInst) String() string {
-	buf := &strings.Builder{}
 	// "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("shl")
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -344,8 +344,8 @@ type LShrInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *LShrInst) String() string {
-	buf := &strings.Builder{}
 	// "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("lshr")
 	if inst.Exact {
 		buf.WriteString(" exact")
@@ -368,8 +368,8 @@ type AShrInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AShrInst) String() string {
-	buf := &strings.Builder{}
 	// "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("ashr")
 	if inst.Exact {
 		buf.WriteString(" exact")
@@ -391,8 +391,8 @@ type AndInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AndInst) String() string {
-	buf := &strings.Builder{}
 	// "and" Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "and %v, %v", inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -410,8 +410,8 @@ type OrInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *OrInst) String() string {
-	buf := &strings.Builder{}
 	// "or" Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "or %v, %v", inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -429,8 +429,8 @@ type XorInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *XorInst) String() string {
-	buf := &strings.Builder{}
 	// "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "xor %v, %v", inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -451,8 +451,8 @@ type ExtractElementInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ExtractElementInst) String() string {
-	buf := &strings.Builder{}
 	// "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractelement %v, %v", inst.X, inst.Index)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -472,8 +472,8 @@ type InsertElementInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *InsertElementInst) String() string {
-	buf := &strings.Builder{}
 	// "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertelement %v, %v, %v", inst.X, inst.Elem, inst.Index)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -492,8 +492,8 @@ type ShuffleVectorInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ShuffleVectorInst) String() string {
-	buf := &strings.Builder{}
 	// "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "shufflevector %v, %v, %v", inst.X, inst.Y, inst.Mask)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -514,8 +514,8 @@ type ExtractValueInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ExtractValueInst) String() string {
-	buf := &strings.Builder{}
 	// "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractvalue %v", inst.X)
 	for _, index := range inst.Indices {
 		fmt.Fprintf(buf, ", %v", index)
@@ -538,8 +538,8 @@ type InsertValueInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *InsertValueInst) String() string {
-	buf := &strings.Builder{}
 	// "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertvalue %v, %v", inst.X, inst.Elem)
 	for _, index := range inst.Indices {
 		fmt.Fprintf(buf, ", %v", index)
@@ -567,8 +567,8 @@ type AllocaInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AllocaInst) String() string {
-	buf := &strings.Builder{}
 	// "alloca" OptInAlloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("alloca")
 	if inst.InAlloca {
 		buf.WriteString(" inalloca")
@@ -608,9 +608,9 @@ type LoadInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *LoadInst) String() string {
-	buf := &strings.Builder{}
 	// "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("load")
 	if inst.Atomic {
 		buf.WriteString(" atomic")
@@ -650,9 +650,9 @@ type StoreInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *StoreInst) String() string {
-	buf := &strings.Builder{}
 	// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("store")
 	if inst.Atomic {
 		buf.WriteString(" atomic")
@@ -687,8 +687,8 @@ type FenceInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FenceInst) String() string {
-	buf := &strings.Builder{}
 	// "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fence")
 	if inst.SyncScope != nil {
 		fmt.Fprintf(buf, " %v", inst.SyncScope)
@@ -717,8 +717,8 @@ type CmpXchgInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *CmpXchgInst) String() string {
-	buf := &strings.Builder{}
 	// "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("cmpxchg")
 	if inst.Weak {
 		buf.WriteString(" weak")
@@ -753,8 +753,8 @@ type AtomicRMWInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AtomicRMWInst) String() string {
-	buf := &strings.Builder{}
 	// "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("atomicrmw")
 	if inst.Volatile {
 		buf.WriteString(" volatile")
@@ -801,8 +801,8 @@ type GetElementPtrInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *GetElementPtrInst) String() string {
-	buf := &strings.Builder{}
 	// "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("getelementptr")
 	if inst.InBounds {
 		buf.WriteString(" inbounds")
@@ -830,6 +830,7 @@ type TruncInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *TruncInst) String() string {
+	// "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "trunc %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -849,6 +850,7 @@ type ZExtInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ZExtInst) String() string {
+	// "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "zext %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -868,6 +870,7 @@ type SExtInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SExtInst) String() string {
+	// "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sext %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -887,6 +890,7 @@ type FPTruncInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FPTruncInst) String() string {
+	// "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptrunc %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -906,6 +910,7 @@ type FPExtInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FPExtInst) String() string {
+	// "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fpext %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -925,6 +930,7 @@ type FPToUIInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FPToUIInst) String() string {
+	// "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptoui %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -944,6 +950,7 @@ type FPToSIInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FPToSIInst) String() string {
+	// "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptosi %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -963,6 +970,7 @@ type UIToFPInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *UIToFPInst) String() string {
+	// "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "uitofp %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -982,6 +990,7 @@ type SIToFPInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SIToFPInst) String() string {
+	// "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sitofp %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -1001,6 +1010,7 @@ type PtrToIntInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *PtrToIntInst) String() string {
+	// "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "ptrtoint %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -1020,6 +1030,7 @@ type IntToPtrInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *IntToPtrInst) String() string {
+	// "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "inttoptr %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -1039,6 +1050,7 @@ type BitCastInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *BitCastInst) String() string {
+	// "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "bitcast %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -1058,6 +1070,7 @@ type AddrSpaceCastInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *AddrSpaceCastInst) String() string {
+	// "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "addrspacecast %v to %v", inst.From, inst.To)
 	for _, md := range inst.Metadata {
@@ -1079,8 +1092,8 @@ type ICmpInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *ICmpInst) String() string {
-	buf := &strings.Builder{}
 	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Value)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -1100,8 +1113,8 @@ type FCmpInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *FCmpInst) String() string {
-	buf := &strings.Builder{}
 	// "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	buf.WriteString("fcmp")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
@@ -1124,8 +1137,8 @@ type PhiInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *PhiInst) String() string {
-	buf := &strings.Builder{}
 	// "phi" Type IncList OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "phi %v ", inst.Type)
 	for i, inc := range inst.Incs {
 		if i != 0 {
@@ -1160,8 +1173,8 @@ type SelectInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *SelectInst) String() string {
-	buf := &strings.Builder{}
 	// "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "select %v, %v, %v", inst.Cond, inst.X, inst.Y)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -1187,8 +1200,8 @@ type CallInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *CallInst) String() string {
-	buf := &strings.Builder{}
 	// OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	if inst.Tail != TailNone {
 		fmt.Fprintf(buf, "%v ", inst.Tail)
 	}
@@ -1248,8 +1261,8 @@ type VAArgInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *VAArgInst) String() string {
-	buf := &strings.Builder{}
 	// "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "va_arg %v, %v", inst.ArgList, inst.ArgType)
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -1269,8 +1282,8 @@ type LandingPadInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *LandingPadInst) String() string {
-	buf := &strings.Builder{}
 	// "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "landingpad %v", inst.Type)
 	if inst.Cleanup {
 		buf.WriteString(" cleanup")
@@ -1290,6 +1303,8 @@ type Clause struct {
 }
 
 func (clause *Clause) String() string {
+	// "catch" Type Value
+	// "filter" Type ArrayConst
 	buf := &strings.Builder{}
 	if clause.Catch {
 		buf.WriteString("catch")
@@ -1311,8 +1326,8 @@ type CatchPadInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *CatchPadInst) String() string {
-	buf := &strings.Builder{}
 	// "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchpad within %v [", inst.Scope)
 	for i, arg := range inst.Args {
 		if i != 0 {
@@ -1338,8 +1353,8 @@ type CleanupPadInst struct {
 
 // String returns a string representation of the instruction.
 func (inst *CleanupPadInst) String() string {
-	buf := &strings.Builder{}
 	// "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
+	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "cleanuppad within %v [", inst.Scope)
 	for i, arg := range inst.Args {
 		if i != 0 {

@@ -19,7 +19,7 @@ import (
 var colorWords bool
 
 func init() {
-	flag.BoolVar(&colorWords, "-color-words", false, "Color words.")
+	flag.BoolVar(&colorWords, "words", false, "Color words.")
 	flag.Parse()
 }
 
