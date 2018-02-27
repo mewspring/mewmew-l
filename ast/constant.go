@@ -76,14 +76,14 @@ func (c *StructConst) String() string {
 	if c.Packed {
 		buf.WriteString("<")
 	}
-	buf.WriteString("{")
+	buf.WriteString("{ ")
 	for i, field := range c.Fields {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		fmt.Fprintf(buf, "%v %v", field.Type, field.Const)
+		buf.WriteString(field.String())
 	}
-	buf.WriteString("}")
+	buf.WriteString(" }")
 	if c.Packed {
 		buf.WriteString(">")
 	}

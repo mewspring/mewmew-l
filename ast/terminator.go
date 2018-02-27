@@ -85,7 +85,7 @@ func (term *SwitchTerm) String() string {
 	for _, c := range term.Cases {
 		fmt.Fprintf(buf, "\t\t%v\n", c)
 	}
-	buf.WriteString("]")
+	buf.WriteString("\t]")
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}

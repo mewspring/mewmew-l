@@ -1,6 +1,8 @@
 package ast_test
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -15,12 +17,20 @@ import (
 	"github.com/pkg/errors"
 )
 
+var colorWords bool
+
+func init() {
+	flag.BoolVar(&colorWords, "-color-words", false, "Color words.")
+	flag.Parse()
+}
+
 func TestParse(t *testing.T) {
 	golden := []struct {
 		path string
 	}{
 		{path: "testdata/cat.ll"},
 	}
+	fmt.Println("colorWords:", colorWords)
 	for _, g := range golden {
 		buf, err := ioutil.ReadFile(g.path)
 		if err != nil {
@@ -50,7 +60,7 @@ func TestParse(t *testing.T) {
 		}
 		got := m.String()
 		if want != got {
-			if err := diff(want, got); err != nil {
+			if err := diff(want, got, colorWords); err != nil {
 				log.Fatalf("%q: unable to diff `%v` and `%v`; %v", g.path, want, got, err)
 			}
 			t.Errorf("%q: module mismatch", g.path)
@@ -60,7 +70,7 @@ func TestParse(t *testing.T) {
 	}
 }
 
-func diff(a, b string) error {
+func diff(a, b string, colorWords bool) error {
 	dir, err := ioutil.TempDir("/tmp", "diff_")
 	if err != nil {
 		return errors.WithStack(err)
@@ -82,7 +92,11 @@ func diff(a, b string) error {
 	if err := ioutil.WriteFile(path, []byte(b), 0644); err != nil {
 		return errors.WithStack(err)
 	}
-	cmd = exec.Command("git", "diff", "--color-words")
+	if colorWords {
+		cmd = exec.Command("git", "diff", "--color-words")
+	} else {
+		cmd = exec.Command("git", "diff")
+	}
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Dir = dir

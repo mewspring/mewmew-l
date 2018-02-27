@@ -287,13 +287,13 @@ func (c *GetElementPtrExpr) String() string {
 	if c.InBounds {
 		buf.WriteString(" inbounds")
 	}
-	fmt.Fprintf(buf, "(%v, %v %v", c.ElemType, c.Src.Type, c.Src.Const)
+	fmt.Fprintf(buf, " (%v, %v %v", c.ElemType, c.Src.Type, c.Src.Const)
 	for _, index := range c.Indices {
 		buf.WriteString(",")
 		if index.InRange {
 			buf.WriteString(" inrange")
 		}
-		fmt.Fprintf(buf, " %v %v", index.Index.Const, index.Index.Const)
+		fmt.Fprintf(buf, " %v", index.Index)
 	}
 	buf.WriteString(")")
 	return buf.String()

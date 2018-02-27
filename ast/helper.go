@@ -139,7 +139,7 @@ type FuncAttrPair struct {
 }
 
 func (a *FuncAttrPair) String() string {
-	return fmt.Sprintf("%v = %v", enc.Quote(a.Key), enc.Quote(a.Value))
+	return fmt.Sprintf("%v=%v", enc.Quote(a.Key), enc.Quote(a.Value))
 }
 
 //go:generate stringer -linecomment -type FuncAttr
@@ -226,11 +226,11 @@ func (a *ReturnAttrString) String() string {
 type ReturnAttr uint8
 
 const (
-	ReturnAttrInReg ReturnAttr = iota // inreg
-	ReturnAttrNoAlias
-	ReturnAttrNonNull
-	ReturnAttrSignExt
-	ReturnAttrZeroExt
+	ReturnAttrInReg   ReturnAttr = iota // inreg
+	ReturnAttrNoAlias                   // noalias
+	ReturnAttrNonNull                   // nonnull
+	ReturnAttrSignExt                   // signext
+	ReturnAttrZeroExt                   // zeroext
 )
 
 func (*Alignment) isReturnAttribute()        {}

@@ -4,9 +4,9 @@ package ast
 
 import "strconv"
 
-const _ReturnAttr_name = "inregReturnAttrNoAliasReturnAttrNonNullReturnAttrSignExtReturnAttrZeroExt"
+const _ReturnAttr_name = "inregnoaliasnonnullsignextzeroext"
 
-var _ReturnAttr_index = [...]uint8{0, 5, 22, 39, 56, 73}
+var _ReturnAttr_index = [...]uint8{0, 5, 12, 19, 26, 33}
 
 func (i ReturnAttr) String() string {
 	if i >= ReturnAttr(len(_ReturnAttr_index)-1) {

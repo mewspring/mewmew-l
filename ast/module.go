@@ -247,7 +247,7 @@ func (f *Function) String() string {
 		if f.Linkage != LinkageNone {
 			fmt.Fprintf(buf, " %v", f.Linkage)
 		}
-		fmt.Fprintf(buf, " %v", f.Header)
+		buf.WriteString(f.Header.String())
 		return buf.String()
 	}
 	// Function definition.
@@ -257,7 +257,7 @@ func (f *Function) String() string {
 	if f.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", f.Linkage)
 	}
-	fmt.Fprintf(buf, " %v", f.Header)
+	buf.WriteString(f.Header.String())
 	for _, md := range f.Metadata {
 		fmt.Fprintf(buf, " %v", md)
 	}
@@ -435,7 +435,7 @@ type AttrGroupDef struct {
 func (def *AttrGroupDef) String() string {
 	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "attributes %v = {", def.Name)
+	fmt.Fprintf(buf, "attributes %v = { ", def.Name)
 	for i, attr := range def.FuncAttrs {
 		if i != 0 {
 			buf.WriteString(" ")
@@ -447,7 +447,7 @@ func (def *AttrGroupDef) String() string {
 		}
 		buf.WriteString(attr.String())
 	}
-	buf.WriteString("}")
+	buf.WriteString(" }")
 	return buf.String()
 }
 

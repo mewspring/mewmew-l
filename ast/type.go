@@ -161,14 +161,14 @@ func (t *StructType) String() string {
 	if t.Packed {
 		buf.WriteString("<")
 	}
-	buf.WriteString("{")
+	buf.WriteString("{ ")
 	for i, field := range t.Fields {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
 		buf.WriteString(field.String())
 	}
-	buf.WriteString("}")
+	buf.WriteString(" }")
 	if t.Packed {
 		buf.WriteString(">")
 	}

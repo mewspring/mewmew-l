@@ -412,7 +412,7 @@ type AllocaInst struct {
 func (inst *AllocaInst) String() string {
 	buf := &strings.Builder{}
 	// "alloca" OptInAlloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
-	buf.WriteString("load")
+	buf.WriteString("alloca")
 	if inst.InAlloca {
 		buf.WriteString(" inalloca")
 	}
@@ -448,37 +448,24 @@ type LoadInst struct {
 
 func (inst *LoadInst) String() string {
 	buf := &strings.Builder{}
-	if inst.Atomic {
-		// Atomic load.
-		//
-		// "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptAlignment OptCommaSepMetadataAttachmentList
-		buf.WriteString("load atomic")
-		if inst.Volatile {
-			buf.WriteString(" volatile")
-		}
-		fmt.Fprintf(buf, " %v, %v", inst.ElemType, inst.Src)
-		if inst.SyncScope != nil {
-			fmt.Fprintf(buf, " %v", inst.SyncScope)
-		}
-		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
-		if inst.Alignment != nil {
-			fmt.Fprintf(buf, " %v", inst.Alignment)
-		}
-		for _, md := range inst.Metadata {
-			fmt.Fprintf(buf, ", %v", md)
-		}
-		return buf.String()
-	}
-	// Load.
-	//
-	// "load" OptVolatile Type "," Type Value OptAlignment OptCommaSepMetadataAttachmentList
+	// "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
+	// "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf.WriteString("load")
+	if inst.Atomic {
+		buf.WriteString(" atomic")
+	}
 	if inst.Volatile {
 		buf.WriteString(" volatile")
 	}
 	fmt.Fprintf(buf, " %v, %v", inst.ElemType, inst.Src)
+	if inst.SyncScope != nil {
+		fmt.Fprintf(buf, " %v", inst.SyncScope)
+	}
+	if inst.AtomicOrdering != AtomicOrderingNone {
+		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
+	}
 	if inst.Alignment != nil {
-		fmt.Fprintf(buf, " %v", inst.Alignment)
+		fmt.Fprintf(buf, ", %v", inst.Alignment)
 	}
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
@@ -499,35 +486,22 @@ type StoreInst struct {
 
 func (inst *StoreInst) String() string {
 	buf := &strings.Builder{}
-	if inst.Atomic {
-		// Atomic store.
-		//
-		// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
-		buf.WriteString("store atomic")
-		if inst.Volatile {
-			buf.WriteString(" volatile")
-		}
-		fmt.Fprintf(buf, " %v, %v", inst.Src, inst.Dst)
-		if inst.SyncScope != nil {
-			fmt.Fprintf(buf, " %v", inst.SyncScope)
-		}
-		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
-		if inst.Alignment != nil {
-			fmt.Fprintf(buf, ", %v", inst.Alignment)
-		}
-		for _, md := range inst.Metadata {
-			fmt.Fprintf(buf, ", %v", md)
-		}
-		return buf.String()
-	}
-	// Store.
-	//
+	// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf.WriteString("store")
+	if inst.Atomic {
+		buf.WriteString(" atomic")
+	}
 	if inst.Volatile {
 		buf.WriteString(" volatile")
 	}
 	fmt.Fprintf(buf, " %v, %v", inst.Src, inst.Dst)
+	if inst.SyncScope != nil {
+		fmt.Fprintf(buf, " %v", inst.SyncScope)
+	}
+	if inst.AtomicOrdering != AtomicOrderingNone {
+		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
+	}
 	if inst.Alignment != nil {
 		fmt.Fprintf(buf, ", %v", inst.Alignment)
 	}
@@ -873,7 +847,7 @@ type Incoming struct {
 
 func (inc *Incoming) String() string {
 	// "[" Value "," LocalIdent "]"
-	return fmt.Sprintf("[%v, %v]", inc.X, inc.Pred)
+	return fmt.Sprintf("[ %v, %v ]", inc.X, inc.Pred)
 }
 
 type SelectInst struct {
@@ -921,7 +895,7 @@ func (inst *CallInst) String() string {
 	for _, attr := range inst.ReturnAttrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}
-	fmt.Fprintf(buf, "%v %v(", inst.RetType, inst.Callee)
+	fmt.Fprintf(buf, " %v %v(", inst.RetType, inst.Callee)
 	for i, arg := range inst.Args {
 		if i != 0 {
 			buf.WriteString(", ")
