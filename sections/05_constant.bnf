@@ -121,8 +121,13 @@ ArrayConst
 ;
 
 CharArrayConst
-	: "c" string_lit
-	<< &ast.CharArrayConst{Value: astx.String($1)}, nil >>
+	: "c" StringLit
+	<< &ast.CharArrayConst{Value: $1.(string)}, nil >>
+;
+
+StringLit
+	: string_lit
+	<< astx.UnquoteString($0), nil >>
 ;
 
 // --- [ Vector Constants ] ----------------------------------------------------

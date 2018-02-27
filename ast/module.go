@@ -3,6 +3,8 @@ package ast
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mewmew/l/internal/enc"
 )
 
 // === [ Module ] ==============================================================
@@ -33,7 +35,7 @@ type SourceFilename struct {
 }
 
 func (s *SourceFilename) String() string {
-	return fmt.Sprintf("source_filename = %q", s.Name)
+	return fmt.Sprintf("source_filename = %v", enc.Quote(s.Name))
 }
 
 // ~~~ [ Target Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +49,7 @@ type TargetTriple struct {
 }
 
 func (t *TargetTriple) String() string {
-	return fmt.Sprintf("target triple = %q", t.TargetTriple)
+	return fmt.Sprintf("target triple = %v", enc.Quote(t.TargetTriple))
 }
 
 type DataLayout struct {
@@ -55,7 +57,7 @@ type DataLayout struct {
 }
 
 func (t *DataLayout) String() string {
-	return fmt.Sprintf("target datalayout = %q", t.DataLayout)
+	return fmt.Sprintf("target datalayout = %v", enc.Quote(t.DataLayout))
 }
 
 func (*TargetTriple) isTargetDefinition() {}
@@ -68,7 +70,7 @@ type ModuleAsm struct {
 }
 
 func (a *ModuleAsm) String() string {
-	return fmt.Sprintf("module asm %q", a.Asm)
+	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
 }
 
 // ~~~ [ Type Defintion ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -331,7 +333,7 @@ func (hdr *FunctionHeader) String() string {
 		fmt.Fprintf(buf, " %v", hdr.Comdat)
 	}
 	if len(hdr.GC) > 0 {
-		fmt.Fprintf(buf, " gc %q", hdr.GC)
+		fmt.Fprintf(buf, " gc %v", enc.Quote(hdr.GC))
 	}
 	if hdr.Prefix != nil {
 		fmt.Fprintf(buf, " prefix %v %v", hdr.Prefix.Type, hdr.Prefix.Const)

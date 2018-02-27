@@ -2,8 +2,9 @@ package ast
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
+
+	"github.com/mewmew/l/internal/enc"
 )
 
 //go:generate stringer -linecomment -type Linkage
@@ -72,7 +73,7 @@ type Section struct {
 }
 
 func (s *Section) String() string {
-	return fmt.Sprintf("section %q", s.Name)
+	return fmt.Sprintf("section %v", enc.Quote(s.Name))
 }
 
 type Comdat struct {
@@ -129,7 +130,7 @@ type FuncAttrString struct {
 }
 
 func (a *FuncAttrString) String() string {
-	return strconv.Quote(a.Value)
+	return enc.Quote(a.Value)
 }
 
 type FuncAttrPair struct {
@@ -138,7 +139,7 @@ type FuncAttrPair struct {
 }
 
 func (a *FuncAttrPair) String() string {
-	return fmt.Sprintf("%q = %q", a.Key, a.Value)
+	return fmt.Sprintf("%v = %v", enc.Quote(a.Key), enc.Quote(a.Value))
 }
 
 //go:generate stringer -linecomment -type FuncAttr
@@ -217,7 +218,7 @@ type ReturnAttrString struct {
 }
 
 func (a *ReturnAttrString) String() string {
-	return strconv.Quote(a.Value)
+	return enc.Quote(a.Value)
 }
 
 //go:generate stringer -linecomment -type ReturnAttr
@@ -275,7 +276,7 @@ type ParamAttrString struct {
 }
 
 func (a *ParamAttrString) String() string {
-	return strconv.Quote(a.Value)
+	return enc.Quote(a.Value)
 }
 
 //go:generate stringer -linecomment -type ParamAttr
@@ -371,7 +372,7 @@ type SyncScope struct {
 }
 
 func (s *SyncScope) String() string {
-	return fmt.Sprintf("syncscope(%q)", s.Scope)
+	return fmt.Sprintf("syncscope(%v)", enc.Quote(s.Scope))
 }
 
 //go:generate stringer -linecomment -type AtomicOrdering
@@ -454,7 +455,7 @@ type OperandBundle struct {
 func (o *OperandBundle) String() string {
 	// string_lit "(" TypeValues ")"
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%q(", o.Tag)
+	fmt.Fprintf(buf, "%v(", enc.Quote(o.Tag))
 	for i, input := range o.Inputs {
 		if i != 0 {
 			buf.WriteString(" ")

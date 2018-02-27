@@ -3,6 +3,8 @@ package ast
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mewmew/l/internal/enc"
 )
 
 // === [ Values ] ==============================================================
@@ -34,7 +36,7 @@ func (v *InlineAsm) String() string {
 	if v.IntelDialect {
 		buf.WriteString(" inteldialect")
 	}
-	fmt.Fprintf(buf, " %q, %q", v.Asm, v.Constraint)
+	fmt.Fprintf(buf, " %v, %v", enc.Quote(v.Asm), enc.Quote(v.Constraint))
 	return buf.String()
 }
 

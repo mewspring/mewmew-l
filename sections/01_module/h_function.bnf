@@ -133,8 +133,8 @@ CallingConv
 OptGC
 	: empty
 	<< "", nil >>
-	| "gc" string_lit
-	<< astx.String($1), nil >>
+	| "gc" StringLit
+	<< $1.(string), nil >>
 ;
 
 OptPrefix

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/mewmew/l/internal/enc"
 )
 
 // === [ Constants ] ===========================================================
@@ -112,7 +114,7 @@ type CharArrayConst struct {
 }
 
 func (c *CharArrayConst) String() string {
-	return fmt.Sprintf("c%q", c.Value)
+	return fmt.Sprintf("c%v", enc.Quote(c.Value))
 }
 
 // --- [ Vector Constants ] ----------------------------------------------------

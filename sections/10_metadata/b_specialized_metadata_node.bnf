@@ -79,11 +79,11 @@ DICompileUnitFieldList
 DICompileUnitField
 	: "language:" DwarfLang
 	| FileField
-	| "producer:" string_lit
+	| "producer:" StringLit
 	| IsOptimizedField
-	| "flags:" string_lit
+	| "flags:" StringLit
 	| "runtimeVersion:" int_lit
-	| "splitDebugFilename:" string_lit
+	| "splitDebugFilename:" StringLit
 	| "emissionKind:" EmissionKind
 	| "enums:" MDField
 	| "retainedTypes:" MDField
@@ -126,10 +126,10 @@ DIFileFieldList
 ;
 
 DIFileField
-	: "filename:" string_lit
-	| "directory:" string_lit
+	: "filename:" StringLit
+	| "directory:" StringLit
 	| "checksumkind:" ChecksumKind
-	| "checksum:" string_lit
+	| "checksum:" StringLit
 ;
 
 // ~~~ [ DIBasicType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -303,7 +303,7 @@ DICompositeTypeField
 	| "runtimeLang:" DwarfLang
 	| "vtableHolder:" MDField
 	| TemplateParamsField
-	| "identifier:" string_lit
+	| "identifier:" StringLit
 	| "discriminator:" MDField
 ;
 
@@ -465,9 +465,9 @@ DIModuleFieldList
 DIModuleField
 	: ScopeField
 	| NameField
-	| "configMacros:" string_lit
-	| "includePath:" string_lit
-	| "isysroot:" string_lit
+	| "configMacros:" StringLit
+	| "includePath:" StringLit
+	| "isysroot:" StringLit
 ;
 
 // ~~~ [ DINamespace ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -859,8 +859,8 @@ DIObjCPropertyField
 	: NameField
 	| FileField
 	| LineField
-	| "setter:" string_lit
-	| "getter:" string_lit
+	| "setter:" StringLit
+	| "getter:" StringLit
 	| "attributes:" int_lit
 	| TypeField
 ;
@@ -935,7 +935,7 @@ DIMacroField
 	: TypeMacinfoField
 	| LineField
 	| NameField
-	| "value:" string_lit
+	| "value:" StringLit
 ;
 
 // ~~~ [ DIMacroFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -998,7 +998,7 @@ GenericDINodeFieldList
 
 GenericDINodeField
 	: TagField
-	| "header:" string_lit
+	| "header:" StringLit
 	| "operands:" MDFields
 ;
 
@@ -1045,7 +1045,7 @@ DwarfTag
 ;
 
 NameField
-	: "name:" string_lit
+	: "name:" StringLit
 ;
 
 SizeField
@@ -1125,7 +1125,7 @@ TypeField
 ;
 
 LinkageNameField
-	: "linkageName:" string_lit
+	: "linkageName:" StringLit
 ;
 
 IsLocalField

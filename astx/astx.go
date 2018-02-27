@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ast"
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/token"
 	"github.com/pkg/errors"
 )
@@ -18,10 +19,16 @@ type Params struct {
 	Variadic bool
 }
 
-// String returns the string literal corresponding to the given token.
+// String returns the string corresponding to the given token.
 func String(tok interface{}) string {
 	s := tok.(*token.Token)
 	return string(s.Lit)
+}
+
+// UnquoteString returns the unquoted string corresponding to the given string
+// literal.
+func UnquoteString(tok interface{}) string {
+	return enc.Unquote(String(tok))
 }
 
 // Int returns the integer literal corresponding to the given token.

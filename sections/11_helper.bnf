@@ -29,8 +29,8 @@ FuncAttr
 	| Alignment
 	| AllocSize
 	| StackAlignment
-	| string_lit                        << &ast.FuncAttrString{Value: astx.String($0)}, nil >>
-	| string_lit "=" string_lit         << &ast.FuncAttrPair{Key: astx.String($0), Value: astx.String($2)}, nil >>
+	| StringLit                         << &ast.FuncAttrString{Value: $0.(string)}, nil >>
+	| StringLit "=" StringLit           << &ast.FuncAttrPair{Key: $0.(string), Value: $2.(string)}, nil >>
 	| "alwaysinline"                    << ast.FuncAttrAlwaysInline, nil >>
 	| "argmemonly"                      << ast.FuncAttrArgMemOnly, nil >>
 	| "builtin"                         << ast.FuncAttrBuiltin, nil >>
@@ -90,7 +90,7 @@ ReturnAttrList
 ReturnAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << &ast.ReturnAttrString{Value: astx.String($0)}, nil >>
+	| StringLit         << &ast.ReturnAttrString{Value: $0.(string)}, nil >>
 	| "inreg"           << ast.ReturnAttrInReg, nil >>
 	| "noalias"         << ast.ReturnAttrNoAlias, nil >>
 	| "nonnull"         << ast.ReturnAttrNonNull, nil >>
@@ -123,7 +123,7 @@ ParamAttrList
 ParamAttr
 	: Alignment
 	| Dereferenceable
-	| string_lit        << &ast.ParamAttrString{Value: astx.String($0)}, nil >>
+	| StringLit         << &ast.ParamAttrString{Value: $0.(string)}, nil >>
 	| "byval"           << ast.ParamAttrByval, nil >>
 	| "inalloca"        << ast.ParamAttrInAlloca, nil >>
 	| "inreg"           << ast.ParamAttrInReg, nil >>
@@ -284,8 +284,8 @@ OptSection
 ;
 
 Section
-	: "section" string_lit
-	<< &ast.Section{Name: astx.String($1)}, nil >>
+	: "section" StringLit
+	<< &ast.Section{Name: $1.(string)}, nil >>
 ;
 
 // ref: ParseOptionalStackAlignment
@@ -447,8 +447,8 @@ OperandBundleList
 ;
 
 OperandBundle
-	: string_lit "(" TypeValues ")"
-	<< &ast.OperandBundle{Tag: astx.String($0), Inputs: $2.([]*ast.TypeValue)}, nil >>
+	: StringLit "(" TypeValues ")"
+	<< &ast.OperandBundle{Tag: $0.(string), Inputs: $2.([]*ast.TypeValue)}, nil >>
 ;
 
 OptVolatile
@@ -463,8 +463,8 @@ OptVolatile
 OptSyncScope
 	: empty
 	<< (*ast.SyncScope)(nil), nil >>
-	| "syncscope" "(" string_lit ")"
-	<< &ast.SyncScope{Scope: astx.String($2)}, nil >>
+	| "syncscope" "(" StringLit ")"
+	<< &ast.SyncScope{Scope: $2.(string)}, nil >>
 ;
 
 // ref: ParseOrdering

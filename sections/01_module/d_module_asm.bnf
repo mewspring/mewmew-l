@@ -7,7 +7,7 @@
 //   ::= 'module' 'asm' STRINGCONSTANT
 
 ModuleAsm
-	: "module" "asm" string_lit
-	<< &ast.ModuleAsm{Asm: astx.String($2)}, nil >>
+	: "module" "asm" StringLit
+	<< &ast.ModuleAsm{Asm: $2.(string)}, nil >>
 ;
 

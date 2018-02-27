@@ -20,8 +20,8 @@ Value
 //             STRINGCONSTANT
 
 InlineAsm
-	: "asm" OptSideEffect OptAlignStack OptIntelDialect string_lit "," string_lit
-	<< &ast.InlineAsm{SideEffect: $1.(bool), AlignStack: $2.(bool), IntelDialect: $3.(bool), Asm: astx.String($4), Constraint: astx.String($6)}, nil >>
+	: "asm" OptSideEffect OptAlignStack OptIntelDialect StringLit "," StringLit
+	<< &ast.InlineAsm{SideEffect: $1.(bool), AlignStack: $2.(bool), IntelDialect: $3.(bool), Asm: $4.(string), Constraint: $6.(string)}, nil >>
 ;
 
 OptSideEffect

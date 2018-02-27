@@ -153,6 +153,11 @@ func Escape(s string, valid func(b byte) bool) string {
 	return string(buf)
 }
 
+// Quote returns s as a double-quoted string literal.
+func Quote(s string) string {
+	return `"` + EscapeString(s) + `"`
+}
+
 // Unquote interprets s as a double-quoted string literal, returning the string
 // value that s quotes.
 func Unquote(s string) string {

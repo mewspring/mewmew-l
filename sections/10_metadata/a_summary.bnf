@@ -71,8 +71,8 @@ Metadata
 //   ::= '!' STRINGCONSTANT
 
 MDString
-	: "!" string_lit
-	<< &ast.MDString{Value: astx.String($1)}, nil >>
+	: "!" StringLit
+	<< &ast.MDString{Value: $1.(string)}, nil >>
 ;
 
 // --- [ Metadata Attachment ] -------------------------------------------------
