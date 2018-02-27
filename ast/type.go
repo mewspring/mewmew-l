@@ -194,7 +194,7 @@ func (t *NamedType) String() string {
 func (*VoidType) isType()     {}
 func (*FuncType) isType()     {}
 func (*IntType) isType()      {}
-func (*FloatType) isType()    {}
+func (FloatType) isType()     {}
 func (*MMXType) isType()      {}
 func (*PointerType) isType()  {}
 func (*VectorType) isType()   {}

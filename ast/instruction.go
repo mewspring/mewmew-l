@@ -369,6 +369,16 @@ type ExtractElementInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *ExtractElementInst) String() string {
+	buf := &strings.Builder{}
+	// "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "extractelement %v, %v", inst.X, inst.Index)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type InsertElementInst struct {
 	X        *TypeValue
 	Elem     *TypeValue
@@ -376,10 +386,30 @@ type InsertElementInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *InsertElementInst) String() string {
+	buf := &strings.Builder{}
+	// "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "insertelement %v, %v, %v", inst.X, inst.Elem, inst.Index)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type ShuffleVectorInst struct {
 	X, Y     *TypeValue
 	Mask     *TypeValue
 	Metadata []*MetadataAttachment
+}
+
+func (inst *ShuffleVectorInst) String() string {
+	buf := &strings.Builder{}
+	// "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "shufflevector %v, %v, %v", inst.X, inst.Y, inst.Mask)
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 // --- [ Aggregate instructions ] ----------------------------------------------
@@ -390,11 +420,37 @@ type ExtractValueInst struct {
 	Metadata []*MetadataAttachment
 }
 
+func (inst *ExtractValueInst) String() string {
+	buf := &strings.Builder{}
+	// "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "extractvalue %v", inst.X)
+	for _, index := range inst.Indices {
+		fmt.Fprintf(buf, ", %v", index)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
+}
+
 type InsertValueInst struct {
 	X        *TypeValue
 	Elem     *TypeValue
 	Indices  []int64
 	Metadata []*MetadataAttachment
+}
+
+func (inst *InsertValueInst) String() string {
+	buf := &strings.Builder{}
+	// "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
+	fmt.Fprintf(buf, "insertvalue %v, %v", inst.X, inst.Elem)
+	for _, index := range inst.Indices {
+		fmt.Fprintf(buf, ", %v", index)
+	}
+	for _, md := range inst.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
+	}
+	return buf.String()
 }
 
 // --- [ Memory instructions ] -------------------------------------------------

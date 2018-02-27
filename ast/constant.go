@@ -2,7 +2,6 @@ package ast
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
@@ -31,21 +30,21 @@ func (c *BoolConst) String() string {
 // --- [ Integer Constants ] ---------------------------------------------------
 
 type IntConst struct {
-	X int64
+	X string
 }
 
 func (c *IntConst) String() string {
-	return strconv.FormatInt(c.X, 10)
+	return c.X
 }
 
 // --- [ Floating-point Constants ] --------------------------------------------
 
 type FloatConst struct {
-	X float64
+	X string
 }
 
 func (c *FloatConst) String() string {
-	return strconv.FormatFloat(c.X, 'f', -1, 64)
+	return c.X
 }
 
 // --- [ Null Pointer Constants ] ----------------------------------------------

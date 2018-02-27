@@ -85,23 +85,13 @@ func NewIntType(tok interface{}) (*ast.IntType, error) {
 
 // NewIntConst returns a new integer constant corresponding to the given token.
 func NewIntConst(tok interface{}) (*ast.IntConst, error) {
-	s := String(tok)
-	x, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-	return &ast.IntConst{X: x}, nil
+	return &ast.IntConst{X: String(tok)}, nil
 }
 
 // NewFloatConst returns a new floating-point constant corresponding to the
 // given token.
 func NewFloatConst(tok interface{}) (*ast.FloatConst, error) {
-	s := String(tok)
-	x, err := strconv.ParseFloat(s, 64)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-	return &ast.FloatConst{X: x}, nil
+	return &ast.FloatConst{X: String(tok)}, nil
 }
 
 // NewCallingConv returns a new calling convention corresponding to the given

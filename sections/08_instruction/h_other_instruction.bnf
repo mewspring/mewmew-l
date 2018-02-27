@@ -23,7 +23,7 @@ ICmpInst
 
 FCmpInst
 	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FCmpInst{Pred: $1.(ast.FPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FCmpInst{FastMathFlags: X[1].([]ast.FastMathFlag), Pred: $2.(ast.FPred), X: astx.TypeValue($3, $4), Y: astx.TypeValue($3, $6), Metadata: $7.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
