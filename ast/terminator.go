@@ -181,7 +181,7 @@ type ResumeTerm struct {
 func (term *ResumeTerm) String() string {
 	// "resume" Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "resume %v", term.X, term.X)
+	fmt.Fprintf(buf, "resume %v", term.X)
 	for _, md := range term.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}

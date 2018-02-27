@@ -14,7 +14,7 @@ type Module struct {
 func (m *Module) String() string {
 	buf := &strings.Builder{}
 	for _, entity := range m.Entities {
-		fmt.Println(buf, entity.String())
+		fmt.Fprintln(buf, entity.String())
 	}
 	return buf.String()
 }
