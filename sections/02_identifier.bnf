@@ -25,7 +25,7 @@ LabelIdent
 
 AttrGroupID
 	: attr_group_id
-	<< &ast.AttrGroupID{astx.String($0)}, nil >>
+	<< &ast.AttrGroupID{ID: astx.String($0)}, nil >>
 ;
 
 // --- [ Comdat Identifiers ] --------------------------------------------------
@@ -44,6 +44,6 @@ MetadataName
 
 MetadataID
 	: metadata_id
-	<< &ast.MetadataID{astx.String($0)}, nil >>
+	<< &ast.MetadataID{ID: astx.String($0)}, nil >>
 ;
 

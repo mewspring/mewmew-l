@@ -8,7 +8,7 @@
 
 MDTuple
 	: "!" MDFields
-	<< $1, nil >>
+	<< &ast.MDTuple{Fields: $1.([]ast.MDField)}, nil >>
 ;
 
 // ref: ParseMDNodeVector

@@ -483,9 +483,21 @@ func (*DIExpression) isMetadataNode() {}
 // ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type MetadataDef struct {
-	Name     *MetadataID
+	ID       *MetadataID
 	Distinct bool
 	Node     MDNode // MDTuple or SpecializedMDNode
+}
+
+func (def *MetadataDef) String() string {
+	// MetadataID "=" OptDistinct MDTuple
+	// MetadataID "=" OptDistinct SpecializedMDNode
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v = ", def.ID)
+	if def.Distinct {
+		buf.WriteString("distinct ")
+	}
+	buf.WriteString(def.Node.String())
+	return buf.String()
 }
 
 // ~~~ [ Use-list Order Directives ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

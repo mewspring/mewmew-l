@@ -30,10 +30,13 @@ Constant
 // ref: ParseValID
 
 BoolConst
-	: "true"
-	<< &ast.BoolConst{X: true}, nil >>
-	| "false"
-	<< &ast.BoolConst{X: false}, nil >>
+	: BoolLit
+	<< &ast.BoolConst{X: $0.(bool)}, nil >>
+;
+
+BoolLit
+	: "true"    << true, nil >>
+	| "false"   << false, nil >>
 ;
 
 // --- [ Integer Constants ] ---------------------------------------------------
@@ -45,6 +48,11 @@ BoolConst
 IntConst
 	: int_lit
 	<< astx.NewIntConst($0) >>
+;
+
+IntLit
+	: int_lit
+	<< astx.Int($0), nil >>
 ;
 
 // --- [ Floating-point Constants ] --------------------------------------------

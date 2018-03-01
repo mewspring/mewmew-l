@@ -11,55 +11,55 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.DICompileUnit{}
 	if v, ok := m["language:"]; ok {
-		m["language:"] = v.(ast.DwarfLang)
+		node.Language = v.(ast.DwarfLang)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["producer:"]; ok {
-		m["producer:"] = v.(string)
+		node.Producer = v.(string)
 	}
 	if v, ok := m["isOptimized:"]; ok {
-		m["isOptimized:"] = v.(bool)
+		node.IsOptimized = v.(bool)
 	}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.(string)
+		node.Flags = v.(string)
 	}
 	if v, ok := m["runtimeVersion:"]; ok {
-		m["runtimeVersion:"] = v.(int64)
+		node.RuntimeVersion = v.(int64)
 	}
 	if v, ok := m["splitDebugFilename:"]; ok {
-		m["splitDebugFilename:"] = v.(string)
+		node.SplitDebugFilename = v.(string)
 	}
 	if v, ok := m["emissionKind:"]; ok {
-		m["emissionKind:"] = v.(ast.EmissionKind)
+		node.EmissionKind = v.(ast.EmissionKind)
 	}
 	if v, ok := m["enums:"]; ok {
-		m["enums:"] = v.(ast.MDField)
+		node.Enums = v.(ast.MDField)
 	}
 	if v, ok := m["retainedTypes:"]; ok {
-		m["retainedTypes:"] = v.(ast.MDField)
+		node.RetainedTypes = v.(ast.MDField)
 	}
 	if v, ok := m["globals:"]; ok {
-		m["globals:"] = v.(ast.MDField)
+		node.Globals = v.(ast.MDField)
 	}
 	if v, ok := m["imports:"]; ok {
-		m["imports:"] = v.(ast.MDField)
+		node.Imports = v.(ast.MDField)
 	}
 	if v, ok := m["macros:"]; ok {
-		m["macros:"] = v.(ast.MDField)
+		node.Macros = v.(ast.MDField)
 	}
 	if v, ok := m["dwoId:"]; ok {
-		m["dwoId:"] = v.(int64)
+		node.DwoId = v.(int64)
 	}
 	if v, ok := m["splitDebugInlining:"]; ok {
-		m["splitDebugInlining:"] = v.(bool)
+		node.SplitDebugInlining = v.(bool)
 	}
 	if v, ok := m["debugInfoForProfiling:"]; ok {
-		m["debugInfoForProfiling:"] = v.(bool)
+		node.DebugInfoForProfiling = v.(bool)
 	}
 	if v, ok := m["gnuPubnames:"]; ok {
-		m["gnuPubnames:"] = v.(bool)
+		node.GnuPubnames = v.(bool)
 	}
 	return node, nil
 }
@@ -69,16 +69,16 @@ func NewDIFile(fields []*SpecializedMDField) (*ast.DIFile, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIFile{}
 	if v, ok := m["filename:"]; ok {
-		m["filename:"] = v.(string)
+		node.Filename = v.(string)
 	}
 	if v, ok := m["directory:"]; ok {
-		m["directory:"] = v.(string)
+		node.Directory = v.(string)
 	}
 	if v, ok := m["checksumkind:"]; ok {
-		m["checksumkind:"] = v.(ast.ChecksumKind)
+		node.Checksumkind = v.(ast.ChecksumKind)
 	}
 	if v, ok := m["checksum:"]; ok {
-		m["checksum:"] = v.(string)
+		node.Checksum = v.(string)
 	}
 	return node, nil
 }
@@ -88,19 +88,19 @@ func NewDIBasicType(fields []*SpecializedMDField) (*ast.DIBasicType, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIBasicType{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["size:"]; ok {
-		m["size:"] = v.(int64)
+		node.Size = v.(int64)
 	}
 	if v, ok := m["align:"]; ok {
-		m["align:"] = v.(int64)
+		node.Align = v.(int64)
 	}
 	if v, ok := m["encoding:"]; ok {
-		m["encoding:"] = v.(ast.DwarfAttEncoding)
+		node.Encoding = v.(ast.DwarfAttEncoding)
 	}
 	return node, nil
 }
@@ -110,13 +110,13 @@ func NewDISubroutineType(fields []*SpecializedMDField) (*ast.DISubroutineType, e
 	m := getMDFieldMap(fields)
 	node := &ast.DISubroutineType{}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.([]ast.DIFlag)
+		node.Flags = v.([]ast.DIFlag)
 	}
 	if v, ok := m["cc:"]; ok {
-		m["cc:"] = v.(ast.DwarfCC)
+		node.CC = v.(ast.DwarfCC)
 	}
 	if v, ok := m["types:"]; ok {
-		m["types:"] = v.(ast.MDField)
+		node.Types = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -126,40 +126,40 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.DIDerivedType{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["baseType:"]; ok {
-		m["baseType:"] = v.(ast.MDField)
+		node.BaseType = v.(ast.MDField)
 	}
 	if v, ok := m["size:"]; ok {
-		m["size:"] = v.(int64)
+		node.Size = v.(int64)
 	}
 	if v, ok := m["align:"]; ok {
-		m["align:"] = v.(int64)
+		node.Align = v.(int64)
 	}
 	if v, ok := m["offset:"]; ok {
-		m["offset:"] = v.(int64)
+		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.([]ast.DIFlag)
+		node.Flags = v.([]ast.DIFlag)
 	}
 	if v, ok := m["extraData:"]; ok {
-		m["extraData:"] = v.(ast.MDField)
+		node.ExtraData = v.(ast.MDField)
 	}
 	if v, ok := m["dwarfAddressSpace:"]; ok {
-		m["dwarfAddressSpace:"] = v.(int64)
+		node.DwarfAddressSpace = v.(int64)
 	}
 	return node, nil
 }
@@ -169,52 +169,52 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 	m := getMDFieldMap(fields)
 	node := &ast.DICompositeType{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["baseType:"]; ok {
-		m["baseType:"] = v.(ast.MDField)
+		node.BaseType = v.(ast.MDField)
 	}
 	if v, ok := m["size:"]; ok {
-		m["size:"] = v.(int64)
+		node.Size = v.(int64)
 	}
 	if v, ok := m["align:"]; ok {
-		m["align:"] = v.(int64)
+		node.Align = v.(int64)
 	}
 	if v, ok := m["offset:"]; ok {
-		m["offset:"] = v.(int64)
+		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.([]ast.DIFlag)
+		node.Flags = v.([]ast.DIFlag)
 	}
 	if v, ok := m["elements:"]; ok {
-		m["elements:"] = v.(ast.MDField)
+		node.Elements = v.(ast.MDField)
 	}
 	if v, ok := m["runtimeLang:"]; ok {
-		m["runtimeLang:"] = v.(ast.DwarfLang)
+		node.RuntimeLang = v.(ast.DwarfLang)
 	}
 	if v, ok := m["vtableHolder:"]; ok {
-		m["vtableHolder:"] = v.(ast.MDField)
+		node.VtableHolder = v.(ast.MDField)
 	}
 	if v, ok := m["templateParams:"]; ok {
-		m["templateParams:"] = v.(ast.MDField)
+		node.TemplateParams = v.(ast.MDField)
 	}
 	if v, ok := m["identifier:"]; ok {
-		m["identifier:"] = v.(string)
+		node.Identifier = v.(string)
 	}
 	if v, ok := m["discriminator:"]; ok {
-		m["discriminator:"] = v.(ast.MDField)
+		node.Discriminator = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -224,10 +224,10 @@ func NewDISubrange(fields []*SpecializedMDField) (*ast.DISubrange, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DISubrange{}
 	if v, ok := m["count:"]; ok {
-		m["count:"] = v.(ast.IntOrMDField)
+		node.Count = v.(ast.IntOrMDField)
 	}
 	if v, ok := m["lowerBound:"]; ok {
-		m["lowerBound:"] = v.(int64)
+		node.LowerBound = v.(int64)
 	}
 	return node, nil
 }
@@ -237,13 +237,13 @@ func NewDIEnumerator(fields []*SpecializedMDField) (*ast.DIEnumerator, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIEnumerator{}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["value:"]; ok {
-		m["value:"] = v.(int64)
+		node.Value = v.(int64)
 	}
 	if v, ok := m["isUnsigned:"]; ok {
-		m["isUnsigned:"] = v.(bool)
+		node.IsUnsigned = v.(bool)
 	}
 	return node, nil
 }
@@ -254,10 +254,10 @@ func NewDITemplateTypeParameter(fields []*SpecializedMDField) (*ast.DITemplateTy
 	m := getMDFieldMap(fields)
 	node := &ast.DITemplateTypeParameter{}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -268,16 +268,16 @@ func NewDITemplateValueParameter(fields []*SpecializedMDField) (*ast.DITemplateV
 	m := getMDFieldMap(fields)
 	node := &ast.DITemplateValueParameter{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	if v, ok := m["value:"]; ok {
-		m["value:"] = v.(ast.MDField)
+		node.Value = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -287,19 +287,19 @@ func NewDIModule(fields []*SpecializedMDField) (*ast.DIModule, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIModule{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["configMacros:"]; ok {
-		m["configMacros:"] = v.(string)
+		node.ConfigMacros = v.(string)
 	}
 	if v, ok := m["includePath:"]; ok {
-		m["includePath:"] = v.(string)
+		node.IncludePath = v.(string)
 	}
 	if v, ok := m["isysroot:"]; ok {
-		m["isysroot:"] = v.(string)
+		node.Isysroot = v.(string)
 	}
 	return node, nil
 }
@@ -309,13 +309,13 @@ func NewDINamespace(fields []*SpecializedMDField) (*ast.DINamespace, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DINamespace{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["exportSymbols:"]; ok {
-		m["exportSymbols:"] = v.(bool)
+		node.ExportSymbols = v.(bool)
 	}
 	return node, nil
 }
@@ -325,34 +325,34 @@ func NewDIGlobalVariable(fields []*SpecializedMDField) (*ast.DIGlobalVariable, e
 	m := getMDFieldMap(fields)
 	node := &ast.DIGlobalVariable{}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["linkageName:"]; ok {
-		m["linkageName:"] = v.(string)
+		node.LinkageName = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	if v, ok := m["isLocal:"]; ok {
-		m["isLocal:"] = v.(bool)
+		node.IsLocal = v.(bool)
 	}
 	if v, ok := m["isDefinition:"]; ok {
-		m["isDefinition:"] = v.(bool)
+		node.IsDefinition = v.(bool)
 	}
 	if v, ok := m["declaration:"]; ok {
-		m["declaration:"] = v.(ast.MDField)
+		node.Declaration = v.(ast.MDField)
 	}
 	if v, ok := m["align:"]; ok {
-		m["align:"] = v.(int64)
+		node.Align = v.(int64)
 	}
 	return node, nil
 }
@@ -362,64 +362,64 @@ func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DISubprogram{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["linkageName:"]; ok {
-		m["linkageName:"] = v.(string)
+		node.LinkageName = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	if v, ok := m["isLocal:"]; ok {
-		m["isLocal:"] = v.(bool)
+		node.IsLocal = v.(bool)
 	}
 	if v, ok := m["isDefinition:"]; ok {
-		m["isDefinition:"] = v.(bool)
+		node.IsDefinition = v.(bool)
 	}
 	if v, ok := m["scopeLine:"]; ok {
-		m["scopeLine:"] = v.(int64)
+		node.ScopeLine = v.(int64)
 	}
 	if v, ok := m["containingType:"]; ok {
-		m["containingType:"] = v.(ast.MDField)
+		node.ContainingType = v.(ast.MDField)
 	}
 	if v, ok := m["virtuality:"]; ok {
-		m["virtuality:"] = v.(ast.DwarfVirtuality)
+		node.Virtuality = v.(ast.DwarfVirtuality)
 	}
 	if v, ok := m["virtualIndex:"]; ok {
-		m["virtualIndex:"] = v.(int64)
+		node.VirtualIndex = v.(int64)
 	}
 	if v, ok := m["thisAdjustment:"]; ok {
-		m["thisAdjustment:"] = v.(int64)
+		node.ThisAdjustment = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.([]ast.DIFlag)
+		node.Flags = v.([]ast.DIFlag)
 	}
 	if v, ok := m["isOptimized:"]; ok {
-		m["isOptimized:"] = v.(bool)
+		node.IsOptimized = v.(bool)
 	}
 	if v, ok := m["unit:"]; ok {
-		m["unit:"] = v.(ast.MDField)
+		node.Unit = v.(ast.MDField)
 	}
 	if v, ok := m["templateParams:"]; ok {
-		m["templateParams:"] = v.(ast.MDField)
+		node.TemplateParams = v.(ast.MDField)
 	}
 	if v, ok := m["declaration:"]; ok {
-		m["declaration:"] = v.(ast.MDField)
+		node.Declaration = v.(ast.MDField)
 	}
 	if v, ok := m["variables:"]; ok {
-		m["variables:"] = v.(ast.MDField)
+		node.Variables = v.(ast.MDField)
 	}
 	if v, ok := m["thrownTypes:"]; ok {
-		m["thrownTypes:"] = v.(ast.MDField)
+		node.ThrownTypes = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -429,16 +429,16 @@ func NewDILexicalBlock(fields []*SpecializedMDField) (*ast.DILexicalBlock, error
 	m := getMDFieldMap(fields)
 	node := &ast.DILexicalBlock{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["column:"]; ok {
-		m["column:"] = v.(int64)
+		node.Column = v.(int64)
 	}
 	return node, nil
 }
@@ -449,13 +449,13 @@ func NewDILexicalBlockFile(fields []*SpecializedMDField) (*ast.DILexicalBlockFil
 	m := getMDFieldMap(fields)
 	node := &ast.DILexicalBlockFile{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["discriminator:"]; ok {
-		m["discriminator:"] = v.(int64)
+		node.Discriminator = v.(int64)
 	}
 	return node, nil
 }
@@ -465,16 +465,16 @@ func NewDILocation(fields []*SpecializedMDField) (*ast.DILocation, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DILocation{}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["column:"]; ok {
-		m["column:"] = v.(int64)
+		node.Column = v.(int64)
 	}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["inlinedAt:"]; ok {
-		m["inlinedAt:"] = v.(ast.MDField)
+		node.InlinedAt = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -484,28 +484,28 @@ func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, err
 	m := getMDFieldMap(fields)
 	node := &ast.DILocalVariable{}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["arg:"]; ok {
-		m["arg:"] = v.(int64)
+		node.Arg = v.(int64)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	if v, ok := m["flags:"]; ok {
-		m["flags:"] = v.([]ast.DIFlag)
+		node.Flags = v.([]ast.DIFlag)
 	}
 	if v, ok := m["align:"]; ok {
-		m["align:"] = v.(int64)
+		node.Align = v.(int64)
 	}
 	return node, nil
 }
@@ -516,10 +516,10 @@ func NewDIGlobalVariableExpression(fields []*SpecializedMDField) (*ast.DIGlobalV
 	m := getMDFieldMap(fields)
 	node := &ast.DIGlobalVariableExpression{}
 	if v, ok := m["var:"]; ok {
-		m["var:"] = v.(ast.MDField)
+		node.Var = v.(ast.MDField)
 	}
 	if v, ok := m["expr:"]; ok {
-		m["expr:"] = v.(ast.MDField)
+		node.Expr = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -529,25 +529,25 @@ func NewDIObjCProperty(fields []*SpecializedMDField) (*ast.DIObjCProperty, error
 	m := getMDFieldMap(fields)
 	node := &ast.DIObjCProperty{}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["setter:"]; ok {
-		m["setter:"] = v.(string)
+		node.Setter = v.(string)
 	}
 	if v, ok := m["getter:"]; ok {
-		m["getter:"] = v.(string)
+		node.Getter = v.(string)
 	}
 	if v, ok := m["attributes:"]; ok {
-		m["attributes:"] = v.(int64)
+		node.Attributes = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.MDField)
+		node.Type = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -557,22 +557,22 @@ func NewDIImportedEntity(fields []*SpecializedMDField) (*ast.DIImportedEntity, e
 	m := getMDFieldMap(fields)
 	node := &ast.DIImportedEntity{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["scope:"]; ok {
-		m["scope:"] = v.(ast.MDField)
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["entity:"]; ok {
-		m["entity:"] = v.(ast.MDField)
+		node.Entity = v.(ast.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	return node, nil
 }
@@ -582,16 +582,16 @@ func NewDIMacro(fields []*SpecializedMDField) (*ast.DIMacro, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIMacro{}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.DwarfMacinfo)
+		node.Type = v.(ast.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["name:"]; ok {
-		m["name:"] = v.(string)
+		node.Name = v.(string)
 	}
 	if v, ok := m["value:"]; ok {
-		m["value:"] = v.(string)
+		node.Value = v.(string)
 	}
 	return node, nil
 }
@@ -601,16 +601,16 @@ func NewDIMacroFile(fields []*SpecializedMDField) (*ast.DIMacroFile, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIMacroFile{}
 	if v, ok := m["type:"]; ok {
-		m["type:"] = v.(ast.DwarfMacinfo)
+		node.Type = v.(ast.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
-		m["line:"] = v.(int64)
+		node.Line = v.(int64)
 	}
 	if v, ok := m["file:"]; ok {
-		m["file:"] = v.(ast.MDField)
+		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["nodes:"]; ok {
-		m["nodes:"] = v.(ast.MDField)
+		node.Nodes = v.(ast.MDField)
 	}
 	return node, nil
 }
@@ -620,13 +620,13 @@ func NewGenericDINode(fields []*SpecializedMDField) (*ast.GenericDINode, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.GenericDINode{}
 	if v, ok := m["tag:"]; ok {
-		m["tag:"] = v.(ast.DwarfTag)
+		node.Tag = v.(ast.DwarfTag)
 	}
 	if v, ok := m["header:"]; ok {
-		m["header:"] = v.(string)
+		node.Header = v.(string)
 	}
 	if v, ok := m["operands:"]; ok {
-		m["operands:"] = v.([]ast.MDField)
+		node.Operands = v.([]ast.MDField)
 	}
 	return node, nil
 }
