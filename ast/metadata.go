@@ -212,24 +212,24 @@ func (md *DICompileUnit) String() string {
 	fields = append(fields, field)
 	field = fmt.Sprintf("file: %v", md.File)
 	fields = append(fields, field)
-	if len(md.Producer) < 0 {
-		field = fmt.Sprintf("mdProducer: %v", md.Producer)
+	if len(md.Producer) > 0 {
+		field = fmt.Sprintf("producer: %v", enc.Quote(md.Producer))
 		fields = append(fields, field)
 	}
 	if md.IsOptimized {
 		field = fmt.Sprintf("isOptimized: %v", md.IsOptimized)
 		fields = append(fields, field)
 	}
-	if len(md.Flags) < 0 {
-		field = fmt.Sprintf("mdFlags: %v", md.Flags)
+	if len(md.Flags) > 0 {
+		field = fmt.Sprintf("mdFlags: %v", enc.Quote(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.RuntimeVersion != 0 {
 		field = fmt.Sprintf("runtimeVersion: %v", md.RuntimeVersion)
 		fields = append(fields, field)
 	}
-	if len(md.SplitDebugFilename) < 0 {
-		field = fmt.Sprintf("mdSplitDebugFilename: %v", md.SplitDebugFilename)
+	if len(md.SplitDebugFilename) > 0 {
+		field = fmt.Sprintf("mdSplitDebugFilename: %v", enc.Quote(md.SplitDebugFilename))
 		fields = append(fields, field)
 	}
 	if md.EmissionKind != 0 {
@@ -288,16 +288,16 @@ type DIFile struct {
 func (md *DIFile) String() string {
 	// "!DIFile" "(" DIFileFields ")"
 	var fields []string
-	field := fmt.Sprintf("filename: %v", md.Filename)
+	field := fmt.Sprintf("filename: %v", enc.Quote(md.Filename))
 	fields = append(fields, field)
-	field = fmt.Sprintf("directory: %v", md.Directory)
+	field = fmt.Sprintf("directory: %v", enc.Quote(md.Directory))
 	fields = append(fields, field)
 	if md.Checksumkind != 0 {
 		field := fmt.Sprintf("checksumkind: %v", md.Checksumkind)
 		fields = append(fields, field)
 	}
 	if len(md.Checksum) > 0 {
-		field := fmt.Sprintf("checksum: %v", md.Checksum)
+		field := fmt.Sprintf("checksum: %v", enc.Quote(md.Checksum))
 		fields = append(fields, field)
 	}
 	return fmt.Sprintf("!DIFile(%v)", strings.Join(fields, ", "))
@@ -323,7 +323,7 @@ func (md *DIBasicType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	if md.Size != 0 {
@@ -354,7 +354,7 @@ func (md *DISubroutineType) String() string {
 	// "!DISubroutineType" "(" DISubroutineTypeFields ")"
 	var fields []string
 	if len(md.Flags) > 0 {
-		field := fmt.Sprintf("flags: %v", md.Flags)
+		field := fmt.Sprintf("flags: %v", flagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.CC != 0 {
@@ -371,9 +371,9 @@ func (md *DISubroutineType) String() string {
 type DIDerivedType struct {
 	Tag               DwarfTag // required
 	Name              string   // optional; empty if not present
+	Scope             MDField  // optional; nil if not present
 	File              MDField  // optional; nil if not present
 	Line              int64    // optional; zero value if not present
-	Scope             MDField  // optional; nil if not present
 	BaseType          MDField  // required
 	Size              int64    // optional; zero value if not present
 	Align             int64    // optional; zero value if not present
@@ -390,7 +390,11 @@ func (md *DIDerivedType) String() string {
 	field := fmt.Sprintf("tag: %v", md.Tag)
 	fields = append(fields, field)
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
+		fields = append(fields, field)
+	}
+	if md.Scope != nil {
+		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
 	if md.File != nil {
@@ -399,10 +403,6 @@ func (md *DIDerivedType) String() string {
 	}
 	if md.Line != 0 {
 		field := fmt.Sprintf("line: %v", md.Line)
-		fields = append(fields, field)
-	}
-	if md.Scope != nil {
-		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
 	field = fmt.Sprintf("baseType: %v", md.BaseType)
@@ -420,7 +420,7 @@ func (md *DIDerivedType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", md.Flags)
+		field = fmt.Sprintf("flags: %v", flagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.ExtraData != nil {
@@ -439,9 +439,9 @@ func (md *DIDerivedType) String() string {
 type DICompositeType struct {
 	Tag            DwarfTag  // required
 	Name           string    // optional; empty if not present
+	Scope          MDField   // optional; nil if not present
 	File           MDField   // optional; nil if not present
 	Line           int64     // optional; zero value if not present
-	Scope          MDField   // optional; nil if not present
 	BaseType       MDField   // optional; nil if not present
 	Size           int64     // optional; zero value if not present
 	Align          int64     // optional; zero value if not present
@@ -462,7 +462,11 @@ func (md *DICompositeType) String() string {
 	field := fmt.Sprintf("tag: %v", md.Tag)
 	fields = append(fields, field)
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
+		fields = append(fields, field)
+	}
+	if md.Scope != nil {
+		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
 	if md.File != nil {
@@ -471,10 +475,6 @@ func (md *DICompositeType) String() string {
 	}
 	if md.Line != 0 {
 		field := fmt.Sprintf("line: %v", md.Line)
-		fields = append(fields, field)
-	}
-	if md.Scope != nil {
-		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
 	if md.BaseType != nil {
@@ -494,7 +494,7 @@ func (md *DICompositeType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", md.Flags)
+		field = fmt.Sprintf("flags: %v", flagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.Elements != nil {
@@ -514,7 +514,7 @@ func (md *DICompositeType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Identifier) > 0 {
-		field := fmt.Sprintf("identifier: %v", md.Identifier)
+		field := fmt.Sprintf("identifier: %v", enc.Quote(md.Identifier))
 		fields = append(fields, field)
 	}
 	if md.Discriminator != nil {
@@ -556,7 +556,7 @@ type DIEnumerator struct {
 func (md *DIEnumerator) String() string {
 	// "!DIEnumerator" "(" DIEnumeratorFields ")"
 	var fields []string
-	field := fmt.Sprintf("name: %v", md.Name)
+	field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 	fields = append(fields, field)
 	field = fmt.Sprintf("value: %v", md.Value)
 	fields = append(fields, field)
@@ -580,7 +580,7 @@ func (md *DITemplateTypeParameter) String() string {
 	var fields []string
 
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	field := fmt.Sprintf("type: %v", md.Type)
@@ -607,7 +607,7 @@ func (md *DITemplateValueParameter) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	if md.Type != nil {
@@ -635,18 +635,18 @@ func (md *DIModule) String() string {
 	var fields []string
 	field := fmt.Sprintf("scope: %v", md.Scope)
 	fields = append(fields, field)
-	field = fmt.Sprintf("name: %v", md.Name)
+	field = fmt.Sprintf("name: %v", enc.Quote(md.Name))
 	fields = append(fields, field)
 	if len(md.ConfigMacros) > 0 {
-		field := fmt.Sprintf("configMacros: %v", md.ConfigMacros)
+		field := fmt.Sprintf("configMacros: %v", enc.Quote(md.ConfigMacros))
 		fields = append(fields, field)
 	}
 	if len(md.IncludePath) > 0 {
-		field := fmt.Sprintf("includePath: %v", md.IncludePath)
+		field := fmt.Sprintf("includePath: %v", enc.Quote(md.IncludePath))
 		fields = append(fields, field)
 	}
 	if len(md.Isysroot) > 0 {
-		field := fmt.Sprintf("isysroot: %v", md.Isysroot)
+		field := fmt.Sprintf("isysroot: %v", enc.Quote(md.Isysroot))
 		fields = append(fields, field)
 	}
 	return fmt.Sprintf("!DIModule(%v)", strings.Join(fields, ", "))
@@ -667,7 +667,7 @@ func (md *DINamespace) String() string {
 	field := fmt.Sprintf("scope: %v", md.Scope)
 	fields = append(fields, field)
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	if md.ExportSymbols {
@@ -696,14 +696,14 @@ type DIGlobalVariable struct {
 func (md *DIGlobalVariable) String() string {
 	// "!DIGlobalVariable" "(" DIGlobalVariableFields ")"
 	var fields []string
-	field := fmt.Sprintf("name: %v", md.Name)
+	field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 	fields = append(fields, field)
 	if md.Scope != nil {
 		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
 	if len(md.LinkageName) > 0 {
-		field := fmt.Sprintf("linkageName: %v", md.LinkageName)
+		field := fmt.Sprintf("linkageName: %v", enc.Quote(md.LinkageName))
 		fields = append(fields, field)
 	}
 	if md.File != nil {
@@ -740,8 +740,8 @@ func (md *DIGlobalVariable) String() string {
 // ~~~ [ DISubprogram ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type DISubprogram struct {
-	Scope          MDField         // optional; nil if not present
 	Name           string          // optional; empty if not present
+	Scope          MDField         // optional; nil if not present
 	LinkageName    string          // optional; empty if not present
 	File           MDField         // optional; nil if not present
 	Line           int64           // optional; zero value if not present
@@ -766,17 +766,16 @@ type DISubprogram struct {
 func (md *DISubprogram) String() string {
 	// "!DISubprogram" "(" DISubprogramFields ")"
 	var fields []string
-
+	if len(md.Name) > 0 {
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
+		fields = append(fields, field)
+	}
 	if md.Scope != nil {
 		field := fmt.Sprintf("scope: %v", md.Scope)
 		fields = append(fields, field)
 	}
-	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
-		fields = append(fields, field)
-	}
 	if len(md.LinkageName) > 0 {
-		field := fmt.Sprintf("linkageName: %v", md.LinkageName)
+		field := fmt.Sprintf("linkageName: %v", enc.Quote(md.LinkageName))
 		fields = append(fields, field)
 	}
 	if md.File != nil {
@@ -820,7 +819,7 @@ func (md *DISubprogram) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field := fmt.Sprintf("flags: %v", md.Flags)
+		field := fmt.Sprintf("flags: %v", flagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.IsOptimized {
@@ -937,9 +936,9 @@ func (md *DILocation) String() string {
 // ~~~ [ DILocalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 type DILocalVariable struct {
-	Scope MDField  // required
 	Name  string   // optional; empty if not present
 	Arg   int64    // optional; zero value if not present
+	Scope MDField  // required
 	File  MDField  // optional; nil if not present
 	Line  int64    // optional; zero value if not present
 	Type  MDField  // optional; nil if not present
@@ -951,16 +950,16 @@ type DILocalVariable struct {
 func (md *DILocalVariable) String() string {
 	// "!DILocalVariable" "(" DILocalVariableFields ")"
 	var fields []string
-	field := fmt.Sprintf("scope: %v", md.Scope)
-	fields = append(fields, field)
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	if md.Arg != 0 {
 		field := fmt.Sprintf("arg: %v", md.Arg)
 		fields = append(fields, field)
 	}
+	field := fmt.Sprintf("scope: %v", md.Scope)
+	fields = append(fields, field)
 	if md.File != nil {
 		field := fmt.Sprintf("file: %v", md.File)
 		fields = append(fields, field)
@@ -974,7 +973,7 @@ func (md *DILocalVariable) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", md.Flags)
+		field = fmt.Sprintf("flags: %v", flagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.Align != 0 {
@@ -1026,8 +1025,12 @@ func (md *DIGlobalVariableExpression) String() string {
 	var fields []string
 	field := fmt.Sprintf("var: %v", md.Var)
 	fields = append(fields, field)
-	field = fmt.Sprintf("expr: %v", md.Expr)
-	fields = append(fields, field)
+	// NOTE: Should be required. Thus nil check should not be needed. However,
+	// Clang outputs `!0 = !DIGlobalVariableExpression(var: !1)` in cat.ll.
+	if md.Expr != nil {
+		field = fmt.Sprintf("expr: %v", md.Expr)
+		fields = append(fields, field)
+	}
 	return fmt.Sprintf("!DIGlobalVariableExpression(%v)", strings.Join(fields, ", "))
 }
 
@@ -1048,7 +1051,7 @@ func (md *DIObjCProperty) String() string {
 	// "!DIObjCProperty" "(" DIObjCPropertyFields ")"
 	var fields []string
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	if md.File != nil {
@@ -1060,11 +1063,11 @@ func (md *DIObjCProperty) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Setter) > 0 {
-		field := fmt.Sprintf("setter: %v", md.Setter)
+		field := fmt.Sprintf("setter: %v", enc.Quote(md.Setter))
 		fields = append(fields, field)
 	}
 	if len(md.Getter) > 0 {
-		field := fmt.Sprintf("getter: %v", md.Getter)
+		field := fmt.Sprintf("getter: %v", enc.Quote(md.Getter))
 		fields = append(fields, field)
 	}
 	if md.Attributes != 0 {
@@ -1110,7 +1113,7 @@ func (md *DIImportedEntity) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Name) > 0 {
-		field := fmt.Sprintf("name: %v", md.Name)
+		field := fmt.Sprintf("name: %v", enc.Quote(md.Name))
 		fields = append(fields, field)
 	}
 	return fmt.Sprintf("!DIImportedEntity(%v)", strings.Join(fields, ", "))
@@ -1135,10 +1138,10 @@ func (md *DIMacro) String() string {
 		field := fmt.Sprintf("line: %v", md.Line)
 		fields = append(fields, field)
 	}
-	field = fmt.Sprintf("name: %v", md.Name)
+	field = fmt.Sprintf("name: %v", enc.Quote(md.Name))
 	fields = append(fields, field)
 	if len(md.Value) > 0 {
-		field := fmt.Sprintf("value: %v", md.Value)
+		field := fmt.Sprintf("value: %v", enc.Quote(md.Value))
 		fields = append(fields, field)
 	}
 	return fmt.Sprintf("!DIMacro(%v)", strings.Join(fields, ", "))
@@ -1190,7 +1193,7 @@ func (md *GenericDINode) String() string {
 	field := fmt.Sprintf("tag: %v", md.Tag)
 	fields = append(fields, field)
 	if len(md.Header) > 0 {
-		field := fmt.Sprintf("header: %v", md.Header)
+		field := fmt.Sprintf("header: %v", enc.Quote(md.Header))
 		fields = append(fields, field)
 	}
 	if len(md.Operands) > 0 {
@@ -1760,3 +1763,13 @@ const (
 	DwarfMacinfoEndFile   DwarfMacinfo = 0x04 // DW_MACINFO_end_file
 	DwarfMacinfoVendorExt DwarfMacinfo = 0xFF // DW_MACINFO_vendor_ext
 )
+
+// flagsString returns the string representation of the given debug information
+// flags.
+func flagsString(flags []DIFlag) string {
+	var ss []string
+	for _, flag := range flags {
+		ss = append(ss, flag.String())
+	}
+	return strings.Join(ss, " | ")
+}

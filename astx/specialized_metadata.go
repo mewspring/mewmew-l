@@ -131,14 +131,14 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
+	if v, ok := m["scope:"]; ok {
+		node.Scope = v.(ast.MDField)
+	}
 	if v, ok := m["file:"]; ok {
 		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
-	}
-	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["baseType:"]; ok {
 		node.BaseType = v.(ast.MDField)
@@ -174,14 +174,14 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
+	if v, ok := m["scope:"]; ok {
+		node.Scope = v.(ast.MDField)
+	}
 	if v, ok := m["file:"]; ok {
 		node.File = v.(ast.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
-	}
-	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["baseType:"]; ok {
 		node.BaseType = v.(ast.MDField)
@@ -361,11 +361,11 @@ func NewDIGlobalVariable(fields []*SpecializedMDField) (*ast.DIGlobalVariable, e
 func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DISubprogram{}
-	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
-	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
+	}
+	if v, ok := m["scope:"]; ok {
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["linkageName:"]; ok {
 		node.LinkageName = v.(string)
@@ -483,14 +483,14 @@ func NewDILocation(fields []*SpecializedMDField) (*ast.DILocation, error) {
 func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DILocalVariable{}
-	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
-	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
 	if v, ok := m["arg:"]; ok {
 		node.Arg = v.(int64)
+	}
+	if v, ok := m["scope:"]; ok {
+		node.Scope = v.(ast.MDField)
 	}
 	if v, ok := m["file:"]; ok {
 		node.File = v.(ast.MDField)

@@ -249,9 +249,9 @@ DISubroutineTypeField
 //
 //  REQUIRED(tag, DwarfTagField, );
 //  OPTIONAL(name, MDStringField, );
+//  OPTIONAL(scope, MDField, );
 //  OPTIONAL(file, MDField, );
 //  OPTIONAL(line, LineField, );
-//  OPTIONAL(scope, MDField, );
 //  REQUIRED(baseType, MDField, );
 //  OPTIONAL(size, MDUnsignedField, (0, UINT64_MAX));
 //  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
@@ -281,9 +281,9 @@ DIDerivedTypeFieldList
 DIDerivedTypeField
 	: TagField
 	| NameField
+	| ScopeField
 	| FileField
 	| LineField
-	| ScopeField
 	| BaseTypeField
 	| SizeField
 	| AlignField
@@ -303,9 +303,9 @@ DIDerivedTypeField
 //
 //  REQUIRED(tag, DwarfTagField, );
 //  OPTIONAL(name, MDStringField, );
+//  OPTIONAL(scope, MDField, );
 //  OPTIONAL(file, MDField, );
 //  OPTIONAL(line, LineField, );
-//  OPTIONAL(scope, MDField, );
 //  OPTIONAL(baseType, MDField, );
 //  OPTIONAL(size, MDUnsignedField, (0, UINT64_MAX));
 //  OPTIONAL(align, MDUnsignedField, (0, UINT32_MAX));
@@ -339,9 +339,9 @@ DICompositeTypeFieldList
 DICompositeTypeField
 	: TagField
 	| NameField
+	| ScopeField
 	| FileField
 	| LineField
-	| ScopeField
 	| BaseTypeField
 	| SizeField
 	| AlignField
@@ -654,8 +654,8 @@ DIGlobalVariableField
 //                     isOptimized: false, templateParams: !4, declaration: !5,
 //                     variables: !6, thrownTypes: !7)
 //
-//  OPTIONAL(scope, MDField, );
 //  OPTIONAL(name, MDStringField, );
+//  OPTIONAL(scope, MDField, );
 //  OPTIONAL(linkageName, MDStringField, );
 //  OPTIONAL(file, MDField, );
 //  OPTIONAL(line, LineField, );
@@ -694,8 +694,8 @@ DISubprogramFieldList
 ;
 
 DISubprogramField
-	: ScopeField
-	| NameField
+	: NameField
+	| ScopeField
 	| LinkageNameField
 	| FileField
 	| LineField
@@ -851,9 +851,9 @@ DILocationField
 //                        file: !1, line: 7, type: !2, arg: 2, flags: 7,
 //                        align: 8)
 //
-//  REQUIRED(scope, MDField, (AllowNull false));
 //  OPTIONAL(name, MDStringField, );
 //  OPTIONAL(arg, MDUnsignedField, (0, UINT16_MAX));
+//  REQUIRED(scope, MDField, (AllowNull false));
 //  OPTIONAL(file, MDField, );
 //  OPTIONAL(line, LineField, );
 //  OPTIONAL(type, MDField, );
@@ -879,9 +879,9 @@ DILocalVariableFieldList
 ;
 
 DILocalVariableField
-	: ScopeField
-	| NameField
+	: NameField
 	| "arg:" IntLit
+	| ScopeField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
 	| FileField
 	| LineField
