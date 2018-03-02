@@ -772,8 +772,10 @@ func (inst *AtomicRMWInst) String() string {
 
 //go:generate stringer -linecomment -type BinOp
 
+// BinOp is an AtomicRMW binary operation.
 type BinOp uint8
 
+// AtomicRMW binary operations.
 const (
 	BinOpAdd  BinOp = iota // add
 	BinOpAnd               // and
@@ -1241,8 +1243,10 @@ func (inst *CallInst) String() string {
 
 //go:generate stringer -linecomment -type Tail
 
+// Tail is a tail call attribute.
 type Tail uint8
 
+// Tail call attributes.
 const (
 	TailNone     Tail = iota // none
 	TailMustTail             // musttail
@@ -1297,6 +1301,7 @@ func (inst *LandingPadInst) String() string {
 	return buf.String()
 }
 
+// Clause is an exception clause.
 type Clause struct {
 	Catch bool // catch if true, filter otherwise
 	X     *TypeValue

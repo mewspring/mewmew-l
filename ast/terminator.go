@@ -259,10 +259,18 @@ func (*UnwindToCaller) String() string {
 	return "to caller"
 }
 
+// ### [ Helper functions ] ####################################################
+
 // isUnwindTarget ensures that only unwind targets can be assigned to the
 // ast.UnwindTarget interface.
 func (*UnwindToCaller) isUnwindTarget() {}
 func (*Label) isUnwindTarget()          {}
+
+// Ensure that each unwind target implements the ast.UnwindTarget interface.
+var (
+	_ UnwindTarget = (*UnwindToCaller)(nil)
+	_ UnwindTarget = (*Label)(nil)
+)
 
 // --- [ catchret ] ------------------------------------------------------------
 
@@ -321,6 +329,8 @@ func (term *UnreachableTerm) String() string {
 	}
 	return buf.String()
 }
+
+// ### [ Helper functions ] ####################################################
 
 // isTerminator ensures that only terminators can be assigned to the
 // ast.Terminator interface.

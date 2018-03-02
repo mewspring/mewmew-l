@@ -11,11 +11,13 @@ import (
 
 // === [ Module ] ==============================================================
 
+// A Module is an LLVM IR module.
 type Module struct {
 	Entities []TopLevelEntity
 }
 
 func (m *Module) String() string {
+	// TopLevelEntities
 	buf := &strings.Builder{}
 	for _, entity := range m.Entities {
 		fmt.Fprintln(buf, entity.String())
@@ -25,6 +27,7 @@ func (m *Module) String() string {
 
 // --- [ Top-level Entities ] --------------------------------------------------
 
+// A TopLevelEntity is a top-level entity of a module.
 type TopLevelEntity interface {
 	fmt.Stringer
 	isTopLevelEntity()
@@ -32,33 +35,40 @@ type TopLevelEntity interface {
 
 // ~~~ [ Source Filename ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// SourceFilename is a source filename top-level entity.
 type SourceFilename struct {
 	Name string
 }
 
 func (s *SourceFilename) String() string {
+	// "source_filename" "=" StringLit
 	return fmt.Sprintf("source_filename = %v", enc.Quote(s.Name))
 }
 
 // ~~~ [ Target Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// TargetDefinition is a target definition top-level entity.
 type TargetDefinition interface {
 	isTargetDefinition()
 }
 
+// TargetTriple is a target triple top-level entity.
 type TargetTriple struct {
 	TargetTriple string
 }
 
 func (t *TargetTriple) String() string {
+	// "target" "triple" "=" StringLit
 	return fmt.Sprintf("target triple = %v", enc.Quote(t.TargetTriple))
 }
 
+// DataLayout is a data layout top-level entity.
 type DataLayout struct {
 	DataLayout string
 }
 
 func (t *DataLayout) String() string {
+	// "target" "datalayout" "=" StringLit
 	return fmt.Sprintf("target datalayout = %v", enc.Quote(t.DataLayout))
 }
 
@@ -67,40 +77,49 @@ func (*DataLayout) isTargetDefinition()   {}
 
 // ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ModuleAsm is a module-level inline assembly top-level entity.
 type ModuleAsm struct {
 	Asm string
 }
 
 func (a *ModuleAsm) String() string {
+	// "module" "asm" StringLit
 	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
 }
 
-// ~~~ [ Type Defintion ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~ [ Type Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// TypeDef is a type definition top-level entity.
 type TypeDef struct {
 	Name *LocalIdent
 	Type Type
 }
 
 func (t *TypeDef) String() string {
+	// LocalIdent "=" "type" OpaqueType
+	// LocalIdent "=" "type" Type
 	return fmt.Sprintf("%s = type %s", t.Name, t.Type)
 }
 
 // ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// ComdatDef is a comdat definition top-level entity.
 type ComdatDef struct {
 	Name *ComdatName
 	Kind SelectionKind
 }
 
 func (c *ComdatDef) String() string {
+	// ComdatName "=" "comdat" SelectionKind
 	return fmt.Sprintf("%v = comdat %v", c.Name, c.Kind)
 }
 
 //go:generate stringer -linecomment -type SelectionKind
 
+// SelectionKind is a comdat selection kind.
 type SelectionKind uint8
 
+// Comdat selection kinds.
 const (
 	SelectionKindAny          SelectionKind = iota // any
 	SelectionKindExactMatch                        // exactmatch
@@ -177,11 +196,14 @@ func (g *Global) String() string {
 	return buf.String()
 }
 
+// ThreadLocal is a thread local storage specifier.
 type ThreadLocal struct {
 	Model TLSModel // zero value if not present
 }
 
 func (t ThreadLocal) String() string {
+	// "thread_local"
+	// "thread_local" "(" TLSModel ")"
 	switch t.Model {
 	case TLSModelNone:
 		return "thread_local"
@@ -192,8 +214,10 @@ func (t ThreadLocal) String() string {
 
 //go:generate stringer -linecomment -type TLSModel
 
+// TLSModel is a thread local storage model.
 type TLSModel uint8
 
+// Thread local storage models.
 const (
 	TLSModelNone         TLSModel = iota // none
 	TLSModelInitialExec                  // initialexec
@@ -201,6 +225,7 @@ const (
 	TLSModelLocalExec                    // localexec
 )
 
+// GlobalAttribute is a global attribute.
 type GlobalAttribute interface {
 	fmt.Stringer
 	isGlobalAttribute()
@@ -224,11 +249,43 @@ type IndirectSymbol struct {
 	UnnamedAddr     UnnamedAddr
 	Alias           bool // alias if true, ifunc otherwise.
 	Type            Type
-	Value           *TypeConst // aliasee or resolver
+	Const           *TypeConst // aliasee or resolver
+}
+
+func (s *IndirectSymbol) String() string {
+	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v =", s.Name)
+	if s.Linkage != LinkageNone {
+		fmt.Fprintf(buf, " %v", s.Linkage)
+	}
+	if s.Preemption != PreemptionNone {
+		fmt.Fprintf(buf, " %v", s.Preemption)
+	}
+	if s.Visibility != VisibilityNone {
+		fmt.Fprintf(buf, " %v", s.Visibility)
+	}
+	if s.DLLStorageClass != DLLStorageClassNone {
+		fmt.Fprintf(buf, " %v", s.DLLStorageClass)
+	}
+	if s.ThreadLocal != nil {
+		fmt.Fprintf(buf, " %v", s.ThreadLocal)
+	}
+	if s.UnnamedAddr != UnnamedAddrNone {
+		fmt.Fprintf(buf, " %v", s.UnnamedAddr)
+	}
+	if s.Alias {
+		buf.WriteString(" alias")
+	} else {
+		buf.WriteString(" ifunc")
+	}
+	fmt.Fprintf(buf, " %v, %v", s.Type, s.Const)
+	return buf.String()
 }
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Function is an LLVM IR function.
 type Function struct {
 	Linkage  Linkage
 	Header   *FunctionHeader
@@ -237,6 +294,8 @@ type Function struct {
 }
 
 func (f *Function) String() string {
+	// "declare" MetadataAttachments OptExternLinkage FunctionHeader
+	// "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 	buf := &strings.Builder{}
 	if f.Body == nil {
 		// Function declaration.
@@ -267,6 +326,7 @@ func (f *Function) String() string {
 	return buf.String()
 }
 
+// FunctionHeader is an LLVM IR function header.
 type FunctionHeader struct {
 	Preemption      Preemption      // zero value if not present
 	Visibility      Visibility      // zero value if not present
@@ -351,8 +411,10 @@ func (hdr *FunctionHeader) String() string {
 
 //go:generate stringer -linecomment -type CallingConv
 
+// CallingConv is a calling convention.
 type CallingConv uint8
 
+// Calling conventions.
 const (
 	CallingConvNone           CallingConv = iota // none
 	CallingConvAmdGPU_CS                         // amdgpu_cs
@@ -409,12 +471,14 @@ const (
 	CallingConvAMDGPU_ES      // cc 96
 )
 
+// FunctionBody is an LLVM IR function body.
 type FunctionBody struct {
 	Blocks        []*BasicBlock
 	UseListOrders []*UseListOrder
 }
 
 func (body *FunctionBody) String() string {
+	// "{" BasicBlockList UseListOrders "}"
 	buf := &strings.Builder{}
 	buf.WriteString("{\n")
 	for _, block := range body.Blocks {
@@ -429,6 +493,7 @@ func (body *FunctionBody) String() string {
 
 // ~~~ [ Attribute Group Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// AttrGroupDef is a attribute group definition.
 type AttrGroupDef struct {
 	Name      *AttrGroupID
 	FuncAttrs []FuncAttribute
@@ -455,6 +520,7 @@ func (def *AttrGroupDef) String() string {
 
 // ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// NamedMetadataDef is a named metadata definition.
 type NamedMetadataDef struct {
 	Name  *MetadataName
 	Nodes []MetadataNode
@@ -474,6 +540,7 @@ func (def *NamedMetadataDef) String() string {
 	return buf.String()
 }
 
+// MetadataNode is a metadata node.
 type MetadataNode interface {
 	fmt.Stringer
 	isMetadataNode()
@@ -484,6 +551,7 @@ func (*DIExpression) isMetadataNode() {}
 
 // ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// MetadataDef is a metadata definition.
 type MetadataDef struct {
 	ID       *MetadataID
 	Distinct bool
@@ -504,6 +572,7 @@ func (def *MetadataDef) String() string {
 
 // ~~~ [ Use-list Order Directives ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// UseListOrder is a use-list order directive.
 type UseListOrder struct {
 	Type    Type
 	Value   Value
@@ -524,6 +593,7 @@ func (u *UseListOrder) String() string {
 	return buf.String()
 }
 
+// UseListOrderBB is a basic block specific use-list order directive.
 type UseListOrderBB struct {
 	Func    *GlobalIdent
 	Block   *LocalIdent

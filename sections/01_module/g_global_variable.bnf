@@ -128,9 +128,9 @@ GlobalAttr
 
 IndirectSymbolDef
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
-	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Value: astx.TypeConst($10, $11)}, nil >>
+	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Const: astx.TypeConst($10, $11)}, nil >>
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
-	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Value: astx.TypeConst($10, $11)}, nil >>
+	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Const: astx.TypeConst($10, $11)}, nil >>
 ;
 
 Alias
