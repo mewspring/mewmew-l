@@ -495,14 +495,14 @@ func (body *FunctionBody) String() string {
 
 // AttrGroupDef is a attribute group definition.
 type AttrGroupDef struct {
-	Name      *AttrGroupID
+	ID        *AttrGroupID
 	FuncAttrs []FuncAttribute
 }
 
 func (def *AttrGroupDef) String() string {
 	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "attributes %v = { ", def.Name)
+	fmt.Fprintf(buf, "attributes %v = { ", def.ID)
 	for i, attr := range def.FuncAttrs {
 		if i != 0 {
 			buf.WriteString(" ")
@@ -613,6 +613,8 @@ func (u *UseListOrderBB) String() string {
 	buf.WriteString("}")
 	return buf.String()
 }
+
+// ### [ Helper functions ] ####################################################
 
 func (*SourceFilename) isTopLevelEntity() {}
 

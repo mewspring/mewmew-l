@@ -70,19 +70,29 @@ func (t *IntType) String() string {
 
 // --- [ Floating-point Types ] ------------------------------------------------
 
-//go:generate stringer -linecomment -type FloatType
-
 // FloatType is an LLVM IR floating-point type.
-type FloatType uint8
+type FloatType struct {
+	Kind FloatKind
+}
 
-// Floating-point types.
+// String returns the string representation of the floating-point type.
+func (t *FloatType) String() string {
+	return t.Kind.String()
+}
+
+//go:generate stringer -linecomment -type FloatKind
+
+// FloatKind represents the set of floating-point kinds.
+type FloatKind uint8
+
+// Floating-point kinds.
 const (
-	FloatTypeHalf      FloatType = iota // half
-	FloatTypeFloat                      // float
-	FloatTypeDouble                     // double
-	FloatTypeX86_FP80                   // x86_fp80
-	FloatTypeFP128                      // fp128
-	FloatTypePPC_FP128                  // ppc_fp128
+	FloatKindHalf      FloatKind = iota // half
+	FloatKindFloat                      // float
+	FloatKindDouble                     // double
+	FloatKindX86_FP80                   // x86_fp80
+	FloatKindFP128                      // fp128
+	FloatKindPPC_FP128                  // ppc_fp128
 )
 
 // --- [ MMX Types ] -----------------------------------------------------------
@@ -242,7 +252,7 @@ func (t *NamedType) String() string {
 func (*VoidType) isType()     {}
 func (*FuncType) isType()     {}
 func (*IntType) isType()      {}
-func (FloatType) isType()     {}
+func (*FloatType) isType()    {}
 func (*MMXType) isType()      {}
 func (*PointerType) isType()  {}
 func (*VectorType) isType()   {}
@@ -259,7 +269,7 @@ var (
 	_ Type = (*VoidType)(nil)
 	_ Type = (*FuncType)(nil)
 	_ Type = (*IntType)(nil)
-	_ Type = FloatType(0)
+	_ Type = (*FloatType)(nil)
 	_ Type = (*MMXType)(nil)
 	_ Type = (*PointerType)(nil)
 	_ Type = (*VectorType)(nil)

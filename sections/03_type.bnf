@@ -75,12 +75,17 @@ IntType
 // --- [ Floating-point Types ] ------------------------------------------------
 
 FloatType
-	: "half"        << ast.FloatTypeHalf, nil >>
-	| "float"       << ast.FloatTypeFloat, nil >>
-	| "double"      << ast.FloatTypeDouble, nil >>
-	| "x86_fp80"    << ast.FloatTypeX86_FP80, nil >>
-	| "fp128"       << ast.FloatTypeFP128, nil >>
-	| "ppc_fp128"   << ast.FloatTypePPC_FP128, nil >>
+	: FloatKind
+	<< &ast.FloatType{Kind $0.(ast.FloatKind)}, nil >>
+;
+
+FloatKind
+	: "half"        << ast.FloatKindHalf, nil >>
+	| "float"       << ast.FloatKindFloat, nil >>
+	| "double"      << ast.FloatKindDouble, nil >>
+	| "x86_fp80"    << ast.FloatKindX86_FP80, nil >>
+	| "fp128"       << ast.FloatKindFP128, nil >>
+	| "ppc_fp128"   << ast.FloatKindPPC_FP128, nil >>
 ;
 
 // --- [ MMX Types ] -----------------------------------------------------------
