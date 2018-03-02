@@ -1231,10 +1231,10 @@ func (*GenericDINode) isSpecializedMDNode()              {}
 
 // ___ [ Helpers ] _____________________________________________________________
 
+//go:generate stringer -linecomment -type DwarfLang
+
 // DwarfLang is a DWARF language.
 type DwarfLang int64
-
-//go:generate stringer -linecomment -type DwarfLang
 
 // DWARF languages.
 const (
@@ -1410,6 +1410,8 @@ const (
 	DwarfTagBORLANDDelphiVariant      DwarfTag = 0xB004 // DW_TAG_BORLAND_Delphi_variant
 )
 
+//go:generate stringer -linecomment -type DwarfAttEncoding
+
 // DwarfAttEncoding is a DWARF attribute type encoding.
 type DwarfAttEncoding int64
 
@@ -1488,6 +1490,8 @@ const (
 	//   DIFlagPtrToMemberRep      DIFlag = DIFlagSingleInheritance | DIFlagMultipleInheritance | DIFlagVirtualInheritance
 )
 
+//go:generate stringer -linecomment -type DwarfCC
+
 // DwarfCC is a DWARF calling convention.
 type DwarfCC int64
 
@@ -1552,6 +1556,8 @@ func (*DIImportedEntity) isIntOrMDField()           {}
 func (*DIMacro) isIntOrMDField()                    {}
 func (*DIMacroFile) isIntOrMDField()                {}
 func (*GenericDINode) isIntOrMDField()              {}
+
+//go:generate stringer -linecomment -type DwarfVirtuality
 
 // DwarfVirtuality is a DWARF virtuality code.
 type DwarfVirtuality int64

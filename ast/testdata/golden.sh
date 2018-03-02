@@ -20,3 +20,7 @@ sar -i '[\n]  ' '\n\t' ${golden_file}
 
 # Remove extra newlines.
 sar -i '[\n][\n]' '\n' ${golden_file}
+
+# Remove zero value key-value pairs in specialized metadata nodes.
+sar -i ', isLocal: false' '' ${golden_file}
+sar -i ', runtimeVersion: 0' '' ${golden_file}
