@@ -26,6 +26,8 @@ type BoolConst struct {
 
 // String returns the string representation of the boolean constant.
 func (c *BoolConst) String() string {
+	// "true"
+	// "false"
 	if c.X {
 		return "true"
 	}
@@ -41,6 +43,7 @@ type IntConst struct {
 
 // String returns the string representation of the integer constant.
 func (c *IntConst) String() string {
+	// int_lit
 	return c.X
 }
 
@@ -53,6 +56,7 @@ type FloatConst struct {
 
 // String returns the string representation of the floating-point constant.
 func (c *FloatConst) String() string {
+	// float_lit
 	return c.X
 }
 
@@ -63,6 +67,7 @@ type NullConst struct{}
 
 // String returns the string representation of the NULL-pointer constant.
 func (*NullConst) String() string {
+	// "null"
 	return "null"
 }
 
@@ -73,6 +78,7 @@ type NoneConst struct{}
 
 // String returns the string representation of the none token constant.
 func (*NoneConst) String() string {
+	// "none"
 	return "none"
 }
 
@@ -86,6 +92,8 @@ type StructConst struct {
 
 // String returns the string representation of the structure constant.
 func (c *StructConst) String() string {
+	// "{" Elems "}"
+	// "<" "{" Elems "}" ">"
 	buf := &strings.Builder{}
 	if c.Packed {
 		buf.WriteString("<")
@@ -113,6 +121,7 @@ type ArrayConst struct {
 
 // String returns the string representation of the array constant.
 func (c *ArrayConst) String() string {
+	// "[" TypeConsts "]"
 	buf := &strings.Builder{}
 	buf.WriteString("[")
 	for i, elem := range c.Elems {
@@ -132,6 +141,7 @@ type CharArrayConst struct {
 
 // String returns the string representation of the character array constant.
 func (c *CharArrayConst) String() string {
+	// "c" StringLit
 	return fmt.Sprintf("c%v", enc.Quote(c.Value))
 }
 
@@ -144,6 +154,7 @@ type VectorConst struct {
 
 // String returns the string representation of the vector constant.
 func (c *VectorConst) String() string {
+	// "<" TypeConsts ">"
 	buf := &strings.Builder{}
 	buf.WriteString("<")
 	for i, elem := range c.Elems {
@@ -163,6 +174,7 @@ type ZeroInitializerConst struct{}
 
 // String returns the string representation of the zeroinitializer constant.
 func (*ZeroInitializerConst) String() string {
+	// "zeroinitializer"
 	return "zeroinitializer"
 }
 
@@ -173,6 +185,7 @@ type UndefConst struct{}
 
 // String returns the string representation of the undefined constant.
 func (*UndefConst) String() string {
+	// "undef"
 	return "undef"
 }
 
@@ -186,6 +199,7 @@ type BlockAddressConst struct {
 
 // String returns the string representation of the block address constant.
 func (c *BlockAddressConst) String() string {
+	// "blockaddress" "(" GlobalIdent "," LocalIdent ")"
 	return fmt.Sprintf("blockaddress(%v, %v)", c.Func, c.Block)
 }
 

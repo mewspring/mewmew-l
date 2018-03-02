@@ -31,12 +31,15 @@ func (md *MDTuple) String() string {
 	return buf.String()
 }
 
+// MDField is a metadata field.
 type MDField interface {
 	fmt.Stringer
 	// isMDField ensures that only metadata fields can be assigned to the
 	// ast.MDField interface.
 	isMDField()
 }
+
+// ### [ Helper functions ] ####################################################
 
 // isMDField ensures that only metadata fields can be assigned to the
 // ast.MDField interface.
@@ -75,13 +78,55 @@ func (*DIMacro) isMDField()                    {}
 func (*DIMacroFile) isMDField()                {}
 func (*GenericDINode) isMDField()              {}
 
+// Ensure that each metadata field implements the ast.MDField interface.
+var (
+	_ MDField = (*NullConst)(nil)
+	_ MDField = (*TypeValue)(nil)
+	_ MDField = (*MDString)(nil)
+	_ MDField = (*MDTuple)(nil)
+	_ MDField = (*MetadataID)(nil)
+	_ MDField = (*DICompileUnit)(nil)
+	_ MDField = (*DIFile)(nil)
+	_ MDField = (*DIBasicType)(nil)
+	_ MDField = (*DISubroutineType)(nil)
+	_ MDField = (*DIDerivedType)(nil)
+	_ MDField = (*DICompositeType)(nil)
+	_ MDField = (*DISubrange)(nil)
+	_ MDField = (*DIEnumerator)(nil)
+	_ MDField = (*DITemplateTypeParameter)(nil)
+	_ MDField = (*DITemplateValueParameter)(nil)
+	_ MDField = (*DIModule)(nil)
+	_ MDField = (*DINamespace)(nil)
+	_ MDField = (*DIGlobalVariable)(nil)
+	_ MDField = (*DISubprogram)(nil)
+	_ MDField = (*DILexicalBlock)(nil)
+	_ MDField = (*DILexicalBlockFile)(nil)
+	_ MDField = (*DILocation)(nil)
+	_ MDField = (*DILocalVariable)(nil)
+	_ MDField = (*DIExpression)(nil)
+	_ MDField = (*DIGlobalVariableExpression)(nil)
+	_ MDField = (*DIObjCProperty)(nil)
+	_ MDField = (*DIImportedEntity)(nil)
+	_ MDField = (*DIMacro)(nil)
+	_ MDField = (*DIMacroFile)(nil)
+	_ MDField = (*GenericDINode)(nil)
+)
+
 // --- [ Metadata ] ------------------------------------------------------------
 
+// Metadata is a metadata value, string, node tuple, ID or specialized metadata
+// node.
 type Metadata interface {
 	fmt.Stringer
+	// isMetadata ensures that only metadata can be assigned to the ast.Metadata
+	// interface.
 	isMetadata()
 }
 
+// ### [ Helper functions ] ####################################################
+
+// isMetadata ensures that only metadata can be assigned to the ast.Metadata
+// interface.
 func (*TypeValue) isMetadata()  {}
 func (*MDString) isMetadata()   {}
 func (*MDTuple) isMetadata()    {}
@@ -114,8 +159,42 @@ func (*DIMacro) isMetadata()                    {}
 func (*DIMacroFile) isMetadata()                {}
 func (*GenericDINode) isMetadata()              {}
 
+// Ensure that each metadata implements the ast.Metadata interface.
+var (
+	_ Metadata = (*TypeValue)(nil)
+	_ Metadata = (*MDString)(nil)
+	_ Metadata = (*MDTuple)(nil)
+	_ Metadata = (*MetadataID)(nil)
+	_ Metadata = (*DICompileUnit)(nil)
+	_ Metadata = (*DIFile)(nil)
+	_ Metadata = (*DIBasicType)(nil)
+	_ Metadata = (*DISubroutineType)(nil)
+	_ Metadata = (*DIDerivedType)(nil)
+	_ Metadata = (*DICompositeType)(nil)
+	_ Metadata = (*DISubrange)(nil)
+	_ Metadata = (*DIEnumerator)(nil)
+	_ Metadata = (*DITemplateTypeParameter)(nil)
+	_ Metadata = (*DITemplateValueParameter)(nil)
+	_ Metadata = (*DIModule)(nil)
+	_ Metadata = (*DINamespace)(nil)
+	_ Metadata = (*DIGlobalVariable)(nil)
+	_ Metadata = (*DISubprogram)(nil)
+	_ Metadata = (*DILexicalBlock)(nil)
+	_ Metadata = (*DILexicalBlockFile)(nil)
+	_ Metadata = (*DILocation)(nil)
+	_ Metadata = (*DILocalVariable)(nil)
+	_ Metadata = (*DIExpression)(nil)
+	_ Metadata = (*DIGlobalVariableExpression)(nil)
+	_ Metadata = (*DIObjCProperty)(nil)
+	_ Metadata = (*DIImportedEntity)(nil)
+	_ Metadata = (*DIMacro)(nil)
+	_ Metadata = (*DIMacroFile)(nil)
+	_ Metadata = (*GenericDINode)(nil)
+)
+
 // --- [ Metadata String ] -----------------------------------------------------
 
+// MDString is a metadata string.
 type MDString struct {
 	Value string
 }
@@ -128,6 +207,7 @@ func (md *MDString) String() string {
 
 // --- [ Metadata Attachment ] -------------------------------------------------
 
+// MetadataAttachment is a metadata attachment.
 type MetadataAttachment struct {
 	Name *MetadataName
 	Node MDNode
@@ -141,11 +221,16 @@ func (m *MetadataAttachment) String() string {
 
 // --- [ Metadata Node ] -------------------------------------------------------
 
+// MDNode is a metadata node.
 type MDNode interface {
 	fmt.Stringer
+	// isMDNode ensures that only metadata nodes can be assigned to the
+	// ast.MDNode interface.
 	isMDNode()
 }
 
+// isMDNode ensures that only metadata nodes can be assigned to the ast.MDNode
+// interface.
 func (*MDTuple) isMDNode()    {}
 func (*MetadataID) isMDNode() {}
 
@@ -176,14 +261,49 @@ func (*DIMacro) isMDNode()                    {}
 func (*DIMacroFile) isMDNode()                {}
 func (*GenericDINode) isMDNode()              {}
 
+// Ensure that each metadata node implements the ast.MDNode interface.
+var (
+	_ MDNode = (*MDTuple)(nil)
+	_ MDNode = (*MetadataID)(nil)
+	_ MDNode = (*DICompileUnit)(nil)
+	_ MDNode = (*DIFile)(nil)
+	_ MDNode = (*DIBasicType)(nil)
+	_ MDNode = (*DISubroutineType)(nil)
+	_ MDNode = (*DIDerivedType)(nil)
+	_ MDNode = (*DICompositeType)(nil)
+	_ MDNode = (*DISubrange)(nil)
+	_ MDNode = (*DIEnumerator)(nil)
+	_ MDNode = (*DITemplateTypeParameter)(nil)
+	_ MDNode = (*DITemplateValueParameter)(nil)
+	_ MDNode = (*DIModule)(nil)
+	_ MDNode = (*DINamespace)(nil)
+	_ MDNode = (*DIGlobalVariable)(nil)
+	_ MDNode = (*DISubprogram)(nil)
+	_ MDNode = (*DILexicalBlock)(nil)
+	_ MDNode = (*DILexicalBlockFile)(nil)
+	_ MDNode = (*DILocation)(nil)
+	_ MDNode = (*DILocalVariable)(nil)
+	_ MDNode = (*DIExpression)(nil)
+	_ MDNode = (*DIGlobalVariableExpression)(nil)
+	_ MDNode = (*DIObjCProperty)(nil)
+	_ MDNode = (*DIImportedEntity)(nil)
+	_ MDNode = (*DIMacro)(nil)
+	_ MDNode = (*DIMacroFile)(nil)
+	_ MDNode = (*GenericDINode)(nil)
+)
+
 // --- [ Specialized Metadata Nodes ] ------------------------------------------
 
+// SpecializedMDNode is a specialized metadata node.
 type SpecializedMDNode interface {
+	// isSpecializedMDNode ensures that only specialized metadata nodes can be
+	// assigned to the ast.SpecializedMDNode interface.
 	isSpecializedMDNode()
 }
 
 // ~~~ [ DICompileUnit ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DICompileUnit is a specialized metadata node.
 type DICompileUnit struct {
 	Language              DwarfLang    // required
 	File                  MDField      // required
@@ -277,6 +397,7 @@ func (md *DICompileUnit) String() string {
 
 // ~~~ [ DIFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIFile is a specialized metadata node.
 type DIFile struct {
 	Filename     string       // required
 	Directory    string       // required
@@ -305,6 +426,7 @@ func (md *DIFile) String() string {
 
 // ~~~ [ DIBasicType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIBasicType is a specialized metadata node.
 type DIBasicType struct {
 	Tag      DwarfTag         // optional; zero value if not present
 	Name     string           // optional; empty if not present
@@ -343,6 +465,7 @@ func (md *DIBasicType) String() string {
 
 // ~~~ [ DISubroutineType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DISubroutineType is a specialized metadata node.
 type DISubroutineType struct {
 	Flags []DIFlag // optional
 	CC    DwarfCC  // optional; zero value if not present
@@ -368,6 +491,7 @@ func (md *DISubroutineType) String() string {
 
 // ~~~ [ DIDerivedType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIDerivedType is a specialized metadata node.
 type DIDerivedType struct {
 	Tag               DwarfTag // required
 	Name              string   // optional; empty if not present
@@ -436,6 +560,7 @@ func (md *DIDerivedType) String() string {
 
 // ~~~ [ DICompositeType ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DICompositeType is a specialized metadata node.
 type DICompositeType struct {
 	Tag            DwarfTag  // required
 	Name           string    // optional; empty if not present
@@ -526,6 +651,7 @@ func (md *DICompositeType) String() string {
 
 // ~~~ [ DISubrange ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DISubrange is a specialized metadata node.
 type DISubrange struct {
 	Count      IntOrMDField // required
 	LowerBound int64        // optional; zero value if not present
@@ -546,6 +672,7 @@ func (md *DISubrange) String() string {
 
 // ~~~ [ DIEnumerator ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIEnumerator is a specialized metadata node.
 type DIEnumerator struct {
 	Name       string // required
 	Value      int64  // required
@@ -569,6 +696,7 @@ func (md *DIEnumerator) String() string {
 
 // ~~~ [ DITemplateTypeParameter ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DITemplateTypeParameter is a specialized metadata node.
 type DITemplateTypeParameter struct {
 	Name string  // optional; empty if not present
 	Type MDField // required
@@ -590,6 +718,7 @@ func (md *DITemplateTypeParameter) String() string {
 
 // ~~~ [ DITemplateValueParameter ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DITemplateValueParameter is a specialized metadata node.
 type DITemplateValueParameter struct {
 	Tag   DwarfTag // optional; zero value if not present
 	Name  string   // optional; empty if not present
@@ -621,6 +750,7 @@ func (md *DITemplateValueParameter) String() string {
 
 // ~~~ [ DIModule ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIModule is a specialized metadata node.
 type DIModule struct {
 	Scope        MDField // required
 	Name         string  // required
@@ -654,6 +784,7 @@ func (md *DIModule) String() string {
 
 // ~~~ [ DINamespace ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DINamespace is a specialized metadata node.
 type DINamespace struct {
 	Scope         MDField // required
 	Name          string  // optional; empty if not present
@@ -679,6 +810,7 @@ func (md *DINamespace) String() string {
 
 // ~~~ [ DIGlobalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIGlobalVariable is a specialized metadata node.
 type DIGlobalVariable struct {
 	Name         string  // required
 	Scope        MDField // optional; nil if not present
@@ -739,6 +871,7 @@ func (md *DIGlobalVariable) String() string {
 
 // ~~~ [ DISubprogram ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DISubprogram is a specialized metadata node.
 type DISubprogram struct {
 	Name           string          // optional; empty if not present
 	Scope          MDField         // optional; nil if not present
@@ -851,6 +984,7 @@ func (md *DISubprogram) String() string {
 
 // ~~~ [ DILexicalBlock ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DILexicalBlock is a specialized metadata node.
 type DILexicalBlock struct {
 	Scope  MDField // required
 	File   MDField // optional; nil if not present
@@ -881,6 +1015,7 @@ func (md *DILexicalBlock) String() string {
 
 // ~~~ [ DILexicalBlockFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DILexicalBlockFile is a specialized metadata node.
 type DILexicalBlockFile struct {
 	Scope         MDField // required
 	File          MDField // optional; nil if not present
@@ -904,6 +1039,7 @@ func (md *DILexicalBlockFile) String() string {
 
 // ~~~ [ DILocation ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DILocation is a specialized metadata node.
 type DILocation struct {
 	Line      int64   // optional; zero value if not present
 	Column    int64   // optional; zero value if not present
@@ -935,6 +1071,7 @@ func (md *DILocation) String() string {
 
 // ~~~ [ DILocalVariable ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DILocalVariable is a specialized metadata node.
 type DILocalVariable struct {
 	Name  string   // optional; empty if not present
 	Arg   int64    // optional; zero value if not present
@@ -985,6 +1122,7 @@ func (md *DILocalVariable) String() string {
 
 // ~~~ [ DIExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIExpression is a specialized metadata node.
 type DIExpression struct {
 	Fields []DIExpressionField
 }
@@ -1004,16 +1142,31 @@ func (md *DIExpression) String() string {
 	return buf.String()
 }
 
+// ### [ Helper functions ] ####################################################
+
+// DIExpressionField is a DIExpression field.
 type DIExpressionField interface {
 	fmt.Stringer
+	// isDIExpressionField ensures that only DIExpression fields can be assigned
+	// to the ast.DIExpressionField interface.
 	isDIExpressionField()
 }
 
+// isDIExpressionField ensures that only DIExpression fields can be assigned to
+// the ast.DIExpressionField interface.
 func (*IntConst) isDIExpressionField() {}
 func (DwarfOp) isDIExpressionField()   {}
 
+// Ensure that each DIExpression field implements the ast.DIExpressionField
+// interface.
+var (
+	_ DIExpressionField = (*IntConst)(nil)
+	_ DIExpressionField = DwarfOp(0)
+)
+
 // ~~~ [ DIGlobalVariableExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIGlobalVariableExpression is a specialized metadata node.
 type DIGlobalVariableExpression struct {
 	Var  MDField // required
 	Expr MDField // required
@@ -1036,6 +1189,7 @@ func (md *DIGlobalVariableExpression) String() string {
 
 // ~~~ [ DIObjCProperty ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIObjCProperty is a specialized metadata node.
 type DIObjCProperty struct {
 	Name       string  // optional; empty if not present
 	File       MDField // optional; nil if not present
@@ -1083,6 +1237,7 @@ func (md *DIObjCProperty) String() string {
 
 // ~~~ [ DIImportedEntity ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIImportedEntity is a specialized metadata node.
 type DIImportedEntity struct {
 	Tag    DwarfTag // required
 	Scope  MDField  // required
@@ -1121,6 +1276,7 @@ func (md *DIImportedEntity) String() string {
 
 // ~~~ [ DIMacro ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIMacro is a specialized metadata node.
 type DIMacro struct {
 	Type  DwarfMacinfo // required
 	Line  int64        // optional; zero value if not present
@@ -1149,6 +1305,7 @@ func (md *DIMacro) String() string {
 
 // ~~~ [ DIMacroFile ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// DIMacroFile is a specialized metadata node.
 type DIMacroFile struct {
 	Type  DwarfMacinfo // optional; zero value if not present
 	Line  int64        // optional; zero value if not present
@@ -1180,6 +1337,7 @@ func (md *DIMacroFile) String() string {
 
 // ~~~ [ GenericDINode ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// GenericDINode is a specialized GenericDINode metadata node.
 type GenericDINode struct {
 	Tag      DwarfTag  // required
 	Header   string    // optional; empty if not present
@@ -1203,6 +1361,10 @@ func (md *GenericDINode) String() string {
 	return fmt.Sprintf("!GenericDINode(%v)", strings.Join(fields, ", "))
 }
 
+// ### [ Helper functions ] ####################################################
+
+// isSpecializedMDNode ensures that only specialized metadata nodes can be
+// assigned to the ast.SpecializedMDNode interface.
 func (*DICompileUnit) isSpecializedMDNode()              {}
 func (*DIFile) isSpecializedMDNode()                     {}
 func (*DIBasicType) isSpecializedMDNode()                {}
@@ -1228,6 +1390,36 @@ func (*DIImportedEntity) isSpecializedMDNode()           {}
 func (*DIMacro) isSpecializedMDNode()                    {}
 func (*DIMacroFile) isSpecializedMDNode()                {}
 func (*GenericDINode) isSpecializedMDNode()              {}
+
+// Ensure that each specialized metadata node implements the
+// ast.SpecializedMDNode interface.
+var (
+	_ SpecializedMDNode = (*DICompileUnit)(nil)
+	_ SpecializedMDNode = (*DIFile)(nil)
+	_ SpecializedMDNode = (*DIBasicType)(nil)
+	_ SpecializedMDNode = (*DISubroutineType)(nil)
+	_ SpecializedMDNode = (*DIDerivedType)(nil)
+	_ SpecializedMDNode = (*DICompositeType)(nil)
+	_ SpecializedMDNode = (*DISubrange)(nil)
+	_ SpecializedMDNode = (*DIEnumerator)(nil)
+	_ SpecializedMDNode = (*DITemplateTypeParameter)(nil)
+	_ SpecializedMDNode = (*DITemplateValueParameter)(nil)
+	_ SpecializedMDNode = (*DIModule)(nil)
+	_ SpecializedMDNode = (*DINamespace)(nil)
+	_ SpecializedMDNode = (*DIGlobalVariable)(nil)
+	_ SpecializedMDNode = (*DISubprogram)(nil)
+	_ SpecializedMDNode = (*DILexicalBlock)(nil)
+	_ SpecializedMDNode = (*DILexicalBlockFile)(nil)
+	_ SpecializedMDNode = (*DILocation)(nil)
+	_ SpecializedMDNode = (*DILocalVariable)(nil)
+	_ SpecializedMDNode = (*DIExpression)(nil)
+	_ SpecializedMDNode = (*DIGlobalVariableExpression)(nil)
+	_ SpecializedMDNode = (*DIObjCProperty)(nil)
+	_ SpecializedMDNode = (*DIImportedEntity)(nil)
+	_ SpecializedMDNode = (*DIMacro)(nil)
+	_ SpecializedMDNode = (*DIMacroFile)(nil)
+	_ SpecializedMDNode = (*GenericDINode)(nil)
+)
 
 // ___ [ Helpers ] _____________________________________________________________
 
@@ -1515,10 +1707,18 @@ const (
 	DwarfCCLLVMVectorcall          DwarfCC = 0xC0 // DW_CC_LLVM_vectorcall
 )
 
+// IntOrMDField is an integer or metadata field.
 type IntOrMDField interface {
+	fmt.Stringer
+	// isIntOrMDField ensures that only intergers and metadata fields can be
+	// assigned to the ast.IntOrMDField interface.
 	isIntOrMDField()
 }
 
+// ### [ Helper functions ] ####################################################
+
+// isIntOrMDField ensures that only intergers and metadata fields can be
+// assigned to the ast.IntOrMDField interface.
 func (*IntConst) isIntOrMDField() {}
 
 // MDField
@@ -1556,6 +1756,42 @@ func (*DIImportedEntity) isIntOrMDField()           {}
 func (*DIMacro) isIntOrMDField()                    {}
 func (*DIMacroFile) isIntOrMDField()                {}
 func (*GenericDINode) isIntOrMDField()              {}
+
+// Ensure that each integer and metadata field implements the ast.IntOrMDField
+// interface.
+var (
+	_ IntOrMDField = (*IntConst)(nil)
+	_ IntOrMDField = (*NullConst)(nil)
+	_ IntOrMDField = (*TypeValue)(nil)
+	_ IntOrMDField = (*MDString)(nil)
+	_ IntOrMDField = (*MDTuple)(nil)
+	_ IntOrMDField = (*MetadataID)(nil)
+	_ IntOrMDField = (*DICompileUnit)(nil)
+	_ IntOrMDField = (*DIFile)(nil)
+	_ IntOrMDField = (*DIBasicType)(nil)
+	_ IntOrMDField = (*DISubroutineType)(nil)
+	_ IntOrMDField = (*DIDerivedType)(nil)
+	_ IntOrMDField = (*DICompositeType)(nil)
+	_ IntOrMDField = (*DISubrange)(nil)
+	_ IntOrMDField = (*DIEnumerator)(nil)
+	_ IntOrMDField = (*DITemplateTypeParameter)(nil)
+	_ IntOrMDField = (*DITemplateValueParameter)(nil)
+	_ IntOrMDField = (*DIModule)(nil)
+	_ IntOrMDField = (*DINamespace)(nil)
+	_ IntOrMDField = (*DIGlobalVariable)(nil)
+	_ IntOrMDField = (*DISubprogram)(nil)
+	_ IntOrMDField = (*DILexicalBlock)(nil)
+	_ IntOrMDField = (*DILexicalBlockFile)(nil)
+	_ IntOrMDField = (*DILocation)(nil)
+	_ IntOrMDField = (*DILocalVariable)(nil)
+	_ IntOrMDField = (*DIExpression)(nil)
+	_ IntOrMDField = (*DIGlobalVariableExpression)(nil)
+	_ IntOrMDField = (*DIObjCProperty)(nil)
+	_ IntOrMDField = (*DIImportedEntity)(nil)
+	_ IntOrMDField = (*DIMacro)(nil)
+	_ IntOrMDField = (*DIMacroFile)(nil)
+	_ IntOrMDField = (*GenericDINode)(nil)
+)
 
 //go:generate stringer -linecomment -type DwarfVirtuality
 

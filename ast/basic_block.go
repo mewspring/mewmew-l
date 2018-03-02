@@ -15,6 +15,7 @@ type BasicBlock struct {
 
 // String returns the string representation of the basic block.
 func (block *BasicBlock) String() string {
+	// OptLabelIdent Instructions Terminator
 	buf := &strings.Builder{}
 	if block.Name != nil {
 		fmt.Fprintf(buf, "%v\n", block.Name)

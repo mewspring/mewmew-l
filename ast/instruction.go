@@ -1369,6 +1369,8 @@ func (inst *CleanupPadInst) String() string {
 	return buf.String()
 }
 
+// ### [ Helper functions ] ####################################################
+
 // isInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
 func (*ValueInstruction) isInstruction()   {}
