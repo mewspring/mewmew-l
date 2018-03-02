@@ -13,6 +13,7 @@ type BasicBlock struct {
 	Term  Terminator
 }
 
+// String returns the string representation of the basic block.
 func (block *BasicBlock) String() string {
 	buf := &strings.Builder{}
 	if block.Name != nil {
