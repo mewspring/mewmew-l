@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mewmew/l/ast"
+	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/internal/token"
 	"github.com/mewmew/l/internal/enc"
-	"github.com/mewmew/l/token"
 	"github.com/pkg/errors"
 )
 

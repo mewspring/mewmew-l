@@ -10,9 +10,9 @@ import (
 	"testing"
 
 	"github.com/mewkiz/pkg/osutil"
-	"github.com/mewmew/l/ast"
-	"github.com/mewmew/l/lexer"
-	"github.com/mewmew/l/parser"
+	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/internal/lexer"
+	"github.com/mewmew/l/asm/internal/parser"
 	"github.com/pkg/errors"
 )
 

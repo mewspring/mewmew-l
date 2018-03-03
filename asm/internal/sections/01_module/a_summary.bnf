@@ -15,8 +15,8 @@
 
 <<
 import (
-	"github.com/mewmew/l/ast"
-	"github.com/mewmew/l/astx"
+	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/internal/astx"
 )
 >>
 

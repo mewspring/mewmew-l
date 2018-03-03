@@ -3,7 +3,7 @@ package astx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/ast"
+	"github.com/mewmew/l/asm/internal/ast"
 )
 
 // NewDICompileUnit returns a new DICompileUnit specialized metadata node.
