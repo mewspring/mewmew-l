@@ -92,13 +92,13 @@ func (a *ModuleAsm) String() string {
 // TypeDef is a type definition top-level entity.
 type TypeDef struct {
 	Name *LocalIdent
-	Type Type
+	Def  Type
 }
 
 func (t *TypeDef) String() string {
 	// LocalIdent "=" "type" OpaqueType
 	// LocalIdent "=" "type" Type
-	return fmt.Sprintf("%s = type %s", t.Name, t.Type)
+	return fmt.Sprintf("%s = type %s", t.Name, t.Def)
 }
 
 // ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
