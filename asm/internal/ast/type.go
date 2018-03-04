@@ -248,6 +248,8 @@ func (t *NamedType) String() string {
 	return t.Name.String()
 }
 
+// ### [ Helper functions ] ####################################################
+
 // isType ensures that only types can be assigned to the ast.Type interface.
 func (*VoidType) isType()     {}
 func (*FuncType) isType()     {}

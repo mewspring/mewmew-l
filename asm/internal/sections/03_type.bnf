@@ -76,7 +76,7 @@ IntType
 
 FloatType
 	: FloatKind
-	<< &ast.FloatType{Kind $0.(ast.FloatKind)}, nil >>
+	<< &ast.FloatType{Kind: $0.(ast.FloatKind)}, nil >>
 ;
 
 FloatKind
