@@ -881,8 +881,8 @@ DILocalVariableFieldList
 DILocalVariableField
 	: NameField
 	| "arg:" IntLit
-	| ScopeField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
+	| ScopeField
 	| FileField
 	| LineField
 	| TypeField

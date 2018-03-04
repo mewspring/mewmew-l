@@ -2,7 +2,6 @@ package irx
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
@@ -16,14 +15,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	m.indexIdents(module.Entities)
 	// Resolve type definitions.
 	m.resolveTypeDefs()
-	var keys []string
-	for name := range m.types {
-		keys = append(keys, name)
-	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		m.TypeDefs = append(m.TypeDefs, m.types[key])
-	}
 	return m.Module, nil
 }
 

@@ -2,6 +2,7 @@ package irx
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/types"
@@ -19,6 +20,15 @@ func (m *Module) resolveTypeDefs() {
 	for name, old := range m.typeIdent {
 		t := m.types[name]
 		t.Def = m.irType(old.Def)
+	}
+	// Add type defintions to module.
+	var keys []string
+	for name := range m.types {
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		m.TypeDefs = append(m.TypeDefs, m.types[key])
 	}
 }
 
