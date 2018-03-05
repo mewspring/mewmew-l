@@ -2,9 +2,6 @@ package ast
 
 import (
 	"fmt"
-	"strings"
-
-	"github.com/mewmew/l/internal/enc"
 )
 
 // === [ Values ] ==============================================================
@@ -19,38 +16,13 @@ type Value interface {
 
 // --- [ Inline Assembler Expressions ] ----------------------------------------
 
-// InlineAsm is an inline assembly expression.
-type InlineAsm struct {
-	SideEffect   bool
-	AlignStack   bool
-	IntelDialect bool
-	Asm          string
-	Constraint   string
-}
-
-// String returns the string representation of the inline assembly expression.
-func (v *InlineAsm) String() string {
-	// "asm" OptSideEffect OptAlignStack OptIntelDialect StringLit "," StringLit
-	buf := &strings.Builder{}
-	buf.WriteString("asm")
-	if v.SideEffect {
-		buf.WriteString(" sideeffect")
-	}
-	if v.AlignStack {
-		buf.WriteString(" alignstack")
-	}
-	if v.IntelDialect {
-		buf.WriteString(" inteldialect")
-	}
-	fmt.Fprintf(buf, " %v, %v", enc.Quote(v.Asm), enc.Quote(v.Constraint))
-	return buf.String()
-}
-
 // ### [ Helper functions ] ####################################################
 
 // isValue ensures that only values can be assigned to the ast.Value interface.
 func (*LocalIdent) isValue() {}
-func (*InlineAsm) isValue()  {}
+
+// TODO: Figure out how to handle value interface.
+//func (*InlineAsm) isValue()  {}
 
 // Constant
 func (*BoolConst) isValue()            {}
@@ -108,62 +80,3 @@ func (*AddrSpaceCastExpr) isValue()  {}
 func (*ICmpExpr) isValue()           {}
 func (*FCmpExpr) isValue()           {}
 func (*SelectExpr) isValue()         {}
-
-// Ensure that each value implements the ast.Value interface.
-var (
-	_ Value = (*LocalIdent)(nil)
-	_ Value = (*InlineAsm)(nil)
-	_ Value = (*BoolConst)(nil)
-	_ Value = (*IntConst)(nil)
-	_ Value = (*FloatConst)(nil)
-	_ Value = (*NullConst)(nil)
-	_ Value = (*NoneConst)(nil)
-	_ Value = (*StructConst)(nil)
-	_ Value = (*ArrayConst)(nil)
-	_ Value = (*CharArrayConst)(nil)
-	_ Value = (*VectorConst)(nil)
-	_ Value = (*ZeroInitializerConst)(nil)
-	_ Value = (*GlobalIdent)(nil)
-	_ Value = (*UndefConst)(nil)
-	_ Value = (*BlockAddressConst)(nil)
-	_ Value = (*AddExpr)(nil)
-	_ Value = (*FAddExpr)(nil)
-	_ Value = (*SubExpr)(nil)
-	_ Value = (*FSubExpr)(nil)
-	_ Value = (*MulExpr)(nil)
-	_ Value = (*FMulExpr)(nil)
-	_ Value = (*UDivExpr)(nil)
-	_ Value = (*SDivExpr)(nil)
-	_ Value = (*FDivExpr)(nil)
-	_ Value = (*URemExpr)(nil)
-	_ Value = (*SRemExpr)(nil)
-	_ Value = (*FRemExpr)(nil)
-	_ Value = (*ShlExpr)(nil)
-	_ Value = (*LShrExpr)(nil)
-	_ Value = (*AShrExpr)(nil)
-	_ Value = (*AndExpr)(nil)
-	_ Value = (*OrExpr)(nil)
-	_ Value = (*XorExpr)(nil)
-	_ Value = (*ExtractElementExpr)(nil)
-	_ Value = (*InsertElementExpr)(nil)
-	_ Value = (*ShuffleVectorExpr)(nil)
-	_ Value = (*ExtractValueExpr)(nil)
-	_ Value = (*InsertValueExpr)(nil)
-	_ Value = (*GetElementPtrExpr)(nil)
-	_ Value = (*TruncExpr)(nil)
-	_ Value = (*ZExtExpr)(nil)
-	_ Value = (*SExtExpr)(nil)
-	_ Value = (*FPTruncExpr)(nil)
-	_ Value = (*FPExtExpr)(nil)
-	_ Value = (*FPToUIExpr)(nil)
-	_ Value = (*FPToSIExpr)(nil)
-	_ Value = (*UIToFPExpr)(nil)
-	_ Value = (*SIToFPExpr)(nil)
-	_ Value = (*PtrToIntExpr)(nil)
-	_ Value = (*IntToPtrExpr)(nil)
-	_ Value = (*BitCastExpr)(nil)
-	_ Value = (*AddrSpaceCastExpr)(nil)
-	_ Value = (*ICmpExpr)(nil)
-	_ Value = (*FCmpExpr)(nil)
-	_ Value = (*SelectExpr)(nil)
-)

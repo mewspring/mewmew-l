@@ -1,5 +1,3 @@
-// Package ast declares the types used to represent abstract syntax trees of
-// LLVM IR modules.
 package ast
 
 import (
@@ -7,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // === [ Module ] ==============================================================
@@ -87,26 +87,12 @@ func (t *DataLayout) String() string {
 func (*TargetTriple) isTargetDefinition() {}
 func (*DataLayout) isTargetDefinition()   {}
 
-// ~~~ [ Module-level Inline Assembly ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ModuleAsm is a module-level inline assembly top-level entity.
-type ModuleAsm struct {
-	Asm string
-}
-
-// String returns the string representation of the module-level inline assembly
-// top-level entity.
-func (a *ModuleAsm) String() string {
-	// "module" "asm" StringLit
-	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
-}
-
 // ~~~ [ Type Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // TypeDef is a type definition top-level entity.
 type TypeDef struct {
 	Name *LocalIdent
-	Def  Type
+	Def  types.Type
 }
 
 // String returns the string representation of the type definition.
@@ -116,49 +102,21 @@ func (t *TypeDef) String() string {
 	return fmt.Sprintf("%s = type %s", t.Name, t.Def)
 }
 
-// ~~~ [ Comdat Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// ComdatDef is a comdat definition top-level entity.
-type ComdatDef struct {
-	Name *ComdatName
-	Kind SelectionKind
-}
-
-// String returns the string representation of the comdat definition.
-func (c *ComdatDef) String() string {
-	// ComdatName "=" "comdat" SelectionKind
-	return fmt.Sprintf("%v = comdat %v", c.Name, c.Kind)
-}
-
-//go:generate stringer -linecomment -type SelectionKind
-
-// SelectionKind is a comdat selection kind.
-type SelectionKind uint8
-
-// Comdat selection kinds.
-const (
-	SelectionKindAny          SelectionKind = iota // any
-	SelectionKindExactMatch                        // exactmatch
-	SelectionKindLargest                           // largest
-	SelectionKindNoDuplicates                      // noduplicates
-	SelectionKindSameSize                          // samesize
-)
-
 // ~~~ [ Global Variable Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
 	Name                  *GlobalIdent
-	Linkage               Linkage         // zero value if not present
-	Preemption            Preemption      // zero value if not present
-	Visibility            Visibility      // zero value if not present
-	DLLStorageClass       DLLStorageClass // zero value if not present
-	ThreadLocal           *ThreadLocal    // nil if not present
-	UnnamedAddr           UnnamedAddr     // zero value if not present
-	AddrSpace             AddrSpace       // zero value if not present
+	Linkage               ll.Linkage         // zero value if not present
+	Preemption            ll.Preemption      // zero value if not present
+	Visibility            ll.Visibility      // zero value if not present
+	DLLStorageClass       ll.DLLStorageClass // zero value if not present
+	ThreadLocal           *ll.ThreadLocal    // nil if not present
+	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
+	AddrSpace             ll.AddrSpace       // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
-	Type                  Type
+	Type                  types.Type
 	Init                  Constant // nil if declaration
 	GlobalAttrs           []GlobalAttribute
 	FuncAttrs             []FuncAttribute
@@ -171,22 +129,22 @@ func (g *Global) String() string {
 	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v =", g.Name)
-	if g.Linkage != LinkageNone {
+	if g.Linkage != ll.LinkageNone {
 		fmt.Fprintf(buf, " %v", g.Linkage)
 	}
-	if g.Preemption != PreemptionNone {
+	if g.Preemption != ll.PreemptionNone {
 		fmt.Fprintf(buf, " %v", g.Preemption)
 	}
-	if g.Visibility != VisibilityNone {
+	if g.Visibility != ll.VisibilityNone {
 		fmt.Fprintf(buf, " %v", g.Visibility)
 	}
-	if g.DLLStorageClass != DLLStorageClassNone {
+	if g.DLLStorageClass != ll.DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", g.DLLStorageClass)
 	}
 	if g.ThreadLocal != nil {
 		fmt.Fprintf(buf, " %v", g.ThreadLocal)
 	}
-	if g.UnnamedAddr != UnnamedAddrNone {
+	if g.UnnamedAddr != ll.UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", g.UnnamedAddr)
 	}
 	if g.AddrSpace != 0 {
@@ -213,64 +171,35 @@ func (g *Global) String() string {
 	return buf.String()
 }
 
-// ThreadLocal is a thread local storage specifier.
-type ThreadLocal struct {
-	Model TLSModel // zero value if not present
-}
-
-// String returns a string representation of the thread local storage.
-func (t ThreadLocal) String() string {
-	// "thread_local"
-	// "thread_local" "(" TLSModel ")"
-	switch t.Model {
-	case TLSModelNone:
-		return "thread_local"
-	default:
-		return fmt.Sprintf("thread_local(%s)", t.Model)
-	}
-}
-
-//go:generate stringer -linecomment -type TLSModel
-
-// TLSModel is a thread local storage model.
-type TLSModel uint8
-
-// Thread local storage models.
-const (
-	TLSModelNone         TLSModel = iota // none
-	TLSModelInitialExec                  // initialexec
-	TLSModelLocalDynamic                 // localdynamic
-	TLSModelLocalExec                    // localexec
-)
-
 // GlobalAttribute is a global attribute.
 type GlobalAttribute interface {
 	fmt.Stringer
-	// isGlobalAttribute ensures that only global attributes can be assigned to
+	// IsGlobalAttribute ensures that only global attributes can be assigned to
 	// the ast.GlobalAttribute interface.
-	isGlobalAttribute()
+	IsGlobalAttribute()
 }
 
-// isGlobalAttribute ensures that only global attributes can be assigned to the
+// IsGlobalAttribute ensures that only global attributes can be assigned to the
 // ast.GlobalAttribute interface.
-func (*Section) isGlobalAttribute()            {}
-func (*Comdat) isGlobalAttribute()             {}
-func (*Alignment) isGlobalAttribute()          {}
-func (*MetadataAttachment) isGlobalAttribute() {}
+// TODO: Figure out how to handle GlobalAttribute interface.
+//func (*Section) IsGlobalAttribute()            {}
+//func (*Comdat) IsGlobalAttribute()             {}
+//func (*Alignment) IsGlobalAttribute()          {}
+func (*MetadataAttachment) IsGlobalAttribute() {}
 
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // An IndirectSymbol is an alias or an ifunc.
 type IndirectSymbol struct {
 	Name            *GlobalIdent
-	Linkage         Linkage
-	Preemption      Preemption
-	Visibility      Visibility
-	DLLStorageClass DLLStorageClass
-	ThreadLocal     *ThreadLocal
-	UnnamedAddr     UnnamedAddr
+	Linkage         ll.Linkage
+	Preemption      ll.Preemption
+	Visibility      ll.Visibility
+	DLLStorageClass ll.DLLStorageClass
+	ThreadLocal     *ll.ThreadLocal
+	UnnamedAddr     ll.UnnamedAddr
 	Alias           bool // alias if true, ifunc otherwise.
-	Type            Type
+	Type            types.Type
 	Const           *TypeConst // aliasee or resolver
 }
 
@@ -279,22 +208,22 @@ func (s *IndirectSymbol) String() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v =", s.Name)
-	if s.Linkage != LinkageNone {
+	if s.Linkage != ll.LinkageNone {
 		fmt.Fprintf(buf, " %v", s.Linkage)
 	}
-	if s.Preemption != PreemptionNone {
+	if s.Preemption != ll.PreemptionNone {
 		fmt.Fprintf(buf, " %v", s.Preemption)
 	}
-	if s.Visibility != VisibilityNone {
+	if s.Visibility != ll.VisibilityNone {
 		fmt.Fprintf(buf, " %v", s.Visibility)
 	}
-	if s.DLLStorageClass != DLLStorageClassNone {
+	if s.DLLStorageClass != ll.DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", s.DLLStorageClass)
 	}
 	if s.ThreadLocal != nil {
 		fmt.Fprintf(buf, " %v", s.ThreadLocal)
 	}
-	if s.UnnamedAddr != UnnamedAddrNone {
+	if s.UnnamedAddr != ll.UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", s.UnnamedAddr)
 	}
 	if s.Alias {
@@ -310,7 +239,7 @@ func (s *IndirectSymbol) String() string {
 
 // Function is an LLVM IR function.
 type Function struct {
-	Linkage  Linkage
+	Linkage  ll.Linkage
 	Header   *FunctionHeader
 	Body     *FunctionBody // nil if declaration
 	Metadata []*MetadataAttachment
@@ -329,7 +258,7 @@ func (f *Function) String() string {
 		for _, md := range f.Metadata {
 			fmt.Fprintf(buf, " %v", md)
 		}
-		if f.Linkage != LinkageNone {
+		if f.Linkage != ll.LinkageNone {
 			fmt.Fprintf(buf, " %v", f.Linkage)
 		}
 		buf.WriteString(f.Header.String())
@@ -339,7 +268,7 @@ func (f *Function) String() string {
 	//
 	//    "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 	buf.WriteString("define")
-	if f.Linkage != LinkageNone {
+	if f.Linkage != ll.LinkageNone {
 		fmt.Fprintf(buf, " %v", f.Linkage)
 	}
 	buf.WriteString(f.Header.String())
@@ -352,23 +281,23 @@ func (f *Function) String() string {
 
 // FunctionHeader is an LLVM IR function header.
 type FunctionHeader struct {
-	Preemption      Preemption      // zero value if not present
-	Visibility      Visibility      // zero value if not present
-	DLLStorageClass DLLStorageClass // zero value if not present
-	CallingConv     CallingConv     // zero value if not present
-	ReturnAttrs     []ReturnAttribute
-	RetType         Type
+	Preemption      ll.Preemption      // zero value if not present
+	Visibility      ll.Visibility      // zero value if not present
+	DLLStorageClass ll.DLLStorageClass // zero value if not present
+	CallingConv     ll.CallingConv     // zero value if not present
+	ReturnAttrs     []ll.ReturnAttribute
+	RetType         types.Type
 	Name            *GlobalIdent
-	Params          []*Param
+	Params          []*types.Param
 	Variadic        bool
-	UnnamedAddr     UnnamedAddr
+	UnnamedAddr     ll.UnnamedAddr
 	FuncAttrs       []FuncAttribute
-	Section         *Section   // nil if not present
-	Comdat          *Comdat    // nil if not present
-	GC              string     // empty if not present
-	Prefix          *TypeConst // nil if not present
-	Prologue        *TypeConst // nil if not present
-	Personality     *TypeConst // nil if not present
+	Section         *ll.Section // nil if not present
+	Comdat          *ll.Comdat  // nil if not present
+	GC              string      // empty if not present
+	Prefix          *TypeConst  // nil if not present
+	Prologue        *TypeConst  // nil if not present
+	Personality     *TypeConst  // nil if not present
 }
 
 // String returns the string representation of the function header.
@@ -377,16 +306,16 @@ func (hdr *FunctionHeader) String() string {
 	// ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs
 	// OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
 	buf := &strings.Builder{}
-	if hdr.Preemption != PreemptionNone {
+	if hdr.Preemption != ll.PreemptionNone {
 		fmt.Fprintf(buf, " %v", hdr.Preemption)
 	}
-	if hdr.Visibility != VisibilityNone {
+	if hdr.Visibility != ll.VisibilityNone {
 		fmt.Fprintf(buf, " %v", hdr.Visibility)
 	}
-	if hdr.DLLStorageClass != DLLStorageClassNone {
+	if hdr.DLLStorageClass != ll.DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", hdr.DLLStorageClass)
 	}
-	if hdr.CallingConv != CallingConvNone {
+	if hdr.CallingConv != ll.CallingConvNone {
 		fmt.Fprintf(buf, " %v", hdr.CallingConv)
 	}
 	for _, attr := range hdr.ReturnAttrs {
@@ -407,7 +336,7 @@ func (hdr *FunctionHeader) String() string {
 		buf.WriteString("...")
 	}
 	buf.WriteString(")")
-	if hdr.UnnamedAddr != UnnamedAddrNone {
+	if hdr.UnnamedAddr != ll.UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", hdr.UnnamedAddr)
 	}
 	for _, attr := range hdr.FuncAttrs {
@@ -433,67 +362,6 @@ func (hdr *FunctionHeader) String() string {
 	}
 	return buf.String()
 }
-
-//go:generate stringer -linecomment -type CallingConv
-
-// CallingConv is a calling convention.
-type CallingConv uint8
-
-// Calling conventions.
-const (
-	CallingConvNone          CallingConv = iota // none
-	CallingConvAmdGPUCS                         // amdgpu_cs
-	CallingConvAmdGPUES                         // amdgpu_es
-	CallingConvAmdGPUGS                         // amdgpu_gs
-	CallingConvAmdGPUHS                         // amdgpu_hs
-	CallingConvAmdGPUKernel                     // amdgpu_kernel
-	CallingConvAmdGPULS                         // amdgpu_ls
-	CallingConvAmdGPUPS                         // amdgpu_ps
-	CallingConvAmdGPUVS                         // amdgpu_vs
-	CallingConvAnyReg                           // anyregcc
-	CallingConvARMAAPCSVFP                      // arm_aapcs_vfpcc
-	CallingConvARMAAPCS                         // arm_aapcscc
-	CallingConvARMAPCS                          // arm_apcscc
-	CallingConvAVRIntr                          // avr_intrcc
-	CallingConvAVRSignal                        // avr_signalcc
-	CallingConvC                                // ccc
-	CallingConvCold                             // coldcc
-	CallingConvCXXFastTLS                       // cxx_fast_tlscc
-	CallingConvFast                             // fastcc
-	CallingConvGHC                              // ghccc
-	CallingConvHHVMC                            // hhvm_ccc
-	CallingConvHHVM                             // hhvmcc
-	CallingConvIntelOCLBI                       // intel_ocl_bicc
-	CallingConvMSP430Intr                       // msp430_intrcc
-	CallingConvPreserveAll                      // preserve_allcc
-	CallingConvPreserveMost                     // preserve_mostcc
-	CallingConvPTXDevice                        // ptx_device
-	CallingConvPTXKernel                        // ptx_kernel
-	CallingConvSPIRFunc                         // spir_func
-	CallingConvSPIRKernel                       // spir_kernel
-	CallingConvSwift                            // swiftcc
-	CallingConvWebKitJS                         // webkit_jscc
-	CallingConvWin64                            // win64cc
-	CallingConvX86_64SysV                       // x86_64_sysvcc
-	CallingConvX86FastCall                      // x86_fastcallcc
-	CallingConvX86Intr                          // x86_intrcc
-	CallingConvX86RegCall                       // x86_regcallcc
-	CallingConvX86StdCall                       // x86_stdcallcc
-	CallingConvX86ThisCall                      // x86_thiscallcc
-	CallingConvX86VectorCall                    // x86_vectorcallcc
-	// Calling conventions defined through cc NNN.
-	CallingConvHiPE          // cc 11
-	CallingConvAVRBuiltin    // cc 86
-	CallingConvAMDGPUVS      // cc 87
-	CallingConvAMDGPUGS      // cc 88
-	CallingConvAMDGPUPS      // cc 89
-	CallingConvAMDGPUCS      // cc 90
-	CallingConvAMDGPUKernel  // cc 91
-	CallingConvAMDGPUHS      // cc 93
-	CallingConvMSP430Builtin // cc 94
-	CallingConvAMDGPULS      // cc 95
-	CallingConvAMDGPUES      // cc 96
-)
 
 // FunctionBody is an LLVM IR function body.
 type FunctionBody struct {
@@ -534,7 +402,7 @@ func (def *AttrGroupDef) String() string {
 			buf.WriteString(" ")
 		}
 		// Note, alignment is printed as `align = 8` in attribute groups.
-		if attr, ok := attr.(*Alignment); ok {
+		if attr, ok := attr.(*ll.Alignment); ok {
 			fmt.Fprintf(buf, "align = %d", attr.Align)
 			continue
 		}
@@ -606,7 +474,7 @@ func (def *MetadataDef) String() string {
 
 // UseListOrder is a use-list order directive.
 type UseListOrder struct {
-	Type    Type
+	Type    types.Type
 	Value   Value
 	Indices []int64
 }
@@ -659,9 +527,11 @@ func (*SourceFilename) isTopLevelEntity() {}
 func (*TargetTriple) isTopLevelEntity() {}
 func (*DataLayout) isTopLevelEntity()   {}
 
-func (*ModuleAsm) isTopLevelEntity()        {}
-func (*TypeDef) isTopLevelEntity()          {}
-func (*ComdatDef) isTopLevelEntity()        {}
+// TODO: Figure out how to handle TopLevelEntity interface.
+//func (*ModuleAsm) isTopLevelEntity()        {}
+func (*TypeDef) isTopLevelEntity() {}
+
+//func (*ComdatDef) isTopLevelEntity()        {}
 func (*Global) isTopLevelEntity()           {}
 func (*IndirectSymbol) isTopLevelEntity()   {}
 func (*Function) isTopLevelEntity()         {}

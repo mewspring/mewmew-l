@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/ast"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/types"
 )
@@ -11,13 +12,13 @@ import (
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
 	Name                  string
-	Linkage               Linkage         // zero value if not present
-	Preemption            Preemption      // zero value if not present
-	Visibility            Visibility      // zero value if not present
-	DLLStorageClass       DLLStorageClass // zero value if not present
-	ThreadLocal           *ThreadLocal    // nil if not present
-	UnnamedAddr           UnnamedAddr     // zero value if not present
-	AddrSpace             types.AddrSpace // zero value if not present
+	Linkage               ast.Linkage         // zero value if not present
+	Preemption            ast.Preemption      // zero value if not present
+	Visibility            ast.Visibility      // zero value if not present
+	DLLStorageClass       ast.DLLStorageClass // zero value if not present
+	ThreadLocal           *ast.ThreadLocal    // nil if not present
+	UnnamedAddr           ast.UnnamedAddr     // zero value if not present
+	AddrSpace             types.AddrSpace     // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Typ                   *types.PointerType
@@ -89,23 +90,6 @@ func (g *Global) Ident() string {
 // IsConstant ensures that only constants can be assigned to the
 // constant.Constant interface.
 func (*Global) IsConstant() {}
-
-// ThreadLocal is a thread local storage specifier.
-type ThreadLocal struct {
-	Model TLSModel // zero value if not present
-}
-
-// String returns a string representation of the thread local storage.
-func (t ThreadLocal) String() string {
-	// "thread_local"
-	// "thread_local" "(" TLSModel ")"
-	switch t.Model {
-	case TLSModelNone:
-		return "thread_local"
-	default:
-		return fmt.Sprintf("thread_local(%s)", t.Model)
-	}
-}
 
 // GlobalAttribute is a global attribute.
 type GlobalAttribute interface {

@@ -3,6 +3,9 @@ package ast
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // === [ Constant expressions ] ================================================
@@ -13,7 +16,7 @@ import (
 
 // AddExpr is an LLVM IR add expression.
 type AddExpr struct {
-	OverflowFlags []OverflowFlag
+	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeConst
 }
 
@@ -46,7 +49,7 @@ func (c *FAddExpr) String() string {
 
 // SubExpr is an LLVM IR sub expression.
 type SubExpr struct {
-	OverflowFlags []OverflowFlag
+	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeConst
 }
 
@@ -79,7 +82,7 @@ func (c *FSubExpr) String() string {
 
 // MulExpr is an LLVM IR mul expression.
 type MulExpr struct {
-	OverflowFlags []OverflowFlag
+	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeConst
 }
 
@@ -206,7 +209,7 @@ func (c *FRemExpr) String() string {
 
 // ShlExpr is an LLVM IR shl expression.
 type ShlExpr struct {
-	OverflowFlags []OverflowFlag
+	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeConst
 }
 
@@ -396,7 +399,7 @@ func (c *InsertValueExpr) String() string {
 // GetElementPtrExpr is an LLVM IR getelementptr expression.
 type GetElementPtrExpr struct {
 	InBounds bool
-	ElemType Type
+	ElemType types.Type
 	Src      *TypeConst
 	Indices  []*GEPConstIndex
 }
@@ -441,7 +444,7 @@ func (index *GEPConstIndex) String() string {
 // TruncExpr is an LLVM IR trunc expression.
 type TruncExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -455,7 +458,7 @@ func (c *TruncExpr) String() string {
 // ZExtExpr is an LLVM IR zext expression.
 type ZExtExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -469,7 +472,7 @@ func (c *ZExtExpr) String() string {
 // SExtExpr is an LLVM IR sext expression.
 type SExtExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -483,7 +486,7 @@ func (c *SExtExpr) String() string {
 // FPTruncExpr is an LLVM IR fptrunc expression.
 type FPTruncExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -497,7 +500,7 @@ func (c *FPTruncExpr) String() string {
 // FPExtExpr is an LLVM IR fpext expression.
 type FPExtExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -511,7 +514,7 @@ func (c *FPExtExpr) String() string {
 // FPToUIExpr is an LLVM IR fptoui expression.
 type FPToUIExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -525,7 +528,7 @@ func (c *FPToUIExpr) String() string {
 // FPToSIExpr is an LLVM IR fptosi expression.
 type FPToSIExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -539,7 +542,7 @@ func (c *FPToSIExpr) String() string {
 // UIToFPExpr is an LLVM IR uitofp expression.
 type UIToFPExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -553,7 +556,7 @@ func (c *UIToFPExpr) String() string {
 // SIToFPExpr is an LLVM IR sitofp expression.
 type SIToFPExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -567,7 +570,7 @@ func (c *SIToFPExpr) String() string {
 // PtrToIntExpr is an LLVM IR ptrtoint expression.
 type PtrToIntExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -581,7 +584,7 @@ func (c *PtrToIntExpr) String() string {
 // IntToPtrExpr is an LLVM IR inttoptr expression.
 type IntToPtrExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -595,7 +598,7 @@ func (c *IntToPtrExpr) String() string {
 // BitCastExpr is an LLVM IR bitcast expression.
 type BitCastExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -609,7 +612,7 @@ func (c *BitCastExpr) String() string {
 // AddrSpaceCastExpr is an LLVM IR addrspacecast expression.
 type AddrSpaceCastExpr struct {
 	From *TypeConst
-	To   Type
+	To   types.Type
 }
 
 // String returns a string representation of the constant expression.
@@ -624,7 +627,7 @@ func (c *AddrSpaceCastExpr) String() string {
 
 // ICmpExpr is an LLVM IR icmp expression.
 type ICmpExpr struct {
-	Pred IPred
+	Pred ll.IPred
 	X, Y *TypeConst
 }
 
@@ -638,7 +641,7 @@ func (c *ICmpExpr) String() string {
 
 // FCmpExpr is an LLVM IR fcmp expression.
 type FCmpExpr struct {
-	Pred FPred
+	Pred ll.FPred
 	X, Y *TypeConst
 }
 

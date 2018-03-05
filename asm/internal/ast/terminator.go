@@ -3,6 +3,9 @@ package ast
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // === [ Terminator ] ==========================================================
@@ -147,9 +150,9 @@ func (term *IndirectBrTerm) String() string {
 
 // InvokeTerm is an LLVM IR invoke terminator.
 type InvokeTerm struct {
-	CallingConv    CallingConv
-	ReturnAttrs    []ReturnAttribute
-	RetType        Type
+	CallingConv    ll.CallingConv
+	ReturnAttrs    []ll.ReturnAttribute
+	RetType        types.Type
 	Callee         Value
 	Args           []Argument
 	FuncAttrs      []FuncAttribute
@@ -164,7 +167,7 @@ func (term *InvokeTerm) String() string {
 	// "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("invoke")
-	if term.CallingConv != CallingConvNone {
+	if term.CallingConv != ll.CallingConvNone {
 		fmt.Fprintf(buf, " %v", term.CallingConv)
 	}
 	for _, attr := range term.ReturnAttrs {
@@ -266,12 +269,6 @@ func (*UnwindToCaller) String() string {
 func (*UnwindToCaller) isUnwindTarget() {}
 func (*Label) isUnwindTarget()          {}
 
-// Ensure that each unwind target implements the ast.UnwindTarget interface.
-var (
-	_ UnwindTarget = (*UnwindToCaller)(nil)
-	_ UnwindTarget = (*Label)(nil)
-)
-
 // --- [ catchret ] ------------------------------------------------------------
 
 // CatchRetTerm is an LLVM IR catchret terminator.
@@ -345,18 +342,3 @@ func (*CatchSwitchTerm) isTerminator() {}
 func (*CatchRetTerm) isTerminator()    {}
 func (*CleanupRetTerm) isTerminator()  {}
 func (*UnreachableTerm) isTerminator() {}
-
-// Ensure that each terminator implements the ast.Terminator interface.
-var (
-	_ Terminator = (*RetTerm)(nil)
-	_ Terminator = (*BrTerm)(nil)
-	_ Terminator = (*CondBrTerm)(nil)
-	_ Terminator = (*SwitchTerm)(nil)
-	_ Terminator = (*IndirectBrTerm)(nil)
-	_ Terminator = (*InvokeTerm)(nil)
-	_ Terminator = (*ResumeTerm)(nil)
-	_ Terminator = (*CatchSwitchTerm)(nil)
-	_ Terminator = (*CatchRetTerm)(nil)
-	_ Terminator = (*CleanupRetTerm)(nil)
-	_ Terminator = (*UnreachableTerm)(nil)
-)

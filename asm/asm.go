@@ -5,9 +5,9 @@ import (
 	"io"
 	"io/ioutil"
 
-	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/asm/internal/lexer"
 	"github.com/mewmew/l/asm/internal/parser"
+	"github.com/mewmew/l/ast"
 	"github.com/pkg/errors"
 )
 
