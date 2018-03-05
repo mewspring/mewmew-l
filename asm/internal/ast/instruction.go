@@ -1154,11 +1154,13 @@ func (inst *PhiInst) String() string {
 	return buf.String()
 }
 
+// Incoming is an incoming value of a phi instruction.
 type Incoming struct {
 	X    Value
 	Pred *LocalIdent
 }
 
+// String returns the string representation of the incoming value.
 func (inc *Incoming) String() string {
 	// "[" Value "," LocalIdent "]"
 	return fmt.Sprintf("[ %v, %v ]", inc.X, inc.Pred)

@@ -50,7 +50,7 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 		node.Macros = v.(ast.MDField)
 	}
 	if v, ok := m["dwoId:"]; ok {
-		node.DwoId = v.(int64)
+		node.DwoID = v.(int64)
 	}
 	if v, ok := m["splitDebugInlining:"]; ok {
 		node.SplitDebugInlining = v.(bool)
