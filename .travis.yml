@@ -1,0 +1,24 @@
+language: go
+
+# The coverprofile for multiple packages works in go 1.10
+# see https://tip.golang.org/doc/go1.10#test
+go:
+  - master
+
+notifications:
+  email: false
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=796275da92c1c877b262c689bd858f5143405917f2971bd59a7adea9f1d3724f
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - go test -coverprofile c.out ./...
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
