@@ -148,6 +148,7 @@ type Global struct {
 	FuncAttrs             []FuncAttribute
 }
 
+// String returns a string representation of the global variable.
 func (g *Global) String() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility
 	// OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace
@@ -201,6 +202,7 @@ type ThreadLocal struct {
 	Model TLSModel // zero value if not present
 }
 
+// String returns a string representation of the thread local storage.
 func (t ThreadLocal) String() string {
 	// "thread_local"
 	// "thread_local" "(" TLSModel ")"
@@ -228,9 +230,13 @@ const (
 // GlobalAttribute is a global attribute.
 type GlobalAttribute interface {
 	fmt.Stringer
+	// isGlobalAttribute ensures that only global attributes can be assigned to
+	// the ast.GlobalAttribute interface.
 	isGlobalAttribute()
 }
 
+// isGlobalAttribute ensures that only global attributes can be assigned to the
+// ast.GlobalAttribute interface.
 func (*Section) isGlobalAttribute()            {}
 func (*Comdat) isGlobalAttribute()             {}
 func (*Alignment) isGlobalAttribute()          {}
