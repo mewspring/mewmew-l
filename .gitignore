@@ -9,3 +9,4 @@ asm/internal/lexer/
 asm/internal/parser/
 asm/internal/token/
 asm/internal/util/
+*.prof

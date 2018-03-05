@@ -112,7 +112,7 @@ func NewCallingConv(tok interface{}) (ast.CallingConv, error) {
 	case 11:
 		return ast.CallingConvHiPE, nil
 	case 12:
-		return ast.CallingConvWebKit_JS, nil
+		return ast.CallingConvWebKitJS, nil
 	case 13:
 		return ast.CallingConvAnyReg, nil
 	case 14:
@@ -122,69 +122,69 @@ func NewCallingConv(tok interface{}) (ast.CallingConv, error) {
 	case 16:
 		return ast.CallingConvSwift, nil
 	case 17:
-		return ast.CallingConvCXX_Fast_TLS, nil
+		return ast.CallingConvCXXFastTLS, nil
 	case 64:
-		return ast.CallingConvX86_StdCall, nil
+		return ast.CallingConvX86StdCall, nil
 	case 65:
-		return ast.CallingConvX86_FastCall, nil
+		return ast.CallingConvX86FastCall, nil
 	case 66:
-		return ast.CallingConvARM_APCS, nil
+		return ast.CallingConvARMAPCS, nil
 	case 67:
-		return ast.CallingConvARM_AAPCS, nil
+		return ast.CallingConvARMAAPCS, nil
 	case 68:
-		return ast.CallingConvARM_AAPCS_VFP, nil
+		return ast.CallingConvARMAAPCSVFP, nil
 	case 69:
-		return ast.CallingConvMSP430_Intr, nil
+		return ast.CallingConvMSP430Intr, nil
 	case 70:
-		return ast.CallingConvX86_ThisCall, nil
+		return ast.CallingConvX86ThisCall, nil
 	case 71:
-		return ast.CallingConvPTX_Kernel, nil
+		return ast.CallingConvPTXKernel, nil
 	case 72:
-		return ast.CallingConvPTX_Device, nil
+		return ast.CallingConvPTXDevice, nil
 	case 75:
-		return ast.CallingConvSPIR_Func, nil
+		return ast.CallingConvSPIRFunc, nil
 	case 76:
-		return ast.CallingConvSPIR_Kernel, nil
+		return ast.CallingConvSPIRKernel, nil
 	case 77:
-		return ast.CallingConvIntel_OCL_BI, nil
+		return ast.CallingConvIntelOCLBI, nil
 	case 78:
-		return ast.CallingConvX86_64_SysV, nil
+		return ast.CallingConvX86_64SysV, nil
 	case 79:
 		return ast.CallingConvWin64, nil
 	case 80:
-		return ast.CallingConvX86_VectorCall, nil
+		return ast.CallingConvX86VectorCall, nil
 	case 81:
 		return ast.CallingConvHHVM, nil
 	case 82:
-		return ast.CallingConvHHVM_C, nil
+		return ast.CallingConvHHVMC, nil
 	case 83:
-		return ast.CallingConvX86_Intr, nil
+		return ast.CallingConvX86Intr, nil
 	case 84:
-		return ast.CallingConvAVR_Intr, nil
+		return ast.CallingConvAVRIntr, nil
 	case 85:
-		return ast.CallingConvAVR_Signal, nil
+		return ast.CallingConvAVRSignal, nil
 	case 86:
-		return ast.CallingConvAVR_Builtin, nil
+		return ast.CallingConvAVRBuiltin, nil
 	case 87:
-		return ast.CallingConvAMDGPU_VS, nil
+		return ast.CallingConvAMDGPUVS, nil
 	case 88:
-		return ast.CallingConvAMDGPU_GS, nil
+		return ast.CallingConvAMDGPUGS, nil
 	case 89:
-		return ast.CallingConvAMDGPU_PS, nil
+		return ast.CallingConvAMDGPUPS, nil
 	case 90:
-		return ast.CallingConvAMDGPU_CS, nil
+		return ast.CallingConvAMDGPUCS, nil
 	case 91:
-		return ast.CallingConvAMDGPU_Kernel, nil
+		return ast.CallingConvAMDGPUKernel, nil
 	case 92:
-		return ast.CallingConvX86_RegCall, nil
+		return ast.CallingConvX86RegCall, nil
 	case 93:
-		return ast.CallingConvAMDGPU_HS, nil
+		return ast.CallingConvAMDGPUHS, nil
 	case 94:
-		return ast.CallingConvMSP430_Builtin, nil
+		return ast.CallingConvMSP430Builtin, nil
 	case 95:
-		return ast.CallingConvAMDGPU_LS, nil
+		return ast.CallingConvAMDGPULS, nil
 	case 96:
-		return ast.CallingConvAMDGPU_ES, nil
+		return ast.CallingConvAMDGPUES, nil
 	default:
 		panic(fmt.Errorf("support for calling convention ID %d not yet implemented", cc))
 	}
@@ -244,7 +244,7 @@ func NewDwarfLang(tok interface{}) (ast.DwarfLang, error) {
 		"DW_LANG_C89":                 ast.DwarfLangC89,
 		"DW_LANG_C":                   ast.DwarfLangC,
 		"DW_LANG_Ada83":               ast.DwarfLangAda83,
-		"DW_LANG_C_plus_plus":         ast.DwarfLangC_plus_plus,
+		"DW_LANG_C_plus_plus":         ast.DwarfLangCPlusPlus,
 		"DW_LANG_Cobol74":             ast.DwarfLangCobol74,
 		"DW_LANG_Cobol85":             ast.DwarfLangCobol85,
 		"DW_LANG_Fortran77":           ast.DwarfLangFortran77,
@@ -257,7 +257,7 @@ func NewDwarfLang(tok interface{}) (ast.DwarfLang, error) {
 		"DW_LANG_Fortran95":           ast.DwarfLangFortran95,
 		"DW_LANG_PLI":                 ast.DwarfLangPLI,
 		"DW_LANG_ObjC":                ast.DwarfLangObjC,
-		"DW_LANG_ObjC_plus_plus":      ast.DwarfLangObjC_plus_plus,
+		"DW_LANG_ObjC_plus_plus":      ast.DwarfLangObjCPlusPlus,
 		"DW_LANG_UPC":                 ast.DwarfLangUPC,
 		"DW_LANG_D":                   ast.DwarfLangD,
 		"DW_LANG_Python":              ast.DwarfLangPython,
@@ -265,22 +265,22 @@ func NewDwarfLang(tok interface{}) (ast.DwarfLang, error) {
 		"DW_LANG_Go":                  ast.DwarfLangGo,
 		"DW_LANG_Modula3":             ast.DwarfLangModula3,
 		"DW_LANG_Haskell":             ast.DwarfLangHaskell,
-		"DW_LANG_C_plus_plus_03":      ast.DwarfLangC_plus_plus_03,
-		"DW_LANG_C_plus_plus_11":      ast.DwarfLangC_plus_plus_11,
+		"DW_LANG_C_plus_plus_03":      ast.DwarfLangCPlusPlus03,
+		"DW_LANG_C_plus_plus_11":      ast.DwarfLangCPlusPlus11,
 		"DW_LANG_OCaml":               ast.DwarfLangOCaml,
 		"DW_LANG_Rust":                ast.DwarfLangRust,
 		"DW_LANG_C11":                 ast.DwarfLangC11,
 		"DW_LANG_Swift":               ast.DwarfLangSwift,
 		"DW_LANG_Julia":               ast.DwarfLangJulia,
 		"DW_LANG_Dylan":               ast.DwarfLangDylan,
-		"DW_LANG_C_plus_plus_14":      ast.DwarfLangC_plus_plus_14,
+		"DW_LANG_C_plus_plus_14":      ast.DwarfLangCPlusPlus14,
 		"DW_LANG_Fortran03":           ast.DwarfLangFortran03,
 		"DW_LANG_Fortran08":           ast.DwarfLangFortran08,
 		"DW_LANG_RenderScript":        ast.DwarfLangRenderScript,
 		"DW_LANG_BLISS":               ast.DwarfLangBLISS,
-		"DW_LANG_Mips_Assembler":      ast.DwarfLangMips_Assembler,
-		"DW_LANG_GOOGLE_RenderScript": ast.DwarfLangGOOGLE_RenderScript,
-		"DW_LANG_BORLAND_Delphi":      ast.DwarfLangBORLAND_Delphi,
+		"DW_LANG_Mips_Assembler":      ast.DwarfLangMipsAssembler,
+		"DW_LANG_GOOGLE_RenderScript": ast.DwarfLangGoogleRenderScript,
+		"DW_LANG_BORLAND_Delphi":      ast.DwarfLangBorlandDelphi,
 	}
 	s := String(tok)
 	if v, ok := m[s]; ok {
@@ -437,7 +437,7 @@ func NewDwarfCC(tok interface{}) (ast.DwarfCC, error) {
 		"DW_CC_nocall":                    ast.DwarfCCNoCall,
 		"DW_CC_pass_by_reference":         ast.DwarfCCPassByReference,
 		"DW_CC_pass_by_value":             ast.DwarfCCPassByValue,
-		"DW_CC_GNU_borland_fastcall_i386": ast.DwarfCCGNUBorlandFastcall_i386,
+		"DW_CC_GNU_borland_fastcall_i386": ast.DwarfCCGNUBorlandFastcallI386,
 		"DW_CC_BORLAND_safecall":          ast.DwarfCCBORLANDSafecall,
 		"DW_CC_BORLAND_stdcall":           ast.DwarfCCBORLANDStdcall,
 		"DW_CC_BORLAND_pascal":            ast.DwarfCCBORLANDPascal,

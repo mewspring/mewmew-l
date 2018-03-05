@@ -87,12 +87,12 @@ type FloatKind uint8
 
 // Floating-point kinds.
 const (
-	FloatKindHalf      FloatKind = iota // half
-	FloatKindFloat                      // float
-	FloatKindDouble                     // double
-	FloatKindX86_FP80                   // x86_fp80
-	FloatKindFP128                      // fp128
-	FloatKindPPC_FP128                  // ppc_fp128
+	FloatKindHalf     FloatKind = iota // half
+	FloatKindFloat                     // float
+	FloatKindDouble                    // double
+	FloatKindX86FP80                   // x86_fp80
+	FloatKindFP128                     // fp128
+	FloatKindPPCFP128                  // ppc_fp128
 )
 
 // --- [ MMX Types ] -----------------------------------------------------------

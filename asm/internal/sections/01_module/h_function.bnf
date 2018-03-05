@@ -88,45 +88,45 @@ OptCallingConv
 ;
 
 CallingConv
-	: "amdgpu_cs"          << ast.CallingConvAmdGPU_CS, nil >>
-	| "amdgpu_es"          << ast.CallingConvAmdGPU_ES, nil >>
-	| "amdgpu_gs"          << ast.CallingConvAmdGPU_GS, nil >>
-	| "amdgpu_hs"          << ast.CallingConvAmdGPU_HS, nil >>
-	| "amdgpu_kernel"      << ast.CallingConvAmdGPU_Kernel, nil >>
-	| "amdgpu_ls"          << ast.CallingConvAmdGPU_LS, nil >>
-	| "amdgpu_ps"          << ast.CallingConvAmdGPU_PS, nil >>
-	| "amdgpu_vs"          << ast.CallingConvAmdGPU_VS, nil >>
+	: "amdgpu_cs"          << ast.CallingConvAmdGPUCS, nil >>
+	| "amdgpu_es"          << ast.CallingConvAmdGPUES, nil >>
+	| "amdgpu_gs"          << ast.CallingConvAmdGPUGS, nil >>
+	| "amdgpu_hs"          << ast.CallingConvAmdGPUHS, nil >>
+	| "amdgpu_kernel"      << ast.CallingConvAmdGPUKernel, nil >>
+	| "amdgpu_ls"          << ast.CallingConvAmdGPULS, nil >>
+	| "amdgpu_ps"          << ast.CallingConvAmdGPUPS, nil >>
+	| "amdgpu_vs"          << ast.CallingConvAmdGPUVS, nil >>
 	| "anyregcc"           << ast.CallingConvAnyReg, nil >>
-	| "arm_aapcs_vfpcc"    << ast.CallingConvARM_AAPCS_VFP, nil >>
-	| "arm_aapcscc"        << ast.CallingConvARM_AAPCS, nil >>
-	| "arm_apcscc"         << ast.CallingConvARM_APCS, nil >>
-	| "avr_intrcc"         << ast.CallingConvAVR_Intr, nil >>
-	| "avr_signalcc"       << ast.CallingConvAVR_Signal, nil >>
+	| "arm_aapcs_vfpcc"    << ast.CallingConvARMAAPCSVFP, nil >>
+	| "arm_aapcscc"        << ast.CallingConvARMAAPCS, nil >>
+	| "arm_apcscc"         << ast.CallingConvARMAPCS, nil >>
+	| "avr_intrcc"         << ast.CallingConvAVRIntr, nil >>
+	| "avr_signalcc"       << ast.CallingConvAVRSignal, nil >>
 	| "ccc"                << ast.CallingConvC, nil >>
 	| "coldcc"             << ast.CallingConvCold, nil >>
-	| "cxx_fast_tlscc"     << ast.CallingConvCXX_Fast_TLS, nil >>
+	| "cxx_fast_tlscc"     << ast.CallingConvCXXFastTLS, nil >>
 	| "fastcc"             << ast.CallingConvFast, nil >>
 	| "ghccc"              << ast.CallingConvGHC, nil >>
-	| "hhvm_ccc"           << ast.CallingConvHHVM_C, nil >>
+	| "hhvm_ccc"           << ast.CallingConvHHVMC, nil >>
 	| "hhvmcc"             << ast.CallingConvHHVM, nil >>
-	| "intel_ocl_bicc"     << ast.CallingConvIntel_OCL_BI, nil >>
-	| "msp430_intrcc"      << ast.CallingConvMSP430_Intr, nil >>
+	| "intel_ocl_bicc"     << ast.CallingConvIntelOCLBI, nil >>
+	| "msp430_intrcc"      << ast.CallingConvMSP430Intr, nil >>
 	| "preserve_allcc"     << ast.CallingConvPreserveAll, nil >>
 	| "preserve_mostcc"    << ast.CallingConvPreserveMost, nil >>
-	| "ptx_device"         << ast.CallingConvPTX_Device, nil >>
-	| "ptx_kernel"         << ast.CallingConvPTX_Kernel, nil >>
-	| "spir_func"          << ast.CallingConvSPIR_Func, nil >>
-	| "spir_kernel"        << ast.CallingConvSPIR_Kernel, nil >>
+	| "ptx_device"         << ast.CallingConvPTXDevice, nil >>
+	| "ptx_kernel"         << ast.CallingConvPTXKernel, nil >>
+	| "spir_func"          << ast.CallingConvSPIRFunc, nil >>
+	| "spir_kernel"        << ast.CallingConvSPIRKernel, nil >>
 	| "swiftcc"            << ast.CallingConvSwift, nil >>
 	| "webkit_jscc"        << ast.CallingConvWebKitJS, nil >>
 	| "win64cc"            << ast.CallingConvWin64, nil >>
-	| "x86_64_sysvcc"      << ast.CallingConvX86_64_SysV, nil >>
-	| "x86_fastcallcc"     << ast.CallingConvX86_FastCall, nil >>
-	| "x86_intrcc"         << ast.CallingConvX86_Intr, nil >>
-	| "x86_regcallcc"      << ast.CallingConvX86_RegCall, nil >>
-	| "x86_stdcallcc"      << ast.CallingConvX86_StdCall, nil >>
-	| "x86_thiscallcc"     << ast.CallingConvX86_ThisCall, nil >>
-	| "x86_vectorcallcc"   << ast.CallingConvX86_VectorCall, nil >>
+	| "x86_64_sysvcc"      << ast.CallingConvX86_64SysV, nil >>
+	| "x86_fastcallcc"     << ast.CallingConvX86FastCall, nil >>
+	| "x86_intrcc"         << ast.CallingConvX86Intr, nil >>
+	| "x86_regcallcc"      << ast.CallingConvX86RegCall, nil >>
+	| "x86_stdcallcc"      << ast.CallingConvX86StdCall, nil >>
+	| "x86_thiscallcc"     << ast.CallingConvX86ThisCall, nil >>
+	| "x86_vectorcallcc"   << ast.CallingConvX86VectorCall, nil >>
 	| "cc" int_lit         << astx.NewCallingConv($1) >>
 ;
 

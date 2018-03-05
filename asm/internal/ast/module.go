@@ -16,6 +16,7 @@ type Module struct {
 	Entities []TopLevelEntity
 }
 
+// String returns the string representation of the module.
 func (m *Module) String() string {
 	// TopLevelEntities
 	buf := &strings.Builder{}
@@ -30,6 +31,8 @@ func (m *Module) String() string {
 // A TopLevelEntity is a top-level entity of a module.
 type TopLevelEntity interface {
 	fmt.Stringer
+	// isTopLevelEntity ensures that only top-level entities can be assigned to
+	// the ast.TopLevelEntity interface.
 	isTopLevelEntity()
 }
 
@@ -40,6 +43,8 @@ type SourceFilename struct {
 	Name string
 }
 
+// String returns the string representation of the source filename top-level
+// entity.
 func (s *SourceFilename) String() string {
 	// "source_filename" "=" StringLit
 	return fmt.Sprintf("source_filename = %v", enc.Quote(s.Name))
@@ -49,6 +54,8 @@ func (s *SourceFilename) String() string {
 
 // TargetDefinition is a target definition top-level entity.
 type TargetDefinition interface {
+	// isTargetDefinition ensures that only target definitions can be assigned to
+	// the ast.TargetDefinition interface.
 	isTargetDefinition()
 }
 
@@ -57,6 +64,8 @@ type TargetTriple struct {
 	TargetTriple string
 }
 
+// String returns the string representation of the target triple top-level
+// entity.
 func (t *TargetTriple) String() string {
 	// "target" "triple" "=" StringLit
 	return fmt.Sprintf("target triple = %v", enc.Quote(t.TargetTriple))
@@ -67,11 +76,14 @@ type DataLayout struct {
 	DataLayout string
 }
 
+// String returns the string representation of the data layout top-level entity.
 func (t *DataLayout) String() string {
 	// "target" "datalayout" "=" StringLit
 	return fmt.Sprintf("target datalayout = %v", enc.Quote(t.DataLayout))
 }
 
+// isTargetDefinition ensures that only target definitions can be assigned to
+// the ast.TargetDefinition interface.
 func (*TargetTriple) isTargetDefinition() {}
 func (*DataLayout) isTargetDefinition()   {}
 
@@ -82,6 +94,8 @@ type ModuleAsm struct {
 	Asm string
 }
 
+// String returns the string representation of the module-level inline assembly
+// top-level entity.
 func (a *ModuleAsm) String() string {
 	// "module" "asm" StringLit
 	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
@@ -95,6 +109,7 @@ type TypeDef struct {
 	Def  Type
 }
 
+// String returns the string representation of the type definition.
 func (t *TypeDef) String() string {
 	// LocalIdent "=" "type" OpaqueType
 	// LocalIdent "=" "type" Type
@@ -109,6 +124,7 @@ type ComdatDef struct {
 	Kind SelectionKind
 }
 
+// String returns the string representation of the comdat definition.
 func (c *ComdatDef) String() string {
 	// ComdatName "=" "comdat" SelectionKind
 	return fmt.Sprintf("%v = comdat %v", c.Name, c.Kind)
@@ -258,6 +274,7 @@ type IndirectSymbol struct {
 	Const           *TypeConst // aliasee or resolver
 }
 
+// String returns the string representation of the indirect symbol.
 func (s *IndirectSymbol) String() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
 	buf := &strings.Builder{}
@@ -299,6 +316,7 @@ type Function struct {
 	Metadata []*MetadataAttachment
 }
 
+// String returns the string representation of the function.
 func (f *Function) String() string {
 	// "declare" MetadataAttachments OptExternLinkage FunctionHeader
 	// "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
@@ -353,6 +371,7 @@ type FunctionHeader struct {
 	Personality     *TypeConst // nil if not present
 }
 
+// String returns the string representation of the function header.
 func (hdr *FunctionHeader) String() string {
 	// OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv
 	// ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs
@@ -422,59 +441,58 @@ type CallingConv uint8
 
 // Calling conventions.
 const (
-	CallingConvNone           CallingConv = iota // none
-	CallingConvAmdGPU_CS                         // amdgpu_cs
-	CallingConvAmdGPU_ES                         // amdgpu_es
-	CallingConvAmdGPU_GS                         // amdgpu_gs
-	CallingConvAmdGPU_HS                         // amdgpu_hs
-	CallingConvAmdGPU_Kernel                     // amdgpu_kernel
-	CallingConvAmdGPU_LS                         // amdgpu_ls
-	CallingConvAmdGPU_PS                         // amdgpu_ps
-	CallingConvAmdGPU_VS                         // amdgpu_vs
-	CallingConvAnyReg                            // anyregcc
-	CallingConvARM_AAPCS_VFP                     // arm_aapcs_vfpcc
-	CallingConvARM_AAPCS                         // arm_aapcscc
-	CallingConvARM_APCS                          // arm_apcscc
-	CallingConvAVR_Intr                          // avr_intrcc
-	CallingConvAVR_Signal                        // avr_signalcc
-	CallingConvC                                 // ccc
-	CallingConvCold                              // coldcc
-	CallingConvCXX_Fast_TLS                      // cxx_fast_tlscc
-	CallingConvFast                              // fastcc
-	CallingConvGHC                               // ghccc
-	CallingConvHHVM_C                            // hhvm_ccc
-	CallingConvHHVM                              // hhvmcc
-	CallingConvIntel_OCL_BI                      // intel_ocl_bicc
-	CallingConvMSP430_Intr                       // msp430_intrcc
-	CallingConvPreserveAll                       // preserve_allcc
-	CallingConvPreserveMost                      // preserve_mostcc
-	CallingConvPTX_Device                        // ptx_device
-	CallingConvPTX_Kernel                        // ptx_kernel
-	CallingConvSPIR_Func                         // spir_func
-	CallingConvSPIR_Kernel                       // spir_kernel
-	CallingConvSwift                             // swiftcc
-	CallingConvWebKitJS                          // webkit_jscc
-	CallingConvWin64                             // win64cc
-	CallingConvX86_64_SysV                       // x86_64_sysvcc
-	CallingConvX86_FastCall                      // x86_fastcallcc
-	CallingConvX86_Intr                          // x86_intrcc
-	CallingConvX86_RegCall                       // x86_regcallcc
-	CallingConvX86_StdCall                       // x86_stdcallcc
-	CallingConvX86_ThisCall                      // x86_thiscallcc
-	CallingConvX86_VectorCall                    // x86_vectorcallcc
+	CallingConvNone          CallingConv = iota // none
+	CallingConvAmdGPUCS                         // amdgpu_cs
+	CallingConvAmdGPUES                         // amdgpu_es
+	CallingConvAmdGPUGS                         // amdgpu_gs
+	CallingConvAmdGPUHS                         // amdgpu_hs
+	CallingConvAmdGPUKernel                     // amdgpu_kernel
+	CallingConvAmdGPULS                         // amdgpu_ls
+	CallingConvAmdGPUPS                         // amdgpu_ps
+	CallingConvAmdGPUVS                         // amdgpu_vs
+	CallingConvAnyReg                           // anyregcc
+	CallingConvARMAAPCSVFP                      // arm_aapcs_vfpcc
+	CallingConvARMAAPCS                         // arm_aapcscc
+	CallingConvARMAPCS                          // arm_apcscc
+	CallingConvAVRIntr                          // avr_intrcc
+	CallingConvAVRSignal                        // avr_signalcc
+	CallingConvC                                // ccc
+	CallingConvCold                             // coldcc
+	CallingConvCXXFastTLS                       // cxx_fast_tlscc
+	CallingConvFast                             // fastcc
+	CallingConvGHC                              // ghccc
+	CallingConvHHVMC                            // hhvm_ccc
+	CallingConvHHVM                             // hhvmcc
+	CallingConvIntelOCLBI                       // intel_ocl_bicc
+	CallingConvMSP430Intr                       // msp430_intrcc
+	CallingConvPreserveAll                      // preserve_allcc
+	CallingConvPreserveMost                     // preserve_mostcc
+	CallingConvPTXDevice                        // ptx_device
+	CallingConvPTXKernel                        // ptx_kernel
+	CallingConvSPIRFunc                         // spir_func
+	CallingConvSPIRKernel                       // spir_kernel
+	CallingConvSwift                            // swiftcc
+	CallingConvWebKitJS                         // webkit_jscc
+	CallingConvWin64                            // win64cc
+	CallingConvX86_64SysV                       // x86_64_sysvcc
+	CallingConvX86FastCall                      // x86_fastcallcc
+	CallingConvX86Intr                          // x86_intrcc
+	CallingConvX86RegCall                       // x86_regcallcc
+	CallingConvX86StdCall                       // x86_stdcallcc
+	CallingConvX86ThisCall                      // x86_thiscallcc
+	CallingConvX86VectorCall                    // x86_vectorcallcc
 	// Calling conventions defined through cc NNN.
-	CallingConvHiPE           // cc 11
-	CallingConvWebKit_JS      // cc 12
-	CallingConvAVR_Builtin    // cc 86
-	CallingConvAMDGPU_VS      // cc 87
-	CallingConvAMDGPU_GS      // cc 88
-	CallingConvAMDGPU_PS      // cc 89
-	CallingConvAMDGPU_CS      // cc 90
-	CallingConvAMDGPU_Kernel  // cc 91
-	CallingConvAMDGPU_HS      // cc 93
-	CallingConvMSP430_Builtin // cc 94
-	CallingConvAMDGPU_LS      // cc 95
-	CallingConvAMDGPU_ES      // cc 96
+	CallingConvHiPE          // cc 11
+	CallingConvAVRBuiltin    // cc 86
+	CallingConvAMDGPUVS      // cc 87
+	CallingConvAMDGPUGS      // cc 88
+	CallingConvAMDGPUPS      // cc 89
+	CallingConvAMDGPUCS      // cc 90
+	CallingConvAMDGPUKernel  // cc 91
+	CallingConvAMDGPUHS      // cc 93
+	CallingConvMSP430Builtin // cc 94
+	CallingConvAMDGPULS      // cc 95
+	CallingConvAMDGPUES      // cc 96
 )
 
 // FunctionBody is an LLVM IR function body.
@@ -483,6 +501,7 @@ type FunctionBody struct {
 	UseListOrders []*UseListOrder
 }
 
+// String returns the string representation of the functino body.
 func (body *FunctionBody) String() string {
 	// "{" BasicBlockList UseListOrders "}"
 	buf := &strings.Builder{}
@@ -505,6 +524,7 @@ type AttrGroupDef struct {
 	FuncAttrs []FuncAttribute
 }
 
+// String returns the string representation of the attribute group definition.
 func (def *AttrGroupDef) String() string {
 	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
 	buf := &strings.Builder{}
@@ -532,6 +552,7 @@ type NamedMetadataDef struct {
 	Nodes []MetadataNode
 }
 
+// String returns the string representation of the named metadata definition.
 func (def *NamedMetadataDef) String() string {
 	// MetadataName "=" "!" "{" MetadataNodes "}"
 	buf := &strings.Builder{}
@@ -549,9 +570,13 @@ func (def *NamedMetadataDef) String() string {
 // MetadataNode is a metadata node.
 type MetadataNode interface {
 	fmt.Stringer
+	// isMetadataNode ensures that only netadata nodes can be assigned to the
+	// ast.MetadataNode interface.
 	isMetadataNode()
 }
 
+// isMetadataNode ensures that only netadata nodes can be assigned to the
+// ast.MetadataNode interface.
 func (*MetadataID) isMetadataNode()   {}
 func (*DIExpression) isMetadataNode() {}
 
@@ -564,6 +589,7 @@ type MetadataDef struct {
 	Node     MDNode // MDTuple or SpecializedMDNode
 }
 
+// String returns the string representation of the metadata definition.
 func (def *MetadataDef) String() string {
 	// MetadataID "=" OptDistinct MDTuple
 	// MetadataID "=" OptDistinct SpecializedMDNode
@@ -585,6 +611,7 @@ type UseListOrder struct {
 	Indices []int64
 }
 
+// String returns the string representation of the use-list order directive.
 func (u *UseListOrder) String() string {
 	//  "uselistorder" Type Value "," "{" IndexList "}"
 	buf := &strings.Builder{}
@@ -606,6 +633,8 @@ type UseListOrderBB struct {
 	Indices []int64
 }
 
+// String returns the string representation of the basic block specific use-list
+// order directive.
 func (u *UseListOrderBB) String() string {
 	//  "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"
 	buf := &strings.Builder{}
@@ -622,6 +651,8 @@ func (u *UseListOrderBB) String() string {
 
 // ### [ Helper functions ] ####################################################
 
+// isTopLevelEntity ensures that only top-level entities can be assigned to the
+// ast.TopLevelEntity interface.
 func (*SourceFilename) isTopLevelEntity() {}
 
 // TargetDefinition

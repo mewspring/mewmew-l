@@ -11,13 +11,13 @@ import (
 // resolveTypeDefs resolves type definitions.
 func (m *Module) resolveTypeDefs() {
 	// Index type definitions.
-	for name := range m.typeIdent {
+	for name := range m.localIdent {
 		m.typeDefs[name] = &types.NamedType{
 			Name: name,
 		}
 	}
 	// Resolve type definitions.
-	for name, old := range m.typeIdent {
+	for name, old := range m.localIdent {
 		t := m.typeDefs[name]
 		t.Def = m.irType(old.Def)
 	}
@@ -114,10 +114,10 @@ func floatKind(kind ast.FloatKind) types.FloatKind {
 		return types.FloatKindDouble
 	case ast.FloatKindFP128:
 		return types.FloatKindFP128
-	case ast.FloatKindX86_FP80:
-		return types.FloatKindX86_FP80
-	case ast.FloatKindPPC_FP128:
-		return types.FloatKindPPC_FP128
+	case ast.FloatKindX86FP80:
+		return types.FloatKindX86FP80
+	case ast.FloatKindPPCFP128:
+		return types.FloatKindPPCFP128
 	default:
 		panic(fmt.Errorf("support for floating-point kind %v not yet implemented", kind))
 	}

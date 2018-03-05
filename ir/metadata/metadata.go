@@ -200,6 +200,10 @@ func (m *MetadataAttachment) String() string {
 	return fmt.Sprintf("%s %s", m.Name, m.Node)
 }
 
+// IsGlobalAttribute ensures that only global attributes can be assigned to the
+// ast.GlobalAttribute interface.
+func (*MetadataAttachment) IsGlobalAttribute() {}
+
 // --- [ Metadata Node ] -------------------------------------------------------
 
 // MDNode is a metadata node.

@@ -83,9 +83,9 @@ FloatKind
 	: "half"        << ast.FloatKindHalf, nil >>
 	| "float"       << ast.FloatKindFloat, nil >>
 	| "double"      << ast.FloatKindDouble, nil >>
-	| "x86_fp80"    << ast.FloatKindX86_FP80, nil >>
+	| "x86_fp80"    << ast.FloatKindX86FP80, nil >>
 	| "fp128"       << ast.FloatKindFP128, nil >>
-	| "ppc_fp128"   << ast.FloatKindPPC_FP128, nil >>
+	| "ppc_fp128"   << ast.FloatKindPPCFP128, nil >>
 ;
 
 // --- [ MMX Types ] -----------------------------------------------------------

@@ -12,6 +12,10 @@ func (m *Module) irConstant(old ast.Constant) constant.Constant {
 	switch old := old.(type) {
 	case *ast.IntConst:
 		return m.irIntConst(old)
+	case *ast.GlobalIdent:
+		return m.irGlobal(old)
+	case *ast.BitCastExpr:
+		return m.irBitCastExpr(old)
 	default:
 		panic(fmt.Errorf("support for constant %T not yet implemented", old))
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/rickypai/natsort"
 )
 
-// resolveMetadataDefs resolves metadata definitions.
-func (m *Module) resolveMetadataDefs() {
+// indexMetadataDefs indexes metadata definitions.
+func (m *Module) indexMetadataDefs() {
 	// Index named metadata definitions.
 	for name := range m.metadataName {
 		m.namedMetadataDefs[name] = &metadata.NamedMetadataDef{
@@ -23,7 +23,10 @@ func (m *Module) resolveMetadataDefs() {
 			ID: id,
 		}
 	}
+}
 
+// resolveMetadataDefs resolves metadata definitions.
+func (m *Module) resolveMetadataDefs() {
 	// Resolve named metadata definitions.
 	for name, old := range m.metadataName {
 		md := m.namedMetadataDefs[name]
@@ -215,7 +218,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Globals:               m.irMDField(old.Globals),
 			Imports:               m.irMDField(old.Imports),
 			Macros:                m.irMDField(old.Macros),
-			DwoId:                 old.DwoId,
+			DwoID:                 old.DwoID,
 			SplitDebugInlining:    old.SplitDebugInlining,
 			DebugInfoForProfiling: old.DebugInfoForProfiling,
 			GnuPubnames:           old.GnuPubnames,
@@ -237,7 +240,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DISubroutineType:
 		return &metadata.DISubroutineType{
-			Flags: diFlags(old.Flags),
+			Flags: m.irDIFlags(old.Flags),
 			CC:    metadata.DwarfCC(old.CC),
 			Types: m.irMDField(old.Types),
 		}
@@ -252,7 +255,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Size:              old.Size,
 			Align:             old.Align,
 			Offset:            old.Offset,
-			Flags:             diFlags(old.Flags),
+			Flags:             m.irDIFlags(old.Flags),
 			ExtraData:         m.irMDField(old.ExtraData),
 			DwarfAddressSpace: old.DwarfAddressSpace,
 		}
@@ -267,7 +270,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Size:           old.Size,
 			Align:          old.Align,
 			Offset:         old.Offset,
-			Flags:          diFlags(old.Flags),
+			Flags:          m.irDIFlags(old.Flags),
 			Elements:       m.irMDField(old.Elements),
 			RuntimeLang:    metadata.DwarfLang(old.RuntimeLang),
 			VtableHolder:   m.irMDField(old.VtableHolder),
@@ -340,7 +343,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Virtuality:     metadata.DwarfVirtuality(old.Virtuality),
 			VirtualIndex:   old.VirtualIndex,
 			ThisAdjustment: old.ThisAdjustment,
-			Flags:          diFlags(old.Flags),
+			Flags:          m.irDIFlags(old.Flags),
 			IsOptimized:    old.IsOptimized,
 			Unit:           m.irMDField(old.Unit),
 			TemplateParams: m.irMDField(old.TemplateParams),
@@ -376,7 +379,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			File:  m.irMDField(old.File),
 			Line:  old.Line,
 			Type:  m.irMDField(old.Type),
-			Flags: diFlags(old.Flags),
+			Flags: m.irDIFlags(old.Flags),
 			Align: old.Align,
 		}
 	case *ast.DIExpression:
@@ -432,13 +435,22 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 	}
 }
 
-// diFlags returns the LLVM IR debug information flags corresponding to the
+// irDIFlags returns the LLVM IR debug information flags corresponding to the
 // given AST debug information flags.
-func diFlags(old []ast.DIFlag) []metadata.DIFlag {
+func (m *Module) irDIFlags(old []ast.DIFlag) []metadata.DIFlag {
 	var flags []metadata.DIFlag
 	for i := range old {
 		flag := metadata.DIFlag(old[i])
 		flags = append(flags, flag)
 	}
 	return flags
+}
+
+// irMetadataAttachment returns the LLVM IR metadata attachment corresponding to
+// the given AST metadata attachment.
+func (m *Module) irMetadataAttachment(old *ast.MetadataAttachment) *metadata.MetadataAttachment {
+	return &metadata.MetadataAttachment{
+		Name: old.Name.Name,
+		Node: m.irMDNode(old.Node),
+	}
 }

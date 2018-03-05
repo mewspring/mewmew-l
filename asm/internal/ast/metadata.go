@@ -1432,50 +1432,50 @@ type DwarfLang int64
 // DWARF languages.
 const (
 	// DWARF v2.
-	DwarfLangC89         DwarfLang = 0x0001 // DW_LANG_C89
-	DwarfLangC           DwarfLang = 0x0002 // DW_LANG_C
-	DwarfLangAda83       DwarfLang = 0x0003 // DW_LANG_Ada83
-	DwarfLangC_plus_plus DwarfLang = 0x0004 // DW_LANG_C_plus_plus
-	DwarfLangCobol74     DwarfLang = 0x0005 // DW_LANG_Cobol74
-	DwarfLangCobol85     DwarfLang = 0x0006 // DW_LANG_Cobol85
-	DwarfLangFortran77   DwarfLang = 0x0007 // DW_LANG_Fortran77
-	DwarfLangFortran90   DwarfLang = 0x0008 // DW_LANG_Fortran90
-	DwarfLangPascal83    DwarfLang = 0x0009 // DW_LANG_Pascal83
-	DwarfLangModula2     DwarfLang = 0x000A // DW_LANG_Modula2
+	DwarfLangC89       DwarfLang = 0x0001 // DW_LANG_C89
+	DwarfLangC         DwarfLang = 0x0002 // DW_LANG_C
+	DwarfLangAda83     DwarfLang = 0x0003 // DW_LANG_Ada83
+	DwarfLangCPlusPlus DwarfLang = 0x0004 // DW_LANG_C_plus_plus
+	DwarfLangCobol74   DwarfLang = 0x0005 // DW_LANG_Cobol74
+	DwarfLangCobol85   DwarfLang = 0x0006 // DW_LANG_Cobol85
+	DwarfLangFortran77 DwarfLang = 0x0007 // DW_LANG_Fortran77
+	DwarfLangFortran90 DwarfLang = 0x0008 // DW_LANG_Fortran90
+	DwarfLangPascal83  DwarfLang = 0x0009 // DW_LANG_Pascal83
+	DwarfLangModula2   DwarfLang = 0x000A // DW_LANG_Modula2
 	// DWARF v3.
-	DwarfLangJava           DwarfLang = 0x000B // DW_LANG_Java
-	DwarfLangC99            DwarfLang = 0x000C // DW_LANG_C99
-	DwarfLangAda95          DwarfLang = 0x000D // DW_LANG_Ada95
-	DwarfLangFortran95      DwarfLang = 0x000E // DW_LANG_Fortran95
-	DwarfLangPLI            DwarfLang = 0x000F // DW_LANG_PLI
-	DwarfLangObjC           DwarfLang = 0x0010 // DW_LANG_ObjC
-	DwarfLangObjC_plus_plus DwarfLang = 0x0011 // DW_LANG_ObjC_plus_plus
-	DwarfLangUPC            DwarfLang = 0x0012 // DW_LANG_UPC
-	DwarfLangD              DwarfLang = 0x0013 // DW_LANG_D
+	DwarfLangJava         DwarfLang = 0x000B // DW_LANG_Java
+	DwarfLangC99          DwarfLang = 0x000C // DW_LANG_C99
+	DwarfLangAda95        DwarfLang = 0x000D // DW_LANG_Ada95
+	DwarfLangFortran95    DwarfLang = 0x000E // DW_LANG_Fortran95
+	DwarfLangPLI          DwarfLang = 0x000F // DW_LANG_PLI
+	DwarfLangObjC         DwarfLang = 0x0010 // DW_LANG_ObjC
+	DwarfLangObjCPlusPlus DwarfLang = 0x0011 // DW_LANG_ObjC_plus_plus
+	DwarfLangUPC          DwarfLang = 0x0012 // DW_LANG_UPC
+	DwarfLangD            DwarfLang = 0x0013 // DW_LANG_D
 	// DWARF v4.
 	DwarfLangPython DwarfLang = 0x0014 // DW_LANG_Python
 	// DWARF v5.
-	DwarfLangOpenCL         DwarfLang = 0x0015 // DW_LANG_OpenCL
-	DwarfLangGo             DwarfLang = 0x0016 // DW_LANG_Go
-	DwarfLangModula3        DwarfLang = 0x0017 // DW_LANG_Modula3
-	DwarfLangHaskell        DwarfLang = 0x0018 // DW_LANG_Haskell
-	DwarfLangC_plus_plus_03 DwarfLang = 0x0019 // DW_LANG_C_plus_plus_03
-	DwarfLangC_plus_plus_11 DwarfLang = 0x001A // DW_LANG_C_plus_plus_11
-	DwarfLangOCaml          DwarfLang = 0x001B // DW_LANG_OCaml
-	DwarfLangRust           DwarfLang = 0x001C // DW_LANG_Rust
-	DwarfLangC11            DwarfLang = 0x001D // DW_LANG_C11
-	DwarfLangSwift          DwarfLang = 0x001E // DW_LANG_Swift
-	DwarfLangJulia          DwarfLang = 0x001F // DW_LANG_Julia
-	DwarfLangDylan          DwarfLang = 0x0020 // DW_LANG_Dylan
-	DwarfLangC_plus_plus_14 DwarfLang = 0x0021 // DW_LANG_C_plus_plus_14
-	DwarfLangFortran03      DwarfLang = 0x0022 // DW_LANG_Fortran03
-	DwarfLangFortran08      DwarfLang = 0x0023 // DW_LANG_Fortran08
-	DwarfLangRenderScript   DwarfLang = 0x0024 // DW_LANG_RenderScript
-	DwarfLangBLISS          DwarfLang = 0x0025 // DW_LANG_BLISS
+	DwarfLangOpenCL       DwarfLang = 0x0015 // DW_LANG_OpenCL
+	DwarfLangGo           DwarfLang = 0x0016 // DW_LANG_Go
+	DwarfLangModula3      DwarfLang = 0x0017 // DW_LANG_Modula3
+	DwarfLangHaskell      DwarfLang = 0x0018 // DW_LANG_Haskell
+	DwarfLangCPlusPlus03  DwarfLang = 0x0019 // DW_LANG_C_plus_plus_03
+	DwarfLangCPlusPlus11  DwarfLang = 0x001A // DW_LANG_C_plus_plus_11
+	DwarfLangOCaml        DwarfLang = 0x001B // DW_LANG_OCaml
+	DwarfLangRust         DwarfLang = 0x001C // DW_LANG_Rust
+	DwarfLangC11          DwarfLang = 0x001D // DW_LANG_C11
+	DwarfLangSwift        DwarfLang = 0x001E // DW_LANG_Swift
+	DwarfLangJulia        DwarfLang = 0x001F // DW_LANG_Julia
+	DwarfLangDylan        DwarfLang = 0x0020 // DW_LANG_Dylan
+	DwarfLangCPlusPlus14  DwarfLang = 0x0021 // DW_LANG_C_plus_plus_14
+	DwarfLangFortran03    DwarfLang = 0x0022 // DW_LANG_Fortran03
+	DwarfLangFortran08    DwarfLang = 0x0023 // DW_LANG_Fortran08
+	DwarfLangRenderScript DwarfLang = 0x0024 // DW_LANG_RenderScript
+	DwarfLangBLISS        DwarfLang = 0x0025 // DW_LANG_BLISS
 	// Vendor extensions.
-	DwarfLangMips_Assembler      DwarfLang = 0x8001 // DW_LANG_Mips_Assembler
-	DwarfLangGOOGLE_RenderScript DwarfLang = 0x8E57 // DW_LANG_GOOGLE_RenderScript
-	DwarfLangBORLAND_Delphi      DwarfLang = 0xB000 // DW_LANG_BORLAND_Delphi
+	DwarfLangMipsAssembler      DwarfLang = 0x8001 // DW_LANG_Mips_Assembler
+	DwarfLangGoogleRenderScript DwarfLang = 0x8E57 // DW_LANG_GOOGLE_RenderScript
+	DwarfLangBorlandDelphi      DwarfLang = 0xB000 // DW_LANG_BORLAND_Delphi
 )
 
 //go:generate stringer -linecomment -type EmissionKind
@@ -1697,15 +1697,15 @@ const (
 	DwarfCCPassByReference DwarfCC = 0x04 // DW_CC_pass_by_reference
 	DwarfCCPassByValue     DwarfCC = 0x05 // DW_CC_pass_by_value
 	// Vendor extensions.
-	DwarfCCGNUBorlandFastcall_i386 DwarfCC = 0x41 // DW_CC_GNU_borland_fastcall_i386
-	DwarfCCBORLANDSafecall         DwarfCC = 0xB0 // DW_CC_BORLAND_safecall
-	DwarfCCBORLANDStdcall          DwarfCC = 0xB1 // DW_CC_BORLAND_stdcall
-	DwarfCCBORLANDPascal           DwarfCC = 0xB2 // DW_CC_BORLAND_pascal
-	DwarfCCBORLANDMSFastcall       DwarfCC = 0xB3 // DW_CC_BORLAND_msfastcall
-	DwarfCCBORLANDMSReturn         DwarfCC = 0xB4 // DW_CC_BORLAND_msreturn
-	DwarfCCBORLANDThiscall         DwarfCC = 0xB5 // DW_CC_BORLAND_thiscall
-	DwarfCCBORLANDFastcall         DwarfCC = 0xB6 // DW_CC_BORLAND_fastcall
-	DwarfCCLLVMVectorcall          DwarfCC = 0xC0 // DW_CC_LLVM_vectorcall
+	DwarfCCGNUBorlandFastcallI386 DwarfCC = 0x41 // DW_CC_GNU_borland_fastcall_i386
+	DwarfCCBORLANDSafecall        DwarfCC = 0xB0 // DW_CC_BORLAND_safecall
+	DwarfCCBORLANDStdcall         DwarfCC = 0xB1 // DW_CC_BORLAND_stdcall
+	DwarfCCBORLANDPascal          DwarfCC = 0xB2 // DW_CC_BORLAND_pascal
+	DwarfCCBORLANDMSFastcall      DwarfCC = 0xB3 // DW_CC_BORLAND_msfastcall
+	DwarfCCBORLANDMSReturn        DwarfCC = 0xB4 // DW_CC_BORLAND_msreturn
+	DwarfCCBORLANDThiscall        DwarfCC = 0xB5 // DW_CC_BORLAND_thiscall
+	DwarfCCBORLANDFastcall        DwarfCC = 0xB6 // DW_CC_BORLAND_fastcall
+	DwarfCCLLVMVectorcall         DwarfCC = 0xC0 // DW_CC_LLVM_vectorcall
 )
 
 // IntOrMDField is an integer or metadata field.

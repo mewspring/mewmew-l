@@ -34,7 +34,7 @@ type DICompileUnit struct {
 	Globals               MDField      // optional; nil if not present
 	Imports               MDField      // optional; nil if not present
 	Macros                MDField      // optional; nil if not present
-	DwoId                 int64        // optional; zero value if not present
+	DwoID                 int64        // optional; zero value if not present
 	SplitDebugInlining    bool         // optional; zero value if not present
 	DebugInfoForProfiling bool         // optional; zero value if not present
 	GnuPubnames           bool         // optional; zero value if not present
@@ -92,8 +92,8 @@ func (md *DICompileUnit) String() string {
 		field = fmt.Sprintf("macros: %v", md.Macros)
 		fields = append(fields, field)
 	}
-	if md.DwoId != 0 {
-		field = fmt.Sprintf("dwoId: %v", md.DwoId)
+	if md.DwoID != 0 {
+		field = fmt.Sprintf("dwoId: %v", md.DwoID)
 		fields = append(fields, field)
 	}
 	if md.SplitDebugInlining {
