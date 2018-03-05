@@ -1,9 +1,9 @@
 package irx
 
 import (
-	"github.com/llir/llvm/ir/metadata"
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
 )
@@ -15,7 +15,7 @@ type Module struct {
 
 	// Per module.
 
-	// maps from identifier to definition.
+	// maps from identifier to AST definition.
 	typeIdent    map[string]*ast.TypeDef
 	comdatName   map[string]*ast.ComdatDef
 	globalIdent  map[string]interface{} // *ast.Global, *ast.IndirectSymbol or *ast.Function.
@@ -23,12 +23,11 @@ type Module struct {
 	metadataName map[string]*ast.NamedMetadataDef
 	metadataID   map[string]*ast.MetadataDef
 
-	// types maps from type identifiers to their corresponding LLVM IR types.
-	types map[string]*types.NamedType
-	// globals maps global identifiers to their corresponding LLVM IR values.
-	globals map[string]value.Named
-	// metadata maps metadata IDs to their corresponding LLVM IR metadata.
-	metadata map[string]*metadata.Metadata
+	// maps from identifier to IR definition.
+	typeDefs          map[string]*types.NamedType
+	globals           map[string]value.Named
+	namedMetadataDefs map[string]*metadata.NamedMetadataDef
+	metadataDefs      map[string]*metadata.MetadataDef
 
 	// Per function.
 
@@ -52,8 +51,9 @@ func NewModule() *Module {
 		metadataName: make(map[string]*ast.NamedMetadataDef),
 		metadataID:   make(map[string]*ast.MetadataDef),
 
-		types:    make(map[string]*types.NamedType),
-		globals:  make(map[string]value.Named),
-		metadata: make(map[string]*metadata.Metadata),
+		typeDefs:          make(map[string]*types.NamedType),
+		globals:           make(map[string]value.Named),
+		namedMetadataDefs: make(map[string]*metadata.NamedMetadataDef),
+		metadataDefs:      make(map[string]*metadata.MetadataDef),
 	}
 }

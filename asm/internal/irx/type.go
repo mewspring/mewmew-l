@@ -12,23 +12,23 @@ import (
 func (m *Module) resolveTypeDefs() {
 	// Index type definitions.
 	for name := range m.typeIdent {
-		m.types[name] = &types.NamedType{
+		m.typeDefs[name] = &types.NamedType{
 			Name: name,
 		}
 	}
 	// Resolve type definitions.
 	for name, old := range m.typeIdent {
-		t := m.types[name]
+		t := m.typeDefs[name]
 		t.Def = m.irType(old.Def)
 	}
 	// Add type defintions to module.
-	var keys []string
-	for name := range m.types {
-		keys = append(keys, name)
+	var names []string
+	for name := range m.typeDefs {
+		names = append(names, name)
 	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		m.TypeDefs = append(m.TypeDefs, m.types[key])
+	sort.Strings(names)
+	for _, name := range names {
+		m.TypeDefs = append(m.TypeDefs, m.typeDefs[name])
 	}
 }
 
@@ -96,7 +96,7 @@ func (m *Module) irType(old ast.Type) types.Type {
 			Opaque: true,
 		}
 	case *ast.NamedType:
-		return m.types[old.Name.Ident]
+		return m.typeDefs[old.Name.Ident]
 	default:
 		panic(fmt.Errorf("support for type %T not yet supported", old))
 	}

@@ -10,11 +10,16 @@ import (
 // Translate translates the AST of the given module to an equivalent LLVM IR
 // module.
 func Translate(module *ast.Module) (*ir.Module, error) {
-	m := NewModule()
 	// Create maps from identifier to definition.
+	m := NewModule()
 	m.indexIdents(module.Entities)
+
 	// Resolve type definitions.
 	m.resolveTypeDefs()
+
+	// Resolve metadata definitions.
+	m.resolveMetadataDefs()
+
 	return m.Module, nil
 }
 
