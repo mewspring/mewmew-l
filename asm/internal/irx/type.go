@@ -2,10 +2,10 @@ package irx
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/types"
+	"github.com/rickypai/natsort"
 )
 
 // resolveTypeDefs resolves type definitions.
@@ -26,7 +26,7 @@ func (m *Module) resolveTypeDefs() {
 	for name := range m.typeDefs {
 		names = append(names, name)
 	}
-	sort.Strings(names)
+	natsort.Strings(names)
 	for _, name := range names {
 		m.TypeDefs = append(m.TypeDefs, m.typeDefs[name])
 	}

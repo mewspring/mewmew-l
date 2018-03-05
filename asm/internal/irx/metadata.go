@@ -2,11 +2,11 @@ package irx
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/rickypai/natsort"
 )
 
 // resolveMetadataDefs resolves metadata definitions.
@@ -44,7 +44,7 @@ func (m *Module) resolveMetadataDefs() {
 	for name := range m.namedMetadataDefs {
 		names = append(names, name)
 	}
-	sort.Strings(names)
+	natsort.Strings(names)
 	for _, name := range names {
 		m.NamedMetadataDefs = append(m.NamedMetadataDefs, m.namedMetadataDefs[name])
 	}
@@ -53,7 +53,7 @@ func (m *Module) resolveMetadataDefs() {
 	for id := range m.metadataDefs {
 		ids = append(ids, id)
 	}
-	sort.Strings(ids)
+	natsort.Strings(ids)
 	for _, id := range ids {
 		m.MetadataDefs = append(m.MetadataDefs, m.metadataDefs[id])
 	}
@@ -75,6 +75,17 @@ func (m *Module) irMetadataNode(old ast.MetadataNode) metadata.MetadataNode {
 	default:
 		panic(fmt.Errorf("support for metadata node type %T not yet implemented", old))
 	}
+}
+
+// irDIExpressionFields returns the LLVM IR DIExpression fields corresponding to
+// the given AST DIExpression fields.
+func (m *Module) irDIExpressionFields(old []ast.DIExpressionField) []metadata.DIExpressionField {
+	var fields []metadata.DIExpressionField
+	for i := range old {
+		field := m.irDIExpressionField(old[i])
+		fields = append(fields, field)
+	}
+	return fields
 }
 
 // irDIExpressionField returns the LLVM IR DIExpression field corresponding to
@@ -116,6 +127,17 @@ func (m *Module) irMDTuple(old *ast.MDTuple) *metadata.MDTuple {
 	return md
 }
 
+// irMDFields returns the LLVM IR metadata fields corresponding to the given AST
+// metadata fields.
+func (m *Module) irMDFields(old []ast.MDField) []metadata.MDField {
+	var fields []metadata.MDField
+	for i := range old {
+		field := m.irMDField(old[i])
+		fields = append(fields, field)
+	}
+	return fields
+}
+
 // irMDField returns the LLVM IR metadata field corresponding to the given AST
 // metadata field.
 func (m *Module) irMDField(old ast.MDField) metadata.MDField {
@@ -126,8 +148,23 @@ func (m *Module) irMDField(old ast.MDField) metadata.MDField {
 		return m.irMetadata(old).(metadata.MDField)
 	case ast.SpecializedMDNode:
 		return m.irSpecializedMDNode(old).(metadata.MDField)
+	case nil:
+		return nil
 	default:
 		panic(fmt.Errorf("support for metadata field type %T not yet implemented", old))
+	}
+}
+
+// irIntOrMDField returns the LLVM IR integer or metadata field corresponding to
+// the given AST integer or metadata field.
+func (m *Module) irIntOrMDField(old ast.IntOrMDField) metadata.IntOrMDField {
+	switch old := old.(type) {
+	case *ast.IntConst:
+		return m.irIntConst(old)
+	case ast.MDField:
+		return m.irMDField(old).(metadata.IntOrMDField)
+	default:
+		panic(fmt.Errorf("support for integer or metadata field type %T not yet implemented", old))
 	}
 }
 
@@ -164,56 +201,244 @@ func (m *Module) irMDString(old *ast.MDString) *metadata.MDString {
 func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.SpecializedMDNode {
 	switch old := old.(type) {
 	case *ast.DICompileUnit:
-		panic("support for specialized metadata node type *ast.DICompileUnit not yet implemented")
+		return &metadata.DICompileUnit{
+			Language:              metadata.DwarfLang(old.Language),
+			File:                  m.irMDField(old.File),
+			Producer:              old.Producer,
+			IsOptimized:           old.IsOptimized,
+			Flags:                 old.Flags,
+			RuntimeVersion:        old.RuntimeVersion,
+			SplitDebugFilename:    old.SplitDebugFilename,
+			EmissionKind:          metadata.EmissionKind(old.EmissionKind),
+			Enums:                 m.irMDField(old.Enums),
+			RetainedTypes:         m.irMDField(old.RetainedTypes),
+			Globals:               m.irMDField(old.Globals),
+			Imports:               m.irMDField(old.Imports),
+			Macros:                m.irMDField(old.Macros),
+			DwoId:                 old.DwoId,
+			SplitDebugInlining:    old.SplitDebugInlining,
+			DebugInfoForProfiling: old.DebugInfoForProfiling,
+			GnuPubnames:           old.GnuPubnames,
+		}
 	case *ast.DIFile:
-		panic("support for specialized metadata node type *ast.DIFile not yet implemented")
+		return &metadata.DIFile{
+			Filename:     old.Filename,
+			Directory:    old.Directory,
+			Checksumkind: metadata.ChecksumKind(old.Checksumkind),
+			Checksum:     old.Checksum,
+		}
 	case *ast.DIBasicType:
-		panic("support for specialized metadata node type *ast.DIBasicType not yet implemented")
+		return &metadata.DIBasicType{
+			Tag:      metadata.DwarfTag(old.Tag),
+			Name:     old.Name,
+			Size:     old.Size,
+			Align:    old.Align,
+			Encoding: metadata.DwarfAttEncoding(old.Encoding),
+		}
 	case *ast.DISubroutineType:
-		panic("support for specialized metadata node type *ast.DISubroutineType not yet implemented")
+		return &metadata.DISubroutineType{
+			Flags: diFlags(old.Flags),
+			CC:    metadata.DwarfCC(old.CC),
+			Types: m.irMDField(old.Types),
+		}
 	case *ast.DIDerivedType:
-		panic("support for specialized metadata node type *ast.DIDerivedType not yet implemented")
+		return &metadata.DIDerivedType{
+			Tag:               metadata.DwarfTag(old.Tag),
+			Name:              old.Name,
+			Scope:             m.irMDField(old.Scope),
+			File:              m.irMDField(old.File),
+			Line:              old.Line,
+			BaseType:          m.irMDField(old.BaseType),
+			Size:              old.Size,
+			Align:             old.Align,
+			Offset:            old.Offset,
+			Flags:             diFlags(old.Flags),
+			ExtraData:         m.irMDField(old.ExtraData),
+			DwarfAddressSpace: old.DwarfAddressSpace,
+		}
 	case *ast.DICompositeType:
-		panic("support for specialized metadata node type *ast.DICompositeType not yet implemented")
+		return &metadata.DICompositeType{
+			Tag:            metadata.DwarfTag(old.Tag),
+			Name:           old.Name,
+			Scope:          m.irMDField(old.Scope),
+			File:           m.irMDField(old.File),
+			Line:           old.Line,
+			BaseType:       m.irMDField(old.BaseType),
+			Size:           old.Size,
+			Align:          old.Align,
+			Offset:         old.Offset,
+			Flags:          diFlags(old.Flags),
+			Elements:       m.irMDField(old.Elements),
+			RuntimeLang:    metadata.DwarfLang(old.RuntimeLang),
+			VtableHolder:   m.irMDField(old.VtableHolder),
+			TemplateParams: m.irMDField(old.TemplateParams),
+			Identifier:     old.Identifier,
+			Discriminator:  m.irMDField(old.Discriminator),
+		}
 	case *ast.DISubrange:
-		panic("support for specialized metadata node type *ast.DISubrange not yet implemented")
+		return &metadata.DISubrange{
+			Count:      m.irIntOrMDField(old.Count),
+			LowerBound: old.LowerBound,
+		}
 	case *ast.DIEnumerator:
-		panic("support for specialized metadata node type *ast.DIEnumerator not yet implemented")
+		return &metadata.DIEnumerator{
+			Name:       old.Name,
+			Value:      old.Value,
+			IsUnsigned: old.IsUnsigned,
+		}
 	case *ast.DITemplateTypeParameter:
-		panic("support for specialized metadata node type *ast.DITemplateTypeParameter not yet implemented")
+		return &metadata.DITemplateTypeParameter{
+			Name: old.Name,
+			Type: m.irMDField(old.Type),
+		}
 	case *ast.DITemplateValueParameter:
-		panic("support for specialized metadata node type *ast.DITemplateValueParameter not yet implemented")
+		return &metadata.DITemplateValueParameter{
+			Tag:   metadata.DwarfTag(old.Tag),
+			Name:  old.Name,
+			Type:  m.irMDField(old.Type),
+			Value: m.irMDField(old.Value),
+		}
 	case *ast.DIModule:
-		panic("support for specialized metadata node type *ast.DIModule not yet implemented")
+		return &metadata.DIModule{
+			Scope:        m.irMDField(old.Scope),
+			Name:         old.Name,
+			ConfigMacros: old.ConfigMacros,
+			IncludePath:  old.IncludePath,
+			Isysroot:     old.Isysroot,
+		}
 	case *ast.DINamespace:
-		panic("support for specialized metadata node type *ast.DINamespace not yet implemented")
+		return &metadata.DINamespace{
+			Scope:         m.irMDField(old.Scope),
+			Name:          old.Name,
+			ExportSymbols: old.ExportSymbols,
+		}
 	case *ast.DIGlobalVariable:
-		panic("support for specialized metadata node type *ast.DIGlobalVariable not yet implemented")
+		return &metadata.DIGlobalVariable{
+			Name:         old.Name,
+			Scope:        m.irMDField(old.Scope),
+			LinkageName:  old.LinkageName,
+			File:         m.irMDField(old.File),
+			Line:         old.Line,
+			Type:         m.irMDField(old.Type),
+			IsLocal:      old.IsLocal,
+			IsDefinition: old.IsDefinition,
+			Declaration:  m.irMDField(old.Declaration),
+			Align:        old.Align,
+		}
 	case *ast.DISubprogram:
-		panic("support for specialized metadata node type *ast.DISubprogram not yet implemented")
+		return &metadata.DISubprogram{
+			Name:           old.Name,
+			Scope:          m.irMDField(old.Scope),
+			LinkageName:    old.LinkageName,
+			File:           m.irMDField(old.File),
+			Line:           old.Line,
+			Type:           m.irMDField(old.Type),
+			IsLocal:        old.IsLocal,
+			IsDefinition:   old.IsDefinition,
+			ScopeLine:      old.ScopeLine,
+			ContainingType: m.irMDField(old.ContainingType),
+			Virtuality:     metadata.DwarfVirtuality(old.Virtuality),
+			VirtualIndex:   old.VirtualIndex,
+			ThisAdjustment: old.ThisAdjustment,
+			Flags:          diFlags(old.Flags),
+			IsOptimized:    old.IsOptimized,
+			Unit:           m.irMDField(old.Unit),
+			TemplateParams: m.irMDField(old.TemplateParams),
+			Declaration:    m.irMDField(old.Declaration),
+			Variables:      m.irMDField(old.Variables),
+			ThrownTypes:    m.irMDField(old.ThrownTypes),
+		}
 	case *ast.DILexicalBlock:
-		panic("support for specialized metadata node type *ast.DILexicalBlock not yet implemented")
+		return &metadata.DILexicalBlock{
+			Scope:  m.irMDField(old.Scope),
+			File:   m.irMDField(old.File),
+			Line:   old.Line,
+			Column: old.Column,
+		}
 	case *ast.DILexicalBlockFile:
-		panic("support for specialized metadata node type *ast.DILexicalBlockFile not yet implemented")
+		return &metadata.DILexicalBlockFile{
+			Scope:         m.irMDField(old.Scope),
+			File:          m.irMDField(old.File),
+			Discriminator: old.Discriminator,
+		}
 	case *ast.DILocation:
-		panic("support for specialized metadata node type *ast.DILocation not yet implemented")
+		return &metadata.DILocation{
+			Line:      old.Line,
+			Column:    old.Column,
+			Scope:     m.irMDField(old.Scope),
+			InlinedAt: m.irMDField(old.InlinedAt),
+		}
 	case *ast.DILocalVariable:
-		panic("support for specialized metadata node type *ast.DILocalVariable not yet implemented")
+		return &metadata.DILocalVariable{
+			Name:  old.Name,
+			Arg:   old.Arg,
+			Scope: m.irMDField(old.Scope),
+			File:  m.irMDField(old.File),
+			Line:  old.Line,
+			Type:  m.irMDField(old.Type),
+			Flags: diFlags(old.Flags),
+			Align: old.Align,
+		}
 	case *ast.DIExpression:
-		panic("support for specialized metadata node type *ast.DIExpression not yet implemented")
+		return &metadata.DIExpression{
+			Fields: m.irDIExpressionFields(old.Fields),
+		}
 	case *ast.DIGlobalVariableExpression:
-		panic("support for specialized metadata node type *ast.DIGlobalVariableExpression not yet implemented")
+		return &metadata.DIGlobalVariableExpression{
+			Var:  m.irMDField(old.Var),
+			Expr: m.irMDField(old.Expr),
+		}
 	case *ast.DIObjCProperty:
-		panic("support for specialized metadata node type *ast.DIObjCProperty not yet implemented")
+		return &metadata.DIObjCProperty{
+			Name:       old.Name,
+			File:       m.irMDField(old.File),
+			Line:       old.Line,
+			Setter:     old.Setter,
+			Getter:     old.Getter,
+			Attributes: old.Attributes,
+			Type:       m.irMDField(old.Type),
+		}
 	case *ast.DIImportedEntity:
-		panic("support for specialized metadata node type *ast.DIImportedEntity not yet implemented")
+		return &metadata.DIImportedEntity{
+			Tag:    metadata.DwarfTag(old.Tag),
+			Scope:  m.irMDField(old.Scope),
+			Entity: m.irMDField(old.Entity),
+			File:   m.irMDField(old.File),
+			Line:   old.Line,
+			Name:   old.Name,
+		}
 	case *ast.DIMacro:
-		panic("support for specialized metadata node type *ast.DIMacro not yet implemented")
+		return &metadata.DIMacro{
+			Type:  metadata.DwarfMacinfo(old.Type),
+			Line:  old.Line,
+			Name:  old.Name,
+			Value: old.Value,
+		}
 	case *ast.DIMacroFile:
-		panic("support for specialized metadata node type *ast.DIMacroFile not yet implemented")
+		return &metadata.DIMacroFile{
+			Type:  metadata.DwarfMacinfo(old.Type),
+			Line:  old.Line,
+			File:  m.irMDField(old.File),
+			Nodes: m.irMDField(old.Nodes),
+		}
 	case *ast.GenericDINode:
-		panic("support for specialized metadata node type *ast.GenericDINode not yet implemented")
+		return &metadata.GenericDINode{
+			Tag:      metadata.DwarfTag(old.Tag),
+			Header:   old.Header,
+			Operands: m.irMDFields(old.Operands),
+		}
 	default:
 		panic(fmt.Errorf("support for specialized metadata node type %T not yet implemented", old))
 	}
+}
+
+// diFlags returns the LLVM IR debug information flags corresponding to the
+// given AST debug information flags.
+func diFlags(old []ast.DIFlag) []metadata.DIFlag {
+	var flags []metadata.DIFlag
+	for i := range old {
+		flag := metadata.DIFlag(old[i])
+		flags = append(flags, flag)
+	}
+	return flags
 }
