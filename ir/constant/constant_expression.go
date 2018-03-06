@@ -3,7 +3,7 @@ package constant
 import (
 	"fmt"
 
-	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ll/types"
 )
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

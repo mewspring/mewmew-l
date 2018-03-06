@@ -6,14 +6,14 @@
 
 ComdatDef
 	: ComdatName "=" "comdat" SelectionKind
-	<< &ast.ComdatDef{Name: $0.(*ast.ComdatName), Kind: $3.(ast.SelectionKind)}, nil >>
+	<< &ll.ComdatDef{Name: $0.(*ast.ComdatName).Name, Kind: $3.(ll.SelectionKind)}, nil >>
 ;
 
 SelectionKind
-	: "any"            << ast.SelectionKindAny, nil >>
-	| "exactmatch"     << ast.SelectionKindExactMatch, nil >>
-	| "largest"        << ast.SelectionKindLargest, nil >>
-	| "noduplicates"   << ast.SelectionKindNoDuplicates, nil >>
-	| "samesize"       << ast.SelectionKindSameSize, nil >>
+	: "any"            << ll.SelectionKindAny, nil >>
+	| "exactmatch"     << ll.SelectionKindExactMatch, nil >>
+	| "largest"        << ll.SelectionKindLargest, nil >>
+	| "noduplicates"   << ll.SelectionKindNoDuplicates, nil >>
+	| "samesize"       << ll.SelectionKindSameSize, nil >>
 ;
 

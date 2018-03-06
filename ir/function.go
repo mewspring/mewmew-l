@@ -1,6 +1,6 @@
 package ir
 
-import "github.com/mewmew/l/ir/types"
+import "github.com/mewmew/l/ll/types"
 
 // A Function is an LLVM IR function.
 type Function struct {

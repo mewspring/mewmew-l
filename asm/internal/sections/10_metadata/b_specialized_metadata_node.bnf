@@ -1167,7 +1167,7 @@ GenericDINodeField
 
 DwarfLang
 	: IntLit
-	<< ast.DwarfLang($0.(int64)), nil >>
+	<< ll.DwarfLang($0.(int64)), nil >>
 	// DW_LANG_foo
 	| dwarf_lang
 	<< astx.NewDwarfLang($0) >>
@@ -1184,10 +1184,10 @@ IsOptimizedField
 ;
 
 EmissionKind
-	: IntLit             << ast.EmissionKind($0.(int64)), nil >>
-	| "FullDebug"        << ast.EmissionKindFullDebug, nil >>
-	| "LineTablesOnly"   << ast.EmissionKindLineTablesOnly, nil >>
-	| "NoDebug"          << ast.EmissionKindNoDebug, nil >>
+	: IntLit             << ll.EmissionKind($0.(int64)), nil >>
+	| "FullDebug"        << ll.EmissionKindFullDebug, nil >>
+	| "LineTablesOnly"   << ll.EmissionKindLineTablesOnly, nil >>
+	| "NoDebug"          << ll.EmissionKindNoDebug, nil >>
 ;
 
 ChecksumKind
@@ -1205,7 +1205,7 @@ TagField
 
 DwarfTag
 	: IntLit
-	<< ast.DwarfTag($0.(int64)), nil >>
+	<< ll.DwarfTag($0.(int64)), nil >>
 	// DW_TAG_foo
 	| dwarf_tag
 	<< astx.NewDwarfTag($0) >>
@@ -1230,7 +1230,7 @@ AlignField
 
 DwarfAttEncoding
 	: IntLit
-	<< ast.DwarfAttEncoding($0.(int64)), nil >>
+	<< ll.DwarfAttEncoding($0.(int64)), nil >>
 	// DW_ATE_foo
 	| dwarf_att_encoding
 	<< astx.NewDwarfAttEncoding($0) >>
@@ -1249,14 +1249,14 @@ FlagsField
 
 DIFlagList
 	: DIFlag
-	<< []ast.DIFlag{$0.(ast.DIFlag)}, nil >>
+	<< []ll.DIFlag{$0.(ll.DIFlag)}, nil >>
 	| DIFlagList "|" DIFlag
-	<< append($0.([]ast.DIFlag), $2.(ast.DIFlag)), nil >>
+	<< append($0.([]ll.DIFlag), $2.(ll.DIFlag)), nil >>
 ;
 
 DIFlag
 	: IntLit
-	<< ast.DIFlag($0.(int64)), nil >>
+	<< ll.DIFlag($0.(int64)), nil >>
 	// DIFlagFoo
 	| di_flag
 	<< astx.NewDIFlag($0) >>
@@ -1266,7 +1266,7 @@ DIFlag
 
 DwarfCC
 	: IntLit
-	<< ast.DwarfCC($0.(int64)), nil >>
+	<< ll.DwarfCC($0.(int64)), nil >>
 	// DW_CC_foo
 	| dwarf_cc
 	<< astx.NewDwarfCC($0) >>
@@ -1333,7 +1333,7 @@ DeclarationField
 
 DwarfVirtuality
 	: IntLit
-	<< ast.DwarfVirtuality($0.(int64)), nil >>
+	<< ll.DwarfVirtuality($0.(int64)), nil >>
 	// DW_VIRTUALITY_foo
 	| dwarf_virtuality
 	<< astx.NewDwarfVirtuality($0) >>
@@ -1359,7 +1359,7 @@ TypeMacinfoField
 
 DwarfMacinfo
 	: IntLit
-	<< ast.DwarfMacinfo($0.(int64)), nil >>
+	<< ll.DwarfMacinfo($0.(int64)), nil >>
 	// DW_MACINFO_foo
 	| dwarf_macinfo
 	<< astx.NewDwarfMacinfo($0) >>

@@ -5,6 +5,7 @@ import (
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ll"
 )
 
 // Translate translates the AST of the given module to an equivalent LLVM IR
@@ -40,9 +41,9 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("type identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.localIdent[ident] = entity
-		case *ast.ComdatDef:
+		case *ll.ComdatDef:
 			// Comdat definitions.
-			name := entity.Name.Name
+			name := entity.Name
 			if prev, ok := m.comdatName[name]; ok {
 				panic(fmt.Errorf("comdat name %q already present; prev `%v`, new `%v`", name, prev, entity))
 			}

@@ -10,7 +10,7 @@
 
 AddInst
 	: "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.AddInst{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.AddInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ AddInst
 
 FAddInst
 	: "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FAddInst{FastMathFlags: $1.([]ast.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FAddInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ FAddInst
 
 SubInst
 	: "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.SubInst{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.SubInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +49,7 @@ SubInst
 
 FSubInst
 	: "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FSubInst{FastMathFlags: $1.([]ast.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FSubInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,7 +62,7 @@ FSubInst
 
 MulInst
 	: "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.MulInst{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.MulInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,7 +75,7 @@ MulInst
 
 FMulInst
 	: "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FMulInst{FastMathFlags: $1.([]ast.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FMulInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,7 +114,7 @@ SDivInst
 
 FDivInst
 	: "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FDivInst{FastMathFlags: $1.([]ast.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FDivInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,6 +153,6 @@ SRemInst
 
 FRemInst
 	: "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FRemInst{FastMathFlags: $1.([]ast.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FRemInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
+	"github.com/mewmew/l/ll/types"
 )
 
 // A Constant is an LLVM IR constant.

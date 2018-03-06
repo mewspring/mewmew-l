@@ -5,6 +5,8 @@ package parser
 import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/asm/internal/astx"
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 type (
@@ -264,133 +266,133 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ModuleAsm : "module" "asm" StringLit	<< &ast.ModuleAsm{Asm: X[2].(string)}, nil >>`,
+		String: `ModuleAsm : "module" "asm" StringLit	<< &ll.ModuleAsm{Asm: X[2].(string)}, nil >>`,
 		Id:         "ModuleAsm",
 		NTType:     7,
 		Index:      24,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ModuleAsm{Asm: X[2].(string)}, nil
+			return &ll.ModuleAsm{Asm: X[2].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(ast.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      25,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(ast.Type)}, nil
+			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" Type	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(ast.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" Type	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      26,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(ast.Type)}, nil
+			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OpaqueType : "opaque"	<< &ast.OpaqueType{}, nil >>`,
+		String: `OpaqueType : "opaque"	<< &types.OpaqueType{}, nil >>`,
 		Id:         "OpaqueType",
 		NTType:     9,
 		Index:      27,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.OpaqueType{}, nil
+			return &types.OpaqueType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ComdatDef : ComdatName "=" "comdat" SelectionKind	<< &ast.ComdatDef{Name: X[0].(*ast.ComdatName), Kind: X[3].(ast.SelectionKind)}, nil >>`,
+		String: `ComdatDef : ComdatName "=" "comdat" SelectionKind	<< &ll.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ll.SelectionKind)}, nil >>`,
 		Id:         "ComdatDef",
 		NTType:     10,
 		Index:      28,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ComdatDef{Name: X[0].(*ast.ComdatName), Kind: X[3].(ast.SelectionKind)}, nil
+			return &ll.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ll.SelectionKind)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectionKind : "any"	<< ast.SelectionKindAny, nil >>`,
+		String: `SelectionKind : "any"	<< ll.SelectionKindAny, nil >>`,
 		Id:         "SelectionKind",
 		NTType:     11,
 		Index:      29,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.SelectionKindAny, nil
+			return ll.SelectionKindAny, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectionKind : "exactmatch"	<< ast.SelectionKindExactMatch, nil >>`,
+		String: `SelectionKind : "exactmatch"	<< ll.SelectionKindExactMatch, nil >>`,
 		Id:         "SelectionKind",
 		NTType:     11,
 		Index:      30,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.SelectionKindExactMatch, nil
+			return ll.SelectionKindExactMatch, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectionKind : "largest"	<< ast.SelectionKindLargest, nil >>`,
+		String: `SelectionKind : "largest"	<< ll.SelectionKindLargest, nil >>`,
 		Id:         "SelectionKind",
 		NTType:     11,
 		Index:      31,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.SelectionKindLargest, nil
+			return ll.SelectionKindLargest, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectionKind : "noduplicates"	<< ast.SelectionKindNoDuplicates, nil >>`,
+		String: `SelectionKind : "noduplicates"	<< ll.SelectionKindNoDuplicates, nil >>`,
 		Id:         "SelectionKind",
 		NTType:     11,
 		Index:      32,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.SelectionKindNoDuplicates, nil
+			return ll.SelectionKindNoDuplicates, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectionKind : "samesize"	<< ast.SelectionKindSameSize, nil >>`,
+		String: `SelectionKind : "samesize"	<< ll.SelectionKindSameSize, nil >>`,
 		Id:         "SelectionKind",
 		NTType:     11,
 		Index:      33,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.SelectionKindSameSize, nil
+			return ll.SelectionKindSameSize, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalDecl : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), AddrSpace: X[8].(ast.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(ast.Type), GlobalAttrs: X[12].([]ast.GlobalAttribute), FuncAttrs: X[13].([]ast.FuncAttribute)}, nil >>`,
+		String: `GlobalDecl : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), GlobalAttrs: X[12].([]ll.GlobalAttribute), FuncAttrs: X[13].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDecl",
 		NTType:     12,
 		Index:      34,
 		NumSymbols: 14,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), AddrSpace: X[8].(ast.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(ast.Type), GlobalAttrs: X[12].([]ast.GlobalAttribute), FuncAttrs: X[13].([]ast.FuncAttribute)}, nil
+			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), GlobalAttrs: X[12].([]ll.GlobalAttribute), FuncAttrs: X[13].([]ll.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), AddrSpace: X[8].(ast.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(ast.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ast.GlobalAttribute), FuncAttrs: X[14].([]ast.FuncAttribute)}, nil >>`,
+		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDef",
 		NTType:     13,
 		Index:      35,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), AddrSpace: X[8].(ast.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(ast.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ast.GlobalAttribute), FuncAttrs: X[14].([]ast.FuncAttribute)}, nil
+			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptThreadLocal : empty	<< (*ast.ThreadLocal)(nil), nil >>`,
+		String: `OptThreadLocal : empty	<< (*ll.ThreadLocal)(nil), nil >>`,
 		Id:         "OptThreadLocal",
 		NTType:     14,
 		Index:      36,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.ThreadLocal)(nil), nil
+			return (*ll.ThreadLocal)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -404,53 +406,53 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ThreadLocal : "thread_local"	<< &ast.ThreadLocal{}, nil >>`,
+		String: `ThreadLocal : "thread_local"	<< &ll.ThreadLocal{}, nil >>`,
 		Id:         "ThreadLocal",
 		NTType:     15,
 		Index:      38,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ThreadLocal{}, nil
+			return &ll.ThreadLocal{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ThreadLocal : "thread_local" "(" TLSModel ")"	<< &ast.ThreadLocal{Model: X[2].(ast.TLSModel)}, nil >>`,
+		String: `ThreadLocal : "thread_local" "(" TLSModel ")"	<< &ll.ThreadLocal{Model: X[2].(ll.TLSModel)}, nil >>`,
 		Id:         "ThreadLocal",
 		NTType:     15,
 		Index:      39,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ThreadLocal{Model: X[2].(ast.TLSModel)}, nil
+			return &ll.ThreadLocal{Model: X[2].(ll.TLSModel)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TLSModel : "initialexec"	<< ast.TLSModelInitialExec, nil >>`,
+		String: `TLSModel : "initialexec"	<< ll.TLSModelInitialExec, nil >>`,
 		Id:         "TLSModel",
 		NTType:     16,
 		Index:      40,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TLSModelInitialExec, nil
+			return ll.TLSModelInitialExec, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TLSModel : "localdynamic"	<< ast.TLSModelLocalDynamic, nil >>`,
+		String: `TLSModel : "localdynamic"	<< ll.TLSModelLocalDynamic, nil >>`,
 		Id:         "TLSModel",
 		NTType:     16,
 		Index:      41,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TLSModelLocalDynamic, nil
+			return ll.TLSModelLocalDynamic, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TLSModel : "localexec"	<< ast.TLSModelLocalExec, nil >>`,
+		String: `TLSModel : "localexec"	<< ll.TLSModelLocalExec, nil >>`,
 		Id:         "TLSModel",
 		NTType:     16,
 		Index:      42,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TLSModelLocalExec, nil
+			return ll.TLSModelLocalExec, nil
 		},
 	},
 	ProdTabEntry{
@@ -494,13 +496,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalAttrs : empty	<< ([]ast.GlobalAttribute)(nil), nil >>`,
+		String: `GlobalAttrs : empty	<< ([]ll.GlobalAttribute)(nil), nil >>`,
 		Id:         "GlobalAttrs",
 		NTType:     19,
 		Index:      47,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.GlobalAttribute)(nil), nil
+			return ([]ll.GlobalAttribute)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -514,23 +516,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalAttrList : GlobalAttr	<< []ast.GlobalAttribute{X[0].(ast.GlobalAttribute)}, nil >>`,
+		String: `GlobalAttrList : GlobalAttr	<< []ll.GlobalAttribute{X[0].(ll.GlobalAttribute)}, nil >>`,
 		Id:         "GlobalAttrList",
 		NTType:     20,
 		Index:      49,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.GlobalAttribute{X[0].(ast.GlobalAttribute)}, nil
+			return []ll.GlobalAttribute{X[0].(ll.GlobalAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalAttrList : GlobalAttrList "," GlobalAttr	<< append(X[0].([]ast.GlobalAttribute), X[2].(ast.GlobalAttribute)), nil >>`,
+		String: `GlobalAttrList : GlobalAttrList "," GlobalAttr	<< append(X[0].([]ll.GlobalAttribute), X[2].(ll.GlobalAttribute)), nil >>`,
 		Id:         "GlobalAttrList",
 		NTType:     20,
 		Index:      50,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.GlobalAttribute), X[2].(ast.GlobalAttribute)), nil
+			return append(X[0].([]ll.GlobalAttribute), X[2].(ll.GlobalAttribute)), nil
 		},
 	},
 	ProdTabEntry{
@@ -574,23 +576,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(ast.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     22,
 		Index:      55,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(ast.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(ast.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     22,
 		Index:      56,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ast.Linkage), Preemption: X[3].(ast.Preemption), Visibility: X[4].(ast.Visibility), DLLStorageClass: X[5].(ast.DLLStorageClass), ThreadLocal: X[6].(*ast.ThreadLocal), UnnamedAddr: X[7].(ast.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(ast.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -614,43 +616,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionDecl : "declare" MetadataAttachments OptExternLinkage FunctionHeader	<< &ast.Function{Linkage: X[2].(ast.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FunctionDecl : "declare" MetadataAttachments OptExternLinkage FunctionHeader	<< &ast.Function{Linkage: X[2].(ll.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FunctionDecl",
 		NTType:     24,
 		Index:      59,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Function{Linkage: X[2].(ast.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil
+			return &ast.Function{Linkage: X[2].(ll.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionDef : "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody	<< &ast.Function{Linkage: X[1].(ast.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FunctionDef : "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody	<< &ast.Function{Linkage: X[1].(ll.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FunctionDef",
 		NTType:     25,
 		Index:      60,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Function{Linkage: X[1].(ast.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
+			return &ast.Function{Linkage: X[1].(ll.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ast.Preemption), Visibility: X[1].(ast.Visibility), DLLStorageClass: X[2].(ast.DLLStorageClass), CallingConv: X[3].(ast.CallingConv), ReturnAttrs: X[4].([]ast.ReturnAttribute), RetType: X[5].(ast.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ast.UnnamedAddr), FuncAttrs: X[11].([]ast.FuncAttribute), Section: X[12].(*ast.Section), Comdat: X[13].(*ast.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     26,
 		Index:      61,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FunctionHeader{Preemption: X[0].(ast.Preemption), Visibility: X[1].(ast.Visibility), DLLStorageClass: X[2].(ast.DLLStorageClass), CallingConv: X[3].(ast.CallingConv), ReturnAttrs: X[4].([]ast.ReturnAttribute), RetType: X[5].(ast.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ast.UnnamedAddr), FuncAttrs: X[11].([]ast.FuncAttribute), Section: X[12].(*ast.Section), Comdat: X[13].(*ast.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil
+			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptCallingConv : empty	<< ast.CallingConvNone, nil >>`,
+		String: `OptCallingConv : empty	<< ll.CallingConvNone, nil >>`,
 		Id:         "OptCallingConv",
 		NTType:     27,
 		Index:      62,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvNone, nil
+			return ll.CallingConvNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -664,393 +666,393 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_cs"	<< ast.CallingConvAmdGPUCS, nil >>`,
+		String: `CallingConv : "amdgpu_cs"	<< ll.CallingConvAmdGPUCS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      64,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUCS, nil
+			return ll.CallingConvAmdGPUCS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_es"	<< ast.CallingConvAmdGPUES, nil >>`,
+		String: `CallingConv : "amdgpu_es"	<< ll.CallingConvAmdGPUES, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      65,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUES, nil
+			return ll.CallingConvAmdGPUES, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_gs"	<< ast.CallingConvAmdGPUGS, nil >>`,
+		String: `CallingConv : "amdgpu_gs"	<< ll.CallingConvAmdGPUGS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      66,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUGS, nil
+			return ll.CallingConvAmdGPUGS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_hs"	<< ast.CallingConvAmdGPUHS, nil >>`,
+		String: `CallingConv : "amdgpu_hs"	<< ll.CallingConvAmdGPUHS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      67,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUHS, nil
+			return ll.CallingConvAmdGPUHS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_kernel"	<< ast.CallingConvAmdGPUKernel, nil >>`,
+		String: `CallingConv : "amdgpu_kernel"	<< ll.CallingConvAmdGPUKernel, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      68,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUKernel, nil
+			return ll.CallingConvAmdGPUKernel, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_ls"	<< ast.CallingConvAmdGPULS, nil >>`,
+		String: `CallingConv : "amdgpu_ls"	<< ll.CallingConvAmdGPULS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      69,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPULS, nil
+			return ll.CallingConvAmdGPULS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_ps"	<< ast.CallingConvAmdGPUPS, nil >>`,
+		String: `CallingConv : "amdgpu_ps"	<< ll.CallingConvAmdGPUPS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      70,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUPS, nil
+			return ll.CallingConvAmdGPUPS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "amdgpu_vs"	<< ast.CallingConvAmdGPUVS, nil >>`,
+		String: `CallingConv : "amdgpu_vs"	<< ll.CallingConvAmdGPUVS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      71,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAmdGPUVS, nil
+			return ll.CallingConvAmdGPUVS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "anyregcc"	<< ast.CallingConvAnyReg, nil >>`,
+		String: `CallingConv : "anyregcc"	<< ll.CallingConvAnyReg, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      72,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAnyReg, nil
+			return ll.CallingConvAnyReg, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "arm_aapcs_vfpcc"	<< ast.CallingConvARMAAPCSVFP, nil >>`,
+		String: `CallingConv : "arm_aapcs_vfpcc"	<< ll.CallingConvARMAAPCSVFP, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      73,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvARMAAPCSVFP, nil
+			return ll.CallingConvARMAAPCSVFP, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "arm_aapcscc"	<< ast.CallingConvARMAAPCS, nil >>`,
+		String: `CallingConv : "arm_aapcscc"	<< ll.CallingConvARMAAPCS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      74,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvARMAAPCS, nil
+			return ll.CallingConvARMAAPCS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "arm_apcscc"	<< ast.CallingConvARMAPCS, nil >>`,
+		String: `CallingConv : "arm_apcscc"	<< ll.CallingConvARMAPCS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      75,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvARMAPCS, nil
+			return ll.CallingConvARMAPCS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "avr_intrcc"	<< ast.CallingConvAVRIntr, nil >>`,
+		String: `CallingConv : "avr_intrcc"	<< ll.CallingConvAVRIntr, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      76,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAVRIntr, nil
+			return ll.CallingConvAVRIntr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "avr_signalcc"	<< ast.CallingConvAVRSignal, nil >>`,
+		String: `CallingConv : "avr_signalcc"	<< ll.CallingConvAVRSignal, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      77,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvAVRSignal, nil
+			return ll.CallingConvAVRSignal, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "ccc"	<< ast.CallingConvC, nil >>`,
+		String: `CallingConv : "ccc"	<< ll.CallingConvC, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      78,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvC, nil
+			return ll.CallingConvC, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "coldcc"	<< ast.CallingConvCold, nil >>`,
+		String: `CallingConv : "coldcc"	<< ll.CallingConvCold, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      79,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvCold, nil
+			return ll.CallingConvCold, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "cxx_fast_tlscc"	<< ast.CallingConvCXXFastTLS, nil >>`,
+		String: `CallingConv : "cxx_fast_tlscc"	<< ll.CallingConvCXXFastTLS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      80,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvCXXFastTLS, nil
+			return ll.CallingConvCXXFastTLS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "fastcc"	<< ast.CallingConvFast, nil >>`,
+		String: `CallingConv : "fastcc"	<< ll.CallingConvFast, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      81,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvFast, nil
+			return ll.CallingConvFast, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "ghccc"	<< ast.CallingConvGHC, nil >>`,
+		String: `CallingConv : "ghccc"	<< ll.CallingConvGHC, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      82,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvGHC, nil
+			return ll.CallingConvGHC, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "hhvm_ccc"	<< ast.CallingConvHHVMC, nil >>`,
+		String: `CallingConv : "hhvm_ccc"	<< ll.CallingConvHHVMC, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      83,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvHHVMC, nil
+			return ll.CallingConvHHVMC, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "hhvmcc"	<< ast.CallingConvHHVM, nil >>`,
+		String: `CallingConv : "hhvmcc"	<< ll.CallingConvHHVM, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      84,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvHHVM, nil
+			return ll.CallingConvHHVM, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "intel_ocl_bicc"	<< ast.CallingConvIntelOCLBI, nil >>`,
+		String: `CallingConv : "intel_ocl_bicc"	<< ll.CallingConvIntelOCLBI, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      85,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvIntelOCLBI, nil
+			return ll.CallingConvIntelOCLBI, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "msp430_intrcc"	<< ast.CallingConvMSP430Intr, nil >>`,
+		String: `CallingConv : "msp430_intrcc"	<< ll.CallingConvMSP430Intr, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      86,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvMSP430Intr, nil
+			return ll.CallingConvMSP430Intr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "preserve_allcc"	<< ast.CallingConvPreserveAll, nil >>`,
+		String: `CallingConv : "preserve_allcc"	<< ll.CallingConvPreserveAll, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      87,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvPreserveAll, nil
+			return ll.CallingConvPreserveAll, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "preserve_mostcc"	<< ast.CallingConvPreserveMost, nil >>`,
+		String: `CallingConv : "preserve_mostcc"	<< ll.CallingConvPreserveMost, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      88,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvPreserveMost, nil
+			return ll.CallingConvPreserveMost, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "ptx_device"	<< ast.CallingConvPTXDevice, nil >>`,
+		String: `CallingConv : "ptx_device"	<< ll.CallingConvPTXDevice, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      89,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvPTXDevice, nil
+			return ll.CallingConvPTXDevice, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "ptx_kernel"	<< ast.CallingConvPTXKernel, nil >>`,
+		String: `CallingConv : "ptx_kernel"	<< ll.CallingConvPTXKernel, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      90,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvPTXKernel, nil
+			return ll.CallingConvPTXKernel, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "spir_func"	<< ast.CallingConvSPIRFunc, nil >>`,
+		String: `CallingConv : "spir_func"	<< ll.CallingConvSPIRFunc, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      91,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvSPIRFunc, nil
+			return ll.CallingConvSPIRFunc, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "spir_kernel"	<< ast.CallingConvSPIRKernel, nil >>`,
+		String: `CallingConv : "spir_kernel"	<< ll.CallingConvSPIRKernel, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      92,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvSPIRKernel, nil
+			return ll.CallingConvSPIRKernel, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "swiftcc"	<< ast.CallingConvSwift, nil >>`,
+		String: `CallingConv : "swiftcc"	<< ll.CallingConvSwift, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      93,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvSwift, nil
+			return ll.CallingConvSwift, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "webkit_jscc"	<< ast.CallingConvWebKitJS, nil >>`,
+		String: `CallingConv : "webkit_jscc"	<< ll.CallingConvWebKitJS, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      94,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvWebKitJS, nil
+			return ll.CallingConvWebKitJS, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "win64cc"	<< ast.CallingConvWin64, nil >>`,
+		String: `CallingConv : "win64cc"	<< ll.CallingConvWin64, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      95,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvWin64, nil
+			return ll.CallingConvWin64, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_64_sysvcc"	<< ast.CallingConvX86_64SysV, nil >>`,
+		String: `CallingConv : "x86_64_sysvcc"	<< ll.CallingConvX86_64SysV, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      96,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86_64SysV, nil
+			return ll.CallingConvX86_64SysV, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_fastcallcc"	<< ast.CallingConvX86FastCall, nil >>`,
+		String: `CallingConv : "x86_fastcallcc"	<< ll.CallingConvX86FastCall, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      97,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86FastCall, nil
+			return ll.CallingConvX86FastCall, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_intrcc"	<< ast.CallingConvX86Intr, nil >>`,
+		String: `CallingConv : "x86_intrcc"	<< ll.CallingConvX86Intr, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      98,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86Intr, nil
+			return ll.CallingConvX86Intr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_regcallcc"	<< ast.CallingConvX86RegCall, nil >>`,
+		String: `CallingConv : "x86_regcallcc"	<< ll.CallingConvX86RegCall, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      99,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86RegCall, nil
+			return ll.CallingConvX86RegCall, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_stdcallcc"	<< ast.CallingConvX86StdCall, nil >>`,
+		String: `CallingConv : "x86_stdcallcc"	<< ll.CallingConvX86StdCall, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      100,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86StdCall, nil
+			return ll.CallingConvX86StdCall, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_thiscallcc"	<< ast.CallingConvX86ThisCall, nil >>`,
+		String: `CallingConv : "x86_thiscallcc"	<< ll.CallingConvX86ThisCall, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      101,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86ThisCall, nil
+			return ll.CallingConvX86ThisCall, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallingConv : "x86_vectorcallcc"	<< ast.CallingConvX86VectorCall, nil >>`,
+		String: `CallingConv : "x86_vectorcallcc"	<< ll.CallingConvX86VectorCall, nil >>`,
 		Id:         "CallingConv",
 		NTType:     28,
 		Index:      102,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.CallingConvX86VectorCall, nil
+			return ll.CallingConvX86VectorCall, nil
 		},
 	},
 	ProdTabEntry{
@@ -1154,13 +1156,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AttrGroupDef : "attributes" AttrGroupID "=" "{" FuncAttrs "}"	<< &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ast.FuncAttribute)}, nil >>`,
+		String: `AttrGroupDef : "attributes" AttrGroupID "=" "{" FuncAttrs "}"	<< &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "AttrGroupDef",
 		NTType:     34,
 		Index:      113,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ast.FuncAttribute)}, nil
+			return &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ll.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1314,13 +1316,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `UseListOrder : "uselistorder" Type Value "," "{" IndexList "}"	<< &ast.UseListOrder{Type: X[1].(ast.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil >>`,
+		String: `UseListOrder : "uselistorder" Type Value "," "{" IndexList "}"	<< &ast.UseListOrder{Type: X[1].(types.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil >>`,
 		Id:         "UseListOrder",
 		NTType:     43,
 		Index:      129,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UseListOrder{Type: X[1].(ast.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil
+			return &ast.UseListOrder{Type: X[1].(types.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1554,23 +1556,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `VoidType : "void"	<< &ast.VoidType{}, nil >>`,
+		String: `VoidType : "void"	<< &types.VoidType{}, nil >>`,
 		Id:         "VoidType",
 		NTType:     55,
 		Index:      153,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.VoidType{}, nil
+			return &types.VoidType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncType : Type "(" Params ")"	<< &ast.FuncType{RetType: X[0].(ast.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil >>`,
+		String: `FuncType : Type "(" Params ")"	<< &types.FuncType{RetType: X[0].(types.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil >>`,
 		Id:         "FuncType",
 		NTType:     56,
 		Index:      154,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FuncType{RetType: X[0].(ast.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil
+			return &types.FuncType{RetType: X[0].(types.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1584,213 +1586,213 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FloatType : FloatKind	<< &ast.FloatType{Kind: X[0].(ast.FloatKind)}, nil >>`,
+		String: `FloatType : FloatKind	<< &types.FloatType{Kind: X[0].(types.FloatKind)}, nil >>`,
 		Id:         "FloatType",
 		NTType:     58,
 		Index:      156,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FloatType{Kind: X[0].(ast.FloatKind)}, nil
+			return &types.FloatType{Kind: X[0].(types.FloatKind)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "half"	<< ast.FloatKindHalf, nil >>`,
+		String: `FloatKind : "half"	<< types.FloatKindHalf, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      157,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindHalf, nil
+			return types.FloatKindHalf, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "float"	<< ast.FloatKindFloat, nil >>`,
+		String: `FloatKind : "float"	<< types.FloatKindFloat, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      158,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindFloat, nil
+			return types.FloatKindFloat, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "double"	<< ast.FloatKindDouble, nil >>`,
+		String: `FloatKind : "double"	<< types.FloatKindDouble, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      159,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindDouble, nil
+			return types.FloatKindDouble, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "x86_fp80"	<< ast.FloatKindX86FP80, nil >>`,
+		String: `FloatKind : "x86_fp80"	<< types.FloatKindX86FP80, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      160,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindX86FP80, nil
+			return types.FloatKindX86FP80, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "fp128"	<< ast.FloatKindFP128, nil >>`,
+		String: `FloatKind : "fp128"	<< types.FloatKindFP128, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      161,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindFP128, nil
+			return types.FloatKindFP128, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FloatKind : "ppc_fp128"	<< ast.FloatKindPPCFP128, nil >>`,
+		String: `FloatKind : "ppc_fp128"	<< types.FloatKindPPCFP128, nil >>`,
 		Id:         "FloatKind",
 		NTType:     59,
 		Index:      162,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FloatKindPPCFP128, nil
+			return types.FloatKindPPCFP128, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MMXType : "x86_mmx"	<< &ast.MMXType{}, nil >>`,
+		String: `MMXType : "x86_mmx"	<< &types.MMXType{}, nil >>`,
 		Id:         "MMXType",
 		NTType:     60,
 		Index:      163,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MMXType{}, nil
+			return &types.MMXType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PointerType : Type OptAddrSpace "*"	<< &ast.PointerType{ElemType: X[0].(ast.Type), AddrSpace: X[1].(ast.AddrSpace)}, nil >>`,
+		String: `PointerType : Type OptAddrSpace "*"	<< &types.PointerType{ElemType: X[0].(types.Type), AddrSpace: X[1].(ll.AddrSpace)}, nil >>`,
 		Id:         "PointerType",
 		NTType:     61,
 		Index:      164,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PointerType{ElemType: X[0].(ast.Type), AddrSpace: X[1].(ast.AddrSpace)}, nil
+			return &types.PointerType{ElemType: X[0].(types.Type), AddrSpace: X[1].(ll.AddrSpace)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `VectorType : "<" int_lit "x" Type ">"	<< &ast.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(ast.Type)}, nil >>`,
+		String: `VectorType : "<" int_lit "x" Type ">"	<< &types.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil >>`,
 		Id:         "VectorType",
 		NTType:     62,
 		Index:      165,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(ast.Type)}, nil
+			return &types.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LabelType : "label"	<< &ast.LabelType{}, nil >>`,
+		String: `LabelType : "label"	<< &types.LabelType{}, nil >>`,
 		Id:         "LabelType",
 		NTType:     63,
 		Index:      166,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LabelType{}, nil
+			return &types.LabelType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TokenType : "token"	<< &ast.TokenType{}, nil >>`,
+		String: `TokenType : "token"	<< &types.TokenType{}, nil >>`,
 		Id:         "TokenType",
 		NTType:     64,
 		Index:      167,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TokenType{}, nil
+			return &types.TokenType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataType : "metadata"	<< &ast.MetadataType{}, nil >>`,
+		String: `MetadataType : "metadata"	<< &types.MetadataType{}, nil >>`,
 		Id:         "MetadataType",
 		NTType:     65,
 		Index:      168,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MetadataType{}, nil
+			return &types.MetadataType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ArrayType : "[" int_lit "x" Type "]"	<< &ast.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(ast.Type)}, nil >>`,
+		String: `ArrayType : "[" int_lit "x" Type "]"	<< &types.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil >>`,
 		Id:         "ArrayType",
 		NTType:     66,
 		Index:      169,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(ast.Type)}, nil
+			return &types.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructType : "{" "}"	<< &ast.StructType{}, nil >>`,
+		String: `StructType : "{" "}"	<< &types.StructType{}, nil >>`,
 		Id:         "StructType",
 		NTType:     67,
 		Index:      170,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructType{}, nil
+			return &types.StructType{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructType : "{" TypeList "}"	<< &ast.StructType{Fields: X[1].([]ast.Type)}, nil >>`,
+		String: `StructType : "{" TypeList "}"	<< &types.StructType{Fields: X[1].([]types.Type)}, nil >>`,
 		Id:         "StructType",
 		NTType:     67,
 		Index:      171,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructType{Fields: X[1].([]ast.Type)}, nil
+			return &types.StructType{Fields: X[1].([]types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructType : "<" "{" "}" ">"	<< &ast.StructType{Packed: true}, nil >>`,
+		String: `StructType : "<" "{" "}" ">"	<< &types.StructType{Packed: true}, nil >>`,
 		Id:         "StructType",
 		NTType:     67,
 		Index:      172,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructType{Packed: true}, nil
+			return &types.StructType{Packed: true}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructType : "<" "{" TypeList "}" ">"	<< &ast.StructType{Packed: true, Fields: X[2].([]ast.Type)}, nil >>`,
+		String: `StructType : "<" "{" TypeList "}" ">"	<< &types.StructType{Packed: true, Fields: X[2].([]types.Type)}, nil >>`,
 		Id:         "StructType",
 		NTType:     67,
 		Index:      173,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructType{Packed: true, Fields: X[2].([]ast.Type)}, nil
+			return &types.StructType{Packed: true, Fields: X[2].([]types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeList : Type	<< []ast.Type{X[0].(ast.Type)}, nil >>`,
+		String: `TypeList : Type	<< []types.Type{X[0].(types.Type)}, nil >>`,
 		Id:         "TypeList",
 		NTType:     68,
 		Index:      174,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.Type{X[0].(ast.Type)}, nil
+			return []types.Type{X[0].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeList : TypeList "," Type	<< append(X[0].([]ast.Type), X[2].(ast.Type)), nil >>`,
+		String: `TypeList : TypeList "," Type	<< append(X[0].([]types.Type), X[2].(types.Type)), nil >>`,
 		Id:         "TypeList",
 		NTType:     68,
 		Index:      175,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.Type), X[2].(ast.Type)), nil
+			return append(X[0].([]types.Type), X[2].(types.Type)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `NamedType : LocalIdent	<< &ast.NamedType{Name: X[0].(*ast.LocalIdent)}, nil >>`,
+		String: `NamedType : LocalIdent	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Ident}, nil >>`,
 		Id:         "NamedType",
 		NTType:     69,
 		Index:      176,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.NamedType{Name: X[0].(*ast.LocalIdent)}, nil
+			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Ident}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1824,13 +1826,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `InlineAsm : "asm" OptSideEffect OptAlignStack OptIntelDialect StringLit "," StringLit	<< &ast.InlineAsm{SideEffect: X[1].(bool), AlignStack: X[2].(bool), IntelDialect: X[3].(bool), Asm: X[4].(string), Constraint: X[6].(string)}, nil >>`,
+		String: `InlineAsm : "asm" OptSideEffect OptAlignStack OptIntelDialect StringLit "," StringLit	<< &ll.InlineAsm{SideEffect: X[1].(bool), AlignStack: X[2].(bool), IntelDialect: X[3].(bool), Asm: X[4].(string), Constraint: X[6].(string)}, nil >>`,
 		Id:         "InlineAsm",
 		NTType:     71,
 		Index:      180,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InlineAsm{SideEffect: X[1].(bool), AlignStack: X[2].(bool), IntelDialect: X[3].(bool), Asm: X[4].(string), Constraint: X[6].(string)}, nil
+			return &ll.InlineAsm{SideEffect: X[1].(bool), AlignStack: X[2].(bool), IntelDialect: X[3].(bool), Asm: X[4].(string), Constraint: X[6].(string)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2624,13 +2626,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AddExpr : "add" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.AddExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `AddExpr : "add" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "AddExpr",
 		NTType:     92,
 		Index:      260,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2644,13 +2646,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `SubExpr : "sub" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.SubExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `SubExpr : "sub" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "SubExpr",
 		NTType:     94,
 		Index:      262,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SubExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2664,13 +2666,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `MulExpr : "mul" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.MulExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `MulExpr : "mul" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "MulExpr",
 		NTType:     96,
 		Index:      264,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MulExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2744,13 +2746,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ShlExpr : "shl" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.ShlExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `ShlExpr : "shl" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "ShlExpr",
 		NTType:     104,
 		Index:      272,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShlExpr{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2854,13 +2856,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrExpr : "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"	<< &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil >>`,
+		String: `GetElementPtrExpr : "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"	<< &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil >>`,
 		Id:         "GetElementPtrExpr",
 		NTType:     115,
 		Index:      283,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil
+			return &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2934,153 +2936,153 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TruncExpr : "trunc" "(" Type Constant "to" Type ")"	<< &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `TruncExpr : "trunc" "(" Type Constant "to" Type ")"	<< &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "TruncExpr",
 		NTType:     120,
 		Index:      291,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ZExtExpr : "zext" "(" Type Constant "to" Type ")"	<< &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `ZExtExpr : "zext" "(" Type Constant "to" Type ")"	<< &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "ZExtExpr",
 		NTType:     121,
 		Index:      292,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SExtExpr : "sext" "(" Type Constant "to" Type ")"	<< &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `SExtExpr : "sext" "(" Type Constant "to" Type ")"	<< &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "SExtExpr",
 		NTType:     122,
 		Index:      293,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPTruncExpr : "fptrunc" "(" Type Constant "to" Type ")"	<< &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `FPTruncExpr : "fptrunc" "(" Type Constant "to" Type ")"	<< &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPTruncExpr",
 		NTType:     123,
 		Index:      294,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPExtExpr : "fpext" "(" Type Constant "to" Type ")"	<< &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `FPExtExpr : "fpext" "(" Type Constant "to" Type ")"	<< &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPExtExpr",
 		NTType:     124,
 		Index:      295,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToUIExpr : "fptoui" "(" Type Constant "to" Type ")"	<< &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `FPToUIExpr : "fptoui" "(" Type Constant "to" Type ")"	<< &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPToUIExpr",
 		NTType:     125,
 		Index:      296,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToSIExpr : "fptosi" "(" Type Constant "to" Type ")"	<< &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `FPToSIExpr : "fptosi" "(" Type Constant "to" Type ")"	<< &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPToSIExpr",
 		NTType:     126,
 		Index:      297,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UIToFPExpr : "uitofp" "(" Type Constant "to" Type ")"	<< &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `UIToFPExpr : "uitofp" "(" Type Constant "to" Type ")"	<< &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "UIToFPExpr",
 		NTType:     127,
 		Index:      298,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SIToFPExpr : "sitofp" "(" Type Constant "to" Type ")"	<< &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `SIToFPExpr : "sitofp" "(" Type Constant "to" Type ")"	<< &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "SIToFPExpr",
 		NTType:     128,
 		Index:      299,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PtrToIntExpr : "ptrtoint" "(" Type Constant "to" Type ")"	<< &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `PtrToIntExpr : "ptrtoint" "(" Type Constant "to" Type ")"	<< &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "PtrToIntExpr",
 		NTType:     129,
 		Index:      300,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IntToPtrExpr : "inttoptr" "(" Type Constant "to" Type ")"	<< &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `IntToPtrExpr : "inttoptr" "(" Type Constant "to" Type ")"	<< &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "IntToPtrExpr",
 		NTType:     130,
 		Index:      301,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BitCastExpr : "bitcast" "(" Type Constant "to" Type ")"	<< &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `BitCastExpr : "bitcast" "(" Type Constant "to" Type ")"	<< &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "BitCastExpr",
 		NTType:     131,
 		Index:      302,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AddrSpaceCastExpr : "addrspacecast" "(" Type Constant "to" Type ")"	<< &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil >>`,
+		String: `AddrSpaceCastExpr : "addrspacecast" "(" Type Constant "to" Type ")"	<< &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "AddrSpaceCastExpr",
 		NTType:     132,
 		Index:      303,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(ast.Type)}, nil
+			return &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ICmpExpr : "icmp" IPred "(" Type Constant "," Type Constant ")"	<< &ast.ICmpExpr{Pred: X[1].(ast.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `ICmpExpr : "icmp" IPred "(" Type Constant "," Type Constant ")"	<< &ast.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "ICmpExpr",
 		NTType:     133,
 		Index:      304,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ICmpExpr{Pred: X[1].(ast.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FCmpExpr : "fcmp" FPred "(" Type Constant "," Type Constant ")"	<< &ast.FCmpExpr{Pred: X[1].(ast.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `FCmpExpr : "fcmp" FPred "(" Type Constant "," Type Constant ")"	<< &ast.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "FCmpExpr",
 		NTType:     134,
 		Index:      305,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FCmpExpr{Pred: X[1].(ast.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &ast.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3724,63 +3726,63 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AddInst : "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.AddInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AddInst : "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AddInst",
 		NTType:     143,
 		Index:      370,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FAddInst : "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FAddInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FAddInst : "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FAddInst",
 		NTType:     144,
 		Index:      371,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FAddInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SubInst : "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.SubInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `SubInst : "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "SubInst",
 		NTType:     145,
 		Index:      372,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SubInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FSubInst : "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FSubInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FSubInst : "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FSubInst",
 		NTType:     146,
 		Index:      373,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FSubInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MulInst : "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.MulInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `MulInst : "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "MulInst",
 		NTType:     147,
 		Index:      374,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MulInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FMulInst : "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FMulInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FMulInst : "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FMulInst",
 		NTType:     148,
 		Index:      375,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FMulInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3804,13 +3806,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FDivInst : "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FDivInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FDivInst : "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FDivInst",
 		NTType:     151,
 		Index:      378,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FDivInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3834,23 +3836,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FRemInst : "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FRemInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FRemInst : "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FRemInst",
 		NTType:     154,
 		Index:      381,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FRemInst{FastMathFlags: X[1].([]ast.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ShlInst : "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ShlInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `ShlInst : "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "ShlInst",
 		NTType:     155,
 		Index:      382,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShlInst{OverflowFlags: X[1].([]ast.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3954,83 +3956,83 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Metadata: X[4].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      393,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Metadata: X[4].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Alignment: X[5].(*ast.Alignment), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      394,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Alignment: X[5].(*ast.Alignment), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      395,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      396,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), AddrSpace: X[5].(ast.AddrSpace), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(ll.AddrSpace), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      397,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), AddrSpace: X[5].(ast.AddrSpace), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(ll.AddrSpace), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Alignment: X[5].(*ast.Alignment), AddrSpace: X[7].(ast.AddrSpace), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(ll.AddrSpace), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      398,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), Alignment: X[5].(*ast.Alignment), AddrSpace: X[7].(ast.AddrSpace), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(ll.AddrSpace), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(ast.AddrSpace), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(ll.AddrSpace), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      399,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(ast.AddrSpace), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(ll.AddrSpace), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), AddrSpace: X[10].(ast.AddrSpace), Metadata: X[11].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(ll.AddrSpace), Metadata: X[11].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      400,
 		NumSymbols: 12,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(ast.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), AddrSpace: X[10].(ast.AddrSpace), Metadata: X[11].([]*ast.MetadataAttachment)}, nil
+			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(ll.AddrSpace), Metadata: X[11].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4074,43 +4076,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      405,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ast.Alignment), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      406,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ast.Alignment), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
+			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ast.SyncScope), AtomicOrdering: X[8].(ast.AtomicOrdering), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      407,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ast.SyncScope), AtomicOrdering: X[8].(ast.AtomicOrdering), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
+			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ast.SyncScope), AtomicOrdering: X[8].(ast.AtomicOrdering), Alignment: X[10].(*ast.Alignment), Metadata: X[11].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      408,
 		NumSymbols: 12,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(ast.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ast.SyncScope), AtomicOrdering: X[8].(ast.AtomicOrdering), Alignment: X[10].(*ast.Alignment), Metadata: X[11].([]*ast.MetadataAttachment)}, nil
+			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4124,53 +4126,53 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      410,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ast.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
+			return &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      411,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil
+			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Alignment: X[11].(*ast.Alignment), Metadata: X[12].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      412,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Alignment: X[11].(*ast.Alignment), Metadata: X[12].([]*ast.MetadataAttachment)}, nil
+			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FenceInst : "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.FenceInst{SyncScope: X[1].(*ast.SyncScope), AtomicOrdering: X[2].(ast.AtomicOrdering), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FenceInst : "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FenceInst",
 		NTType:     171,
 		Index:      413,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FenceInst{SyncScope: X[1].(*ast.SyncScope), AtomicOrdering: X[2].(ast.AtomicOrdering), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
+			return &ast.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CmpXchgInst : "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ast.SyncScope), Success: X[12].(ast.AtomicOrdering), Failure: X[13].(ast.AtomicOrdering), Metadata: X[14].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `CmpXchgInst : "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "CmpXchgInst",
 		NTType:     172,
 		Index:      414,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ast.SyncScope), Success: X[12].(ast.AtomicOrdering), Failure: X[13].(ast.AtomicOrdering), Metadata: X[14].([]*ast.MetadataAttachment)}, nil
+			return &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4194,303 +4196,303 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicRMWInst : "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ast.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AtomicRMWInst : "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AtomicRMWInst",
 		NTType:     174,
 		Index:      417,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ast.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ast.SyncScope), AtomicOrdering: X[9].(ast.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil
+			return &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "add"	<< ast.BinOpAdd, nil >>`,
+		String: `BinOp : "add"	<< ll.BinOpAdd, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      418,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpAdd, nil
+			return ll.BinOpAdd, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "and"	<< ast.BinOpAnd, nil >>`,
+		String: `BinOp : "and"	<< ll.BinOpAnd, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      419,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpAnd, nil
+			return ll.BinOpAnd, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "max"	<< ast.BinOpMax, nil >>`,
+		String: `BinOp : "max"	<< ll.BinOpMax, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      420,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpMax, nil
+			return ll.BinOpMax, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "min"	<< ast.BinOpMin, nil >>`,
+		String: `BinOp : "min"	<< ll.BinOpMin, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      421,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpMin, nil
+			return ll.BinOpMin, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "nand"	<< ast.BinOpNAnd, nil >>`,
+		String: `BinOp : "nand"	<< ll.BinOpNAnd, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      422,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpNAnd, nil
+			return ll.BinOpNAnd, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "or"	<< ast.BinOpOr, nil >>`,
+		String: `BinOp : "or"	<< ll.BinOpOr, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      423,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpOr, nil
+			return ll.BinOpOr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "sub"	<< ast.BinOpSub, nil >>`,
+		String: `BinOp : "sub"	<< ll.BinOpSub, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      424,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpSub, nil
+			return ll.BinOpSub, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "umax"	<< ast.BinOpUMax, nil >>`,
+		String: `BinOp : "umax"	<< ll.BinOpUMax, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      425,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpUMax, nil
+			return ll.BinOpUMax, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "umin"	<< ast.BinOpUMin, nil >>`,
+		String: `BinOp : "umin"	<< ll.BinOpUMin, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      426,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpUMin, nil
+			return ll.BinOpUMin, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "xchg"	<< ast.BinOpXChg, nil >>`,
+		String: `BinOp : "xchg"	<< ll.BinOpXChg, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      427,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpXChg, nil
+			return ll.BinOpXChg, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BinOp : "xor"	<< ast.BinOpXor, nil >>`,
+		String: `BinOp : "xor"	<< ll.BinOpXor, nil >>`,
 		Id:         "BinOp",
 		NTType:     175,
 		Index:      428,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.BinOpXor, nil
+			return ll.BinOpXor, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "GetElementPtrInst",
 		NTType:     176,
 		Index:      429,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "GetElementPtrInst",
 		NTType:     176,
 		Index:      430,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(ast.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
+			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TruncInst : "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `TruncInst : "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "TruncInst",
 		NTType:     177,
 		Index:      431,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ZExtInst : "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `ZExtInst : "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "ZExtInst",
 		NTType:     178,
 		Index:      432,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SExtInst : "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `SExtInst : "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "SExtInst",
 		NTType:     179,
 		Index:      433,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPTruncInst : "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FPTruncInst : "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FPTruncInst",
 		NTType:     180,
 		Index:      434,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPExtInst : "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FPExtInst : "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FPExtInst",
 		NTType:     181,
 		Index:      435,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToUIInst : "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FPToUIInst : "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FPToUIInst",
 		NTType:     182,
 		Index:      436,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToSIInst : "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FPToSIInst : "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FPToSIInst",
 		NTType:     183,
 		Index:      437,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UIToFPInst : "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `UIToFPInst : "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "UIToFPInst",
 		NTType:     184,
 		Index:      438,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SIToFPInst : "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `SIToFPInst : "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "SIToFPInst",
 		NTType:     185,
 		Index:      439,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PtrToIntInst : "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `PtrToIntInst : "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "PtrToIntInst",
 		NTType:     186,
 		Index:      440,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IntToPtrInst : "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `IntToPtrInst : "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "IntToPtrInst",
 		NTType:     187,
 		Index:      441,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BitCastInst : "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `BitCastInst : "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "BitCastInst",
 		NTType:     188,
 		Index:      442,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AddrSpaceCastInst : "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `AddrSpaceCastInst : "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "AddrSpaceCastInst",
 		NTType:     189,
 		Index:      443,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ICmpInst : "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ICmpInst{Pred: X[1].(ast.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `ICmpInst : "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "ICmpInst",
 		NTType:     190,
 		Index:      444,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ICmpInst{Pred: X[1].(ast.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
+			return &ast.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FCmpInst : "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FCmpInst{FastMathFlags: X[1].([]ast.FastMathFlag), Pred: X[2].(ast.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `FCmpInst : "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FCmpInst",
 		NTType:     191,
 		Index:      445,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FCmpInst{FastMathFlags: X[1].([]ast.FastMathFlag), Pred: X[2].(ast.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil
+			return &ast.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ast.PhiInst{Type: X[1].(ast.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ast.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "PhiInst",
 		NTType:     192,
 		Index:      446,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PhiInst{Type: X[1].(ast.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
+			return &ast.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4534,73 +4536,73 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `CallInst : OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList	<< &ast.CallInst{Tail: X[0].(ast.Tail), FastMathFlags: X[2].([]ast.FastMathFlag), CallingConv: X[3].(ast.CallingConv), ReturnAttrs: X[4].([]ast.ReturnAttribute), RetType: X[5].(ast.Type), Callee: X[6].(ast.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ast.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `CallInst : OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList	<< &ast.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(ast.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "CallInst",
 		NTType:     196,
 		Index:      451,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CallInst{Tail: X[0].(ast.Tail), FastMathFlags: X[2].([]ast.FastMathFlag), CallingConv: X[3].(ast.CallingConv), ReturnAttrs: X[4].([]ast.ReturnAttribute), RetType: X[5].(ast.Type), Callee: X[6].(ast.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ast.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*ast.MetadataAttachment)}, nil
+			return &ast.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(ast.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptTail : empty	<< ast.TailNone, nil >>`,
+		String: `OptTail : empty	<< ll.TailNone, nil >>`,
 		Id:         "OptTail",
 		NTType:     197,
 		Index:      452,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TailNone, nil
+			return ll.TailNone, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptTail : "musttail"	<< ast.TailMustTail, nil >>`,
+		String: `OptTail : "musttail"	<< ll.TailMustTail, nil >>`,
 		Id:         "OptTail",
 		NTType:     197,
 		Index:      453,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TailMustTail, nil
+			return ll.TailMustTail, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptTail : "notail"	<< ast.TailNoTail, nil >>`,
+		String: `OptTail : "notail"	<< ll.TailNoTail, nil >>`,
 		Id:         "OptTail",
 		NTType:     197,
 		Index:      454,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TailNoTail, nil
+			return ll.TailNoTail, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptTail : "tail"	<< ast.TailTail, nil >>`,
+		String: `OptTail : "tail"	<< ll.TailTail, nil >>`,
 		Id:         "OptTail",
 		NTType:     197,
 		Index:      455,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.TailTail, nil
+			return ll.TailTail, nil
 		},
 	},
 	ProdTabEntry{
-		String: `VAArgInst : "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList	<< &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `VAArgInst : "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList	<< &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "VAArgInst",
 		NTType:     198,
 		Index:      456,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(ast.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
+			return &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ast.LandingPadInst{Type: X[1].(ast.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ast.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "LandingPadInst",
 		NTType:     199,
 		Index:      457,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LandingPadInst{Type: X[1].(ast.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*ast.MetadataAttachment)}, nil
+			return &ast.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4954,13 +4956,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.InvokeTerm{CallingConv: X[1].(ast.CallingConv), ReturnAttrs: X[2].([]ast.ReturnAttribute), RetType: X[3].(ast.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ast.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*ast.MetadataAttachment)}, nil >>`,
+		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "InvokeTerm",
 		NTType:     217,
 		Index:      493,
 		NumSymbols: 17,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InvokeTerm{CallingConv: X[1].(ast.CallingConv), ReturnAttrs: X[2].([]ast.ReturnAttribute), RetType: X[3].(ast.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ast.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*ast.MetadataAttachment)}, nil
+			return &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*ast.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -8314,13 +8316,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfLang : IntLit	<< ast.DwarfLang(X[0].(int64)), nil >>`,
+		String: `DwarfLang : IntLit	<< ll.DwarfLang(X[0].(int64)), nil >>`,
 		Id:         "DwarfLang",
 		NTType:     337,
 		Index:      829,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfLang(X[0].(int64)), nil
+			return ll.DwarfLang(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8354,43 +8356,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `EmissionKind : IntLit	<< ast.EmissionKind(X[0].(int64)), nil >>`,
+		String: `EmissionKind : IntLit	<< ll.EmissionKind(X[0].(int64)), nil >>`,
 		Id:         "EmissionKind",
 		NTType:     340,
 		Index:      833,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.EmissionKind(X[0].(int64)), nil
+			return ll.EmissionKind(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `EmissionKind : "FullDebug"	<< ast.EmissionKindFullDebug, nil >>`,
+		String: `EmissionKind : "FullDebug"	<< ll.EmissionKindFullDebug, nil >>`,
 		Id:         "EmissionKind",
 		NTType:     340,
 		Index:      834,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.EmissionKindFullDebug, nil
+			return ll.EmissionKindFullDebug, nil
 		},
 	},
 	ProdTabEntry{
-		String: `EmissionKind : "LineTablesOnly"	<< ast.EmissionKindLineTablesOnly, nil >>`,
+		String: `EmissionKind : "LineTablesOnly"	<< ll.EmissionKindLineTablesOnly, nil >>`,
 		Id:         "EmissionKind",
 		NTType:     340,
 		Index:      835,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.EmissionKindLineTablesOnly, nil
+			return ll.EmissionKindLineTablesOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `EmissionKind : "NoDebug"	<< ast.EmissionKindNoDebug, nil >>`,
+		String: `EmissionKind : "NoDebug"	<< ll.EmissionKindNoDebug, nil >>`,
 		Id:         "EmissionKind",
 		NTType:     340,
 		Index:      836,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.EmissionKindNoDebug, nil
+			return ll.EmissionKindNoDebug, nil
 		},
 	},
 	ProdTabEntry{
@@ -8414,13 +8416,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfTag : IntLit	<< ast.DwarfTag(X[0].(int64)), nil >>`,
+		String: `DwarfTag : IntLit	<< ll.DwarfTag(X[0].(int64)), nil >>`,
 		Id:         "DwarfTag",
 		NTType:     343,
 		Index:      839,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfTag(X[0].(int64)), nil
+			return ll.DwarfTag(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8464,13 +8466,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfAttEncoding : IntLit	<< ast.DwarfAttEncoding(X[0].(int64)), nil >>`,
+		String: `DwarfAttEncoding : IntLit	<< ll.DwarfAttEncoding(X[0].(int64)), nil >>`,
 		Id:         "DwarfAttEncoding",
 		NTType:     347,
 		Index:      844,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfAttEncoding(X[0].(int64)), nil
+			return ll.DwarfAttEncoding(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8494,33 +8496,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DIFlagList : DIFlag	<< []ast.DIFlag{X[0].(ast.DIFlag)}, nil >>`,
+		String: `DIFlagList : DIFlag	<< []ll.DIFlag{X[0].(ll.DIFlag)}, nil >>`,
 		Id:         "DIFlagList",
 		NTType:     349,
 		Index:      847,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.DIFlag{X[0].(ast.DIFlag)}, nil
+			return []ll.DIFlag{X[0].(ll.DIFlag)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `DIFlagList : DIFlagList "|" DIFlag	<< append(X[0].([]ast.DIFlag), X[2].(ast.DIFlag)), nil >>`,
+		String: `DIFlagList : DIFlagList "|" DIFlag	<< append(X[0].([]ll.DIFlag), X[2].(ll.DIFlag)), nil >>`,
 		Id:         "DIFlagList",
 		NTType:     349,
 		Index:      848,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.DIFlag), X[2].(ast.DIFlag)), nil
+			return append(X[0].([]ll.DIFlag), X[2].(ll.DIFlag)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `DIFlag : IntLit	<< ast.DIFlag(X[0].(int64)), nil >>`,
+		String: `DIFlag : IntLit	<< ll.DIFlag(X[0].(int64)), nil >>`,
 		Id:         "DIFlag",
 		NTType:     350,
 		Index:      849,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DIFlag(X[0].(int64)), nil
+			return ll.DIFlag(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8534,13 +8536,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfCC : IntLit	<< ast.DwarfCC(X[0].(int64)), nil >>`,
+		String: `DwarfCC : IntLit	<< ll.DwarfCC(X[0].(int64)), nil >>`,
 		Id:         "DwarfCC",
 		NTType:     351,
 		Index:      851,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfCC(X[0].(int64)), nil
+			return ll.DwarfCC(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8674,13 +8676,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfVirtuality : IntLit	<< ast.DwarfVirtuality(X[0].(int64)), nil >>`,
+		String: `DwarfVirtuality : IntLit	<< ll.DwarfVirtuality(X[0].(int64)), nil >>`,
 		Id:         "DwarfVirtuality",
 		NTType:     363,
 		Index:      865,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfVirtuality(X[0].(int64)), nil
+			return ll.DwarfVirtuality(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8724,13 +8726,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DwarfMacinfo : IntLit	<< ast.DwarfMacinfo(X[0].(int64)), nil >>`,
+		String: `DwarfMacinfo : IntLit	<< ll.DwarfMacinfo(X[0].(int64)), nil >>`,
 		Id:         "DwarfMacinfo",
 		NTType:     367,
 		Index:      870,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DwarfMacinfo(X[0].(int64)), nil
+			return ll.DwarfMacinfo(X[0].(int64)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8744,13 +8746,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttrs : empty	<< ([]ast.FuncAttribute)(nil), nil >>`,
+		String: `FuncAttrs : empty	<< ([]ll.FuncAttribute)(nil), nil >>`,
 		Id:         "FuncAttrs",
 		NTType:     368,
 		Index:      872,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.FuncAttribute)(nil), nil
+			return ([]ll.FuncAttribute)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -8764,23 +8766,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttrList : FuncAttr	<< []ast.FuncAttribute{X[0].(ast.FuncAttribute)}, nil >>`,
+		String: `FuncAttrList : FuncAttr	<< []ll.FuncAttribute{X[0].(ll.FuncAttribute)}, nil >>`,
 		Id:         "FuncAttrList",
 		NTType:     369,
 		Index:      874,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.FuncAttribute{X[0].(ast.FuncAttribute)}, nil
+			return []ll.FuncAttribute{X[0].(ll.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttrList : FuncAttrList FuncAttr	<< append(X[0].([]ast.FuncAttribute), X[1].(ast.FuncAttribute)), nil >>`,
+		String: `FuncAttrList : FuncAttrList FuncAttr	<< append(X[0].([]ll.FuncAttribute), X[1].(ll.FuncAttribute)), nil >>`,
 		Id:         "FuncAttrList",
 		NTType:     369,
 		Index:      875,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.FuncAttribute), X[1].(ast.FuncAttribute)), nil
+			return append(X[0].([]ll.FuncAttribute), X[1].(ll.FuncAttribute)), nil
 		},
 	},
 	ProdTabEntry{
@@ -8794,23 +8796,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "align" "=" int_lit	<< &ast.Alignment{Align: astx.Int(X[2])}, nil >>`,
+		String: `FuncAttr : "align" "=" int_lit	<< &ll.Alignment{Align: astx.Int(X[2])}, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      877,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Alignment{Align: astx.Int(X[2])}, nil
+			return &ll.Alignment{Align: astx.Int(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "alignstack" "=" int_lit	<< &ast.StackAlignment{Align: astx.Int(X[2])}, nil >>`,
+		String: `FuncAttr : "alignstack" "=" int_lit	<< &ll.StackAlignment{Align: astx.Int(X[2])}, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      878,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StackAlignment{Align: astx.Int(X[2])}, nil
+			return &ll.StackAlignment{Align: astx.Int(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -8844,403 +8846,403 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : StringLit	<< &ast.FuncAttrString{Value: X[0].(string)}, nil >>`,
+		String: `FuncAttr : StringLit	<< &ll.FuncAttrString{Value: X[0].(string)}, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      882,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FuncAttrString{Value: X[0].(string)}, nil
+			return &ll.FuncAttrString{Value: X[0].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : StringLit "=" StringLit	<< &ast.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil >>`,
+		String: `FuncAttr : StringLit "=" StringLit	<< &ll.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      883,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil
+			return &ll.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "alwaysinline"	<< ast.FuncAttrAlwaysInline, nil >>`,
+		String: `FuncAttr : "alwaysinline"	<< ll.FuncAttrAlwaysInline, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      884,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrAlwaysInline, nil
+			return ll.FuncAttrAlwaysInline, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "argmemonly"	<< ast.FuncAttrArgMemOnly, nil >>`,
+		String: `FuncAttr : "argmemonly"	<< ll.FuncAttrArgMemOnly, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      885,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrArgMemOnly, nil
+			return ll.FuncAttrArgMemOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "builtin"	<< ast.FuncAttrBuiltin, nil >>`,
+		String: `FuncAttr : "builtin"	<< ll.FuncAttrBuiltin, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      886,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrBuiltin, nil
+			return ll.FuncAttrBuiltin, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "cold"	<< ast.FuncAttrCold, nil >>`,
+		String: `FuncAttr : "cold"	<< ll.FuncAttrCold, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      887,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrCold, nil
+			return ll.FuncAttrCold, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "convergent"	<< ast.FuncAttrConvergent, nil >>`,
+		String: `FuncAttr : "convergent"	<< ll.FuncAttrConvergent, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      888,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrConvergent, nil
+			return ll.FuncAttrConvergent, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "inaccessiblemem_or_argmemonly"	<< ast.FuncAttrInaccessibleMemOrArgMemOnly, nil >>`,
+		String: `FuncAttr : "inaccessiblemem_or_argmemonly"	<< ll.FuncAttrInaccessibleMemOrArgMemOnly, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      889,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrInaccessibleMemOrArgMemOnly, nil
+			return ll.FuncAttrInaccessibleMemOrArgMemOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "inaccessiblememonly"	<< ast.FuncAttrInaccessibleMemOnly, nil >>`,
+		String: `FuncAttr : "inaccessiblememonly"	<< ll.FuncAttrInaccessibleMemOnly, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      890,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrInaccessibleMemOnly, nil
+			return ll.FuncAttrInaccessibleMemOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "inlinehint"	<< ast.FuncAttrInlineHint, nil >>`,
+		String: `FuncAttr : "inlinehint"	<< ll.FuncAttrInlineHint, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      891,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrInlineHint, nil
+			return ll.FuncAttrInlineHint, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "jumptable"	<< ast.FuncAttrJumpTable, nil >>`,
+		String: `FuncAttr : "jumptable"	<< ll.FuncAttrJumpTable, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      892,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrJumpTable, nil
+			return ll.FuncAttrJumpTable, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "minsize"	<< ast.FuncAttrMinSize, nil >>`,
+		String: `FuncAttr : "minsize"	<< ll.FuncAttrMinSize, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      893,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrMinSize, nil
+			return ll.FuncAttrMinSize, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "naked"	<< ast.FuncAttrNaked, nil >>`,
+		String: `FuncAttr : "naked"	<< ll.FuncAttrNaked, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      894,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNaked, nil
+			return ll.FuncAttrNaked, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "nobuiltin"	<< ast.FuncAttrNoBuiltin, nil >>`,
+		String: `FuncAttr : "nobuiltin"	<< ll.FuncAttrNoBuiltin, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      895,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoBuiltin, nil
+			return ll.FuncAttrNoBuiltin, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "noduplicate"	<< ast.FuncAttrNoDuplicate, nil >>`,
+		String: `FuncAttr : "noduplicate"	<< ll.FuncAttrNoDuplicate, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      896,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoDuplicate, nil
+			return ll.FuncAttrNoDuplicate, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "noimplicitfloat"	<< ast.FuncAttrNoImplicitFloat, nil >>`,
+		String: `FuncAttr : "noimplicitfloat"	<< ll.FuncAttrNoImplicitFloat, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      897,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoImplicitFloat, nil
+			return ll.FuncAttrNoImplicitFloat, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "noinline"	<< ast.FuncAttrNoInline, nil >>`,
+		String: `FuncAttr : "noinline"	<< ll.FuncAttrNoInline, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      898,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoInline, nil
+			return ll.FuncAttrNoInline, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "nonlazybind"	<< ast.FuncAttrNonLazyBind, nil >>`,
+		String: `FuncAttr : "nonlazybind"	<< ll.FuncAttrNonLazyBind, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      899,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNonLazyBind, nil
+			return ll.FuncAttrNonLazyBind, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "norecurse"	<< ast.FuncAttrNoRecurse, nil >>`,
+		String: `FuncAttr : "norecurse"	<< ll.FuncAttrNoRecurse, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      900,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoRecurse, nil
+			return ll.FuncAttrNoRecurse, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "noredzone"	<< ast.FuncAttrNoRedZone, nil >>`,
+		String: `FuncAttr : "noredzone"	<< ll.FuncAttrNoRedZone, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      901,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoRedZone, nil
+			return ll.FuncAttrNoRedZone, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "noreturn"	<< ast.FuncAttrNoReturn, nil >>`,
+		String: `FuncAttr : "noreturn"	<< ll.FuncAttrNoReturn, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      902,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoReturn, nil
+			return ll.FuncAttrNoReturn, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "nounwind"	<< ast.FuncAttrNoUnwind, nil >>`,
+		String: `FuncAttr : "nounwind"	<< ll.FuncAttrNoUnwind, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      903,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrNoUnwind, nil
+			return ll.FuncAttrNoUnwind, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "optnone"	<< ast.FuncAttrOptNone, nil >>`,
+		String: `FuncAttr : "optnone"	<< ll.FuncAttrOptNone, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      904,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrOptNone, nil
+			return ll.FuncAttrOptNone, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "optsize"	<< ast.FuncAttrOptSize, nil >>`,
+		String: `FuncAttr : "optsize"	<< ll.FuncAttrOptSize, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      905,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrOptSize, nil
+			return ll.FuncAttrOptSize, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "readnone"	<< ast.FuncAttrReadNone, nil >>`,
+		String: `FuncAttr : "readnone"	<< ll.FuncAttrReadNone, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      906,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrReadNone, nil
+			return ll.FuncAttrReadNone, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "readonly"	<< ast.FuncAttrReadOnly, nil >>`,
+		String: `FuncAttr : "readonly"	<< ll.FuncAttrReadOnly, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      907,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrReadOnly, nil
+			return ll.FuncAttrReadOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "returns_twice"	<< ast.FuncAttrReturnsTwice, nil >>`,
+		String: `FuncAttr : "returns_twice"	<< ll.FuncAttrReturnsTwice, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      908,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrReturnsTwice, nil
+			return ll.FuncAttrReturnsTwice, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "safestack"	<< ast.FuncAttrSafeStack, nil >>`,
+		String: `FuncAttr : "safestack"	<< ll.FuncAttrSafeStack, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      909,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSafeStack, nil
+			return ll.FuncAttrSafeStack, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sanitize_address"	<< ast.FuncAttrSanitizeAddress, nil >>`,
+		String: `FuncAttr : "sanitize_address"	<< ll.FuncAttrSanitizeAddress, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      910,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSanitizeAddress, nil
+			return ll.FuncAttrSanitizeAddress, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sanitize_hwaddress"	<< ast.FuncAttrSanitizeHWAddress, nil >>`,
+		String: `FuncAttr : "sanitize_hwaddress"	<< ll.FuncAttrSanitizeHWAddress, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      911,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSanitizeHWAddress, nil
+			return ll.FuncAttrSanitizeHWAddress, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sanitize_memory"	<< ast.FuncAttrSanitizeMemory, nil >>`,
+		String: `FuncAttr : "sanitize_memory"	<< ll.FuncAttrSanitizeMemory, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      912,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSanitizeMemory, nil
+			return ll.FuncAttrSanitizeMemory, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sanitize_thread"	<< ast.FuncAttrSanitizeThread, nil >>`,
+		String: `FuncAttr : "sanitize_thread"	<< ll.FuncAttrSanitizeThread, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      913,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSanitizeThread, nil
+			return ll.FuncAttrSanitizeThread, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "speculatable"	<< ast.FuncAttrSpeculatable, nil >>`,
+		String: `FuncAttr : "speculatable"	<< ll.FuncAttrSpeculatable, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      914,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSpeculatable, nil
+			return ll.FuncAttrSpeculatable, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "ssp"	<< ast.FuncAttrSSP, nil >>`,
+		String: `FuncAttr : "ssp"	<< ll.FuncAttrSSP, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      915,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSSP, nil
+			return ll.FuncAttrSSP, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sspreq"	<< ast.FuncAttrSSPReq, nil >>`,
+		String: `FuncAttr : "sspreq"	<< ll.FuncAttrSSPReq, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      916,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSSPReq, nil
+			return ll.FuncAttrSSPReq, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "sspstrong"	<< ast.FuncAttrSSPStrong, nil >>`,
+		String: `FuncAttr : "sspstrong"	<< ll.FuncAttrSSPStrong, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      917,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrSSPStrong, nil
+			return ll.FuncAttrSSPStrong, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "strictfp"	<< ast.FuncAttrStrictFP, nil >>`,
+		String: `FuncAttr : "strictfp"	<< ll.FuncAttrStrictFP, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      918,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrStrictFP, nil
+			return ll.FuncAttrStrictFP, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "uwtable"	<< ast.FuncAttrUwtable, nil >>`,
+		String: `FuncAttr : "uwtable"	<< ll.FuncAttrUwtable, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      919,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrUwtable, nil
+			return ll.FuncAttrUwtable, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : "writeonly"	<< ast.FuncAttrWriteOnly, nil >>`,
+		String: `FuncAttr : "writeonly"	<< ll.FuncAttrWriteOnly, nil >>`,
 		Id:         "FuncAttr",
 		NTType:     370,
 		Index:      920,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FuncAttrWriteOnly, nil
+			return ll.FuncAttrWriteOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttrs : empty	<< ([]ast.ReturnAttribute)(nil), nil >>`,
+		String: `ReturnAttrs : empty	<< ([]ll.ReturnAttribute)(nil), nil >>`,
 		Id:         "ReturnAttrs",
 		NTType:     371,
 		Index:      921,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.ReturnAttribute)(nil), nil
+			return ([]ll.ReturnAttribute)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -9254,23 +9256,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttrList : ReturnAttr	<< []ast.ReturnAttribute{X[0].(ast.ReturnAttribute)}, nil >>`,
+		String: `ReturnAttrList : ReturnAttr	<< []ll.ReturnAttribute{X[0].(ll.ReturnAttribute)}, nil >>`,
 		Id:         "ReturnAttrList",
 		NTType:     372,
 		Index:      923,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.ReturnAttribute{X[0].(ast.ReturnAttribute)}, nil
+			return []ll.ReturnAttribute{X[0].(ll.ReturnAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttrList : ReturnAttrList ReturnAttr	<< append(X[0].([]ast.ReturnAttribute), X[1].(ast.ReturnAttribute)), nil >>`,
+		String: `ReturnAttrList : ReturnAttrList ReturnAttr	<< append(X[0].([]ll.ReturnAttribute), X[1].(ll.ReturnAttribute)), nil >>`,
 		Id:         "ReturnAttrList",
 		NTType:     372,
 		Index:      924,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.ReturnAttribute), X[1].(ast.ReturnAttribute)), nil
+			return append(X[0].([]ll.ReturnAttribute), X[1].(ll.ReturnAttribute)), nil
 		},
 	},
 	ProdTabEntry{
@@ -9294,73 +9296,73 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : StringLit	<< &ast.ReturnAttrString{Value: X[0].(string)}, nil >>`,
+		String: `ReturnAttr : StringLit	<< &ll.ReturnAttrString{Value: X[0].(string)}, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      927,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ReturnAttrString{Value: X[0].(string)}, nil
+			return &ll.ReturnAttrString{Value: X[0].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : "inreg"	<< ast.ReturnAttrInReg, nil >>`,
+		String: `ReturnAttr : "inreg"	<< ll.ReturnAttrInReg, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      928,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ReturnAttrInReg, nil
+			return ll.ReturnAttrInReg, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : "noalias"	<< ast.ReturnAttrNoAlias, nil >>`,
+		String: `ReturnAttr : "noalias"	<< ll.ReturnAttrNoAlias, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      929,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ReturnAttrNoAlias, nil
+			return ll.ReturnAttrNoAlias, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : "nonnull"	<< ast.ReturnAttrNonNull, nil >>`,
+		String: `ReturnAttr : "nonnull"	<< ll.ReturnAttrNonNull, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      930,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ReturnAttrNonNull, nil
+			return ll.ReturnAttrNonNull, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : "signext"	<< ast.ReturnAttrSignExt, nil >>`,
+		String: `ReturnAttr : "signext"	<< ll.ReturnAttrSignExt, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      931,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ReturnAttrSignExt, nil
+			return ll.ReturnAttrSignExt, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : "zeroext"	<< ast.ReturnAttrZeroExt, nil >>`,
+		String: `ReturnAttr : "zeroext"	<< ll.ReturnAttrZeroExt, nil >>`,
 		Id:         "ReturnAttr",
 		NTType:     373,
 		Index:      932,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ReturnAttrZeroExt, nil
+			return ll.ReturnAttrZeroExt, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttrs : empty	<< ([]ast.ParamAttribute)(nil), nil >>`,
+		String: `ParamAttrs : empty	<< ([]ll.ParamAttribute)(nil), nil >>`,
 		Id:         "ParamAttrs",
 		NTType:     374,
 		Index:      933,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.ParamAttribute)(nil), nil
+			return ([]ll.ParamAttribute)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -9374,23 +9376,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttrList : ParamAttr	<< []ast.ParamAttribute{X[0].(ast.ParamAttribute)}, nil >>`,
+		String: `ParamAttrList : ParamAttr	<< []ll.ParamAttribute{X[0].(ll.ParamAttribute)}, nil >>`,
 		Id:         "ParamAttrList",
 		NTType:     375,
 		Index:      935,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.ParamAttribute{X[0].(ast.ParamAttribute)}, nil
+			return []ll.ParamAttribute{X[0].(ll.ParamAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttrList : ParamAttrList ParamAttr	<< append(X[0].([]ast.ParamAttribute), X[1].(ast.ParamAttribute)), nil >>`,
+		String: `ParamAttrList : ParamAttrList ParamAttr	<< append(X[0].([]ll.ParamAttribute), X[1].(ll.ParamAttribute)), nil >>`,
 		Id:         "ParamAttrList",
 		NTType:     375,
 		Index:      936,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.ParamAttribute), X[1].(ast.ParamAttribute)), nil
+			return append(X[0].([]ll.ParamAttribute), X[1].(ll.ParamAttribute)), nil
 		},
 	},
 	ProdTabEntry{
@@ -9414,183 +9416,183 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : StringLit	<< &ast.ParamAttrString{Value: X[0].(string)}, nil >>`,
+		String: `ParamAttr : StringLit	<< &ll.ParamAttrString{Value: X[0].(string)}, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      939,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ParamAttrString{Value: X[0].(string)}, nil
+			return &ll.ParamAttrString{Value: X[0].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "byval"	<< ast.ParamAttrByval, nil >>`,
+		String: `ParamAttr : "byval"	<< ll.ParamAttrByval, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      940,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrByval, nil
+			return ll.ParamAttrByval, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "inalloca"	<< ast.ParamAttrInAlloca, nil >>`,
+		String: `ParamAttr : "inalloca"	<< ll.ParamAttrInAlloca, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      941,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrInAlloca, nil
+			return ll.ParamAttrInAlloca, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "inreg"	<< ast.ParamAttrInReg, nil >>`,
+		String: `ParamAttr : "inreg"	<< ll.ParamAttrInReg, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      942,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrInReg, nil
+			return ll.ParamAttrInReg, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "nest"	<< ast.ParamAttrNest, nil >>`,
+		String: `ParamAttr : "nest"	<< ll.ParamAttrNest, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      943,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrNest, nil
+			return ll.ParamAttrNest, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "noalias"	<< ast.ParamAttrNoAlias, nil >>`,
+		String: `ParamAttr : "noalias"	<< ll.ParamAttrNoAlias, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      944,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrNoAlias, nil
+			return ll.ParamAttrNoAlias, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "nocapture"	<< ast.ParamAttrNoCapture, nil >>`,
+		String: `ParamAttr : "nocapture"	<< ll.ParamAttrNoCapture, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      945,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrNoCapture, nil
+			return ll.ParamAttrNoCapture, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "nonnull"	<< ast.ParamAttrNonNull, nil >>`,
+		String: `ParamAttr : "nonnull"	<< ll.ParamAttrNonNull, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      946,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrNonNull, nil
+			return ll.ParamAttrNonNull, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "readnone"	<< ast.ParamAttrReadNone, nil >>`,
+		String: `ParamAttr : "readnone"	<< ll.ParamAttrReadNone, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      947,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrReadNone, nil
+			return ll.ParamAttrReadNone, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "readonly"	<< ast.ParamAttrReadOnly, nil >>`,
+		String: `ParamAttr : "readonly"	<< ll.ParamAttrReadOnly, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      948,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrReadOnly, nil
+			return ll.ParamAttrReadOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "returned"	<< ast.ParamAttrReturned, nil >>`,
+		String: `ParamAttr : "returned"	<< ll.ParamAttrReturned, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      949,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrReturned, nil
+			return ll.ParamAttrReturned, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "signext"	<< ast.ParamAttrSignExt, nil >>`,
+		String: `ParamAttr : "signext"	<< ll.ParamAttrSignExt, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      950,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrSignExt, nil
+			return ll.ParamAttrSignExt, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "sret"	<< ast.ParamAttrSRet, nil >>`,
+		String: `ParamAttr : "sret"	<< ll.ParamAttrSRet, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      951,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrSRet, nil
+			return ll.ParamAttrSRet, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "swifterror"	<< ast.ParamAttrSwiftError, nil >>`,
+		String: `ParamAttr : "swifterror"	<< ll.ParamAttrSwiftError, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      952,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrSwiftError, nil
+			return ll.ParamAttrSwiftError, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "swiftself"	<< ast.ParamAttrSwiftSelf, nil >>`,
+		String: `ParamAttr : "swiftself"	<< ll.ParamAttrSwiftSelf, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      953,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrSwiftSelf, nil
+			return ll.ParamAttrSwiftSelf, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "writeonly"	<< ast.ParamAttrWriteOnly, nil >>`,
+		String: `ParamAttr : "writeonly"	<< ll.ParamAttrWriteOnly, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      954,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrWriteOnly, nil
+			return ll.ParamAttrWriteOnly, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : "zeroext"	<< ast.ParamAttrZeroExt, nil >>`,
+		String: `ParamAttr : "zeroext"	<< ll.ParamAttrZeroExt, nil >>`,
 		Id:         "ParamAttr",
 		NTType:     376,
 		Index:      955,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.ParamAttrZeroExt, nil
+			return ll.ParamAttrZeroExt, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptAddrSpace : empty	<< ast.AddrSpace(0), nil >>`,
+		String: `OptAddrSpace : empty	<< ll.AddrSpace(0), nil >>`,
 		Id:         "OptAddrSpace",
 		NTType:     377,
 		Index:      956,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AddrSpace(0), nil
+			return ll.AddrSpace(0), nil
 		},
 	},
 	ProdTabEntry{
@@ -9604,53 +9606,53 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AddrSpace : "addrspace" "(" int_lit ")"	<< ast.AddrSpace(astx.Int(X[2])), nil >>`,
+		String: `AddrSpace : "addrspace" "(" int_lit ")"	<< ll.AddrSpace(astx.Int(X[2])), nil >>`,
 		Id:         "AddrSpace",
 		NTType:     378,
 		Index:      958,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AddrSpace(astx.Int(X[2])), nil
+			return ll.AddrSpace(astx.Int(X[2])), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Alignment : "align" int_lit	<< &ast.Alignment{Align: astx.Int(X[1])}, nil >>`,
+		String: `Alignment : "align" int_lit	<< &ll.Alignment{Align: astx.Int(X[1])}, nil >>`,
 		Id:         "Alignment",
 		NTType:     379,
 		Index:      959,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Alignment{Align: astx.Int(X[1])}, nil
+			return &ll.Alignment{Align: astx.Int(X[1])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocSize : "allocsize" "(" int_lit ")"	<< &ast.AllocSize{BaseSize: astx.Int(X[2])}, nil >>`,
+		String: `AllocSize : "allocsize" "(" int_lit ")"	<< &ll.AllocSize{BaseSize: astx.Int(X[2])}, nil >>`,
 		Id:         "AllocSize",
 		NTType:     380,
 		Index:      960,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocSize{BaseSize: astx.Int(X[2])}, nil
+			return &ll.AllocSize{BaseSize: astx.Int(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocSize : "allocsize" "(" int_lit "," int_lit ")"	<< &ast.AllocSize{BaseSize: astx.Int(X[2]), N: astx.Int(X[4])}, nil >>`,
+		String: `AllocSize : "allocsize" "(" int_lit "," int_lit ")"	<< &ll.AllocSize{BaseSize: astx.Int(X[2]), N: astx.Int(X[4])}, nil >>`,
 		Id:         "AllocSize",
 		NTType:     380,
 		Index:      961,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocSize{BaseSize: astx.Int(X[2]), N: astx.Int(X[4])}, nil
+			return &ll.AllocSize{BaseSize: astx.Int(X[2]), N: astx.Int(X[4])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptComdat : empty	<< (*ast.Comdat)(nil), nil >>`,
+		String: `OptComdat : empty	<< (*ll.Comdat)(nil), nil >>`,
 		Id:         "OptComdat",
 		NTType:     381,
 		Index:      962,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.Comdat)(nil), nil
+			return (*ll.Comdat)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -9664,53 +9666,53 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Comdat : "comdat"	<< &ast.Comdat{}, nil >>`,
+		String: `Comdat : "comdat"	<< &ll.Comdat{}, nil >>`,
 		Id:         "Comdat",
 		NTType:     382,
 		Index:      964,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Comdat{}, nil
+			return &ll.Comdat{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Comdat : "comdat" "(" ComdatName ")"	<< &ast.Comdat{Name: X[2].(*ast.ComdatName)}, nil >>`,
+		String: `Comdat : "comdat" "(" ComdatName ")"	<< &ll.Comdat{Name: X[2].(*ast.ComdatName).Name}, nil >>`,
 		Id:         "Comdat",
 		NTType:     382,
 		Index:      965,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Comdat{Name: X[2].(*ast.ComdatName)}, nil
+			return &ll.Comdat{Name: X[2].(*ast.ComdatName).Name}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Dereferenceable : "dereferenceable" "(" int_lit ")"	<< &ast.Dereferenceable{N: astx.Int(X[2])}, nil >>`,
+		String: `Dereferenceable : "dereferenceable" "(" int_lit ")"	<< &ll.Dereferenceable{N: astx.Int(X[2])}, nil >>`,
 		Id:         "Dereferenceable",
 		NTType:     383,
 		Index:      966,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Dereferenceable{N: astx.Int(X[2])}, nil
+			return &ll.Dereferenceable{N: astx.Int(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Dereferenceable : "dereferenceable_or_null" "(" int_lit ")"	<< &ast.Dereferenceable{N: astx.Int(X[2]), Null: true}, nil >>`,
+		String: `Dereferenceable : "dereferenceable_or_null" "(" int_lit ")"	<< &ll.Dereferenceable{N: astx.Int(X[2]), Null: true}, nil >>`,
 		Id:         "Dereferenceable",
 		NTType:     383,
 		Index:      967,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Dereferenceable{N: astx.Int(X[2]), Null: true}, nil
+			return &ll.Dereferenceable{N: astx.Int(X[2]), Null: true}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptDLLStorageClass : empty	<< ast.DLLStorageClassNone, nil >>`,
+		String: `OptDLLStorageClass : empty	<< ll.DLLStorageClassNone, nil >>`,
 		Id:         "OptDLLStorageClass",
 		NTType:     384,
 		Index:      968,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DLLStorageClassNone, nil
+			return ll.DLLStorageClassNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -9724,33 +9726,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DLLStorageClass : "dllexport"	<< ast.DLLStorageClassDLLExport, nil >>`,
+		String: `DLLStorageClass : "dllexport"	<< ll.DLLStorageClassDLLExport, nil >>`,
 		Id:         "DLLStorageClass",
 		NTType:     385,
 		Index:      970,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DLLStorageClassDLLExport, nil
+			return ll.DLLStorageClassDLLExport, nil
 		},
 	},
 	ProdTabEntry{
-		String: `DLLStorageClass : "dllimport"	<< ast.DLLStorageClassDLLImport, nil >>`,
+		String: `DLLStorageClass : "dllimport"	<< ll.DLLStorageClassDLLImport, nil >>`,
 		Id:         "DLLStorageClass",
 		NTType:     385,
 		Index:      971,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.DLLStorageClassDLLImport, nil
+			return ll.DLLStorageClassDLLImport, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptLinkage : empty	<< ast.LinkageNone, nil >>`,
+		String: `OptLinkage : empty	<< ll.LinkageNone, nil >>`,
 		Id:         "OptLinkage",
 		NTType:     386,
 		Index:      972,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageNone, nil
+			return ll.LinkageNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -9764,103 +9766,103 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "appending"	<< ast.LinkageAppending, nil >>`,
+		String: `Linkage : "appending"	<< ll.LinkageAppending, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      974,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageAppending, nil
+			return ll.LinkageAppending, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "available_externally"	<< ast.LinkageAvailableExternally, nil >>`,
+		String: `Linkage : "available_externally"	<< ll.LinkageAvailableExternally, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      975,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageAvailableExternally, nil
+			return ll.LinkageAvailableExternally, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "common"	<< ast.LinkageCommon, nil >>`,
+		String: `Linkage : "common"	<< ll.LinkageCommon, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      976,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageCommon, nil
+			return ll.LinkageCommon, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "internal"	<< ast.LinkageInternal, nil >>`,
+		String: `Linkage : "internal"	<< ll.LinkageInternal, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      977,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageInternal, nil
+			return ll.LinkageInternal, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "linkonce"	<< ast.LinkageLinkOnce, nil >>`,
+		String: `Linkage : "linkonce"	<< ll.LinkageLinkOnce, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      978,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageLinkOnce, nil
+			return ll.LinkageLinkOnce, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "linkonce_odr"	<< ast.LinkageLinkOnceODR, nil >>`,
+		String: `Linkage : "linkonce_odr"	<< ll.LinkageLinkOnceODR, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      979,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageLinkOnceODR, nil
+			return ll.LinkageLinkOnceODR, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "private"	<< ast.LinkagePrivate, nil >>`,
+		String: `Linkage : "private"	<< ll.LinkagePrivate, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      980,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkagePrivate, nil
+			return ll.LinkagePrivate, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "weak"	<< ast.LinkageWeak, nil >>`,
+		String: `Linkage : "weak"	<< ll.LinkageWeak, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      981,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageWeak, nil
+			return ll.LinkageWeak, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Linkage : "weak_odr"	<< ast.LinkageWeakODR, nil >>`,
+		String: `Linkage : "weak_odr"	<< ll.LinkageWeakODR, nil >>`,
 		Id:         "Linkage",
 		NTType:     387,
 		Index:      982,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageWeakODR, nil
+			return ll.LinkageWeakODR, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptExternLinkage : empty	<< ast.LinkageNone, nil >>`,
+		String: `OptExternLinkage : empty	<< ll.LinkageNone, nil >>`,
 		Id:         "OptExternLinkage",
 		NTType:     388,
 		Index:      983,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageNone, nil
+			return ll.LinkageNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -9874,33 +9876,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ExternLinkage : "extern_weak"	<< ast.LinkageExternWeak, nil >>`,
+		String: `ExternLinkage : "extern_weak"	<< ll.LinkageExternWeak, nil >>`,
 		Id:         "ExternLinkage",
 		NTType:     389,
 		Index:      985,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageExternWeak, nil
+			return ll.LinkageExternWeak, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExternLinkage : "external"	<< ast.LinkageExternal, nil >>`,
+		String: `ExternLinkage : "external"	<< ll.LinkageExternal, nil >>`,
 		Id:         "ExternLinkage",
 		NTType:     389,
 		Index:      986,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.LinkageExternal, nil
+			return ll.LinkageExternal, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptPreemptionSpecifier : empty	<< ast.PreemptionNone, nil >>`,
+		String: `OptPreemptionSpecifier : empty	<< ll.PreemptionNone, nil >>`,
 		Id:         "OptPreemptionSpecifier",
 		NTType:     390,
 		Index:      987,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.PreemptionNone, nil
+			return ll.PreemptionNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -9914,33 +9916,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `PreemptionSpecifier : "dso_local"	<< ast.PreemptionDSOLocal, nil >>`,
+		String: `PreemptionSpecifier : "dso_local"	<< ll.PreemptionDSOLocal, nil >>`,
 		Id:         "PreemptionSpecifier",
 		NTType:     391,
 		Index:      989,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.PreemptionDSOLocal, nil
+			return ll.PreemptionDSOLocal, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PreemptionSpecifier : "dso_preemptable"	<< ast.PreemptionDSOPreemptable, nil >>`,
+		String: `PreemptionSpecifier : "dso_preemptable"	<< ll.PreemptionDSOPreemptable, nil >>`,
 		Id:         "PreemptionSpecifier",
 		NTType:     391,
 		Index:      990,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.PreemptionDSOPreemptable, nil
+			return ll.PreemptionDSOPreemptable, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptSection : empty	<< (*ast.Section)(nil), nil >>`,
+		String: `OptSection : empty	<< (*ll.Section)(nil), nil >>`,
 		Id:         "OptSection",
 		NTType:     392,
 		Index:      991,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.Section)(nil), nil
+			return (*ll.Section)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -9954,33 +9956,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Section : "section" StringLit	<< &ast.Section{Name: X[1].(string)}, nil >>`,
+		String: `Section : "section" StringLit	<< &ll.Section{Name: X[1].(string)}, nil >>`,
 		Id:         "Section",
 		NTType:     393,
 		Index:      993,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Section{Name: X[1].(string)}, nil
+			return &ll.Section{Name: X[1].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StackAlignment : "alignstack" "(" int_lit ")"	<< &ast.StackAlignment{Align: astx.Int(X[2])}, nil >>`,
+		String: `StackAlignment : "alignstack" "(" int_lit ")"	<< &ll.StackAlignment{Align: astx.Int(X[2])}, nil >>`,
 		Id:         "StackAlignment",
 		NTType:     394,
 		Index:      994,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StackAlignment{Align: astx.Int(X[2])}, nil
+			return &ll.StackAlignment{Align: astx.Int(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptUnnamedAddr : empty	<< ast.UnnamedAddrNone, nil >>`,
+		String: `OptUnnamedAddr : empty	<< ll.UnnamedAddrNone, nil >>`,
 		Id:         "OptUnnamedAddr",
 		NTType:     395,
 		Index:      995,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.UnnamedAddrNone, nil
+			return ll.UnnamedAddrNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -9994,33 +9996,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `UnnamedAddr : "local_unnamed_addr"	<< ast.UnnamedAddrLocalUnnamedAddr, nil >>`,
+		String: `UnnamedAddr : "local_unnamed_addr"	<< ll.UnnamedAddrLocalUnnamedAddr, nil >>`,
 		Id:         "UnnamedAddr",
 		NTType:     396,
 		Index:      997,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.UnnamedAddrLocalUnnamedAddr, nil
+			return ll.UnnamedAddrLocalUnnamedAddr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UnnamedAddr : "unnamed_addr"	<< ast.UnnamedAddrUnnamedAddr, nil >>`,
+		String: `UnnamedAddr : "unnamed_addr"	<< ll.UnnamedAddrUnnamedAddr, nil >>`,
 		Id:         "UnnamedAddr",
 		NTType:     396,
 		Index:      998,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.UnnamedAddrUnnamedAddr, nil
+			return ll.UnnamedAddrUnnamedAddr, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptVisibility : empty	<< ast.VisibilityNone, nil >>`,
+		String: `OptVisibility : empty	<< ll.VisibilityNone, nil >>`,
 		Id:         "OptVisibility",
 		NTType:     397,
 		Index:      999,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.VisibilityNone, nil
+			return ll.VisibilityNone, nil
 		},
 	},
 	ProdTabEntry{
@@ -10034,303 +10036,303 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Visibility : "default"	<< ast.VisibilityDefault, nil >>`,
+		String: `Visibility : "default"	<< ll.VisibilityDefault, nil >>`,
 		Id:         "Visibility",
 		NTType:     398,
 		Index:      1001,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.VisibilityDefault, nil
+			return ll.VisibilityDefault, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Visibility : "hidden"	<< ast.VisibilityHidden, nil >>`,
+		String: `Visibility : "hidden"	<< ll.VisibilityHidden, nil >>`,
 		Id:         "Visibility",
 		NTType:     398,
 		Index:      1002,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.VisibilityHidden, nil
+			return ll.VisibilityHidden, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Visibility : "protected"	<< ast.VisibilityProtected, nil >>`,
+		String: `Visibility : "protected"	<< ll.VisibilityProtected, nil >>`,
 		Id:         "Visibility",
 		NTType:     398,
 		Index:      1003,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.VisibilityProtected, nil
+			return ll.VisibilityProtected, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "eq"	<< ast.IPredEQ, nil >>`,
+		String: `IPred : "eq"	<< ll.IPredEQ, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1004,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredEQ, nil
+			return ll.IPredEQ, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "ne"	<< ast.IPredNE, nil >>`,
+		String: `IPred : "ne"	<< ll.IPredNE, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1005,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredNE, nil
+			return ll.IPredNE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "sge"	<< ast.IPredSGE, nil >>`,
+		String: `IPred : "sge"	<< ll.IPredSGE, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1006,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredSGE, nil
+			return ll.IPredSGE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "sgt"	<< ast.IPredSGT, nil >>`,
+		String: `IPred : "sgt"	<< ll.IPredSGT, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1007,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredSGT, nil
+			return ll.IPredSGT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "sle"	<< ast.IPredSLE, nil >>`,
+		String: `IPred : "sle"	<< ll.IPredSLE, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1008,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredSLE, nil
+			return ll.IPredSLE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "slt"	<< ast.IPredSLT, nil >>`,
+		String: `IPred : "slt"	<< ll.IPredSLT, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1009,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredSLT, nil
+			return ll.IPredSLT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "uge"	<< ast.IPredUGE, nil >>`,
+		String: `IPred : "uge"	<< ll.IPredUGE, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1010,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredUGE, nil
+			return ll.IPredUGE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "ugt"	<< ast.IPredUGT, nil >>`,
+		String: `IPred : "ugt"	<< ll.IPredUGT, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1011,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredUGT, nil
+			return ll.IPredUGT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "ule"	<< ast.IPredULE, nil >>`,
+		String: `IPred : "ule"	<< ll.IPredULE, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1012,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredULE, nil
+			return ll.IPredULE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IPred : "ult"	<< ast.IPredULT, nil >>`,
+		String: `IPred : "ult"	<< ll.IPredULT, nil >>`,
 		Id:         "IPred",
 		NTType:     399,
 		Index:      1013,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.IPredULT, nil
+			return ll.IPredULT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "false"	<< ast.FPredFalse, nil >>`,
+		String: `FPred : "false"	<< ll.FPredFalse, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1014,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredFalse, nil
+			return ll.FPredFalse, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "oeq"	<< ast.FPredOEQ, nil >>`,
+		String: `FPred : "oeq"	<< ll.FPredOEQ, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1015,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredOEQ, nil
+			return ll.FPredOEQ, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "oge"	<< ast.FPredOGE, nil >>`,
+		String: `FPred : "oge"	<< ll.FPredOGE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1016,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredOGE, nil
+			return ll.FPredOGE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ogt"	<< ast.FPredOGT, nil >>`,
+		String: `FPred : "ogt"	<< ll.FPredOGT, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1017,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredOGT, nil
+			return ll.FPredOGT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ole"	<< ast.FPredOLE, nil >>`,
+		String: `FPred : "ole"	<< ll.FPredOLE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1018,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredOLE, nil
+			return ll.FPredOLE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "olt"	<< ast.FPredOLT, nil >>`,
+		String: `FPred : "olt"	<< ll.FPredOLT, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1019,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredOLT, nil
+			return ll.FPredOLT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "one"	<< ast.FPredONE, nil >>`,
+		String: `FPred : "one"	<< ll.FPredONE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1020,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredONE, nil
+			return ll.FPredONE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ord"	<< ast.FPredORD, nil >>`,
+		String: `FPred : "ord"	<< ll.FPredORD, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1021,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredORD, nil
+			return ll.FPredORD, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "true"	<< ast.FPredTrue, nil >>`,
+		String: `FPred : "true"	<< ll.FPredTrue, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1022,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredTrue, nil
+			return ll.FPredTrue, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ueq"	<< ast.FPredUEQ, nil >>`,
+		String: `FPred : "ueq"	<< ll.FPredUEQ, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1023,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredUEQ, nil
+			return ll.FPredUEQ, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "uge"	<< ast.FPredUGE, nil >>`,
+		String: `FPred : "uge"	<< ll.FPredUGE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1024,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredUGE, nil
+			return ll.FPredUGE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ugt"	<< ast.FPredUGT, nil >>`,
+		String: `FPred : "ugt"	<< ll.FPredUGT, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1025,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredUGT, nil
+			return ll.FPredUGT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ule"	<< ast.FPredULE, nil >>`,
+		String: `FPred : "ule"	<< ll.FPredULE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1026,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredULE, nil
+			return ll.FPredULE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "ult"	<< ast.FPredULT, nil >>`,
+		String: `FPred : "ult"	<< ll.FPredULT, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1027,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredULT, nil
+			return ll.FPredULT, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "une"	<< ast.FPredUNE, nil >>`,
+		String: `FPred : "une"	<< ll.FPredUNE, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1028,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredUNE, nil
+			return ll.FPredUNE, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPred : "uno"	<< ast.FPredUNO, nil >>`,
+		String: `FPred : "uno"	<< ll.FPredUNO, nil >>`,
 		Id:         "FPred",
 		NTType:     400,
 		Index:      1029,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FPredUNO, nil
+			return ll.FPredUNO, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OverflowFlags : empty	<< ([]ast.OverflowFlag)(nil), nil >>`,
+		String: `OverflowFlags : empty	<< ([]ll.OverflowFlag)(nil), nil >>`,
 		Id:         "OverflowFlags",
 		NTType:     401,
 		Index:      1030,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.OverflowFlag)(nil), nil
+			return ([]ll.OverflowFlag)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10344,43 +10346,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OverflowFlagList : OverflowFlag	<< []ast.OverflowFlag{X[0].(ast.OverflowFlag)}, nil >>`,
+		String: `OverflowFlagList : OverflowFlag	<< []ll.OverflowFlag{X[0].(ll.OverflowFlag)}, nil >>`,
 		Id:         "OverflowFlagList",
 		NTType:     402,
 		Index:      1032,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.OverflowFlag{X[0].(ast.OverflowFlag)}, nil
+			return []ll.OverflowFlag{X[0].(ll.OverflowFlag)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OverflowFlagList : OverflowFlagList OverflowFlag	<< append(X[0].([]ast.OverflowFlag), X[1].(ast.OverflowFlag)), nil >>`,
+		String: `OverflowFlagList : OverflowFlagList OverflowFlag	<< append(X[0].([]ll.OverflowFlag), X[1].(ll.OverflowFlag)), nil >>`,
 		Id:         "OverflowFlagList",
 		NTType:     402,
 		Index:      1033,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.OverflowFlag), X[1].(ast.OverflowFlag)), nil
+			return append(X[0].([]ll.OverflowFlag), X[1].(ll.OverflowFlag)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `OverflowFlag : "nsw"	<< ast.OverflowFlagNSW, nil >>`,
+		String: `OverflowFlag : "nsw"	<< ll.OverflowFlagNSW, nil >>`,
 		Id:         "OverflowFlag",
 		NTType:     403,
 		Index:      1034,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.OverflowFlagNSW, nil
+			return ll.OverflowFlagNSW, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OverflowFlag : "nuw"	<< ast.OverflowFlagNUW, nil >>`,
+		String: `OverflowFlag : "nuw"	<< ll.OverflowFlagNUW, nil >>`,
 		Id:         "OverflowFlag",
 		NTType:     403,
 		Index:      1035,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.OverflowFlagNUW, nil
+			return ll.OverflowFlagNUW, nil
 		},
 	},
 	ProdTabEntry{
@@ -10404,13 +10406,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlags : empty	<< ([]ast.FastMathFlag)(nil), nil >>`,
+		String: `FastMathFlags : empty	<< ([]ll.FastMathFlag)(nil), nil >>`,
 		Id:         "FastMathFlags",
 		NTType:     405,
 		Index:      1038,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.FastMathFlag)(nil), nil
+			return ([]ll.FastMathFlag)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10424,103 +10426,103 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlagList : FastMathFlag	<< []ast.FastMathFlag{X[0].(ast.FastMathFlag)}, nil >>`,
+		String: `FastMathFlagList : FastMathFlag	<< []ll.FastMathFlag{X[0].(ll.FastMathFlag)}, nil >>`,
 		Id:         "FastMathFlagList",
 		NTType:     406,
 		Index:      1040,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.FastMathFlag{X[0].(ast.FastMathFlag)}, nil
+			return []ll.FastMathFlag{X[0].(ll.FastMathFlag)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlagList : FastMathFlagList FastMathFlag	<< append(X[0].([]ast.FastMathFlag), X[1].(ast.FastMathFlag)), nil >>`,
+		String: `FastMathFlagList : FastMathFlagList FastMathFlag	<< append(X[0].([]ll.FastMathFlag), X[1].(ll.FastMathFlag)), nil >>`,
 		Id:         "FastMathFlagList",
 		NTType:     406,
 		Index:      1041,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.FastMathFlag), X[1].(ast.FastMathFlag)), nil
+			return append(X[0].([]ll.FastMathFlag), X[1].(ll.FastMathFlag)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "afn"	<< ast.FastMathFlagAFn, nil >>`,
+		String: `FastMathFlag : "afn"	<< ll.FastMathFlagAFn, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1042,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagAFn, nil
+			return ll.FastMathFlagAFn, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "arcp"	<< ast.FastMathFlagARcp, nil >>`,
+		String: `FastMathFlag : "arcp"	<< ll.FastMathFlagARcp, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1043,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagARcp, nil
+			return ll.FastMathFlagARcp, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "contract"	<< ast.FastMathFlagContract, nil >>`,
+		String: `FastMathFlag : "contract"	<< ll.FastMathFlagContract, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1044,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagContract, nil
+			return ll.FastMathFlagContract, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "fast"	<< ast.FastMathFlagFast, nil >>`,
+		String: `FastMathFlag : "fast"	<< ll.FastMathFlagFast, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1045,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagFast, nil
+			return ll.FastMathFlagFast, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "ninf"	<< ast.FastMathFlagNInf, nil >>`,
+		String: `FastMathFlag : "ninf"	<< ll.FastMathFlagNInf, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1046,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagNInf, nil
+			return ll.FastMathFlagNInf, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "nnan"	<< ast.FastMathFlagNNaN, nil >>`,
+		String: `FastMathFlag : "nnan"	<< ll.FastMathFlagNNaN, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1047,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagNNaN, nil
+			return ll.FastMathFlagNNaN, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "nsz"	<< ast.FastMathFlagNSZ, nil >>`,
+		String: `FastMathFlag : "nsz"	<< ll.FastMathFlagNSZ, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1048,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagNSZ, nil
+			return ll.FastMathFlagNSZ, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FastMathFlag : "reassoc"	<< ast.FastMathFlagReassoc, nil >>`,
+		String: `FastMathFlag : "reassoc"	<< ll.FastMathFlagReassoc, nil >>`,
 		Id:         "FastMathFlag",
 		NTType:     407,
 		Index:      1049,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.FastMathFlagReassoc, nil
+			return ll.FastMathFlagReassoc, nil
 		},
 	},
 	ProdTabEntry{
@@ -10614,83 +10616,83 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptSyncScope : empty	<< (*ast.SyncScope)(nil), nil >>`,
+		String: `OptSyncScope : empty	<< (*ll.SyncScope)(nil), nil >>`,
 		Id:         "OptSyncScope",
 		NTType:     413,
 		Index:      1059,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.SyncScope)(nil), nil
+			return (*ll.SyncScope)(nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `OptSyncScope : "syncscope" "(" StringLit ")"	<< &ast.SyncScope{Scope: X[2].(string)}, nil >>`,
+		String: `OptSyncScope : "syncscope" "(" StringLit ")"	<< &ll.SyncScope{Scope: X[2].(string)}, nil >>`,
 		Id:         "OptSyncScope",
 		NTType:     413,
 		Index:      1060,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SyncScope{Scope: X[2].(string)}, nil
+			return &ll.SyncScope{Scope: X[2].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "acq_rel"	<< ast.AtomicOrderingAcqRel, nil >>`,
+		String: `AtomicOrdering : "acq_rel"	<< ll.AtomicOrderingAcqRel, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1061,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingAcqRel, nil
+			return ll.AtomicOrderingAcqRel, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "acquire"	<< ast.AtomicOrderingAcquire, nil >>`,
+		String: `AtomicOrdering : "acquire"	<< ll.AtomicOrderingAcquire, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1062,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingAcquire, nil
+			return ll.AtomicOrderingAcquire, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "monotonic"	<< ast.AtomicOrderingMonotonic, nil >>`,
+		String: `AtomicOrdering : "monotonic"	<< ll.AtomicOrderingMonotonic, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1063,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingMonotonic, nil
+			return ll.AtomicOrderingMonotonic, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "release"	<< ast.AtomicOrderingRelease, nil >>`,
+		String: `AtomicOrdering : "release"	<< ll.AtomicOrderingRelease, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1064,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingRelease, nil
+			return ll.AtomicOrderingRelease, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "seq_cst"	<< ast.AtomicOrderingSeqCst, nil >>`,
+		String: `AtomicOrdering : "seq_cst"	<< ll.AtomicOrderingSeqCst, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1065,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingSeqCst, nil
+			return ll.AtomicOrderingSeqCst, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicOrdering : "unordered"	<< ast.AtomicOrderingUnordered, nil >>`,
+		String: `AtomicOrdering : "unordered"	<< ll.AtomicOrderingUnordered, nil >>`,
 		Id:         "AtomicOrdering",
 		NTType:     414,
 		Index:      1066,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ast.AtomicOrderingUnordered, nil
+			return ll.AtomicOrderingUnordered, nil
 		},
 	},
 	ProdTabEntry{
@@ -10874,13 +10876,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConst : Type Constant	<< &ast.TypeConst{Type: X[0].(ast.Type), Const: X[1].(ast.Constant)}, nil >>`,
+		String: `TypeConst : Type Constant	<< &ast.TypeConst{Type: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil >>`,
 		Id:         "TypeConst",
 		NTType:     425,
 		Index:      1085,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeConst{Type: X[0].(ast.Type), Const: X[1].(ast.Constant)}, nil
+			return &ast.TypeConst{Type: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10944,13 +10946,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Arg : ConcreteType ParamAttrs Value	<< &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ast.ParamAttribute)}, nil >>`,
+		String: `Arg : ConcreteType ParamAttrs Value	<< &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil >>`,
 		Id:         "Arg",
 		NTType:     428,
 		Index:      1092,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ast.ParamAttribute)}, nil
+			return &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -11044,63 +11046,63 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Params : ParamList	<< &astx.Params{Params: X[0].([]*ast.Param)}, nil >>`,
+		String: `Params : ParamList	<< &astx.Params{Params: X[0].([]*types.Param)}, nil >>`,
 		Id:         "Params",
 		NTType:     432,
 		Index:      1102,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &astx.Params{Params: X[0].([]*ast.Param)}, nil
+			return &astx.Params{Params: X[0].([]*types.Param)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Params : ParamList "," "..."	<< &astx.Params{Params: X[0].([]*ast.Param), Variadic: true}, nil >>`,
+		String: `Params : ParamList "," "..."	<< &astx.Params{Params: X[0].([]*types.Param), Variadic: true}, nil >>`,
 		Id:         "Params",
 		NTType:     432,
 		Index:      1103,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &astx.Params{Params: X[0].([]*ast.Param), Variadic: true}, nil
+			return &astx.Params{Params: X[0].([]*types.Param), Variadic: true}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamList : Param	<< []*ast.Param{X[0].(*ast.Param)}, nil >>`,
+		String: `ParamList : Param	<< []*types.Param{X[0].(*types.Param)}, nil >>`,
 		Id:         "ParamList",
 		NTType:     433,
 		Index:      1104,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.Param{X[0].(*ast.Param)}, nil
+			return []*types.Param{X[0].(*types.Param)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamList : ParamList "," Param	<< append(X[0].([]*ast.Param), X[2].(*ast.Param)), nil >>`,
+		String: `ParamList : ParamList "," Param	<< append(X[0].([]*types.Param), X[2].(*types.Param)), nil >>`,
 		Id:         "ParamList",
 		NTType:     433,
 		Index:      1105,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.Param), X[2].(*ast.Param)), nil
+			return append(X[0].([]*types.Param), X[2].(*types.Param)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Param : Type ParamAttrs	<< &ast.Param{Type: X[0].(ast.Type), Attrs: X[1].([]ast.ParamAttribute)}, nil >>`,
+		String: `Param : Type ParamAttrs	<< &types.Param{Typ: X[0].(types.Type), Attrs: X[1].([]ll.ParamAttribute)}, nil >>`,
 		Id:         "Param",
 		NTType:     434,
 		Index:      1106,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Param{Type: X[0].(ast.Type), Attrs: X[1].([]ast.ParamAttribute)}, nil
+			return &types.Param{Typ: X[0].(types.Type), Attrs: X[1].([]ll.ParamAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Param : Type ParamAttrs LocalIdent	<< &ast.Param{Type: X[0].(ast.Type), Name: X[2].(*ast.LocalIdent), Attrs: X[1].([]ast.ParamAttribute)}, nil >>`,
+		String: `Param : Type ParamAttrs LocalIdent	<< &types.Param{Typ: X[0].(types.Type), Name: X[2].(*ast.LocalIdent).Ident, Attrs: X[1].([]ll.ParamAttribute)}, nil >>`,
 		Id:         "Param",
 		NTType:     434,
 		Index:      1107,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Param{Type: X[0].(ast.Type), Name: X[2].(*ast.LocalIdent), Attrs: X[1].([]ast.ParamAttribute)}, nil
+			return &types.Param{Typ: X[0].(types.Type), Name: X[2].(*ast.LocalIdent).Ident, Attrs: X[1].([]ll.ParamAttribute)}, nil
 		},
 	},
 }

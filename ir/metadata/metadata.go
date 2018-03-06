@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
-	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
+	"github.com/mewmew/l/ll/types"
 )
 
 // ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

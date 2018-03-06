@@ -1,7 +1,7 @@
 package types_test
 
 import (
-	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ll/types"
 )
 
 // Ensure that each type implements the ast.Type interface.

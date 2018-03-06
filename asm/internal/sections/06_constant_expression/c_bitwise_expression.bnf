@@ -8,7 +8,7 @@
 
 ShlExpr
 	: "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
-	<< &ast.ShlExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.ShlExpr{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

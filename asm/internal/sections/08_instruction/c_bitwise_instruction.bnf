@@ -10,7 +10,7 @@
 
 ShlInst
 	: "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.ShlInst{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.ShlInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

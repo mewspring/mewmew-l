@@ -31,9 +31,9 @@ func (m *Module) String() string {
 // A TopLevelEntity is a top-level entity of a module.
 type TopLevelEntity interface {
 	fmt.Stringer
-	// isTopLevelEntity ensures that only top-level entities can be assigned to
+	// IsTopLevelEntity ensures that only top-level entities can be assigned to
 	// the ast.TopLevelEntity interface.
-	isTopLevelEntity()
+	IsTopLevelEntity()
 }
 
 // ~~~ [ Source Filename ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,8 +118,8 @@ type Global struct {
 	Immutable             bool
 	Type                  types.Type
 	Init                  Constant // nil if declaration
-	GlobalAttrs           []GlobalAttribute
-	FuncAttrs             []FuncAttribute
+	GlobalAttrs           []ll.GlobalAttribute
+	FuncAttrs             []ll.FuncAttribute
 }
 
 // String returns a string representation of the global variable.
@@ -171,20 +171,8 @@ func (g *Global) String() string {
 	return buf.String()
 }
 
-// GlobalAttribute is a global attribute.
-type GlobalAttribute interface {
-	fmt.Stringer
-	// IsGlobalAttribute ensures that only global attributes can be assigned to
-	// the ast.GlobalAttribute interface.
-	IsGlobalAttribute()
-}
-
 // IsGlobalAttribute ensures that only global attributes can be assigned to the
 // ast.GlobalAttribute interface.
-// TODO: Figure out how to handle GlobalAttribute interface.
-//func (*Section) IsGlobalAttribute()            {}
-//func (*Comdat) IsGlobalAttribute()             {}
-//func (*Alignment) IsGlobalAttribute()          {}
 func (*MetadataAttachment) IsGlobalAttribute() {}
 
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -291,7 +279,7 @@ type FunctionHeader struct {
 	Params          []*types.Param
 	Variadic        bool
 	UnnamedAddr     ll.UnnamedAddr
-	FuncAttrs       []FuncAttribute
+	FuncAttrs       []ll.FuncAttribute
 	Section         *ll.Section // nil if not present
 	Comdat          *ll.Comdat  // nil if not present
 	GC              string      // empty if not present
@@ -389,7 +377,7 @@ func (body *FunctionBody) String() string {
 // AttrGroupDef is a attribute group definition.
 type AttrGroupDef struct {
 	ID        *AttrGroupID
-	FuncAttrs []FuncAttribute
+	FuncAttrs []ll.FuncAttribute
 }
 
 // String returns the string representation of the attribute group definition.
@@ -519,24 +507,24 @@ func (u *UseListOrderBB) String() string {
 
 // ### [ Helper functions ] ####################################################
 
-// isTopLevelEntity ensures that only top-level entities can be assigned to the
+// IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
-func (*SourceFilename) isTopLevelEntity() {}
+func (*SourceFilename) IsTopLevelEntity() {}
 
 // TargetDefinition
-func (*TargetTriple) isTopLevelEntity() {}
-func (*DataLayout) isTopLevelEntity()   {}
+func (*TargetTriple) IsTopLevelEntity() {}
+func (*DataLayout) IsTopLevelEntity()   {}
 
 // TODO: Figure out how to handle TopLevelEntity interface.
-//func (*ModuleAsm) isTopLevelEntity()        {}
-func (*TypeDef) isTopLevelEntity() {}
+//func (*ModuleAsm) IsTopLevelEntity()        {}
+func (*TypeDef) IsTopLevelEntity() {}
 
-//func (*ComdatDef) isTopLevelEntity()        {}
-func (*Global) isTopLevelEntity()           {}
-func (*IndirectSymbol) isTopLevelEntity()   {}
-func (*Function) isTopLevelEntity()         {}
-func (*AttrGroupDef) isTopLevelEntity()     {}
-func (*NamedMetadataDef) isTopLevelEntity() {}
-func (*MetadataDef) isTopLevelEntity()      {}
-func (*UseListOrder) isTopLevelEntity()     {}
-func (*UseListOrderBB) isTopLevelEntity()   {}
+//func (*ComdatDef) IsTopLevelEntity()        {}
+func (*Global) IsTopLevelEntity()           {}
+func (*IndirectSymbol) IsTopLevelEntity()   {}
+func (*Function) IsTopLevelEntity()         {}
+func (*AttrGroupDef) IsTopLevelEntity()     {}
+func (*NamedMetadataDef) IsTopLevelEntity() {}
+func (*MetadataDef) IsTopLevelEntity()      {}
+func (*UseListOrder) IsTopLevelEntity()     {}
+func (*UseListOrderBB) IsTopLevelEntity()   {}

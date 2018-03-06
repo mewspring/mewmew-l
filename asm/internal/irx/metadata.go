@@ -6,6 +6,7 @@ import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ll"
 	"github.com/rickypai/natsort"
 )
 
@@ -97,7 +98,7 @@ func (m *Module) irDIExpressionField(old ast.DIExpressionField) metadata.DIExpre
 	switch old := old.(type) {
 	case *ast.IntConst:
 		return m.irIntConst(old)
-	case ast.DwarfOp:
+	case ll.DwarfOp:
 		return metadata.DwarfOp(old)
 	default:
 		panic(fmt.Errorf("support for DIExpression field type %T not yet implemented", old))
@@ -437,7 +438,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 
 // irDIFlags returns the LLVM IR debug information flags corresponding to the
 // given AST debug information flags.
-func (m *Module) irDIFlags(old []ast.DIFlag) []metadata.DIFlag {
+func (m *Module) irDIFlags(old []ll.DIFlag) []metadata.DIFlag {
 	var flags []metadata.DIFlag
 	for i := range old {
 		flag := metadata.DIFlag(old[i])

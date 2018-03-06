@@ -8,7 +8,7 @@
 
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
-	<< &ast.Function{Linkage: $2.(ast.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.Function{Linkage: $2.(ll.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +21,7 @@ FunctionDecl
 
 FunctionDef
 	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
-	<< &ast.Function{Linkage: $1.(ast.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.Function{Linkage: $1.(ll.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
 ;
 
 // ref: ParseFunctionHeader
@@ -36,7 +36,7 @@ FunctionDef
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
-	<< &ast.FunctionHeader{Preemption: $0.(ast.Preemption), Visibility: $1.(ast.Visibility), DLLStorageClass: $2.(ast.DLLStorageClass), CallingConv: $3.(ast.CallingConv), ReturnAttrs: $4.([]ast.ReturnAttribute), RetType: $5.(ast.Type), Name: $6.(*ast.GlobalIdent), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ast.UnnamedAddr), FuncAttrs: $11.([]ast.FuncAttribute), Section: $12.(*ast.Section), Comdat: $13.(*ast.Comdat), GC: $14.(string), Prefix: $15.(*ast.TypeConst), Prologue: $16.(*ast.TypeConst), Personality: $17.(*ast.TypeConst)}, nil >>
+	<< &ast.FunctionHeader{Preemption: $0.(ll.Preemption), Visibility: $1.(ll.Visibility), DLLStorageClass: $2.(ll.DLLStorageClass), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Name: $6.(*ast.GlobalIdent), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ll.UnnamedAddr), FuncAttrs: $11.([]ll.FuncAttribute), Section: $12.(*ll.Section), Comdat: $13.(*ll.Comdat), GC: $14.(string), Prefix: $15.(*ast.TypeConst), Prologue: $16.(*ast.TypeConst), Personality: $17.(*ast.TypeConst)}, nil >>
 ;
 
 // ref: ParseOptionalCallingConv
@@ -83,50 +83,50 @@ FunctionHeader
 //   ::= 'cc' UINT
 
 OptCallingConv
-	: empty         << ast.CallingConvNone, nil >>
+	: empty         << ll.CallingConvNone, nil >>
 	| CallingConv
 ;
 
 CallingConv
-	: "amdgpu_cs"          << ast.CallingConvAmdGPUCS, nil >>
-	| "amdgpu_es"          << ast.CallingConvAmdGPUES, nil >>
-	| "amdgpu_gs"          << ast.CallingConvAmdGPUGS, nil >>
-	| "amdgpu_hs"          << ast.CallingConvAmdGPUHS, nil >>
-	| "amdgpu_kernel"      << ast.CallingConvAmdGPUKernel, nil >>
-	| "amdgpu_ls"          << ast.CallingConvAmdGPULS, nil >>
-	| "amdgpu_ps"          << ast.CallingConvAmdGPUPS, nil >>
-	| "amdgpu_vs"          << ast.CallingConvAmdGPUVS, nil >>
-	| "anyregcc"           << ast.CallingConvAnyReg, nil >>
-	| "arm_aapcs_vfpcc"    << ast.CallingConvARMAAPCSVFP, nil >>
-	| "arm_aapcscc"        << ast.CallingConvARMAAPCS, nil >>
-	| "arm_apcscc"         << ast.CallingConvARMAPCS, nil >>
-	| "avr_intrcc"         << ast.CallingConvAVRIntr, nil >>
-	| "avr_signalcc"       << ast.CallingConvAVRSignal, nil >>
-	| "ccc"                << ast.CallingConvC, nil >>
-	| "coldcc"             << ast.CallingConvCold, nil >>
-	| "cxx_fast_tlscc"     << ast.CallingConvCXXFastTLS, nil >>
-	| "fastcc"             << ast.CallingConvFast, nil >>
-	| "ghccc"              << ast.CallingConvGHC, nil >>
-	| "hhvm_ccc"           << ast.CallingConvHHVMC, nil >>
-	| "hhvmcc"             << ast.CallingConvHHVM, nil >>
-	| "intel_ocl_bicc"     << ast.CallingConvIntelOCLBI, nil >>
-	| "msp430_intrcc"      << ast.CallingConvMSP430Intr, nil >>
-	| "preserve_allcc"     << ast.CallingConvPreserveAll, nil >>
-	| "preserve_mostcc"    << ast.CallingConvPreserveMost, nil >>
-	| "ptx_device"         << ast.CallingConvPTXDevice, nil >>
-	| "ptx_kernel"         << ast.CallingConvPTXKernel, nil >>
-	| "spir_func"          << ast.CallingConvSPIRFunc, nil >>
-	| "spir_kernel"        << ast.CallingConvSPIRKernel, nil >>
-	| "swiftcc"            << ast.CallingConvSwift, nil >>
-	| "webkit_jscc"        << ast.CallingConvWebKitJS, nil >>
-	| "win64cc"            << ast.CallingConvWin64, nil >>
-	| "x86_64_sysvcc"      << ast.CallingConvX86_64SysV, nil >>
-	| "x86_fastcallcc"     << ast.CallingConvX86FastCall, nil >>
-	| "x86_intrcc"         << ast.CallingConvX86Intr, nil >>
-	| "x86_regcallcc"      << ast.CallingConvX86RegCall, nil >>
-	| "x86_stdcallcc"      << ast.CallingConvX86StdCall, nil >>
-	| "x86_thiscallcc"     << ast.CallingConvX86ThisCall, nil >>
-	| "x86_vectorcallcc"   << ast.CallingConvX86VectorCall, nil >>
+	: "amdgpu_cs"          << ll.CallingConvAmdGPUCS, nil >>
+	| "amdgpu_es"          << ll.CallingConvAmdGPUES, nil >>
+	| "amdgpu_gs"          << ll.CallingConvAmdGPUGS, nil >>
+	| "amdgpu_hs"          << ll.CallingConvAmdGPUHS, nil >>
+	| "amdgpu_kernel"      << ll.CallingConvAmdGPUKernel, nil >>
+	| "amdgpu_ls"          << ll.CallingConvAmdGPULS, nil >>
+	| "amdgpu_ps"          << ll.CallingConvAmdGPUPS, nil >>
+	| "amdgpu_vs"          << ll.CallingConvAmdGPUVS, nil >>
+	| "anyregcc"           << ll.CallingConvAnyReg, nil >>
+	| "arm_aapcs_vfpcc"    << ll.CallingConvARMAAPCSVFP, nil >>
+	| "arm_aapcscc"        << ll.CallingConvARMAAPCS, nil >>
+	| "arm_apcscc"         << ll.CallingConvARMAPCS, nil >>
+	| "avr_intrcc"         << ll.CallingConvAVRIntr, nil >>
+	| "avr_signalcc"       << ll.CallingConvAVRSignal, nil >>
+	| "ccc"                << ll.CallingConvC, nil >>
+	| "coldcc"             << ll.CallingConvCold, nil >>
+	| "cxx_fast_tlscc"     << ll.CallingConvCXXFastTLS, nil >>
+	| "fastcc"             << ll.CallingConvFast, nil >>
+	| "ghccc"              << ll.CallingConvGHC, nil >>
+	| "hhvm_ccc"           << ll.CallingConvHHVMC, nil >>
+	| "hhvmcc"             << ll.CallingConvHHVM, nil >>
+	| "intel_ocl_bicc"     << ll.CallingConvIntelOCLBI, nil >>
+	| "msp430_intrcc"      << ll.CallingConvMSP430Intr, nil >>
+	| "preserve_allcc"     << ll.CallingConvPreserveAll, nil >>
+	| "preserve_mostcc"    << ll.CallingConvPreserveMost, nil >>
+	| "ptx_device"         << ll.CallingConvPTXDevice, nil >>
+	| "ptx_kernel"         << ll.CallingConvPTXKernel, nil >>
+	| "spir_func"          << ll.CallingConvSPIRFunc, nil >>
+	| "spir_kernel"        << ll.CallingConvSPIRKernel, nil >>
+	| "swiftcc"            << ll.CallingConvSwift, nil >>
+	| "webkit_jscc"        << ll.CallingConvWebKitJS, nil >>
+	| "win64cc"            << ll.CallingConvWin64, nil >>
+	| "x86_64_sysvcc"      << ll.CallingConvX86_64SysV, nil >>
+	| "x86_fastcallcc"     << ll.CallingConvX86FastCall, nil >>
+	| "x86_intrcc"         << ll.CallingConvX86Intr, nil >>
+	| "x86_regcallcc"      << ll.CallingConvX86RegCall, nil >>
+	| "x86_stdcallcc"      << ll.CallingConvX86StdCall, nil >>
+	| "x86_thiscallcc"     << ll.CallingConvX86ThisCall, nil >>
+	| "x86_vectorcallcc"   << ll.CallingConvX86VectorCall, nil >>
 	| "cc" int_lit         << astx.NewCallingConv($1) >>
 ;
 

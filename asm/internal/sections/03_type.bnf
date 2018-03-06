@@ -51,7 +51,7 @@ ConcreteType
 
 VoidType
 	: "void"
-	<< &ast.VoidType{}, nil >>
+	<< &types.VoidType{}, nil >>
 ;
 
 // --- [ Function Types ] ------------------------------------------------------
@@ -62,7 +62,7 @@ VoidType
 
 FuncType
 	: Type "(" Params ")"
-	<< &ast.FuncType{RetType: $0.(ast.Type), Params: $2.(*astx.Params).Params, Variadic: $2.(*astx.Params).Variadic}, nil >>
+	<< &types.FuncType{RetType: $0.(types.Type), Params: $2.(*astx.Params).Params, Variadic: $2.(*astx.Params).Variadic}, nil >>
 ;
 
 // --- [ Integer Types ] -------------------------------------------------------
@@ -76,30 +76,30 @@ IntType
 
 FloatType
 	: FloatKind
-	<< &ast.FloatType{Kind: $0.(ast.FloatKind)}, nil >>
+	<< &types.FloatType{Kind: $0.(types.FloatKind)}, nil >>
 ;
 
 FloatKind
-	: "half"        << ast.FloatKindHalf, nil >>
-	| "float"       << ast.FloatKindFloat, nil >>
-	| "double"      << ast.FloatKindDouble, nil >>
-	| "x86_fp80"    << ast.FloatKindX86FP80, nil >>
-	| "fp128"       << ast.FloatKindFP128, nil >>
-	| "ppc_fp128"   << ast.FloatKindPPCFP128, nil >>
+	: "half"        << types.FloatKindHalf, nil >>
+	| "float"       << types.FloatKindFloat, nil >>
+	| "double"      << types.FloatKindDouble, nil >>
+	| "x86_fp80"    << types.FloatKindX86FP80, nil >>
+	| "fp128"       << types.FloatKindFP128, nil >>
+	| "ppc_fp128"   << types.FloatKindPPCFP128, nil >>
 ;
 
 // --- [ MMX Types ] -----------------------------------------------------------
 
 MMXType
 	: "x86_mmx"
-	<< &ast.MMXType{}, nil >>
+	<< &types.MMXType{}, nil >>
 ;
 
 // --- [ Pointer Types ] -------------------------------------------------------
 
 PointerType
 	: Type OptAddrSpace "*"
-	<< &ast.PointerType{ElemType: $0.(ast.Type), AddrSpace: $1.(ast.AddrSpace)}, nil >>
+	<< &types.PointerType{ElemType: $0.(types.Type), AddrSpace: $1.(ll.AddrSpace)}, nil >>
 ;
 
 // --- [ Vector Types ] --------------------------------------------------------
@@ -110,28 +110,28 @@ PointerType
 
 VectorType
 	: "<" int_lit "x" Type ">"
-	<< &ast.VectorType{Len: astx.Int($1), ElemType: $3.(ast.Type)}, nil >>
+	<< &types.VectorType{Len: astx.Int($1), ElemType: $3.(types.Type)}, nil >>
 ;
 
 // --- [ Label Types ] ---------------------------------------------------------
 
 LabelType
 	: "label"
-	<< &ast.LabelType{}, nil >>
+	<< &types.LabelType{}, nil >>
 ;
 
 // --- [ Token Types ] ---------------------------------------------------------
 
 TokenType
 	: "token"
-	<< &ast.TokenType{}, nil >>
+	<< &types.TokenType{}, nil >>
 ;
 
 // --- [ Metadata Types ] ------------------------------------------------------
 
 MetadataType
 	: "metadata"
-	<< &ast.MetadataType{}, nil >>
+	<< &types.MetadataType{}, nil >>
 ;
 
 // --- [ Array Types ] ---------------------------------------------------------
@@ -142,7 +142,7 @@ MetadataType
 
 ArrayType
 	: "[" int_lit "x" Type "]"
-	<< &ast.ArrayType{Len: astx.Int($1), ElemType: $3.(ast.Type)}, nil >>
+	<< &types.ArrayType{Len: astx.Int($1), ElemType: $3.(types.Type)}, nil >>
 ;
 
 // --- [ Structure Types ] -----------------------------------------------------
@@ -164,26 +164,26 @@ ArrayType
 
 StructType
 	: "{" "}"
-	<< &ast.StructType{}, nil >>
+	<< &types.StructType{}, nil >>
 	| "{" TypeList "}"
-	<< &ast.StructType{Fields: $1.([]ast.Type)}, nil >>
+	<< &types.StructType{Fields: $1.([]types.Type)}, nil >>
 	| "<" "{" "}" ">"
-	<< &ast.StructType{Packed: true}, nil >>
+	<< &types.StructType{Packed: true}, nil >>
 	| "<" "{" TypeList "}" ">"
-	<< &ast.StructType{Packed: true, Fields: $2.([]ast.Type)}, nil >>
+	<< &types.StructType{Packed: true, Fields: $2.([]types.Type)}, nil >>
 ;
 
 TypeList
 	: Type
-	<< []ast.Type{$0.(ast.Type)}, nil >>
+	<< []types.Type{$0.(types.Type)}, nil >>
 	| TypeList "," Type
-	<< append($0.([]ast.Type), $2.(ast.Type)), nil >>
+	<< append($0.([]types.Type), $2.(types.Type)), nil >>
 ;
 
 // --- [ Named Types ] ---------------------------------------------------------
 
 NamedType
 	: LocalIdent
-	<< &ast.NamedType{Name: $0.(*ast.LocalIdent)}, nil >>
+	<< &types.NamedType{Name: $0.(*ast.LocalIdent).Ident}, nil >>
 ;
 

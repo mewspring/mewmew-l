@@ -3,8 +3,7 @@ package irx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/asm/internal/ast"
-	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ll/types"
 	"github.com/rickypai/natsort"
 )
 
@@ -33,57 +32,55 @@ func (m *Module) resolveTypeDefs() {
 }
 
 // irType returns the LLVM IR type corresponding to the given AST type.
-func (m *Module) irType(old ast.Type) types.Type {
+func (m *Module) irType(old types.Type) types.Type {
 	switch old := old.(type) {
-	case *ast.VoidType:
+	case *types.VoidType:
 		return &types.VoidType{}
-	case *ast.FuncType:
+	case *types.FuncType:
 		typ := &types.FuncType{
 			RetType:  m.irType(old.RetType),
 			Variadic: old.Variadic,
 		}
 		for _, p := range old.Params {
 			param := &types.Param{
-				Typ: m.irType(p.Type),
-			}
-			if p.Name != nil {
-				param.Name = p.Name.Ident
+				Typ:  m.irType(p.Typ),
+				Name: p.Name,
 			}
 			typ.Params = append(typ.Params, param)
 		}
 		return typ
-	case *ast.IntType:
+	case *types.IntType:
 		return &types.IntType{
 			BitSize: old.BitSize,
 		}
-	case *ast.FloatType:
+	case *types.FloatType:
 		return &types.FloatType{
-			Kind: floatKind(old.Kind),
+			Kind: old.Kind,
 		}
-	case *ast.MMXType:
+	case *types.MMXType:
 		return &types.MMXType{}
-	case *ast.PointerType:
+	case *types.PointerType:
 		return &types.PointerType{
 			ElemType:  m.irType(old.ElemType),
-			AddrSpace: types.AddrSpace(old.AddrSpace),
+			AddrSpace: old.AddrSpace,
 		}
-	case *ast.VectorType:
+	case *types.VectorType:
 		return &types.VectorType{
 			Len:      old.Len,
 			ElemType: m.irType(old.ElemType),
 		}
-	case *ast.LabelType:
+	case *types.LabelType:
 		return &types.LabelType{}
-	case *ast.TokenType:
+	case *types.TokenType:
 		return &types.TokenType{}
-	case *ast.MetadataType:
+	case *types.MetadataType:
 		return &types.MetadataType{}
-	case *ast.ArrayType:
+	case *types.ArrayType:
 		return &types.ArrayType{
 			Len:      old.Len,
 			ElemType: m.irType(old.ElemType),
 		}
-	case *ast.StructType:
+	case *types.StructType:
 		typ := &types.StructType{
 			Packed: old.Packed,
 		}
@@ -91,34 +88,11 @@ func (m *Module) irType(old ast.Type) types.Type {
 			typ.Fields = append(typ.Fields, m.irType(field))
 		}
 		return typ
-	case *ast.OpaqueType:
-		return &types.StructType{
-			Opaque: true,
-		}
-	case *ast.NamedType:
-		return m.typeDefs[old.Name.Ident]
+	case *types.OpaqueType:
+		return &types.OpaqueType{}
+	case *types.NamedType:
+		return m.typeDefs[old.Name]
 	default:
 		panic(fmt.Errorf("support for type %T not yet supported", old))
-	}
-}
-
-// floatKind returns the LLVM IR floating-point kind corresponding to the given
-// AST floating-point kind.
-func floatKind(kind ast.FloatKind) types.FloatKind {
-	switch kind {
-	case ast.FloatKindHalf:
-		return types.FloatKindHalf
-	case ast.FloatKindFloat:
-		return types.FloatKindFloat
-	case ast.FloatKindDouble:
-		return types.FloatKindDouble
-	case ast.FloatKindFP128:
-		return types.FloatKindFP128
-	case ast.FloatKindX86FP80:
-		return types.FloatKindX86FP80
-	case ast.FloatKindPPCFP128:
-		return types.FloatKindPPCFP128
-	default:
-		panic(fmt.Errorf("support for floating-point kind %v not yet implemented", kind))
 	}
 }

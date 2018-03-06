@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // A Module is an LLVM IR module.
@@ -68,7 +69,7 @@ func (m *Module) String() string {
 // AttrGroupDef is a attribute group definition.
 type AttrGroupDef struct {
 	ID        string // AttrGroupID
-	FuncAttrs []FuncAttribute
+	FuncAttrs []ll.FuncAttribute
 }
 
 // String returns the string representation of the attribute group definition.
@@ -81,7 +82,7 @@ func (def *AttrGroupDef) String() string {
 			buf.WriteString(" ")
 		}
 		// Note, alignment is printed as `align = 8` in attribute groups.
-		if attr, ok := attr.(*Alignment); ok {
+		if attr, ok := attr.(*ll.Alignment); ok {
 			fmt.Fprintf(buf, "align = %d", attr.Align)
 			continue
 		}

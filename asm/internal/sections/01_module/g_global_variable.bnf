@@ -33,14 +33,14 @@
 
 GlobalDecl
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
-	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), AddrSpace: $8.(ast.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(ast.Type), GlobalAttrs: $12.([]ast.GlobalAttribute), FuncAttrs: $13.([]ast.FuncAttribute)}, nil >>
+	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(ll.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(types.Type), GlobalAttrs: $12.([]ll.GlobalAttribute), FuncAttrs: $13.([]ll.FuncAttribute)}, nil >>
 ;
 
 // ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 GlobalDef
 	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), AddrSpace: $8.(ast.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(ast.Type), Init: $12.(ast.Constant), GlobalAttrs: $13.([]ast.GlobalAttribute), FuncAttrs: $14.([]ast.FuncAttribute)}, nil >>
+	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(ll.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(types.Type), Init: $12.(ast.Constant), GlobalAttrs: $13.([]ll.GlobalAttribute), FuncAttrs: $14.([]ll.FuncAttribute)}, nil >>
 ;
 
 // ref: ParseOptionalThreadLocal
@@ -51,15 +51,15 @@ GlobalDef
 
 OptThreadLocal
 	: empty
-	<< (*ast.ThreadLocal)(nil), nil >>
+	<< (*ll.ThreadLocal)(nil), nil >>
 	| ThreadLocal
 ;
 
 ThreadLocal
 	: "thread_local"
-	<< &ast.ThreadLocal{}, nil >>
+	<< &ll.ThreadLocal{}, nil >>
 	| "thread_local" "(" TLSModel ")"
-	<< &ast.ThreadLocal{Model: $2.(ast.TLSModel)}, nil >>
+	<< &ll.ThreadLocal{Model: $2.(ll.TLSModel)}, nil >>
 ;
 
 // ref: ParseTLSModel
@@ -69,9 +69,9 @@ ThreadLocal
 //   := 'localexec'
 
 TLSModel
-	: "initialexec"    << ast.TLSModelInitialExec, nil >>
-	| "localdynamic"   << ast.TLSModelLocalDynamic, nil >>
-	| "localexec"      << ast.TLSModelLocalExec, nil >>
+	: "initialexec"    << ll.TLSModelInitialExec, nil >>
+	| "localdynamic"   << ll.TLSModelLocalDynamic, nil >>
+	| "localexec"      << ll.TLSModelLocalExec, nil >>
 ;
 
 OptExternallyInitialized
@@ -91,16 +91,16 @@ Immutable
 
 GlobalAttrs
 	: empty
-	<< ([]ast.GlobalAttribute)(nil), nil >>
+	<< ([]ll.GlobalAttribute)(nil), nil >>
 	| "," GlobalAttrList
 	<< $1, nil >>
 ;
 
 GlobalAttrList
 	: GlobalAttr
-	<< []ast.GlobalAttribute{$0.(ast.GlobalAttribute)}, nil >>
+	<< []ll.GlobalAttribute{$0.(ll.GlobalAttribute)}, nil >>
 	| GlobalAttrList "," GlobalAttr
-	<< append($0.([]ast.GlobalAttribute), $2.(ast.GlobalAttribute)), nil >>
+	<< append($0.([]ll.GlobalAttribute), $2.(ll.GlobalAttribute)), nil >>
 ;
 
 GlobalAttr
@@ -128,9 +128,9 @@ GlobalAttr
 
 IndirectSymbolDef
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
-	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Const: astx.TypeConst($10, $11)}, nil >>
+	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), Alias: $8.(bool), Type: $9.(types.Type), Const: astx.TypeConst($10, $11)}, nil >>
 	| GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
-	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ast.Linkage), Preemption: $3.(ast.Preemption), Visibility: $4.(ast.Visibility), DLLStorageClass: $5.(ast.DLLStorageClass), ThreadLocal: $6.(*ast.ThreadLocal), UnnamedAddr: $7.(ast.UnnamedAddr), Alias: $8.(bool), Type: $9.(ast.Type), Const: astx.TypeConst($10, $11)}, nil >>
+	<< &ast.IndirectSymbol{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), Alias: $8.(bool), Type: $9.(types.Type), Const: astx.TypeConst($10, $11)}, nil >>
 ;
 
 Alias

@@ -8,7 +8,7 @@
 
 ICmpExpr
 	: "icmp" IPred "(" Type Constant "," Type Constant ")"
-	<< &ast.ICmpExpr{Pred: $1.(ast.IPred), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.ICmpExpr{Pred: $1.(ll.IPred), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,7 +17,7 @@ ICmpExpr
 
 FCmpExpr
 	: "fcmp" FPred "(" Type Constant "," Type Constant ")"
-	<< &ast.FCmpExpr{Pred: $1.(ast.FPred), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.FCmpExpr{Pred: $1.(ll.FPred), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

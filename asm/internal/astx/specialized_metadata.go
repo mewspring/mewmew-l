@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/ll"
 )
 
 // NewDICompileUnit returns a new DICompileUnit specialized metadata node.
@@ -11,7 +12,7 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.DICompileUnit{}
 	if v, ok := m["language:"]; ok {
-		node.Language = v.(ast.DwarfLang)
+		node.Language = v.(ll.DwarfLang)
 	}
 	if v, ok := m["file:"]; ok {
 		node.File = v.(ast.MDField)
@@ -32,7 +33,7 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 		node.SplitDebugFilename = v.(string)
 	}
 	if v, ok := m["emissionKind:"]; ok {
-		node.EmissionKind = v.(ast.EmissionKind)
+		node.EmissionKind = v.(ll.EmissionKind)
 	}
 	if v, ok := m["enums:"]; ok {
 		node.Enums = v.(ast.MDField)
@@ -75,7 +76,7 @@ func NewDIFile(fields []*SpecializedMDField) (*ast.DIFile, error) {
 		node.Directory = v.(string)
 	}
 	if v, ok := m["checksumkind:"]; ok {
-		node.Checksumkind = v.(ast.ChecksumKind)
+		node.Checksumkind = v.(ll.ChecksumKind)
 	}
 	if v, ok := m["checksum:"]; ok {
 		node.Checksum = v.(string)
@@ -88,7 +89,7 @@ func NewDIBasicType(fields []*SpecializedMDField) (*ast.DIBasicType, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIBasicType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -100,7 +101,7 @@ func NewDIBasicType(fields []*SpecializedMDField) (*ast.DIBasicType, error) {
 		node.Align = v.(int64)
 	}
 	if v, ok := m["encoding:"]; ok {
-		node.Encoding = v.(ast.DwarfAttEncoding)
+		node.Encoding = v.(ll.DwarfAttEncoding)
 	}
 	return node, nil
 }
@@ -110,10 +111,10 @@ func NewDISubroutineType(fields []*SpecializedMDField) (*ast.DISubroutineType, e
 	m := getMDFieldMap(fields)
 	node := &ast.DISubroutineType{}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ast.DIFlag)
+		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["cc:"]; ok {
-		node.CC = v.(ast.DwarfCC)
+		node.CC = v.(ll.DwarfCC)
 	}
 	if v, ok := m["types:"]; ok {
 		node.Types = v.(ast.MDField)
@@ -126,7 +127,7 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.DIDerivedType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -153,7 +154,7 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ast.DIFlag)
+		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["extraData:"]; ok {
 		node.ExtraData = v.(ast.MDField)
@@ -169,7 +170,7 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 	m := getMDFieldMap(fields)
 	node := &ast.DICompositeType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -196,13 +197,13 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ast.DIFlag)
+		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["elements:"]; ok {
 		node.Elements = v.(ast.MDField)
 	}
 	if v, ok := m["runtimeLang:"]; ok {
-		node.RuntimeLang = v.(ast.DwarfLang)
+		node.RuntimeLang = v.(ll.DwarfLang)
 	}
 	if v, ok := m["vtableHolder:"]; ok {
 		node.VtableHolder = v.(ast.MDField)
@@ -268,7 +269,7 @@ func NewDITemplateValueParameter(fields []*SpecializedMDField) (*ast.DITemplateV
 	m := getMDFieldMap(fields)
 	node := &ast.DITemplateValueParameter{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -392,7 +393,7 @@ func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 		node.ContainingType = v.(ast.MDField)
 	}
 	if v, ok := m["virtuality:"]; ok {
-		node.Virtuality = v.(ast.DwarfVirtuality)
+		node.Virtuality = v.(ll.DwarfVirtuality)
 	}
 	if v, ok := m["virtualIndex:"]; ok {
 		node.VirtualIndex = v.(int64)
@@ -401,7 +402,7 @@ func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 		node.ThisAdjustment = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ast.DIFlag)
+		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["isOptimized:"]; ok {
 		node.IsOptimized = v.(bool)
@@ -502,7 +503,7 @@ func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, err
 		node.Type = v.(ast.MDField)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ast.DIFlag)
+		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["align:"]; ok {
 		node.Align = v.(int64)
@@ -557,7 +558,7 @@ func NewDIImportedEntity(fields []*SpecializedMDField) (*ast.DIImportedEntity, e
 	m := getMDFieldMap(fields)
 	node := &ast.DIImportedEntity{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["scope:"]; ok {
 		node.Scope = v.(ast.MDField)
@@ -582,7 +583,7 @@ func NewDIMacro(fields []*SpecializedMDField) (*ast.DIMacro, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIMacro{}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.DwarfMacinfo)
+		node.Type = v.(ll.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -601,7 +602,7 @@ func NewDIMacroFile(fields []*SpecializedMDField) (*ast.DIMacroFile, error) {
 	m := getMDFieldMap(fields)
 	node := &ast.DIMacroFile{}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.DwarfMacinfo)
+		node.Type = v.(ll.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -620,7 +621,7 @@ func NewGenericDINode(fields []*SpecializedMDField) (*ast.GenericDINode, error) 
 	m := getMDFieldMap(fields)
 	node := &ast.GenericDINode{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ast.DwarfTag)
+		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["header:"]; ok {
 		node.Header = v.(string)

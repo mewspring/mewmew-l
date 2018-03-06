@@ -8,6 +8,6 @@
 
 ModuleAsm
 	: "module" "asm" StringLit
-	<< &ast.ModuleAsm{Asm: $2.(string)}, nil >>
+	<< &ll.ModuleAsm{Asm: $2.(string)}, nil >>
 ;
 

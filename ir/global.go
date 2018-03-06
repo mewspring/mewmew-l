@@ -4,28 +4,28 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ast"
 	"github.com/mewmew/l/ir/constant"
-	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
 	Name                  string
-	Linkage               ast.Linkage         // zero value if not present
-	Preemption            ast.Preemption      // zero value if not present
-	Visibility            ast.Visibility      // zero value if not present
-	DLLStorageClass       ast.DLLStorageClass // zero value if not present
-	ThreadLocal           *ast.ThreadLocal    // nil if not present
-	UnnamedAddr           ast.UnnamedAddr     // zero value if not present
-	AddrSpace             types.AddrSpace     // zero value if not present
+	Linkage               ll.Linkage         // zero value if not present
+	Preemption            ll.Preemption      // zero value if not present
+	Visibility            ll.Visibility      // zero value if not present
+	DLLStorageClass       ll.DLLStorageClass // zero value if not present
+	ThreadLocal           *ll.ThreadLocal    // nil if not present
+	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
+	AddrSpace             ll.AddrSpace       // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Typ                   *types.PointerType
 	ContentType           types.Type
 	Init                  constant.Constant // nil if declaration
-	GlobalAttrs           []GlobalAttribute
-	FuncAttrs             []FuncAttribute
+	GlobalAttrs           []ll.GlobalAttribute
+	FuncAttrs             []ll.FuncAttribute
 }
 
 // String returns a string representation of the global variable.
@@ -35,22 +35,22 @@ func (g *Global) String() string {
 	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v =", g.Name)
-	if g.Linkage != LinkageNone {
+	if g.Linkage != ll.LinkageNone {
 		fmt.Fprintf(buf, " %v", g.Linkage)
 	}
-	if g.Preemption != PreemptionNone {
+	if g.Preemption != ll.PreemptionNone {
 		fmt.Fprintf(buf, " %v", g.Preemption)
 	}
-	if g.Visibility != VisibilityNone {
+	if g.Visibility != ll.VisibilityNone {
 		fmt.Fprintf(buf, " %v", g.Visibility)
 	}
-	if g.DLLStorageClass != DLLStorageClassNone {
+	if g.DLLStorageClass != ll.DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", g.DLLStorageClass)
 	}
 	if g.ThreadLocal != nil {
 		fmt.Fprintf(buf, " %v", g.ThreadLocal)
 	}
-	if g.UnnamedAddr != UnnamedAddrNone {
+	if g.UnnamedAddr != ll.UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", g.UnnamedAddr)
 	}
 	if g.AddrSpace != 0 {
@@ -90,17 +90,3 @@ func (g *Global) Ident() string {
 // IsConstant ensures that only constants can be assigned to the
 // constant.Constant interface.
 func (*Global) IsConstant() {}
-
-// GlobalAttribute is a global attribute.
-type GlobalAttribute interface {
-	fmt.Stringer
-	// IsGlobalAttribute ensures that only global attributes can be assigned to
-	// the ast.GlobalAttribute interface.
-	IsGlobalAttribute()
-}
-
-// IsGlobalAttribute ensures that only global attributes can be assigned to the
-// ast.GlobalAttribute interface.
-func (*Section) IsGlobalAttribute()   {}
-func (*Comdat) IsGlobalAttribute()    {}
-func (*Alignment) IsGlobalAttribute() {}

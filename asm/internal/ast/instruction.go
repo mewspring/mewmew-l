@@ -1180,7 +1180,7 @@ type CallInst struct {
 	RetType        types.Type
 	Callee         Value
 	Args           []Argument
-	FuncAttrs      []FuncAttribute
+	FuncAttrs      []ll.FuncAttribute
 	OperandBundles []*OperandBundle
 	Metadata       []*MetadataAttachment
 }
@@ -1405,14 +1405,6 @@ func (*CatchPadInst) isInstruction()       {}
 func (*CleanupPadInst) isInstruction()     {}
 
 // ___ [ Function Attribute ] __________________________________________________
-
-// FuncAttribute is a function attribute.
-type FuncAttribute interface {
-	fmt.Stringer
-	// IsFuncAttribute ensures that only function attributes can be assigned to
-	// the ast.FuncAttribute interface.
-	IsFuncAttribute()
-}
 
 // IsFuncAttribute ensures that only function attributes can be assigned to the
 // ast.FuncAttribute interface.

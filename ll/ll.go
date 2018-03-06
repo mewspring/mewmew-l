@@ -703,21 +703,6 @@ const (
 	FastMathFlagReassoc                      // reassoc
 )
 
-//go:generate stringer -linecomment -type FloatKind
-
-// FloatKind represents the set of floating-point kinds.
-type FloatKind uint8
-
-// Floating-point kinds.
-const (
-	FloatKindHalf     FloatKind = iota // half
-	FloatKindFloat                     // float
-	FloatKindDouble                    // double
-	FloatKindX86FP80                   // x86_fp80
-	FloatKindFP128                     // fp128
-	FloatKindPPCFP128                  // ppc_fp128
-)
-
 //go:generate stringer -linecomment -type FuncAttr
 
 // FuncAttr is a function attribute.

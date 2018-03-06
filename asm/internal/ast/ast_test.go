@@ -10,7 +10,11 @@ import (
 	"testing"
 
 	"github.com/mewkiz/pkg/osutil"
-	"github.com/mewmew/l/asm"
+	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/internal/lexer"
+	"github.com/mewmew/l/asm/internal/parser"
+	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 	"github.com/pkg/errors"
 )
 
@@ -152,11 +156,14 @@ func TestParse(t *testing.T) {
 			}
 			want = string(buf)
 		}
-		m, err := asm.ParseBytes(buf)
+		l := lexer.NewLexer(buf)
+		p := parser.NewParser()
+		module, err := p.Parse(l)
 		if err != nil {
 			t.Errorf("%q: unable to parse file %q; %v", g.path, g.path, err)
 			continue
 		}
+		m := module.(*ast.Module)
 		got := m.String()
 		if want != got {
 			if err := diff(want, got, words); err != nil {
@@ -426,7 +433,7 @@ var (
 // interface.
 var (
 	_ ast.DIExpressionField = (*ast.IntConst)(nil)
-	_ ast.DIExpressionField = ast.DwarfOp(0)
+	_ ast.DIExpressionField = ll.DwarfOp(0)
 )
 
 // Ensure that each specialized metadata node implements the
@@ -518,26 +525,26 @@ var (
 
 // Ensure that each type implements the ast.Type interface.
 var (
-	_ ast.Type = (*ast.VoidType)(nil)
-	_ ast.Type = (*ast.FuncType)(nil)
-	_ ast.Type = (*ast.IntType)(nil)
-	_ ast.Type = (*ast.FloatType)(nil)
-	_ ast.Type = (*ast.MMXType)(nil)
-	_ ast.Type = (*ast.PointerType)(nil)
-	_ ast.Type = (*ast.VectorType)(nil)
-	_ ast.Type = (*ast.LabelType)(nil)
-	_ ast.Type = (*ast.TokenType)(nil)
-	_ ast.Type = (*ast.MetadataType)(nil)
-	_ ast.Type = (*ast.ArrayType)(nil)
-	_ ast.Type = (*ast.StructType)(nil)
-	_ ast.Type = (*ast.OpaqueType)(nil)
-	_ ast.Type = (*ast.NamedType)(nil)
+	_ types.Type = (*types.VoidType)(nil)
+	_ types.Type = (*types.FuncType)(nil)
+	_ types.Type = (*types.IntType)(nil)
+	_ types.Type = (*types.FloatType)(nil)
+	_ types.Type = (*types.MMXType)(nil)
+	_ types.Type = (*types.PointerType)(nil)
+	_ types.Type = (*types.VectorType)(nil)
+	_ types.Type = (*types.LabelType)(nil)
+	_ types.Type = (*types.TokenType)(nil)
+	_ types.Type = (*types.MetadataType)(nil)
+	_ types.Type = (*types.ArrayType)(nil)
+	_ types.Type = (*types.StructType)(nil)
+	_ types.Type = (*types.OpaqueType)(nil)
+	_ types.Type = (*types.NamedType)(nil)
 )
 
 // Ensure that each value implements the ast.Value interface.
 var (
 	_ ast.Value = (*ast.LocalIdent)(nil)
-	_ ast.Value = (*ast.InlineAsm)(nil)
+	_ ast.Value = (*ll.InlineAsm)(nil)
 	_ ast.Value = (*ast.BoolConst)(nil)
 	_ ast.Value = (*ast.IntConst)(nil)
 	_ ast.Value = (*ast.FloatConst)(nil)

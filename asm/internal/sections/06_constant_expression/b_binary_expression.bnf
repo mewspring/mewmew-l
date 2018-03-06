@@ -8,7 +8,7 @@
 
 AddExpr
 	: "add" OverflowFlags "(" Type Constant "," Type Constant ")"
-	<< &ast.AddExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.AddExpr{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +26,7 @@ FAddExpr
 
 SubExpr
 	: "sub" OverflowFlags "(" Type Constant "," Type Constant ")"
-	<< &ast.SubExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.SubExpr{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@ FSubExpr
 
 MulExpr
 	: "mul" OverflowFlags "(" Type Constant "," Type Constant ")"
-	<< &ast.MulExpr{OverflowFlags: $1.([]ast.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &ast.MulExpr{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

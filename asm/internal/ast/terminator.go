@@ -155,7 +155,7 @@ type InvokeTerm struct {
 	RetType        types.Type
 	Callee         Value
 	Args           []Argument
-	FuncAttrs      []FuncAttribute
+	FuncAttrs      []ll.FuncAttribute
 	OperandBundles []*OperandBundle
 	Normal         *Label
 	Exception      *Label

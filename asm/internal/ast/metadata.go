@@ -1051,17 +1051,16 @@ func (md *DIExpression) String() string {
 // DIExpressionField is a DIExpression field.
 type DIExpressionField interface {
 	fmt.Stringer
-	// isDIExpressionField ensures that only DIExpression fields can be assigned
+	// IsDIExpressionField ensures that only DIExpression fields can be assigned
 	// to the ast.DIExpressionField interface.
-	isDIExpressionField()
+	IsDIExpressionField()
 }
 
-// isDIExpressionField ensures that only DIExpression fields can be assigned to
+// IsDIExpressionField ensures that only DIExpression fields can be assigned to
 // the ast.DIExpressionField interface.
-func (*IntConst) isDIExpressionField() {}
+func (*IntConst) IsDIExpressionField() {}
 
-// TODO: Figure out how to handle DIExpressionField interface.
-//func (DwarfOp) isDIExpressionField()   {}
+//func (DwarfOp) IsDIExpressionField()   {}
 
 // ~~~ [ DIGlobalVariableExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,7 +1,7 @@
 // Package value provides a definition of LLVM IR values.
 package value
 
-import "github.com/mewmew/l/ir/types"
+import "github.com/mewmew/l/ll/types"
 
 // Value is an LLVM IR value.
 type Value interface {
