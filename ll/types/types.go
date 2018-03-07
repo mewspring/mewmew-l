@@ -43,8 +43,11 @@ func (*VoidType) String() string {
 
 // FuncType is an LLVM IR function type.
 type FuncType struct {
-	RetType  Type
-	Params   []*Param
+	// Return type.
+	RetType Type
+	// Function parameters.
+	Params []*Param
+	// Variable number of function arguments.
 	Variadic bool
 }
 
@@ -91,11 +94,14 @@ func (t *FuncType) String() string {
 	return buf.String()
 }
 
-// Param is a function parameter.
+// A Param is an LLVM IR function parameter.
 type Param struct {
-	Typ   Type
+	// Parameter type.
+	Typ Type
+	// Parameter attributes.
 	Attrs []ll.ParamAttribute
-	Name  string // LocalIdent; or empty if unnamed.
+	// Parameter name (LocalIdent); or empty if unnamed.
+	Name string
 }
 
 // Type returns the type of the function parameter.
@@ -126,6 +132,7 @@ func (param *Param) String() string {
 
 // IntType is an LLVM IR integer type.
 type IntType struct {
+	// Integer size in number of bits.
 	BitSize int64
 }
 
@@ -150,6 +157,7 @@ func (t *IntType) String() string {
 
 // FloatType is an LLVM IR floating-point type.
 type FloatType struct {
+	// Floating-point kind.
 	Kind FloatKind
 }
 
@@ -210,8 +218,10 @@ func (t *MMXType) String() string {
 
 // PointerType is an LLVM IR pointer type.
 type PointerType struct {
-	ElemType  Type
-	AddrSpace ll.AddrSpace // zero value if not present
+	// Element type.
+	ElemType Type
+	// Address space; or zero value for default address space.
+	AddrSpace ll.AddrSpace
 }
 
 // Equal reports whether t and u are of equal type.
@@ -244,7 +254,9 @@ func (t *PointerType) String() string {
 
 // VectorType is an LLVM IR vector type.
 type VectorType struct {
-	Len      int64
+	// Vector length.
+	Len int64
+	// Element type.
 	ElemType Type
 }
 
@@ -338,7 +350,9 @@ func (t *MetadataType) String() string {
 
 // ArrayType is an LLVM IR array type.
 type ArrayType struct {
-	Len      int64
+	// Array length.
+	Len int64
+	// Element type.
 	ElemType Type
 }
 
@@ -366,8 +380,12 @@ func (t *ArrayType) String() string {
 
 // StructType is an LLVM IR structure type.
 type StructType struct {
+	// Packed memory layout.
 	Packed bool
+	// Struct fields.
 	Fields []Type
+	// Opaque struct type.
+	Opaque bool
 }
 
 // Equal reports whether t and u are of equal type.
@@ -399,8 +417,12 @@ func (t *StructType) Equal(u Type) bool {
 
 // String returns the string representation of the structure type.
 func (t *StructType) String() string {
+	// "opaque"
 	// "{" Types "}"
 	// "<" "{" Types "}" ">"
+	if t.Opaque {
+		return "opaque"
+	}
 	buf := &strings.Builder{}
 	if t.Packed {
 		buf.WriteString("<")
@@ -419,26 +441,14 @@ func (t *StructType) String() string {
 	return buf.String()
 }
 
-// OpaqueType is an LLVM IR opaque structure type.
-type OpaqueType struct{}
-
-// Equal reports whether t and u are of equal type.
-func (*OpaqueType) Equal(u Type) bool {
-	panic(fmt.Errorf("invalid call to Equal; cannot compare opaque struct type against any type; compared against %v", u))
-}
-
-// String returns the string representation of the opaque structure type.
-func (*OpaqueType) String() string {
-	// "opaque"
-	return "opaque"
-}
-
 // --- [ Named Types ] ---------------------------------------------------------
 
 // NamedType is an LLVM IR named type.
 type NamedType struct {
-	Name string // LocalIdent
-	Def  Type
+	// Type name (LocalIdent).
+	Name string
+	// Type definition.
+	Def Type
 }
 
 // Equal reports whether t and u are of equal type.
