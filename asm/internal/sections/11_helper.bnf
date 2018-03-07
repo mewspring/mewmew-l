@@ -151,13 +151,13 @@ ParamAttr
 
 OptAddrSpace
 	: empty
-	<< ll.AddrSpace(0), nil >>
+	<< types.AddrSpace(0), nil >>
 	| AddrSpace
 ;
 
 AddrSpace
 	: "addrspace" "(" int_lit ")"
-	<< ll.AddrSpace(astx.Int($2)), nil >>
+	<< types.AddrSpace(astx.Int($2)), nil >>
 ;
 
 // ref: ParseOptionalAlignment
@@ -629,22 +629,22 @@ Params
 	| "..."
 	<< &astx.Params{Variadic: true}, nil >>
 	| ParamList
-	<< &astx.Params{Params: $0.([]*types.Param)}, nil >>
+	<< &astx.Params{Params: $0.([]*ll.Param)}, nil >>
 	| ParamList "," "..."
-	<< &astx.Params{Params: $0.([]*types.Param), Variadic: true}, nil >>
+	<< &astx.Params{Params: $0.([]*ll.Param), Variadic: true}, nil >>
 ;
 
 ParamList
 	: Param
-	<< []*types.Param{$0.(*types.Param)}, nil >>
+	<< []*ll.Param{$0.(*ll.Param)}, nil >>
 	| ParamList "," Param
-	<< append($0.([]*types.Param), $2.(*types.Param)), nil >>
+	<< append($0.([]*ll.Param), $2.(*ll.Param)), nil >>
 ;
 
 Param
 	: Type ParamAttrs
-	<< &types.Param{Typ: $0.(types.Type), Attrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ll.Param{Typ: $0.(types.Type), Attrs: $1.([]ll.ParamAttribute)}, nil >>
 	| Type ParamAttrs LocalIdent
-	<< &types.Param{Typ: $0.(types.Type), Name: $2.(*ast.LocalIdent).Ident, Attrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ll.Param{Typ: $0.(types.Type), Name: astx.LocalIdent($2), Attrs: $1.([]ll.ParamAttribute)}, nil >>
 ;
 

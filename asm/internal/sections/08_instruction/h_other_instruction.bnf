@@ -48,7 +48,7 @@ IncList
 
 Inc
 	: "[" Value "," LocalIdent "]"
-	<< &ast.Incoming{X: $1.(ast.Value), Pred: $3.(*ast.LocalIdent)}, nil >>
+	<< &ast.Incoming{X: $1.(value.Value), Pred: &ir.BasicBlock{Name: astx.LocalIdent($3)}}, nil >>
 ;
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +81,7 @@ SelectInst
 
 CallInst
 	: OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
-	<< &ast.CallInst{Tail: $0.(ll.Tail), FastMathFlags: $2.([]ll.FastMathFlag), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Callee: $6.(ast.Value), Args: $8.([]ast.Argument), FuncAttrs: $10.([]ll.FuncAttribute), OperandBundles: $11.([]*ast.OperandBundle), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.CallInst{Tail: $0.(ll.Tail), FastMathFlags: $2.([]ll.FastMathFlag), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Callee: $6.(value.Value), Args: $8.([]ast.Argument), FuncAttrs: $10.([]ll.FuncAttribute), OperandBundles: $11.([]*ast.OperandBundle), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptTail

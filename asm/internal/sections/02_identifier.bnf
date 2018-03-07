@@ -4,21 +4,21 @@
 
 GlobalIdent
 	: global_ident
-	<< &ast.GlobalIdent{Ident: astx.String($0)}, nil >>
+	<< &ast.GlobalIdent{Name: astx.String($0)}, nil >>
 ;
 
 // --- [ Local Identifiers ] ---------------------------------------------------
 
 LocalIdent
 	: local_ident
-	<< &ast.LocalIdent{Ident: astx.String($0)}, nil >>
+	<< &ast.LocalIdent{Name: astx.String($0)}, nil >>
 ;
 
 // --- [ Label Identifiers ] ---------------------------------------------------
 
 LabelIdent
 	: label_ident
-	<< &ast.LabelIdent{Ident: astx.String($0)}, nil >>
+	<< &ast.LabelIdent{Name: astx.String($0)}, nil >>
 ;
 
 // --- [ Attribute Group Identifiers ] -----------------------------------------

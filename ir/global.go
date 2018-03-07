@@ -18,7 +18,7 @@ type Global struct {
 	DLLStorageClass       ll.DLLStorageClass // zero value if not present
 	ThreadLocal           *ll.ThreadLocal    // nil if not present
 	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
-	AddrSpace             ll.AddrSpace       // zero value if not present
+	AddrSpace             types.AddrSpace    // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Typ                   *types.PointerType

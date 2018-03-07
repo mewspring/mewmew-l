@@ -25,13 +25,13 @@ AllocaInst
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
 	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), AddrSpace: $5.(ll.AddrSpace), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), AddrSpace: $5.(types.AddrSpace), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), AddrSpace: $7.(ll.AddrSpace), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), AddrSpace: $7.(types.AddrSpace), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), AddrSpace: $8.(ll.AddrSpace), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), AddrSpace: $8.(types.AddrSpace), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), AddrSpace: $10.(ll.AddrSpace), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), AddrSpace: $10.(types.AddrSpace), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptInAlloca

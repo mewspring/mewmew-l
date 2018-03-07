@@ -6,39 +6,39 @@ package ast
 
 // A GlobalIdent is a global identifier (e.g. @foo, @42).
 type GlobalIdent struct {
-	Ident string
+	Name string
 }
 
 // String returns the string representation of the global identifier.
 func (i *GlobalIdent) String() string {
 	// global_ident
-	return i.Ident
+	return i.Name
 }
 
 // --- [ Local Identifiers ] ---------------------------------------------------
 
 // A LocalIdent is a local identifier (e.g. %foo, %42).
 type LocalIdent struct {
-	Ident string
+	Name string
 }
 
 // String returns the string representation of the local identifier.
 func (i *LocalIdent) String() string {
 	// local_ident
-	return i.Ident
+	return i.Name
 }
 
 // --- [ Label Identifiers ] ---------------------------------------------------
 
 // A LabelIdent is a label identifier (e.g. foo:, 42:).
 type LabelIdent struct {
-	Ident string
+	Name string
 }
 
 // String returns the string representation of the label identifier.
 func (i *LabelIdent) String() string {
 	// label_ident
-	return i.Ident
+	return i.Name
 }
 
 // --- [ Attribute Group Identifiers ] -----------------------------------------

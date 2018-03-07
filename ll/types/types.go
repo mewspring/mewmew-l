@@ -4,8 +4,6 @@ package types
 import (
 	"fmt"
 	"strings"
-
-	"github.com/mewmew/l/ll"
 )
 
 // === [ Types ] ===============================================================
@@ -46,7 +44,7 @@ type FuncType struct {
 	// Return type.
 	RetType Type
 	// Function parameters.
-	Params []*Param
+	Params []Type
 	// Variable number of function arguments.
 	Variadic bool
 }
@@ -62,7 +60,7 @@ func (t *FuncType) Equal(u Type) bool {
 			return false
 		}
 		for i := range t.Params {
-			if !t.Params[i].Typ.Equal(u.Params[i].Typ) {
+			if !t.Params[i].Equal(u.Params[i]) {
 				return false
 			}
 		}
@@ -82,7 +80,7 @@ func (t *FuncType) String() string {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		buf.WriteString(param.Typ.String())
+		buf.WriteString(param.String())
 	}
 	if t.Variadic {
 		if len(t.Params) > 0 {
@@ -91,40 +89,6 @@ func (t *FuncType) String() string {
 		buf.WriteString("...")
 	}
 	buf.WriteString(")")
-	return buf.String()
-}
-
-// A Param is an LLVM IR function parameter.
-type Param struct {
-	// Parameter type.
-	Typ Type
-	// Parameter attributes.
-	Attrs []ll.ParamAttribute
-	// Parameter name (LocalIdent); or empty if unnamed.
-	Name string
-}
-
-// Type returns the type of the function parameter.
-func (p *Param) Type() Type {
-	return p.Typ
-}
-
-// Ident returns the identifier associated with the function parameter.
-func (p *Param) Ident() string {
-	return p.Name
-}
-
-// String returns the string representation of the function parameter.
-func (param *Param) String() string {
-	// Type ParamAttrs OptLocalIdent
-	buf := &strings.Builder{}
-	buf.WriteString(param.Typ.String())
-	for _, attr := range param.Attrs {
-		fmt.Fprintf(buf, " %v", attr)
-	}
-	if len(param.Name) > 0 {
-		fmt.Fprintf(buf, " %v", param.Name)
-	}
 	return buf.String()
 }
 
@@ -221,7 +185,7 @@ type PointerType struct {
 	// Element type.
 	ElemType Type
 	// Address space; or zero value for default address space.
-	AddrSpace ll.AddrSpace
+	AddrSpace AddrSpace
 }
 
 // Equal reports whether t and u are of equal type.
@@ -248,6 +212,15 @@ func (t *PointerType) String() string {
 	}
 	buf.WriteString("*")
 	return buf.String()
+}
+
+// AddrSpace is an LLVM IR pointer type address space.
+type AddrSpace int64
+
+// String returns the string representation of the pointer type address space.
+func (a AddrSpace) String() string {
+	// "addrspace" "(" int_lit ")"
+	return fmt.Sprintf("addrspace(%d)", int64(a))
 }
 
 // --- [ Vector Types ] --------------------------------------------------------

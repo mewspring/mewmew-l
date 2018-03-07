@@ -7,16 +7,8 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ll/types"
 )
-
-// AddrSpace is an LLVM IR pointer type address space.
-type AddrSpace int64
-
-// String returns the string representation of the pointer type address space.
-func (a AddrSpace) String() string {
-	// "addrspace" "(" int_lit ")"
-	return fmt.Sprintf("addrspace(%d)", int64(a))
-}
 
 // Alignment specifies an alignment attribute,
 type Alignment struct {
@@ -833,6 +825,17 @@ func (v *InlineAsm) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the inline assembly expression.
+func (i *InlineAsm) Type() types.Type {
+	// TODO: Figure out how to handle the type of inline assembly expressions.
+	panic("ast.InlineAsm.Type: unintended use of Type; type resolution not complete")
+}
+
+// Ident returns the identifier associated with the inline assembly expression.
+func (i *InlineAsm) Ident() string {
+	return i.String()
+}
+
 //go:generate stringer -linecomment -type IPred
 
 // IPred is an integer comparison predicate.
@@ -896,6 +899,40 @@ const (
 	OverflowFlagNSW OverflowFlag = iota // nsw
 	OverflowFlagNUW                     // nuw
 )
+
+// A Param is an LLVM IR function parameter.
+type Param struct {
+	// Parameter type.
+	Typ types.Type
+	// Parameter attributes.
+	Attrs []ParamAttribute
+	// Parameter name (LocalIdent); or empty if unnamed.
+	Name string
+}
+
+// Type returns the type of the function parameter.
+func (p *Param) Type() types.Type {
+	return p.Typ
+}
+
+// Ident returns the identifier associated with the function parameter.
+func (p *Param) Ident() string {
+	return p.Name
+}
+
+// String returns the string representation of the function parameter.
+func (param *Param) String() string {
+	// Type ParamAttrs OptLocalIdent
+	buf := &strings.Builder{}
+	buf.WriteString(param.Typ.String())
+	for _, attr := range param.Attrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	if len(param.Name) > 0 {
+		fmt.Fprintf(buf, " %v", param.Name)
+	}
+	return buf.String()
+}
 
 //go:generate stringer -linecomment -type ParamAttr
 

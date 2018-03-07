@@ -136,7 +136,7 @@ type Global struct {
 	DLLStorageClass       ll.DLLStorageClass // zero value if not present
 	ThreadLocal           *ll.ThreadLocal    // nil if not present
 	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
-	AddrSpace             ll.AddrSpace       // zero value if not present
+	AddrSpace             types.AddrSpace    // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Type                  types.Type
@@ -295,7 +295,7 @@ type FunctionHeader struct {
 	ReturnAttrs     []ll.ReturnAttribute
 	RetType         types.Type
 	Name            *GlobalIdent
-	Params          []*types.Param
+	Params          []*ll.Param
 	Variadic        bool
 	UnnamedAddr     ll.UnnamedAddr
 	FuncAttrs       []ll.FuncAttribute

@@ -68,7 +68,7 @@ func (m *Module) resolveGlobals() {
 
 // resolveGlobal resolves the given global variable.
 func (m *Module) resolveGlobal(old *ast.Global, g *ir.Global) {
-	g.Name = old.Name.Ident
+	g.Name = old.Name.Name
 	g.Linkage = old.Linkage
 	g.Preemption = old.Preemption
 	g.Visibility = old.Visibility
@@ -154,17 +154,17 @@ func (m *Module) irFuncAttr(old ll.FuncAttribute) ll.FuncAttribute {
 // irGlobal returns the LLVM IR global corresponding to the given AST global
 // identifier.
 func (m *Module) irGlobal(old *ast.GlobalIdent) constant.Constant {
-	if g, ok := m.globals[old.Ident]; ok {
+	if g, ok := m.globals[old.Name]; ok {
 		return g
 	}
-	//if alias, ok := m.aliases[old.Ident]; ok {
+	//if alias, ok := m.aliases[old.Name]; ok {
 	//	return alias
 	//}
-	//if ifunc, ok := m.ifuncs[old.Ident]; ok {
+	//if ifunc, ok := m.ifuncs[old.Name]; ok {
 	//	return ifunc
 	//}
-	if f, ok := m.functions[old.Ident]; ok {
+	if f, ok := m.functions[old.Name]; ok {
 		return f
 	}
-	panic(fmt.Errorf("unable to locate global %q", old.Ident))
+	panic(fmt.Errorf("unable to locate global %q", old.Name))
 }

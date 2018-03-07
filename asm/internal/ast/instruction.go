@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
@@ -542,9 +543,9 @@ type AllocaInst struct {
 	InAlloca   bool
 	SwiftError bool
 	ElemType   types.Type
-	NElems     value.Value   // nil if not present
-	Alignment  *ll.Alignment // nil if not present
-	AddrSpace  ll.AddrSpace  // zero if not present
+	NElems     value.Value     // nil if not present
+	Alignment  *ll.Alignment   // nil if not present
+	AddrSpace  types.AddrSpace // zero if not present
 	Metadata   []*metadata.MetadataAttachment
 }
 
@@ -1119,14 +1120,25 @@ func (inst *PhiInst) String() string {
 
 // Incoming is an incoming value of a phi instruction.
 type Incoming struct {
-	X    Value
-	Pred *LocalIdent
+	// Note, the type of X is not present in the AST of the incoming value but
+	// rather in the result type of the phi instruction. A nil Type() is used to
+	// identify AST incoming values.
+
+	// Incoming value.
+	X value.Value
+
+	// Note, Pred is of type *ast.LocalIdent in the AST. Stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	// Predecessor basic block.
+	Pred *ir.BasicBlock
 }
 
 // String returns the string representation of the incoming value.
 func (inc *Incoming) String() string {
 	// "[" Value "," LocalIdent "]"
-	return fmt.Sprintf("[ %v, %v ]", inc.X, inc.Pred)
+	return fmt.Sprintf("[ %v, %v ]", inc.X.Ident(), inc.Pred)
 }
 
 // ~~~[ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1153,12 +1165,18 @@ func (inst *SelectInst) String() string {
 
 // CallInst is an LLVM IR call instruction.
 type CallInst struct {
-	Tail           ll.Tail
-	FastMathFlags  []ll.FastMathFlag
-	CallingConv    ll.CallingConv
-	ReturnAttrs    []ll.ReturnAttribute
-	RetType        types.Type
-	Callee         Value
+	Tail          ll.Tail
+	FastMathFlags []ll.FastMathFlag
+	CallingConv   ll.CallingConv
+	ReturnAttrs   []ll.ReturnAttribute
+	RetType       types.Type
+
+	// Note, the type of Callee is not present in the AST of the call
+	// instruction, but rather it has to be inferred by looking up the global or
+	// local symbol if possible, and otherwise resort to the result type of the
+	// call instruction. A nil Type() is used to identify AST callee values.
+
+	Callee         value.Value
 	Args           []Argument
 	FuncAttrs      []ll.FuncAttribute
 	OperandBundles []*OperandBundle
@@ -1259,6 +1277,7 @@ type Clause struct {
 	X     value.Value
 }
 
+// String returns the string representation of the exception clause.
 func (clause *Clause) String() string {
 	// "catch" Type Value
 	// "filter" Type ArrayConst
@@ -1276,8 +1295,13 @@ func (clause *Clause) String() string {
 
 // CatchPadInst is an LLVM IR catchpad instruction.
 type CatchPadInst struct {
-	Scope    *LocalIdent
-	Args     []Argument
+	// Note, Scope is of type *ast.LocalIdent in the AST.
+
+	// Exception scope.
+	Scope value.Value
+	// Exception arguments.
+	Args []Argument
+	// Metadata attachments.
 	Metadata []*metadata.MetadataAttachment
 }
 

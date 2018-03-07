@@ -22,3 +22,5 @@ func (v *ValueInstruction) String() string {
 	}
 	return fmt.Sprintf("%v = %v", v.Name, v.Inst)
 }
+
+// TODO: Add CallInst

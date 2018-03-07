@@ -56,22 +56,22 @@ func (v *TypeValue) Ident() string {
 // ExceptionScope is an exception scope.
 type ExceptionScope interface {
 	fmt.Stringer
-	// isExceptionScope ensures that only exception scopes can be assigned to the
+	// IsExceptionScope ensures that only exception scopes can be assigned to the
 	// ast.ExceptionScope interface.
-	isExceptionScope()
+	IsExceptionScope()
 }
 
-// isExceptionScope ensures that only exception scopes can be assigned to the
+// IsExceptionScope ensures that only exception scopes can be assigned to the
 // ast.ExceptionScope interface.
-func (*NoneConst) isExceptionScope()  {}
-func (*LocalIdent) isExceptionScope() {}
+func (*NoneConst) IsExceptionScope()  {}
+func (*LocalIdent) IsExceptionScope() {}
 
 // Argument is a function call argument.
 type Argument interface {
 	fmt.Stringer
-	// isArgument ensures that only function call arguments can be assigned to
+	// IsArgument ensures that only function call arguments can be assigned to
 	// the ast.Argument interface.
-	isArgument()
+	IsArgument()
 }
 
 // Arg is a function call argument.
@@ -105,11 +105,11 @@ func (a *MetadataValue) String() string {
 	return fmt.Sprintf("metadata %v", a.Metadata)
 }
 
-// isArgument ensures that only function call arguments can be assigned to the
+// IsArgument ensures that only function call arguments can be assigned to the
 // ast.Argument interface.
-func (*Arg) isArgument()           {} // used as function argument
-func (*TypeValue) isArgument()     {} // used as exception argument
-func (*MetadataValue) isArgument() {}
+func (*Arg) IsArgument()           {} // used as function argument
+func (*TypeValue) IsArgument()     {} // used as exception argument
+func (*MetadataValue) IsArgument() {}
 
 // OperandBundle is a tagged set of SSA values.
 type OperandBundle struct {

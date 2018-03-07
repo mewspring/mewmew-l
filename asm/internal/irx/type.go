@@ -41,11 +41,8 @@ func (m *Module) irType(old types.Type) types.Type {
 			RetType:  m.irType(old.RetType),
 			Variadic: old.Variadic,
 		}
-		for _, p := range old.Params {
-			param := &types.Param{
-				Typ:  m.irType(p.Typ),
-				Name: p.Name,
-			}
+		for i := range old.Params {
+			param := m.irType(old.Params[i])
 			typ.Params = append(typ.Params, param)
 		}
 		return typ

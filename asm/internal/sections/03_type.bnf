@@ -62,7 +62,7 @@ VoidType
 
 FuncType
 	: Type "(" Params ")"
-	<< &types.FuncType{RetType: $0.(types.Type), Params: $2.(*astx.Params).Params, Variadic: $2.(*astx.Params).Variadic}, nil >>
+	<< &types.FuncType{RetType: $0.(types.Type), Params: astx.ParamTypes($2), Variadic: $2.(*astx.Params).Variadic}, nil >>
 ;
 
 // --- [ Integer Types ] -------------------------------------------------------
@@ -99,7 +99,7 @@ MMXType
 
 PointerType
 	: Type OptAddrSpace "*"
-	<< &types.PointerType{ElemType: $0.(types.Type), AddrSpace: $1.(ll.AddrSpace)}, nil >>
+	<< &types.PointerType{ElemType: $0.(types.Type), AddrSpace: $1.(types.AddrSpace)}, nil >>
 ;
 
 // --- [ Vector Types ] --------------------------------------------------------
@@ -189,6 +189,6 @@ OpaqueType
 
 NamedType
 	: LocalIdent
-	<< &types.NamedType{Name: $0.(*ast.LocalIdent).Ident}, nil >>
+	<< &types.NamedType{Name: astx.LocalIdent($0)}, nil >>
 ;
 

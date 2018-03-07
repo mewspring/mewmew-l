@@ -17,8 +17,19 @@ import (
 
 // Params is a list of optionally variadic function parameters.
 type Params struct {
-	Params   []*types.Param
+	Params   []*ll.Param
 	Variadic bool
+}
+
+// ParamTypes returns the slice of types corresponding to the types of the given
+// function parameters.
+func ParamTypes(params interface{}) []types.Type {
+	var ts []types.Type
+	for _, param := range params.(*Params).Params {
+		t := param.Typ
+		ts = append(ts, t)
+	}
+	return ts
 }
 
 // String returns the string corresponding to the given token.
@@ -34,7 +45,7 @@ func LocalIdent(tok interface{}) string {
 	if ident == nil {
 		return ""
 	}
-	return ident.Ident
+	return ident.Name
 }
 
 // LabelIdent returns the string corresponding to the given label identifier
@@ -44,7 +55,7 @@ func LabelIdent(tok interface{}) string {
 	if ident == nil {
 		return ""
 	}
-	return ident.Ident
+	return ident.Name
 }
 
 // UnquoteString returns the unquoted string corresponding to the given string

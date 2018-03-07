@@ -37,7 +37,7 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 		switch entity := entity.(type) {
 		case *ast.TypeDef:
 			// Type definitions.
-			ident := entity.Name.Ident
+			ident := entity.Name.Name
 			if prev, ok := m.localIdent[ident]; ok {
 				panic(fmt.Errorf("type identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
@@ -51,20 +51,20 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 			m.comdatName[name] = entity
 		case *ast.Global:
 			// Global declarations and definitions.
-			ident := entity.Name.Ident
+			ident := entity.Name.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
 		case *ast.IndirectSymbol:
 			// Indirect symbol definitions.
-			ident := entity.Name.Ident
+			ident := entity.Name.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
 		case *ast.Function:
-			ident := entity.Header.Name.Ident
+			ident := entity.Header.Name.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
