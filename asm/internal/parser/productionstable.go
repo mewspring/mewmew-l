@@ -5,6 +5,7 @@ package parser
 import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/asm/internal/astx"
+	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
@@ -1137,13 +1138,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionBody : "{" BasicBlockList UseListOrders "}"	<< &ast.FunctionBody{Blocks: X[1].([]*ast.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil >>`,
+		String: `FunctionBody : "{" BasicBlockList UseListOrders "}"	<< &ast.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil >>`,
 		Id:         "FunctionBody",
 		NTType:     32,
 		Index:      111,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FunctionBody{Blocks: X[1].([]*ast.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil
+			return &ast.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3097,33 +3098,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BasicBlockList : BasicBlock	<< []*ast.BasicBlock{X[0].(*ast.BasicBlock)}, nil >>`,
+		String: `BasicBlockList : BasicBlock	<< []*ir.BasicBlock{X[0].(*ir.BasicBlock)}, nil >>`,
 		Id:         "BasicBlockList",
 		NTType:     136,
 		Index:      307,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.BasicBlock{X[0].(*ast.BasicBlock)}, nil
+			return []*ir.BasicBlock{X[0].(*ir.BasicBlock)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BasicBlockList : BasicBlockList BasicBlock	<< append(X[0].([]*ast.BasicBlock), X[1].(*ast.BasicBlock)), nil >>`,
+		String: `BasicBlockList : BasicBlockList BasicBlock	<< append(X[0].([]*ir.BasicBlock), X[1].(*ir.BasicBlock)), nil >>`,
 		Id:         "BasicBlockList",
 		NTType:     136,
 		Index:      308,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.BasicBlock), X[1].(*ast.BasicBlock)), nil
+			return append(X[0].([]*ir.BasicBlock), X[1].(*ir.BasicBlock)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `BasicBlock : OptLabelIdent Instructions Terminator	<< &ast.BasicBlock{Name: X[0].(*ast.LabelIdent), Insts: X[1].([]ast.Instruction), Term: X[2].(ast.Terminator)}, nil >>`,
+		String: `BasicBlock : OptLabelIdent Instructions Terminator	<< &ir.BasicBlock{Name: astx.LabelIdent(X[0]), Insts: X[1].([]ir.Instruction), Term: X[2].(ir.Terminator)}, nil >>`,
 		Id:         "BasicBlock",
 		NTType:     137,
 		Index:      309,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BasicBlock{Name: X[0].(*ast.LabelIdent), Insts: X[1].([]ast.Instruction), Term: X[2].(ast.Terminator)}, nil
+			return &ir.BasicBlock{Name: astx.LabelIdent(X[0]), Insts: X[1].([]ir.Instruction), Term: X[2].(ir.Terminator)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -3147,13 +3148,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Instructions : empty	<< ([]ast.Instruction)(nil), nil >>`,
+		String: `Instructions : empty	<< ([]ir.Instruction)(nil), nil >>`,
 		Id:         "Instructions",
 		NTType:     139,
 		Index:      312,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.Instruction)(nil), nil
+			return ([]ir.Instruction)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -3167,23 +3168,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `InstructionList : Instruction	<< []ast.Instruction{X[0].(ast.Instruction)}, nil >>`,
+		String: `InstructionList : Instruction	<< []ir.Instruction{X[0].(ir.Instruction)}, nil >>`,
 		Id:         "InstructionList",
 		NTType:     140,
 		Index:      314,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.Instruction{X[0].(ast.Instruction)}, nil
+			return []ir.Instruction{X[0].(ir.Instruction)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `InstructionList : InstructionList Instruction	<< append(X[0].([]ast.Instruction), X[1].(ast.Instruction)), nil >>`,
+		String: `InstructionList : InstructionList Instruction	<< append(X[0].([]ir.Instruction), X[1].(ir.Instruction)), nil >>`,
 		Id:         "InstructionList",
 		NTType:     140,
 		Index:      315,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.Instruction), X[1].(ast.Instruction)), nil
+			return append(X[0].([]ir.Instruction), X[1].(ir.Instruction)), nil
 		},
 	},
 	ProdTabEntry{
@@ -3227,23 +3228,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Instruction : LocalIdent "=" ValueInstruction	<< &ast.ValueInstruction{Name: X[0].(*ast.LocalIdent), Inst: X[2].(ast.Instruction)}, nil >>`,
+		String: `Instruction : LocalIdent "=" ValueInstruction	<< &ir.ValueInstruction{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.Instruction)}, nil >>`,
 		Id:         "Instruction",
 		NTType:     141,
 		Index:      320,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ValueInstruction{Name: X[0].(*ast.LocalIdent), Inst: X[2].(ast.Instruction)}, nil
+			return &ir.ValueInstruction{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.Instruction)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Instruction : ValueInstruction	<<  >>`,
+		String: `Instruction : ValueInstruction	<< &ir.ValueInstruction{Inst: X[0].(ir.Instruction)}, nil >>`,
 		Id:         "Instruction",
 		NTType:     141,
 		Index:      321,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
+			return &ir.ValueInstruction{Inst: X[0].(ir.Instruction)}, nil
 		},
 	},
 	ProdTabEntry{

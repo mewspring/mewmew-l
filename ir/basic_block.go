@@ -1,4 +1,4 @@
-package ast
+package ir
 
 import (
 	"fmt"
@@ -8,16 +8,19 @@ import (
 // A BasicBlock is a sequence of non-branching instructions terminated by a
 // branching instruction.
 type BasicBlock struct {
-	Name  *LabelIdent // nil if unnamed
+	// Basic block name (LabelIdent); empty if unnamed.
+	Name string
+	// Instructions of the basic block.
 	Insts []Instruction
-	Term  Terminator
+	// Terminating instruction of the basic block.
+	Term Terminator
 }
 
 // String returns the string representation of the basic block.
 func (block *BasicBlock) String() string {
 	// OptLabelIdent Instructions Terminator
 	buf := &strings.Builder{}
-	if block.Name != nil {
+	if len(block.Name) > 0 {
 		fmt.Fprintf(buf, "%v\n", block.Name)
 	}
 	for _, inst := range block.Insts {

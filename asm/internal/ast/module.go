@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
@@ -371,7 +372,7 @@ func (hdr *FunctionHeader) String() string {
 
 // FunctionBody is an LLVM IR function body.
 type FunctionBody struct {
-	Blocks        []*BasicBlock
+	Blocks        []*ir.BasicBlock
 	UseListOrders []*UseListOrder
 }
 

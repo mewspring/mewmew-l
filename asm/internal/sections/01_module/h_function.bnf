@@ -164,6 +164,6 @@ OptPersonality
 
 FunctionBody
 	: "{" BasicBlockList UseListOrders "}"
-	<< &ast.FunctionBody{Blocks: $1.([]*ast.BasicBlock), UseListOrders: $2.([]*ast.UseListOrder)}, nil >>
+	<< &ast.FunctionBody{Blocks: $1.([]*ir.BasicBlock), UseListOrders: $2.([]*ast.UseListOrder)}, nil >>
 ;
 

@@ -11,14 +11,6 @@ import (
 
 // === [ Terminator ] ==========================================================
 
-// A Terminator is an LLVM IR terminator.
-type Terminator interface {
-	fmt.Stringer
-	// isTerminator ensures that only terminators can be assigned to the
-	// ast.Terminator interface.
-	isTerminator()
-}
-
 // --- [ ret ] -----------------------------------------------------------------
 
 // RetTerm is an LLVM IR ret terminator.
@@ -330,16 +322,16 @@ func (term *UnreachableTerm) String() string {
 
 // ### [ Helper functions ] ####################################################
 
-// isTerminator ensures that only terminators can be assigned to the
+// IsTerminator ensures that only terminators can be assigned to the
 // ast.Terminator interface.
-func (*RetTerm) isTerminator()         {}
-func (*BrTerm) isTerminator()          {}
-func (*CondBrTerm) isTerminator()      {}
-func (*SwitchTerm) isTerminator()      {}
-func (*IndirectBrTerm) isTerminator()  {}
-func (*InvokeTerm) isTerminator()      {}
-func (*ResumeTerm) isTerminator()      {}
-func (*CatchSwitchTerm) isTerminator() {}
-func (*CatchRetTerm) isTerminator()    {}
-func (*CleanupRetTerm) isTerminator()  {}
-func (*UnreachableTerm) isTerminator() {}
+func (*RetTerm) IsTerminator()         {}
+func (*BrTerm) IsTerminator()          {}
+func (*CondBrTerm) IsTerminator()      {}
+func (*SwitchTerm) IsTerminator()      {}
+func (*IndirectBrTerm) IsTerminator()  {}
+func (*InvokeTerm) IsTerminator()      {}
+func (*ResumeTerm) IsTerminator()      {}
+func (*CatchSwitchTerm) IsTerminator() {}
+func (*CatchRetTerm) IsTerminator()    {}
+func (*CleanupRetTerm) IsTerminator()  {}
+func (*UnreachableTerm) IsTerminator() {}

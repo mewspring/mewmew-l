@@ -6,15 +6,15 @@
 
 Instructions
 	: empty
-	<< ([]ast.Instruction)(nil), nil >>
+	<< ([]ir.Instruction)(nil), nil >>
 	| InstructionList
 ;
 
 InstructionList
 	: Instruction
-	<< []ast.Instruction{$0.(ast.Instruction)}, nil >>
+	<< []ir.Instruction{$0.(ir.Instruction)}, nil >>
 	| InstructionList Instruction
-	<< append($0.([]ast.Instruction), $1.(ast.Instruction)), nil >>
+	<< append($0.([]ir.Instruction), $1.(ir.Instruction)), nil >>
 ;
 
 Instruction
@@ -25,8 +25,9 @@ Instruction
 	| AtomicRMWInst
 	// Instructions producing values.
 	| LocalIdent "=" ValueInstruction
-	<< &ast.ValueInstruction{Name: $0.(*ast.LocalIdent), Inst: $2.(ast.Instruction)}, nil >>
+	<< &ir.ValueInstruction{Name: astx.LocalIdent($0), Inst: $2.(ir.Instruction)}, nil >>
 	| ValueInstruction
+	<< &ir.ValueInstruction{Inst: $0.(ir.Instruction)}, nil >>
 ;
 
 ValueInstruction

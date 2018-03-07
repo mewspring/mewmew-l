@@ -9,28 +9,6 @@ import (
 	"github.com/mewmew/l/ll/types"
 )
 
-// === [ Instructions ] ========================================================
-
-// An Instruction is an LLVM IR instruction.
-type Instruction interface {
-	fmt.Stringer
-	// isInstruction ensures that only instructions can be assigned to the
-	// ast.Instruction interface.
-	isInstruction()
-}
-
-// A ValueInstruction assigns the result of an LLVM IR instruction to a name.
-type ValueInstruction struct {
-	Name *LocalIdent
-	Inst Instruction
-}
-
-// String returns a string representation of the instruction.
-func (v *ValueInstruction) String() string {
-	// LocalIdent "=" ValueInstruction
-	return fmt.Sprintf("%v = %v", v.Name, v.Inst)
-}
-
 // --- [ Binary instructions ] -------------------------------------------------
 
 // ~~~[ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1349,61 +1327,60 @@ func (inst *CleanupPadInst) String() string {
 
 // ### [ Helper functions ] ####################################################
 
-// isInstruction ensures that only instructions can be assigned to the
+// IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
-func (*ValueInstruction) isInstruction()   {}
-func (*AddInst) isInstruction()            {}
-func (*FAddInst) isInstruction()           {}
-func (*SubInst) isInstruction()            {}
-func (*FSubInst) isInstruction()           {}
-func (*MulInst) isInstruction()            {}
-func (*FMulInst) isInstruction()           {}
-func (*UDivInst) isInstruction()           {}
-func (*SDivInst) isInstruction()           {}
-func (*FDivInst) isInstruction()           {}
-func (*URemInst) isInstruction()           {}
-func (*SRemInst) isInstruction()           {}
-func (*FRemInst) isInstruction()           {}
-func (*ShlInst) isInstruction()            {}
-func (*LShrInst) isInstruction()           {}
-func (*AShrInst) isInstruction()           {}
-func (*AndInst) isInstruction()            {}
-func (*OrInst) isInstruction()             {}
-func (*XorInst) isInstruction()            {}
-func (*ExtractElementInst) isInstruction() {}
-func (*InsertElementInst) isInstruction()  {}
-func (*ShuffleVectorInst) isInstruction()  {}
-func (*ExtractValueInst) isInstruction()   {}
-func (*InsertValueInst) isInstruction()    {}
-func (*AllocaInst) isInstruction()         {}
-func (*LoadInst) isInstruction()           {}
-func (*StoreInst) isInstruction()          {}
-func (*FenceInst) isInstruction()          {}
-func (*CmpXchgInst) isInstruction()        {}
-func (*AtomicRMWInst) isInstruction()      {}
-func (*GetElementPtrInst) isInstruction()  {}
-func (*TruncInst) isInstruction()          {}
-func (*ZExtInst) isInstruction()           {}
-func (*SExtInst) isInstruction()           {}
-func (*FPTruncInst) isInstruction()        {}
-func (*FPExtInst) isInstruction()          {}
-func (*FPToUIInst) isInstruction()         {}
-func (*FPToSIInst) isInstruction()         {}
-func (*UIToFPInst) isInstruction()         {}
-func (*SIToFPInst) isInstruction()         {}
-func (*PtrToIntInst) isInstruction()       {}
-func (*IntToPtrInst) isInstruction()       {}
-func (*BitCastInst) isInstruction()        {}
-func (*AddrSpaceCastInst) isInstruction()  {}
-func (*ICmpInst) isInstruction()           {}
-func (*FCmpInst) isInstruction()           {}
-func (*PhiInst) isInstruction()            {}
-func (*SelectInst) isInstruction()         {}
-func (*CallInst) isInstruction()           {}
-func (*VAArgInst) isInstruction()          {}
-func (*LandingPadInst) isInstruction()     {}
-func (*CatchPadInst) isInstruction()       {}
-func (*CleanupPadInst) isInstruction()     {}
+func (*AddInst) IsInstruction()            {}
+func (*FAddInst) IsInstruction()           {}
+func (*SubInst) IsInstruction()            {}
+func (*FSubInst) IsInstruction()           {}
+func (*MulInst) IsInstruction()            {}
+func (*FMulInst) IsInstruction()           {}
+func (*UDivInst) IsInstruction()           {}
+func (*SDivInst) IsInstruction()           {}
+func (*FDivInst) IsInstruction()           {}
+func (*URemInst) IsInstruction()           {}
+func (*SRemInst) IsInstruction()           {}
+func (*FRemInst) IsInstruction()           {}
+func (*ShlInst) IsInstruction()            {}
+func (*LShrInst) IsInstruction()           {}
+func (*AShrInst) IsInstruction()           {}
+func (*AndInst) IsInstruction()            {}
+func (*OrInst) IsInstruction()             {}
+func (*XorInst) IsInstruction()            {}
+func (*ExtractElementInst) IsInstruction() {}
+func (*InsertElementInst) IsInstruction()  {}
+func (*ShuffleVectorInst) IsInstruction()  {}
+func (*ExtractValueInst) IsInstruction()   {}
+func (*InsertValueInst) IsInstruction()    {}
+func (*AllocaInst) IsInstruction()         {}
+func (*LoadInst) IsInstruction()           {}
+func (*StoreInst) IsInstruction()          {}
+func (*FenceInst) IsInstruction()          {}
+func (*CmpXchgInst) IsInstruction()        {}
+func (*AtomicRMWInst) IsInstruction()      {}
+func (*GetElementPtrInst) IsInstruction()  {}
+func (*TruncInst) IsInstruction()          {}
+func (*ZExtInst) IsInstruction()           {}
+func (*SExtInst) IsInstruction()           {}
+func (*FPTruncInst) IsInstruction()        {}
+func (*FPExtInst) IsInstruction()          {}
+func (*FPToUIInst) IsInstruction()         {}
+func (*FPToSIInst) IsInstruction()         {}
+func (*UIToFPInst) IsInstruction()         {}
+func (*SIToFPInst) IsInstruction()         {}
+func (*PtrToIntInst) IsInstruction()       {}
+func (*IntToPtrInst) IsInstruction()       {}
+func (*BitCastInst) IsInstruction()        {}
+func (*AddrSpaceCastInst) IsInstruction()  {}
+func (*ICmpInst) IsInstruction()           {}
+func (*FCmpInst) IsInstruction()           {}
+func (*PhiInst) IsInstruction()            {}
+func (*SelectInst) IsInstruction()         {}
+func (*CallInst) IsInstruction()           {}
+func (*VAArgInst) IsInstruction()          {}
+func (*LandingPadInst) IsInstruction()     {}
+func (*CatchPadInst) IsInstruction()       {}
+func (*CleanupPadInst) IsInstruction()     {}
 
 // ___ [ Function Attribute ] __________________________________________________
 

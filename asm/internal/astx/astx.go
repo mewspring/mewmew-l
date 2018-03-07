@@ -27,6 +27,26 @@ func String(tok interface{}) string {
 	return string(s.Lit)
 }
 
+// LocalIdent returns the string corresponding to the given local identifier
+// token. A nil local identifier corresponds to the empty string.
+func LocalIdent(tok interface{}) string {
+	ident := tok.(*ast.LocalIdent)
+	if ident == nil {
+		return ""
+	}
+	return ident.Ident
+}
+
+// LabelIdent returns the string corresponding to the given label identifier
+// token. A nil label identifier corresponds to the empty string.
+func LabelIdent(tok interface{}) string {
+	ident := tok.(*ast.LabelIdent)
+	if ident == nil {
+		return ""
+	}
+	return ident.Ident
+}
+
 // UnquoteString returns the unquoted string corresponding to the given string
 // literal.
 func UnquoteString(tok interface{}) string {
