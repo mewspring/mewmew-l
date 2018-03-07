@@ -140,7 +140,7 @@ type Global struct {
 	ExternallyInitialized bool
 	Immutable             bool
 	Type                  types.Type
-	Init                  Constant // nil if declaration
+	Init                  ir.Constant // nil if declaration
 	GlobalAttrs           []ll.GlobalAttribute
 	FuncAttrs             []ll.FuncAttribute
 }
@@ -302,9 +302,9 @@ type FunctionHeader struct {
 	Section         *ll.Section // nil if not present
 	Comdat          *ll.Comdat  // nil if not present
 	GC              string      // empty if not present
-	Prefix          *TypeConst  // nil if not present
-	Prologue        *TypeConst  // nil if not present
-	Personality     *TypeConst  // nil if not present
+	Prefix          ir.Constant // *TypeConst; nil if not present
+	Prologue        ir.Constant // *TypeConst; nil if not present
+	Personality     ir.Constant // *TypeConst; nil if not present
 }
 
 // String returns the string representation of the function header.

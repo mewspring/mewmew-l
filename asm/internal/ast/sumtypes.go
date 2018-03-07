@@ -1,10 +1,12 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
+)
 
-// IsMDField ensures that only metadata fields can be assigned to the
-// ast.MDField interface.
-func (*NullConst) IsMDField() {}
+// IsValue ensures that only values can be assigned to the ast.Value interface.
+func (*IntConst) IsValue()   {}
+func (*FloatConst) IsValue() {}
 
 // Metadata
 func (*TypeValue) IsMDField() {}
@@ -132,9 +134,6 @@ type IntOrMDField interface {
 // IsIntOrMDField ensures that only intergers and metadata fields can be
 // assigned to the ast.IntOrMDField interface.
 func (*IntConst) IsIntOrMDField() {}
-
-// MDField
-func (*NullConst) IsIntOrMDField() {}
 
 // Metadata
 func (*TypeValue) IsIntOrMDField() {}

@@ -1,13 +1,12 @@
 package irx
 
 import (
-	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/constant"
 )
 
-func (m *Module) irBitCastExpr(old *ast.BitCastExpr) *constant.BitCastExpr {
+func (m *Module) irBitCastExpr(old *constant.BitCastExpr) *constant.BitCastExpr {
 	return &constant.BitCastExpr{
-		From: m.irTypeConst(old.From),
+		From: m.irConstant(old.From),
 		To:   m.irType(old.To),
 	}
 }

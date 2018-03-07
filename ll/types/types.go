@@ -8,6 +8,24 @@ import (
 
 // === [ Types ] ===============================================================
 
+// Convenience types.
+var (
+	// i1 type.
+	I1 = &IntType{BitSize: 1}
+	// i8 type.
+	I8 = &IntType{BitSize: 8}
+	// i16 type.
+	I16 = &IntType{BitSize: 16}
+	// i32 type.
+	I32 = &IntType{BitSize: 32}
+	// i64 type.
+	I64 = &IntType{BitSize: 64}
+	// token type.
+	Token = &TokenType{}
+	// i8* type
+	I8Ptr = &PointerType{ElemType: I8}
+)
+
 // Type is an LLVM IR type.
 type Type interface {
 	fmt.Stringer
@@ -474,4 +492,25 @@ func (t *NamedType) Equal(u Type) bool {
 func (t *NamedType) String() string {
 	// LocalIdent
 	return t.Name
+}
+
+// ### [ Helper functions ] ####################################################
+
+// IsPointer reports whether the given type is a pointer type.
+func IsPointer(t Type) bool {
+	tname := make(map[string]bool)
+	for {
+		switch u := t.(type) {
+		case *PointerType:
+			return true
+		case *NamedType:
+			if tname[u.Name] {
+				panic(fmt.Errorf("cycle detected in named type %q", u.Name))
+			}
+			tname[u.Name] = true
+			t = u.Def
+		default:
+			return false
+		}
+	}
 }

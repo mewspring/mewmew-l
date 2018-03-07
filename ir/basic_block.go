@@ -40,8 +40,7 @@ func (block *BasicBlock) Ident() string {
 	return block.Name
 }
 
-// Def returns the LLVM syntax representation of the definition of the basic
-// block.
+// Def returns the LLVM syntax representation of the basic block definition.
 func (block *BasicBlock) Def() string {
 	// OptLabelIdent Instructions Terminator
 	buf := &strings.Builder{}

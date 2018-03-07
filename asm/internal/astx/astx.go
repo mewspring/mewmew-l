@@ -87,7 +87,19 @@ func TypeValue(typ, value interface{}) *ast.TypeValue {
 func TypeConst(typ, val interface{}) *ast.TypeConst {
 	return &ast.TypeConst{
 		Typ:   typ.(types.Type),
-		Const: val.(ast.Constant),
+		Const: val.(ir.Constant),
+	}
+}
+
+// OptConstant returns a constant based on the given optional constant.
+func OptConstant(c interface{}) ir.Constant {
+	switch c := c.(type) {
+	case *ast.TypeConst:
+		return c
+	case nil:
+		return nil
+	default:
+		panic(fmt.Errorf("support for constant type %d not yet implemented", c))
 	}
 }
 

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -23,13 +22,28 @@ type Global struct {
 	Immutable             bool
 	Typ                   *types.PointerType
 	ContentType           types.Type
-	Init                  constant.Constant // nil if declaration
+	Init                  Constant // nil if declaration
 	GlobalAttrs           []ll.GlobalAttribute
 	FuncAttrs             []ll.FuncAttribute
 }
 
 // String returns a string representation of the global variable.
 func (g *Global) String() string {
+	return fmt.Sprintf("%v %v", g.Type(), g.Ident())
+}
+
+// Type returns the type of the global variable.
+func (g *Global) Type() types.Type {
+	return g.Typ
+}
+
+// Ident returns the identifier associated with the global variable.
+func (g *Global) Ident() string {
+	return g.Name
+}
+
+// Def returns the LLVM syntax representation of the global variable definition.
+func (g *Global) Def() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility
 	// OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace
 	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
@@ -76,17 +90,3 @@ func (g *Global) String() string {
 	}
 	return buf.String()
 }
-
-// Type returns the type of the global variable.
-func (g *Global) Type() types.Type {
-	return g.Typ
-}
-
-// Ident returns the identifier associated with the global variable.
-func (g *Global) Ident() string {
-	return g.Name
-}
-
-// IsConstant ensures that only constants can be assigned to the
-// constant.Constant interface.
-func (*Global) IsConstant() {}

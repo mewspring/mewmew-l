@@ -5,7 +5,6 @@ import (
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
-	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
@@ -153,7 +152,7 @@ func (m *Module) irFuncAttr(old ll.FuncAttribute) ll.FuncAttribute {
 
 // irGlobal returns the LLVM IR global corresponding to the given AST global
 // identifier.
-func (m *Module) irGlobal(old *ast.GlobalIdent) constant.Constant {
+func (m *Module) irGlobal(old *ast.GlobalIdent) ir.Constant {
 	if g, ok := m.globals[old.Name]; ok {
 		return g
 	}

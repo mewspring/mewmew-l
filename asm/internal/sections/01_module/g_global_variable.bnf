@@ -40,7 +40,7 @@ GlobalDecl
 
 GlobalDef
 	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(types.Type), Init: $12.(ast.Constant), GlobalAttrs: $13.([]ll.GlobalAttribute), FuncAttrs: $14.([]ll.FuncAttribute)}, nil >>
+	<< &ast.Global{Name: $0.(*ast.GlobalIdent), Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), Type: $11.(types.Type), Init: $12.(ir.Constant), GlobalAttrs: $13.([]ll.GlobalAttribute), FuncAttrs: $14.([]ll.FuncAttribute)}, nil >>
 ;
 
 // ref: ParseOptionalThreadLocal

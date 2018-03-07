@@ -6,6 +6,7 @@ import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/asm/internal/astx"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
@@ -369,13 +370,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil >>`,
+		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ir.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDef",
 		NTType:     12,
 		Index:      34,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil
+			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ir.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -629,13 +630,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(ir.Constant), Prologue: X[16].(ir.Constant), Personality: X[17].(ir.Constant)}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     25,
 		Index:      60,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil
+			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1079,13 +1080,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPrefix : empty	<< (*ast.TypeConst)(nil), nil >>`,
+		String: `OptPrefix : empty	<< nil, nil >>`,
 		Id:         "OptPrefix",
 		NTType:     29,
 		Index:      105,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.TypeConst)(nil), nil
+			return nil, nil
 		},
 	},
 	ProdTabEntry{
@@ -1099,13 +1100,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPrologue : empty	<< (*ast.TypeConst)(nil), nil >>`,
+		String: `OptPrologue : empty	<< nil, nil >>`,
 		Id:         "OptPrologue",
 		NTType:     30,
 		Index:      107,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.TypeConst)(nil), nil
+			return nil, nil
 		},
 	},
 	ProdTabEntry{
@@ -1119,13 +1120,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPersonality : empty	<< (*ast.TypeConst)(nil), nil >>`,
+		String: `OptPersonality : empty	<< nil, nil >>`,
 		Id:         "OptPersonality",
 		NTType:     31,
 		Index:      109,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.TypeConst)(nil), nil
+			return nil, nil
 		},
 	},
 	ProdTabEntry{
@@ -2039,13 +2040,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BoolConst : BoolLit	<< &ast.BoolConst{X: X[0].(bool)}, nil >>`,
+		String: `BoolConst : BoolLit	<< &constant.BoolConst{X: X[0].(bool)}, nil >>`,
 		Id:         "BoolConst",
 		NTType:     76,
 		Index:      201,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BoolConst{X: X[0].(bool)}, nil
+			return &constant.BoolConst{X: X[0].(bool)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2099,83 +2100,83 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NullConst : "null"	<< &ast.NullConst{}, nil >>`,
+		String: `NullConst : "null"	<< &constant.NullConst{}, nil >>`,
 		Id:         "NullConst",
 		NTType:     81,
 		Index:      207,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.NullConst{}, nil
+			return &constant.NullConst{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `NoneConst : "none"	<< &ast.NoneConst{}, nil >>`,
+		String: `NoneConst : "none"	<< &constant.NoneConst{}, nil >>`,
 		Id:         "NoneConst",
 		NTType:     82,
 		Index:      208,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.NoneConst{}, nil
+			return &constant.NoneConst{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructConst : "{" "}"	<< &ast.StructConst{}, nil >>`,
+		String: `StructConst : "{" "}"	<< &constant.StructConst{}, nil >>`,
 		Id:         "StructConst",
 		NTType:     83,
 		Index:      209,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructConst{}, nil
+			return &constant.StructConst{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructConst : "{" TypeConstList "}"	<< &ast.StructConst{Fields: X[1].([]*ast.TypeConst)}, nil >>`,
+		String: `StructConst : "{" TypeConstList "}"	<< &constant.StructConst{Fields: X[1].([]ir.Constant)}, nil >>`,
 		Id:         "StructConst",
 		NTType:     83,
 		Index:      210,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructConst{Fields: X[1].([]*ast.TypeConst)}, nil
+			return &constant.StructConst{Fields: X[1].([]ir.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructConst : "<" "{" "}" ">"	<< &ast.StructConst{Packed: true}, nil >>`,
+		String: `StructConst : "<" "{" "}" ">"	<< &constant.StructConst{Packed: true}, nil >>`,
 		Id:         "StructConst",
 		NTType:     83,
 		Index:      211,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructConst{Packed: true}, nil
+			return &constant.StructConst{Packed: true}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StructConst : "<" "{" TypeConstList "}" ">"	<< &ast.StructConst{Packed: true, Fields: X[2].([]*ast.TypeConst)}, nil >>`,
+		String: `StructConst : "<" "{" TypeConstList "}" ">"	<< &constant.StructConst{Packed: true, Fields: X[2].([]ir.Constant)}, nil >>`,
 		Id:         "StructConst",
 		NTType:     83,
 		Index:      212,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StructConst{Packed: true, Fields: X[2].([]*ast.TypeConst)}, nil
+			return &constant.StructConst{Packed: true, Fields: X[2].([]ir.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ArrayConst : "[" TypeConsts "]"	<< &ast.ArrayConst{Elems: X[1].([]*ast.TypeConst)}, nil >>`,
+		String: `ArrayConst : "[" TypeConsts "]"	<< &constant.ArrayConst{Elems: X[1].([]ir.Constant)}, nil >>`,
 		Id:         "ArrayConst",
 		NTType:     84,
 		Index:      213,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ArrayConst{Elems: X[1].([]*ast.TypeConst)}, nil
+			return &constant.ArrayConst{Elems: X[1].([]ir.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CharArrayConst : "c" StringLit	<< &ast.CharArrayConst{Value: X[1].(string)}, nil >>`,
+		String: `CharArrayConst : "c" StringLit	<< &constant.CharArrayConst{Value: X[1].(string)}, nil >>`,
 		Id:         "CharArrayConst",
 		NTType:     85,
 		Index:      214,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CharArrayConst{Value: X[1].(string)}, nil
+			return &constant.CharArrayConst{Value: X[1].(string)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2189,43 +2190,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `VectorConst : "<" TypeConsts ">"	<< &ast.VectorConst{Elems: X[1].([]*ast.TypeConst)}, nil >>`,
+		String: `VectorConst : "<" TypeConsts ">"	<< &constant.VectorConst{Elems: X[1].([]ir.Constant)}, nil >>`,
 		Id:         "VectorConst",
 		NTType:     87,
 		Index:      216,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.VectorConst{Elems: X[1].([]*ast.TypeConst)}, nil
+			return &constant.VectorConst{Elems: X[1].([]ir.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ZeroInitializerConst : "zeroinitializer"	<< &ast.ZeroInitializerConst{}, nil >>`,
+		String: `ZeroInitializerConst : "zeroinitializer"	<< &constant.ZeroInitializerConst{}, nil >>`,
 		Id:         "ZeroInitializerConst",
 		NTType:     88,
 		Index:      217,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ZeroInitializerConst{}, nil
+			return &constant.ZeroInitializerConst{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UndefConst : "undef"	<< &ast.UndefConst{}, nil >>`,
+		String: `UndefConst : "undef"	<< &constant.UndefConst{}, nil >>`,
 		Id:         "UndefConst",
 		NTType:     89,
 		Index:      218,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UndefConst{}, nil
+			return &constant.UndefConst{}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &ast.BlockAddressConst{Func: X[2].(*ast.GlobalIdent), Block: X[4].(*ast.LocalIdent)}, nil >>`,
+		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &constant.BlockAddressConst{Func: &ir.Function{Name: X[2].(*ast.GlobalIdent).Name}, Block: &ir.BasicBlock{Name: X[4].(*ast.LocalIdent).Name}}, nil >>`,
 		Id:         "BlockAddressConst",
 		NTType:     90,
 		Index:      219,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BlockAddressConst{Func: X[2].(*ast.GlobalIdent), Block: X[4].(*ast.LocalIdent)}, nil
+			return &constant.BlockAddressConst{Func: &ir.Function{Name: X[2].(*ast.GlobalIdent).Name}, Block: &ir.BasicBlock{Name: X[4].(*ast.LocalIdent).Name}}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2629,253 +2630,253 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AddExpr : "add" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `AddExpr : "add" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &constant.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "AddExpr",
 		NTType:     92,
 		Index:      260,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.AddExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FAddExpr : "fadd" "(" Type Constant "," Type Constant ")"	<< &ast.FAddExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `FAddExpr : "fadd" "(" Type Constant "," Type Constant ")"	<< &constant.FAddExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "FAddExpr",
 		NTType:     93,
 		Index:      261,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FAddExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.FAddExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SubExpr : "sub" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `SubExpr : "sub" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &constant.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "SubExpr",
 		NTType:     94,
 		Index:      262,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.SubExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FSubExpr : "fsub" "(" Type Constant "," Type Constant ")"	<< &ast.FSubExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `FSubExpr : "fsub" "(" Type Constant "," Type Constant ")"	<< &constant.FSubExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "FSubExpr",
 		NTType:     95,
 		Index:      263,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FSubExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.FSubExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MulExpr : "mul" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `MulExpr : "mul" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &constant.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "MulExpr",
 		NTType:     96,
 		Index:      264,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.MulExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FMulExpr : "fmul" "(" Type Constant "," Type Constant ")"	<< &ast.FMulExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `FMulExpr : "fmul" "(" Type Constant "," Type Constant ")"	<< &constant.FMulExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "FMulExpr",
 		NTType:     97,
 		Index:      265,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FMulExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.FMulExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UDivExpr : "udiv" OptExact "(" Type Constant "," Type Constant ")"	<< &ast.UDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `UDivExpr : "udiv" OptExact "(" Type Constant "," Type Constant ")"	<< &constant.UDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "UDivExpr",
 		NTType:     98,
 		Index:      266,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.UDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SDivExpr : "sdiv" OptExact "(" Type Constant "," Type Constant ")"	<< &ast.SDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `SDivExpr : "sdiv" OptExact "(" Type Constant "," Type Constant ")"	<< &constant.SDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "SDivExpr",
 		NTType:     99,
 		Index:      267,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.SDivExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FDivExpr : "fdiv" "(" Type Constant "," Type Constant ")"	<< &ast.FDivExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `FDivExpr : "fdiv" "(" Type Constant "," Type Constant ")"	<< &constant.FDivExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "FDivExpr",
 		NTType:     100,
 		Index:      268,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FDivExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.FDivExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `URemExpr : "urem" "(" Type Constant "," Type Constant ")"	<< &ast.URemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `URemExpr : "urem" "(" Type Constant "," Type Constant ")"	<< &constant.URemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "URemExpr",
 		NTType:     101,
 		Index:      269,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.URemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.URemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SRemExpr : "srem" "(" Type Constant "," Type Constant ")"	<< &ast.SRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `SRemExpr : "srem" "(" Type Constant "," Type Constant ")"	<< &constant.SRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "SRemExpr",
 		NTType:     102,
 		Index:      270,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.SRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FRemExpr : "frem" "(" Type Constant "," Type Constant ")"	<< &ast.FRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `FRemExpr : "frem" "(" Type Constant "," Type Constant ")"	<< &constant.FRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "FRemExpr",
 		NTType:     103,
 		Index:      271,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.FRemExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ShlExpr : "shl" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &ast.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `ShlExpr : "shl" OverflowFlags "(" Type Constant "," Type Constant ")"	<< &constant.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "ShlExpr",
 		NTType:     104,
 		Index:      272,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.ShlExpr{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LShrExpr : "lshr" OptExact "(" Type Constant "," Type Constant ")"	<< &ast.LShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `LShrExpr : "lshr" OptExact "(" Type Constant "," Type Constant ")"	<< &constant.LShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "LShrExpr",
 		NTType:     105,
 		Index:      273,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.LShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AShrExpr : "ashr" OptExact "(" Type Constant "," Type Constant ")"	<< &ast.AShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `AShrExpr : "ashr" OptExact "(" Type Constant "," Type Constant ")"	<< &constant.AShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "AShrExpr",
 		NTType:     106,
 		Index:      274,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.AShrExpr{Exact: X[1].(bool), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AndExpr : "and" "(" Type Constant "," Type Constant ")"	<< &ast.AndExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `AndExpr : "and" "(" Type Constant "," Type Constant ")"	<< &constant.AndExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "AndExpr",
 		NTType:     107,
 		Index:      275,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AndExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.AndExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OrExpr : "or" "(" Type Constant "," Type Constant ")"	<< &ast.OrExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `OrExpr : "or" "(" Type Constant "," Type Constant ")"	<< &constant.OrExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "OrExpr",
 		NTType:     108,
 		Index:      276,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.OrExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.OrExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `XorExpr : "xor" "(" Type Constant "," Type Constant ")"	<< &ast.XorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `XorExpr : "xor" "(" Type Constant "," Type Constant ")"	<< &constant.XorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "XorExpr",
 		NTType:     109,
 		Index:      277,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.XorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.XorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExtractElementExpr : "extractelement" "(" Type Constant "," Type Constant ")"	<< &ast.ExtractElementExpr{X: astx.TypeConst(X[2], X[3]), Index: astx.TypeConst(X[5], X[6])}, nil >>`,
+		String: `ExtractElementExpr : "extractelement" "(" Type Constant "," Type Constant ")"	<< &constant.ExtractElementExpr{X: astx.TypeConst(X[2], X[3]), Index: astx.TypeConst(X[5], X[6])}, nil >>`,
 		Id:         "ExtractElementExpr",
 		NTType:     110,
 		Index:      278,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ExtractElementExpr{X: astx.TypeConst(X[2], X[3]), Index: astx.TypeConst(X[5], X[6])}, nil
+			return &constant.ExtractElementExpr{X: astx.TypeConst(X[2], X[3]), Index: astx.TypeConst(X[5], X[6])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `InsertElementExpr : "insertelement" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &ast.InsertElementExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Index: astx.TypeConst(X[8], X[9])}, nil >>`,
+		String: `InsertElementExpr : "insertelement" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &constant.InsertElementExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Index: astx.TypeConst(X[8], X[9])}, nil >>`,
 		Id:         "InsertElementExpr",
 		NTType:     111,
 		Index:      279,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InsertElementExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Index: astx.TypeConst(X[8], X[9])}, nil
+			return &constant.InsertElementExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Index: astx.TypeConst(X[8], X[9])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ShuffleVectorExpr : "shufflevector" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &ast.ShuffleVectorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6]), Mask: astx.TypeConst(X[8], X[9])}, nil >>`,
+		String: `ShuffleVectorExpr : "shufflevector" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &constant.ShuffleVectorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6]), Mask: astx.TypeConst(X[8], X[9])}, nil >>`,
 		Id:         "ShuffleVectorExpr",
 		NTType:     112,
 		Index:      280,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShuffleVectorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6]), Mask: astx.TypeConst(X[8], X[9])}, nil
+			return &constant.ShuffleVectorExpr{X: astx.TypeConst(X[2], X[3]), Y: astx.TypeConst(X[5], X[6]), Mask: astx.TypeConst(X[8], X[9])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExtractValueExpr : "extractvalue" "(" Type Constant Indices ")"	<< &ast.ExtractValueExpr{X: astx.TypeConst(X[2], X[3]), Indices: X[4].([]int64)}, nil >>`,
+		String: `ExtractValueExpr : "extractvalue" "(" Type Constant Indices ")"	<< &constant.ExtractValueExpr{X: astx.TypeConst(X[2], X[3]), Indices: X[4].([]int64)}, nil >>`,
 		Id:         "ExtractValueExpr",
 		NTType:     113,
 		Index:      281,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ExtractValueExpr{X: astx.TypeConst(X[2], X[3]), Indices: X[4].([]int64)}, nil
+			return &constant.ExtractValueExpr{X: astx.TypeConst(X[2], X[3]), Indices: X[4].([]int64)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `InsertValueExpr : "insertvalue" "(" Type Constant "," Type Constant Indices ")"	<< &ast.InsertValueExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Indices: X[7].([]int64)}, nil >>`,
+		String: `InsertValueExpr : "insertvalue" "(" Type Constant "," Type Constant Indices ")"	<< &constant.InsertValueExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Indices: X[7].([]int64)}, nil >>`,
 		Id:         "InsertValueExpr",
 		NTType:     114,
 		Index:      282,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InsertValueExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Indices: X[7].([]int64)}, nil
+			return &constant.InsertValueExpr{X: astx.TypeConst(X[2], X[3]), Elem: astx.TypeConst(X[5], X[6]), Indices: X[7].([]int64)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrExpr : "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"	<< &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil >>`,
+		String: `GetElementPtrExpr : "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"	<< &constant.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*constant.Index)}, nil >>`,
 		Id:         "GetElementPtrExpr",
 		NTType:     115,
 		Index:      283,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*ast.GEPConstIndex)}, nil
+			return &constant.GetElementPtrExpr{InBounds: X[1].(bool), ElemType: X[3].(types.Type), Src: astx.TypeConst(X[5], X[6]), Indices: X[8].([]*constant.Index)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GEPConstIndices : empty	<< ([]*ast.GEPConstIndex)(nil), nil >>`,
+		String: `GEPConstIndices : empty	<< ([]*constant.Index)(nil), nil >>`,
 		Id:         "GEPConstIndices",
 		NTType:     116,
 		Index:      284,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.GEPConstIndex)(nil), nil
+			return ([]*constant.Index)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -2889,33 +2890,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GEPConstIndexList : GEPConstIndex	<< []*ast.GEPConstIndex{X[0].(*ast.GEPConstIndex)}, nil >>`,
+		String: `GEPConstIndexList : GEPConstIndex	<< []*constant.Index{X[0].(*constant.Index)}, nil >>`,
 		Id:         "GEPConstIndexList",
 		NTType:     117,
 		Index:      286,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.GEPConstIndex{X[0].(*ast.GEPConstIndex)}, nil
+			return []*constant.Index{X[0].(*constant.Index)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GEPConstIndexList : GEPConstIndexList "," GEPConstIndex	<< append(X[0].([]*ast.GEPConstIndex), X[2].(*ast.GEPConstIndex)), nil >>`,
+		String: `GEPConstIndexList : GEPConstIndexList "," GEPConstIndex	<< append(X[0].([]*constant.Index), X[2].(*constant.Index)), nil >>`,
 		Id:         "GEPConstIndexList",
 		NTType:     117,
 		Index:      287,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.GEPConstIndex), X[2].(*ast.GEPConstIndex)), nil
+			return append(X[0].([]*constant.Index), X[2].(*constant.Index)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `GEPConstIndex : OptInrange Type Constant	<< &ast.GEPConstIndex{InRange: X[0].(bool), Index: astx.TypeConst(X[1], X[2])}, nil >>`,
+		String: `GEPConstIndex : OptInrange Type Constant	<< &constant.Index{InRange: X[0].(bool), Index: astx.TypeConst(X[1], X[2])}, nil >>`,
 		Id:         "GEPConstIndex",
 		NTType:     118,
 		Index:      288,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GEPConstIndex{InRange: X[0].(bool), Index: astx.TypeConst(X[1], X[2])}, nil
+			return &constant.Index{InRange: X[0].(bool), Index: astx.TypeConst(X[1], X[2])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2939,163 +2940,163 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TruncExpr : "trunc" "(" Type Constant "to" Type ")"	<< &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `TruncExpr : "trunc" "(" Type Constant "to" Type ")"	<< &constant.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "TruncExpr",
 		NTType:     120,
 		Index:      291,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.TruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ZExtExpr : "zext" "(" Type Constant "to" Type ")"	<< &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `ZExtExpr : "zext" "(" Type Constant "to" Type ")"	<< &constant.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "ZExtExpr",
 		NTType:     121,
 		Index:      292,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.ZExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SExtExpr : "sext" "(" Type Constant "to" Type ")"	<< &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `SExtExpr : "sext" "(" Type Constant "to" Type ")"	<< &constant.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "SExtExpr",
 		NTType:     122,
 		Index:      293,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.SExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPTruncExpr : "fptrunc" "(" Type Constant "to" Type ")"	<< &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `FPTruncExpr : "fptrunc" "(" Type Constant "to" Type ")"	<< &constant.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPTruncExpr",
 		NTType:     123,
 		Index:      294,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.FPTruncExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPExtExpr : "fpext" "(" Type Constant "to" Type ")"	<< &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `FPExtExpr : "fpext" "(" Type Constant "to" Type ")"	<< &constant.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPExtExpr",
 		NTType:     124,
 		Index:      295,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.FPExtExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToUIExpr : "fptoui" "(" Type Constant "to" Type ")"	<< &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `FPToUIExpr : "fptoui" "(" Type Constant "to" Type ")"	<< &constant.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPToUIExpr",
 		NTType:     125,
 		Index:      296,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.FPToUIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToSIExpr : "fptosi" "(" Type Constant "to" Type ")"	<< &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `FPToSIExpr : "fptosi" "(" Type Constant "to" Type ")"	<< &constant.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "FPToSIExpr",
 		NTType:     126,
 		Index:      297,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.FPToSIExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UIToFPExpr : "uitofp" "(" Type Constant "to" Type ")"	<< &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `UIToFPExpr : "uitofp" "(" Type Constant "to" Type ")"	<< &constant.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "UIToFPExpr",
 		NTType:     127,
 		Index:      298,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.UIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SIToFPExpr : "sitofp" "(" Type Constant "to" Type ")"	<< &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `SIToFPExpr : "sitofp" "(" Type Constant "to" Type ")"	<< &constant.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "SIToFPExpr",
 		NTType:     128,
 		Index:      299,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.SIToFPExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PtrToIntExpr : "ptrtoint" "(" Type Constant "to" Type ")"	<< &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `PtrToIntExpr : "ptrtoint" "(" Type Constant "to" Type ")"	<< &constant.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "PtrToIntExpr",
 		NTType:     129,
 		Index:      300,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.PtrToIntExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IntToPtrExpr : "inttoptr" "(" Type Constant "to" Type ")"	<< &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `IntToPtrExpr : "inttoptr" "(" Type Constant "to" Type ")"	<< &constant.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "IntToPtrExpr",
 		NTType:     130,
 		Index:      301,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.IntToPtrExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BitCastExpr : "bitcast" "(" Type Constant "to" Type ")"	<< &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `BitCastExpr : "bitcast" "(" Type Constant "to" Type ")"	<< &constant.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "BitCastExpr",
 		NTType:     131,
 		Index:      302,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.BitCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AddrSpaceCastExpr : "addrspacecast" "(" Type Constant "to" Type ")"	<< &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
+		String: `AddrSpaceCastExpr : "addrspacecast" "(" Type Constant "to" Type ")"	<< &constant.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil >>`,
 		Id:         "AddrSpaceCastExpr",
 		NTType:     132,
 		Index:      303,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
+			return &constant.AddrSpaceCastExpr{From: astx.TypeConst(X[2], X[3]), To: X[5].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ICmpExpr : "icmp" IPred "(" Type Constant "," Type Constant ")"	<< &ast.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `ICmpExpr : "icmp" IPred "(" Type Constant "," Type Constant ")"	<< &constant.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "ICmpExpr",
 		NTType:     133,
 		Index:      304,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.ICmpExpr{Pred: X[1].(ll.IPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FCmpExpr : "fcmp" FPred "(" Type Constant "," Type Constant ")"	<< &ast.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
+		String: `FCmpExpr : "fcmp" FPred "(" Type Constant "," Type Constant ")"	<< &constant.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil >>`,
 		Id:         "FCmpExpr",
 		NTType:     134,
 		Index:      305,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
+			return &constant.FCmpExpr{Pred: X[1].(ll.FPred), X: astx.TypeConst(X[3], X[4]), Y: astx.TypeConst(X[6], X[7])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectExpr : "select" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &ast.SelectExpr{Cond: astx.TypeConst(X[2], X[3]), X: astx.TypeConst(X[5], X[6]), Y: astx.TypeConst(X[8], X[9])}, nil >>`,
+		String: `SelectExpr : "select" "(" Type Constant "," Type Constant "," Type Constant ")"	<< &constant.SelectExpr{Cond: astx.TypeConst(X[2], X[3]), X: astx.TypeConst(X[5], X[6]), Y: astx.TypeConst(X[8], X[9])}, nil >>`,
 		Id:         "SelectExpr",
 		NTType:     135,
 		Index:      306,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SelectExpr{Cond: astx.TypeConst(X[2], X[3]), X: astx.TypeConst(X[5], X[6]), Y: astx.TypeConst(X[8], X[9])}, nil
+			return &constant.SelectExpr{Cond: astx.TypeConst(X[2], X[3]), X: astx.TypeConst(X[5], X[6]), Y: astx.TypeConst(X[8], X[9])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10839,13 +10840,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConsts : empty	<< ([]*ast.TypeConst)(nil), nil >>`,
+		String: `TypeConsts : empty	<< ([]ir.Constant)(nil), nil >>`,
 		Id:         "TypeConsts",
 		NTType:     423,
 		Index:      1081,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.TypeConst)(nil), nil
+			return ([]ir.Constant)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10859,33 +10860,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConstList : TypeConst	<< []*ast.TypeConst{X[0].(*ast.TypeConst)}, nil >>`,
+		String: `TypeConstList : TypeConst	<< []ir.Constant{X[0].(*ast.TypeConst)}, nil >>`,
 		Id:         "TypeConstList",
 		NTType:     424,
 		Index:      1083,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.TypeConst{X[0].(*ast.TypeConst)}, nil
+			return []ir.Constant{X[0].(*ast.TypeConst)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConstList : TypeConstList "," TypeConst	<< append(X[0].([]*ast.TypeConst), X[2].(*ast.TypeConst)), nil >>`,
+		String: `TypeConstList : TypeConstList "," TypeConst	<< append(X[0].([]ir.Constant), X[2].(*ast.TypeConst)), nil >>`,
 		Id:         "TypeConstList",
 		NTType:     424,
 		Index:      1084,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.TypeConst), X[2].(*ast.TypeConst)), nil
+			return append(X[0].([]ir.Constant), X[2].(*ast.TypeConst)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConst : Type Constant	<< &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil >>`,
+		String: `TypeConst : Type Constant	<< &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ir.Constant)}, nil >>`,
 		Id:         "TypeConst",
 		NTType:     425,
 		Index:      1085,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil
+			return &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ir.Constant)}, nil
 		},
 	},
 	ProdTabEntry{

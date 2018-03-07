@@ -3,6 +3,7 @@ package ast
 import (
 	"fmt"
 
+	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll/types"
 )
@@ -10,7 +11,7 @@ import (
 // TypeConst is a type-constant pair.
 type TypeConst struct {
 	Typ   types.Type
-	Const Constant
+	Const ir.Constant
 }
 
 // String returns the string representation of the type-constant pair.
@@ -55,7 +56,6 @@ func (v *TypeValue) Ident() string {
 
 // IsExceptionScope ensures that only exception scopes can be assigned to the
 // ast.ExceptionScope interface.
-func (*NoneConst) IsExceptionScope()  {}
 func (*LocalIdent) IsExceptionScope() {}
 
 // MetadataValue is a metadata value function call argument.

@@ -146,7 +146,7 @@ func (m *Module) irMDFields(old []metadata.MDField) []metadata.MDField {
 // metadata field.
 func (m *Module) irMDField(old metadata.MDField) metadata.MDField {
 	switch old := old.(type) {
-	case *ast.NullConst:
+	case *constant.NullConst:
 		return &constant.NullConst{}
 	case metadata.Metadata:
 		return m.irMetadata(old).(metadata.MDField)

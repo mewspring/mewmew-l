@@ -34,7 +34,7 @@ func (m *Module) String() string {
 
 	// Global declarations and definitions.
 	for _, g := range m.Globals {
-		fmt.Fprintln(buf, g)
+		fmt.Fprintln(buf, g.Def())
 	}
 
 	// Named metadata definitions.

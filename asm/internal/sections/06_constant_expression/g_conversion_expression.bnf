@@ -8,7 +8,7 @@
 
 TruncExpr
 	: "trunc" "(" Type Constant "to" Type ")"
-	<< &ast.TruncExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.TruncExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,7 +17,7 @@ TruncExpr
 
 ZExtExpr
 	: "zext" "(" Type Constant "to" Type ")"
-	<< &ast.ZExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.ZExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +26,7 @@ ZExtExpr
 
 SExtExpr
 	: "sext" "(" Type Constant "to" Type ")"
-	<< &ast.SExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.SExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +35,7 @@ SExtExpr
 
 FPTruncExpr
 	: "fptrunc" "(" Type Constant "to" Type ")"
-	<< &ast.FPTruncExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.FPTruncExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@ FPTruncExpr
 
 FPExtExpr
 	: "fpext" "(" Type Constant "to" Type ")"
-	<< &ast.FPExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.FPExtExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +53,7 @@ FPExtExpr
 
 FPToUIExpr
 	: "fptoui" "(" Type Constant "to" Type ")"
-	<< &ast.FPToUIExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.FPToUIExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,7 +62,7 @@ FPToUIExpr
 
 FPToSIExpr
 	: "fptosi" "(" Type Constant "to" Type ")"
-	<< &ast.FPToSIExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.FPToSIExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ FPToSIExpr
 
 UIToFPExpr
 	: "uitofp" "(" Type Constant "to" Type ")"
-	<< &ast.UIToFPExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.UIToFPExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,7 +80,7 @@ UIToFPExpr
 
 SIToFPExpr
 	: "sitofp" "(" Type Constant "to" Type ")"
-	<< &ast.SIToFPExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.SIToFPExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +89,7 @@ SIToFPExpr
 
 PtrToIntExpr
 	: "ptrtoint" "(" Type Constant "to" Type ")"
-	<< &ast.PtrToIntExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.PtrToIntExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,7 +98,7 @@ PtrToIntExpr
 
 IntToPtrExpr
 	: "inttoptr" "(" Type Constant "to" Type ")"
-	<< &ast.IntToPtrExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.IntToPtrExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,7 +107,7 @@ IntToPtrExpr
 
 BitCastExpr
 	: "bitcast" "(" Type Constant "to" Type ")"
-	<< &ast.BitCastExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.BitCastExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,6 +116,6 @@ BitCastExpr
 
 AddrSpaceCastExpr
 	: "addrspacecast" "(" Type Constant "to" Type ")"
-	<< &ast.AddrSpaceCastExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
+	<< &constant.AddrSpaceCastExpr{From: astx.TypeConst($2, $3), To: $5.(types.Type)}, nil >>
 ;
 

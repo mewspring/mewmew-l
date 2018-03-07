@@ -535,20 +535,20 @@ TypeValue
 
 TypeConsts
 	: empty
-	<< ([]*ast.TypeConst)(nil), nil >>
+	<< ([]ir.Constant)(nil), nil >>
 	| TypeConstList
 ;
 
 TypeConstList
 	: TypeConst
-	<< []*ast.TypeConst{$0.(*ast.TypeConst)}, nil >>
+	<< []ir.Constant{$0.(*ast.TypeConst)}, nil >>
 	| TypeConstList "," TypeConst
-	<< append($0.([]*ast.TypeConst), $2.(*ast.TypeConst)), nil >>
+	<< append($0.([]ir.Constant), $2.(*ast.TypeConst)), nil >>
 ;
 
 TypeConst
 	: Type Constant
-	<< &ast.TypeConst{Typ: $0.(types.Type), Const: $1.(ast.Constant)}, nil >>
+	<< &ast.TypeConst{Typ: $0.(types.Type), Const: $1.(ir.Constant)}, nil >>
 ;
 
 // ref: ParseParameterList

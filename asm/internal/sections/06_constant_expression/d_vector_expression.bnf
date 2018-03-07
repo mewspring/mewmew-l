@@ -8,7 +8,7 @@
 
 ExtractElementExpr
 	: "extractelement" "(" Type Constant "," Type Constant ")"
-	<< &ast.ExtractElementExpr{X: astx.TypeConst($2, $3), Index: astx.TypeConst($5, $6)}, nil >>
+	<< &constant.ExtractElementExpr{X: astx.TypeConst($2, $3), Index: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,7 +17,7 @@ ExtractElementExpr
 
 InsertElementExpr
 	: "insertelement" "(" Type Constant "," Type Constant "," Type Constant ")"
-	<< &ast.InsertElementExpr{X: astx.TypeConst($2, $3), Elem: astx.TypeConst($5, $6), Index: astx.TypeConst($8, $9)}, nil >>
+	<< &constant.InsertElementExpr{X: astx.TypeConst($2, $3), Elem: astx.TypeConst($5, $6), Index: astx.TypeConst($8, $9)}, nil >>
 ;
 
 // ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,6 +26,6 @@ InsertElementExpr
 
 ShuffleVectorExpr
 	: "shufflevector" "(" Type Constant "," Type Constant "," Type Constant ")"
-	<< &ast.ShuffleVectorExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6), Mask: astx.TypeConst($8, $9)}, nil >>
+	<< &constant.ShuffleVectorExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6), Mask: astx.TypeConst($8, $9)}, nil >>
 ;
 

@@ -1,6 +1,10 @@
 package ir
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/mewmew/l/ir/value"
+)
 
 // IsFuncAttribute ensures that only function attributes can be assigned to the
 // ast.FuncAttribute interface.
@@ -98,3 +102,15 @@ func (*CatchSwitchTerm) IsTerminator() {}
 func (*CatchRetTerm) IsTerminator()    {}
 func (*CleanupRetTerm) IsTerminator()  {}
 func (*UnreachableTerm) IsTerminator() {}
+
+// A Constant is an LLVM IR constant.
+type Constant interface {
+	value.Value
+	// IsConstant ensures that only constants can be assigned to the
+	// constant.Constant interface.
+	IsConstant()
+}
+
+// IsConstant ensures that only constants can be assigned to the
+// ir.Constant interface.
+func (*Global) IsConstant() {}

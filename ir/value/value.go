@@ -9,6 +9,8 @@ import (
 
 // Value is an LLVM IR value.
 type Value interface {
+	// String returns the string representation of the value as a type-value
+	// pair.
 	fmt.Stringer
 	// Type returns the type of the value.
 	Type() types.Type

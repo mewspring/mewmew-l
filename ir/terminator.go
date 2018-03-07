@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
@@ -123,7 +122,7 @@ func (term *SwitchTerm) String() string {
 
 // Case is a case of a switch terminator.
 type Case struct {
-	X constant.Constant
+	X Constant
 
 	// Note, Target is reduced from `LabelType LocalIdent`, and stored during
 	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil

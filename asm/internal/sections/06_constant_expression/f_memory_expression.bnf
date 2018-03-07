@@ -8,7 +8,7 @@
 
 GetElementPtrExpr
 	: "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
-	<< &ast.GetElementPtrExpr{InBounds: $1.(bool), ElemType: $3.(types.Type), Src: astx.TypeConst($5, $6), Indices: $8.([]*ast.GEPConstIndex)}, nil >>
+	<< &constant.GetElementPtrExpr{InBounds: $1.(bool), ElemType: $3.(types.Type), Src: astx.TypeConst($5, $6), Indices: $8.([]*constant.Index)}, nil >>
 ;
 
 // ref: ParseGlobalValueVector
@@ -18,20 +18,20 @@ GetElementPtrExpr
 
 GEPConstIndices
 	: empty
-	<< ([]*ast.GEPConstIndex)(nil), nil >>
+	<< ([]*constant.Index)(nil), nil >>
 	| GEPConstIndexList
 ;
 
 GEPConstIndexList
 	: GEPConstIndex
-	<< []*ast.GEPConstIndex{$0.(*ast.GEPConstIndex)}, nil >>
+	<< []*constant.Index{$0.(*constant.Index)}, nil >>
 	| GEPConstIndexList "," GEPConstIndex
-	<< append($0.([]*ast.GEPConstIndex), $2.(*ast.GEPConstIndex)), nil >>
+	<< append($0.([]*constant.Index), $2.(*constant.Index)), nil >>
 ;
 
 GEPConstIndex
 	: OptInrange Type Constant
-	<< &ast.GEPConstIndex{InRange: $0.(bool), Index: astx.TypeConst($1, $2)}, nil >>
+	<< &constant.Index{InRange: $0.(bool), Index: astx.TypeConst($1, $2)}, nil >>
 ;
 
 OptInrange
