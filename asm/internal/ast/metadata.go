@@ -381,7 +381,7 @@ func (md *DISubroutineType) String() string {
 	// "!DISubroutineType" "(" DISubroutineTypeFields ")"
 	var fields []string
 	if len(md.Flags) > 0 {
-		field := fmt.Sprintf("flags: %v", diFlagsString(md.Flags))
+		field := fmt.Sprintf("flags: %v", ll.DIFlagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.CC != 0 {
@@ -448,7 +448,7 @@ func (md *DIDerivedType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", diFlagsString(md.Flags))
+		field = fmt.Sprintf("flags: %v", ll.DIFlagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.ExtraData != nil {
@@ -523,7 +523,7 @@ func (md *DICompositeType) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", diFlagsString(md.Flags))
+		field = fmt.Sprintf("flags: %v", ll.DIFlagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.Elements != nil {
@@ -856,7 +856,7 @@ func (md *DISubprogram) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field := fmt.Sprintf("flags: %v", diFlagsString(md.Flags))
+		field := fmt.Sprintf("flags: %v", ll.DIFlagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.IsOptimized {
@@ -1014,7 +1014,7 @@ func (md *DILocalVariable) String() string {
 		fields = append(fields, field)
 	}
 	if len(md.Flags) > 0 {
-		field = fmt.Sprintf("flags: %v", diFlagsString(md.Flags))
+		field = fmt.Sprintf("flags: %v", ll.DIFlagsString(md.Flags))
 		fields = append(fields, field)
 	}
 	if md.Align != 0 {
@@ -1340,13 +1340,3 @@ func (*DIImportedEntity) isIntOrMDField()           {}
 func (*DIMacro) isIntOrMDField()                    {}
 func (*DIMacroFile) isIntOrMDField()                {}
 func (*GenericDINode) isIntOrMDField()              {}
-
-// diFlagsString returns the string representation of the given debug
-// information flags.
-func diFlagsString(flags []ll.DIFlag) string {
-	var ss []string
-	for _, flag := range flags {
-		ss = append(ss, flag.String())
-	}
-	return strings.Join(ss, " | ")
-}

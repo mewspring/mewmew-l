@@ -237,6 +237,16 @@ const (
 	//DIFlagPtrToMemberRep DIFlag = DIFlagSingleInheritance | DIFlagMultipleInheritance | DIFlagVirtualInheritance
 )
 
+// DIFlagsString returns the string representation of the given debug
+// information flags.
+func DIFlagsString(flags []DIFlag) string {
+	var ss []string
+	for _, flag := range flags {
+		ss = append(ss, flag.String())
+	}
+	return strings.Join(ss, " | ")
+}
+
 //go:generate stringer -linecomment -type DLLStorageClass
 
 // DLLStorageClass specifies the DLL storage class of a global identifier.

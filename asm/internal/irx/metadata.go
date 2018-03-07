@@ -99,7 +99,7 @@ func (m *Module) irDIExpressionField(old ast.DIExpressionField) metadata.DIExpre
 	case *ast.IntConst:
 		return m.irIntConst(old)
 	case ll.DwarfOp:
-		return metadata.DwarfOp(old)
+		return ll.DwarfOp(old)
 	default:
 		panic(fmt.Errorf("support for DIExpression field type %T not yet implemented", old))
 	}
@@ -206,14 +206,14 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 	switch old := old.(type) {
 	case *ast.DICompileUnit:
 		return &metadata.DICompileUnit{
-			Language:              metadata.DwarfLang(old.Language),
+			Language:              old.Language,
 			File:                  m.irMDField(old.File),
 			Producer:              old.Producer,
 			IsOptimized:           old.IsOptimized,
 			Flags:                 old.Flags,
 			RuntimeVersion:        old.RuntimeVersion,
 			SplitDebugFilename:    old.SplitDebugFilename,
-			EmissionKind:          metadata.EmissionKind(old.EmissionKind),
+			EmissionKind:          old.EmissionKind,
 			Enums:                 m.irMDField(old.Enums),
 			RetainedTypes:         m.irMDField(old.RetainedTypes),
 			Globals:               m.irMDField(old.Globals),
@@ -228,26 +228,26 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		return &metadata.DIFile{
 			Filename:     old.Filename,
 			Directory:    old.Directory,
-			Checksumkind: metadata.ChecksumKind(old.Checksumkind),
+			Checksumkind: old.Checksumkind,
 			Checksum:     old.Checksum,
 		}
 	case *ast.DIBasicType:
 		return &metadata.DIBasicType{
-			Tag:      metadata.DwarfTag(old.Tag),
+			Tag:      old.Tag,
 			Name:     old.Name,
 			Size:     old.Size,
 			Align:    old.Align,
-			Encoding: metadata.DwarfAttEncoding(old.Encoding),
+			Encoding: old.Encoding,
 		}
 	case *ast.DISubroutineType:
 		return &metadata.DISubroutineType{
-			Flags: m.irDIFlags(old.Flags),
-			CC:    metadata.DwarfCC(old.CC),
+			Flags: old.Flags,
+			CC:    old.CC,
 			Types: m.irMDField(old.Types),
 		}
 	case *ast.DIDerivedType:
 		return &metadata.DIDerivedType{
-			Tag:               metadata.DwarfTag(old.Tag),
+			Tag:               ll.DwarfTag(old.Tag),
 			Name:              old.Name,
 			Scope:             m.irMDField(old.Scope),
 			File:              m.irMDField(old.File),
@@ -256,13 +256,13 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Size:              old.Size,
 			Align:             old.Align,
 			Offset:            old.Offset,
-			Flags:             m.irDIFlags(old.Flags),
+			Flags:             old.Flags,
 			ExtraData:         m.irMDField(old.ExtraData),
 			DwarfAddressSpace: old.DwarfAddressSpace,
 		}
 	case *ast.DICompositeType:
 		return &metadata.DICompositeType{
-			Tag:            metadata.DwarfTag(old.Tag),
+			Tag:            ll.DwarfTag(old.Tag),
 			Name:           old.Name,
 			Scope:          m.irMDField(old.Scope),
 			File:           m.irMDField(old.File),
@@ -271,9 +271,9 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Size:           old.Size,
 			Align:          old.Align,
 			Offset:         old.Offset,
-			Flags:          m.irDIFlags(old.Flags),
+			Flags:          old.Flags,
 			Elements:       m.irMDField(old.Elements),
-			RuntimeLang:    metadata.DwarfLang(old.RuntimeLang),
+			RuntimeLang:    ll.DwarfLang(old.RuntimeLang),
 			VtableHolder:   m.irMDField(old.VtableHolder),
 			TemplateParams: m.irMDField(old.TemplateParams),
 			Identifier:     old.Identifier,
@@ -297,7 +297,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DITemplateValueParameter:
 		return &metadata.DITemplateValueParameter{
-			Tag:   metadata.DwarfTag(old.Tag),
+			Tag:   ll.DwarfTag(old.Tag),
 			Name:  old.Name,
 			Type:  m.irMDField(old.Type),
 			Value: m.irMDField(old.Value),
@@ -341,10 +341,10 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			IsDefinition:   old.IsDefinition,
 			ScopeLine:      old.ScopeLine,
 			ContainingType: m.irMDField(old.ContainingType),
-			Virtuality:     metadata.DwarfVirtuality(old.Virtuality),
+			Virtuality:     ll.DwarfVirtuality(old.Virtuality),
 			VirtualIndex:   old.VirtualIndex,
 			ThisAdjustment: old.ThisAdjustment,
-			Flags:          m.irDIFlags(old.Flags),
+			Flags:          old.Flags,
 			IsOptimized:    old.IsOptimized,
 			Unit:           m.irMDField(old.Unit),
 			TemplateParams: m.irMDField(old.TemplateParams),
@@ -380,7 +380,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			File:  m.irMDField(old.File),
 			Line:  old.Line,
 			Type:  m.irMDField(old.Type),
-			Flags: m.irDIFlags(old.Flags),
+			Flags: old.Flags,
 			Align: old.Align,
 		}
 	case *ast.DIExpression:
@@ -404,7 +404,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DIImportedEntity:
 		return &metadata.DIImportedEntity{
-			Tag:    metadata.DwarfTag(old.Tag),
+			Tag:    ll.DwarfTag(old.Tag),
 			Scope:  m.irMDField(old.Scope),
 			Entity: m.irMDField(old.Entity),
 			File:   m.irMDField(old.File),
@@ -413,38 +413,27 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DIMacro:
 		return &metadata.DIMacro{
-			Type:  metadata.DwarfMacinfo(old.Type),
+			Type:  ll.DwarfMacinfo(old.Type),
 			Line:  old.Line,
 			Name:  old.Name,
 			Value: old.Value,
 		}
 	case *ast.DIMacroFile:
 		return &metadata.DIMacroFile{
-			Type:  metadata.DwarfMacinfo(old.Type),
+			Type:  ll.DwarfMacinfo(old.Type),
 			Line:  old.Line,
 			File:  m.irMDField(old.File),
 			Nodes: m.irMDField(old.Nodes),
 		}
 	case *ast.GenericDINode:
 		return &metadata.GenericDINode{
-			Tag:      metadata.DwarfTag(old.Tag),
+			Tag:      ll.DwarfTag(old.Tag),
 			Header:   old.Header,
 			Operands: m.irMDFields(old.Operands),
 		}
 	default:
 		panic(fmt.Errorf("support for specialized metadata node type %T not yet implemented", old))
 	}
-}
-
-// irDIFlags returns the LLVM IR debug information flags corresponding to the
-// given AST debug information flags.
-func (m *Module) irDIFlags(old []ll.DIFlag) []metadata.DIFlag {
-	var flags []metadata.DIFlag
-	for i := range old {
-		flag := metadata.DIFlag(old[i])
-		flags = append(flags, flag)
-	}
-	return flags
 }
 
 // irMetadataAttachment returns the LLVM IR metadata attachment corresponding to
