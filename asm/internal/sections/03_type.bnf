@@ -180,6 +180,11 @@ TypeList
 	<< append($0.([]types.Type), $2.(types.Type)), nil >>
 ;
 
+OpaqueType
+	: "opaque"
+	<< &types.StructType{Opaque: true}, nil >>
+;
+
 // --- [ Named Types ] ---------------------------------------------------------
 
 NamedType

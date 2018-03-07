@@ -17,8 +17,3 @@ TypeDef
 	<< &ast.TypeDef{Name: $0.(*ast.LocalIdent), Def: $3.(types.Type)}, nil >>
 ;
 
-OpaqueType
-	: "opaque"
-	<< &types.OpaqueType{}, nil >>
-;
-

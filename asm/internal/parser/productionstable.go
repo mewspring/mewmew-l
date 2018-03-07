@@ -296,20 +296,10 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OpaqueType : "opaque"	<< &types.OpaqueType{}, nil >>`,
-		Id:         "OpaqueType",
-		NTType:     9,
-		Index:      27,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.OpaqueType{}, nil
-		},
-	},
-	ProdTabEntry{
 		String: `ComdatDef : ComdatName "=" "comdat" SelectionKind	<< &ll.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ll.SelectionKind)}, nil >>`,
 		Id:         "ComdatDef",
-		NTType:     10,
-		Index:      28,
+		NTType:     9,
+		Index:      27,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ll.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ll.SelectionKind)}, nil
@@ -318,8 +308,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `SelectionKind : "any"	<< ll.SelectionKindAny, nil >>`,
 		Id:         "SelectionKind",
-		NTType:     11,
-		Index:      29,
+		NTType:     10,
+		Index:      28,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.SelectionKindAny, nil
@@ -328,8 +318,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `SelectionKind : "exactmatch"	<< ll.SelectionKindExactMatch, nil >>`,
 		Id:         "SelectionKind",
-		NTType:     11,
-		Index:      30,
+		NTType:     10,
+		Index:      29,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.SelectionKindExactMatch, nil
@@ -338,8 +328,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `SelectionKind : "largest"	<< ll.SelectionKindLargest, nil >>`,
 		Id:         "SelectionKind",
-		NTType:     11,
-		Index:      31,
+		NTType:     10,
+		Index:      30,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.SelectionKindLargest, nil
@@ -348,8 +338,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `SelectionKind : "noduplicates"	<< ll.SelectionKindNoDuplicates, nil >>`,
 		Id:         "SelectionKind",
-		NTType:     11,
-		Index:      32,
+		NTType:     10,
+		Index:      31,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.SelectionKindNoDuplicates, nil
@@ -358,8 +348,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `SelectionKind : "samesize"	<< ll.SelectionKindSameSize, nil >>`,
 		Id:         "SelectionKind",
-		NTType:     11,
-		Index:      33,
+		NTType:     10,
+		Index:      32,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.SelectionKindSameSize, nil
@@ -368,8 +358,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalDecl : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), GlobalAttrs: X[12].([]ll.GlobalAttribute), FuncAttrs: X[13].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDecl",
-		NTType:     12,
-		Index:      34,
+		NTType:     11,
+		Index:      33,
 		NumSymbols: 14,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), GlobalAttrs: X[12].([]ll.GlobalAttribute), FuncAttrs: X[13].([]ll.FuncAttribute)}, nil
@@ -378,8 +368,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDef",
-		NTType:     13,
-		Index:      35,
+		NTType:     12,
+		Index:      34,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.Global{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), AddrSpace: X[8].(ll.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), Type: X[11].(types.Type), Init: X[12].(ast.Constant), GlobalAttrs: X[13].([]ll.GlobalAttribute), FuncAttrs: X[14].([]ll.FuncAttribute)}, nil
@@ -388,8 +378,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptThreadLocal : empty	<< (*ll.ThreadLocal)(nil), nil >>`,
 		Id:         "OptThreadLocal",
-		NTType:     14,
-		Index:      36,
+		NTType:     13,
+		Index:      35,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ll.ThreadLocal)(nil), nil
@@ -398,8 +388,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptThreadLocal : ThreadLocal	<<  >>`,
 		Id:         "OptThreadLocal",
-		NTType:     14,
-		Index:      37,
+		NTType:     13,
+		Index:      36,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -408,8 +398,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ThreadLocal : "thread_local"	<< &ll.ThreadLocal{}, nil >>`,
 		Id:         "ThreadLocal",
-		NTType:     15,
-		Index:      38,
+		NTType:     14,
+		Index:      37,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ll.ThreadLocal{}, nil
@@ -418,8 +408,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ThreadLocal : "thread_local" "(" TLSModel ")"	<< &ll.ThreadLocal{Model: X[2].(ll.TLSModel)}, nil >>`,
 		Id:         "ThreadLocal",
-		NTType:     15,
-		Index:      39,
+		NTType:     14,
+		Index:      38,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ll.ThreadLocal{Model: X[2].(ll.TLSModel)}, nil
@@ -428,8 +418,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "initialexec"	<< ll.TLSModelInitialExec, nil >>`,
 		Id:         "TLSModel",
-		NTType:     16,
-		Index:      40,
+		NTType:     15,
+		Index:      39,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.TLSModelInitialExec, nil
@@ -438,8 +428,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "localdynamic"	<< ll.TLSModelLocalDynamic, nil >>`,
 		Id:         "TLSModel",
-		NTType:     16,
-		Index:      41,
+		NTType:     15,
+		Index:      40,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.TLSModelLocalDynamic, nil
@@ -448,8 +438,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "localexec"	<< ll.TLSModelLocalExec, nil >>`,
 		Id:         "TLSModel",
-		NTType:     16,
-		Index:      42,
+		NTType:     15,
+		Index:      41,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.TLSModelLocalExec, nil
@@ -458,8 +448,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptExternallyInitialized : empty	<< false, nil >>`,
 		Id:         "OptExternallyInitialized",
-		NTType:     17,
-		Index:      43,
+		NTType:     16,
+		Index:      42,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -468,8 +458,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptExternallyInitialized : "externally_initialized"	<< true, nil >>`,
 		Id:         "OptExternallyInitialized",
-		NTType:     17,
-		Index:      44,
+		NTType:     16,
+		Index:      43,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
@@ -478,8 +468,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Immutable : "constant"	<< true, nil >>`,
 		Id:         "Immutable",
-		NTType:     18,
-		Index:      45,
+		NTType:     17,
+		Index:      44,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
@@ -488,8 +478,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Immutable : "global"	<< false, nil >>`,
 		Id:         "Immutable",
-		NTType:     18,
-		Index:      46,
+		NTType:     17,
+		Index:      45,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -498,8 +488,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttrs : empty	<< ([]ll.GlobalAttribute)(nil), nil >>`,
 		Id:         "GlobalAttrs",
-		NTType:     19,
-		Index:      47,
+		NTType:     18,
+		Index:      46,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]ll.GlobalAttribute)(nil), nil
@@ -508,8 +498,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttrs : "," GlobalAttrList	<< X[1], nil >>`,
 		Id:         "GlobalAttrs",
-		NTType:     19,
-		Index:      48,
+		NTType:     18,
+		Index:      47,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -518,8 +508,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttrList : GlobalAttr	<< []ll.GlobalAttribute{X[0].(ll.GlobalAttribute)}, nil >>`,
 		Id:         "GlobalAttrList",
-		NTType:     20,
-		Index:      49,
+		NTType:     19,
+		Index:      48,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []ll.GlobalAttribute{X[0].(ll.GlobalAttribute)}, nil
@@ -528,8 +518,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttrList : GlobalAttrList "," GlobalAttr	<< append(X[0].([]ll.GlobalAttribute), X[2].(ll.GlobalAttribute)), nil >>`,
 		Id:         "GlobalAttrList",
-		NTType:     20,
-		Index:      50,
+		NTType:     19,
+		Index:      49,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]ll.GlobalAttribute), X[2].(ll.GlobalAttribute)), nil
@@ -538,8 +528,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttr : Section	<<  >>`,
 		Id:         "GlobalAttr",
-		NTType:     21,
-		Index:      51,
+		NTType:     20,
+		Index:      50,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -548,8 +538,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttr : Comdat	<<  >>`,
 		Id:         "GlobalAttr",
-		NTType:     21,
-		Index:      52,
+		NTType:     20,
+		Index:      51,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -558,8 +548,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttr : Alignment	<<  >>`,
 		Id:         "GlobalAttr",
-		NTType:     21,
-		Index:      53,
+		NTType:     20,
+		Index:      52,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -568,8 +558,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalAttr : MetadataAttachment	<<  >>`,
 		Id:         "GlobalAttr",
-		NTType:     21,
-		Index:      54,
+		NTType:     20,
+		Index:      53,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -578,8 +568,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
-		NTType:     22,
-		Index:      55,
+		NTType:     21,
+		Index:      54,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
@@ -588,8 +578,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
-		NTType:     22,
-		Index:      56,
+		NTType:     21,
+		Index:      55,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent), Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
@@ -598,8 +588,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Alias : "alias"	<< true, nil >>`,
 		Id:         "Alias",
-		NTType:     23,
-		Index:      57,
+		NTType:     22,
+		Index:      56,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
@@ -608,8 +598,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Alias : "ifunc"	<< false, nil >>`,
 		Id:         "Alias",
-		NTType:     23,
-		Index:      58,
+		NTType:     22,
+		Index:      57,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -618,8 +608,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FunctionDecl : "declare" MetadataAttachments OptExternLinkage FunctionHeader	<< &ast.Function{Linkage: X[2].(ll.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FunctionDecl",
-		NTType:     24,
-		Index:      59,
+		NTType:     23,
+		Index:      58,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.Function{Linkage: X[2].(ll.Linkage), Header: X[3].(*ast.FunctionHeader), Metadata: X[1].([]*ast.MetadataAttachment)}, nil
@@ -628,8 +618,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FunctionDef : "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody	<< &ast.Function{Linkage: X[1].(ll.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil >>`,
 		Id:         "FunctionDef",
-		NTType:     25,
-		Index:      60,
+		NTType:     24,
+		Index:      59,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.Function{Linkage: X[1].(ll.Linkage), Header: X[2].(*ast.FunctionHeader), Body: X[4].(*ast.FunctionBody), Metadata: X[3].([]*ast.MetadataAttachment)}, nil
@@ -638,8 +628,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil >>`,
 		Id:         "FunctionHeader",
-		NTType:     26,
-		Index:      61,
+		NTType:     25,
+		Index:      60,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(*ast.TypeConst), Prologue: X[16].(*ast.TypeConst), Personality: X[17].(*ast.TypeConst)}, nil
@@ -648,8 +638,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptCallingConv : empty	<< ll.CallingConvNone, nil >>`,
 		Id:         "OptCallingConv",
-		NTType:     27,
-		Index:      62,
+		NTType:     26,
+		Index:      61,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvNone, nil
@@ -658,8 +648,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptCallingConv : CallingConv	<<  >>`,
 		Id:         "OptCallingConv",
-		NTType:     27,
-		Index:      63,
+		NTType:     26,
+		Index:      62,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -668,8 +658,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_cs"	<< ll.CallingConvAmdGPUCS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      64,
+		NTType:     27,
+		Index:      63,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUCS, nil
@@ -678,8 +668,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_es"	<< ll.CallingConvAmdGPUES, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      65,
+		NTType:     27,
+		Index:      64,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUES, nil
@@ -688,8 +678,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_gs"	<< ll.CallingConvAmdGPUGS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      66,
+		NTType:     27,
+		Index:      65,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUGS, nil
@@ -698,8 +688,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_hs"	<< ll.CallingConvAmdGPUHS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      67,
+		NTType:     27,
+		Index:      66,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUHS, nil
@@ -708,8 +698,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_kernel"	<< ll.CallingConvAmdGPUKernel, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      68,
+		NTType:     27,
+		Index:      67,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUKernel, nil
@@ -718,8 +708,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_ls"	<< ll.CallingConvAmdGPULS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      69,
+		NTType:     27,
+		Index:      68,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPULS, nil
@@ -728,8 +718,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_ps"	<< ll.CallingConvAmdGPUPS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      70,
+		NTType:     27,
+		Index:      69,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUPS, nil
@@ -738,8 +728,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "amdgpu_vs"	<< ll.CallingConvAmdGPUVS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      71,
+		NTType:     27,
+		Index:      70,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAmdGPUVS, nil
@@ -748,8 +738,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "anyregcc"	<< ll.CallingConvAnyReg, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      72,
+		NTType:     27,
+		Index:      71,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAnyReg, nil
@@ -758,8 +748,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "arm_aapcs_vfpcc"	<< ll.CallingConvARMAAPCSVFP, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      73,
+		NTType:     27,
+		Index:      72,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvARMAAPCSVFP, nil
@@ -768,8 +758,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "arm_aapcscc"	<< ll.CallingConvARMAAPCS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      74,
+		NTType:     27,
+		Index:      73,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvARMAAPCS, nil
@@ -778,8 +768,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "arm_apcscc"	<< ll.CallingConvARMAPCS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      75,
+		NTType:     27,
+		Index:      74,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvARMAPCS, nil
@@ -788,8 +778,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "avr_intrcc"	<< ll.CallingConvAVRIntr, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      76,
+		NTType:     27,
+		Index:      75,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAVRIntr, nil
@@ -798,8 +788,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "avr_signalcc"	<< ll.CallingConvAVRSignal, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      77,
+		NTType:     27,
+		Index:      76,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvAVRSignal, nil
@@ -808,8 +798,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "ccc"	<< ll.CallingConvC, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      78,
+		NTType:     27,
+		Index:      77,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvC, nil
@@ -818,8 +808,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "coldcc"	<< ll.CallingConvCold, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      79,
+		NTType:     27,
+		Index:      78,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvCold, nil
@@ -828,8 +818,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "cxx_fast_tlscc"	<< ll.CallingConvCXXFastTLS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      80,
+		NTType:     27,
+		Index:      79,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvCXXFastTLS, nil
@@ -838,8 +828,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "fastcc"	<< ll.CallingConvFast, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      81,
+		NTType:     27,
+		Index:      80,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvFast, nil
@@ -848,8 +838,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "ghccc"	<< ll.CallingConvGHC, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      82,
+		NTType:     27,
+		Index:      81,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvGHC, nil
@@ -858,8 +848,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "hhvm_ccc"	<< ll.CallingConvHHVMC, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      83,
+		NTType:     27,
+		Index:      82,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvHHVMC, nil
@@ -868,8 +858,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "hhvmcc"	<< ll.CallingConvHHVM, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      84,
+		NTType:     27,
+		Index:      83,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvHHVM, nil
@@ -878,8 +868,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "intel_ocl_bicc"	<< ll.CallingConvIntelOCLBI, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      85,
+		NTType:     27,
+		Index:      84,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvIntelOCLBI, nil
@@ -888,8 +878,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "msp430_intrcc"	<< ll.CallingConvMSP430Intr, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      86,
+		NTType:     27,
+		Index:      85,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvMSP430Intr, nil
@@ -898,8 +888,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "preserve_allcc"	<< ll.CallingConvPreserveAll, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      87,
+		NTType:     27,
+		Index:      86,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvPreserveAll, nil
@@ -908,8 +898,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "preserve_mostcc"	<< ll.CallingConvPreserveMost, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      88,
+		NTType:     27,
+		Index:      87,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvPreserveMost, nil
@@ -918,8 +908,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "ptx_device"	<< ll.CallingConvPTXDevice, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      89,
+		NTType:     27,
+		Index:      88,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvPTXDevice, nil
@@ -928,8 +918,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "ptx_kernel"	<< ll.CallingConvPTXKernel, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      90,
+		NTType:     27,
+		Index:      89,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvPTXKernel, nil
@@ -938,8 +928,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "spir_func"	<< ll.CallingConvSPIRFunc, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      91,
+		NTType:     27,
+		Index:      90,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvSPIRFunc, nil
@@ -948,8 +938,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "spir_kernel"	<< ll.CallingConvSPIRKernel, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      92,
+		NTType:     27,
+		Index:      91,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvSPIRKernel, nil
@@ -958,8 +948,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "swiftcc"	<< ll.CallingConvSwift, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      93,
+		NTType:     27,
+		Index:      92,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvSwift, nil
@@ -968,8 +958,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "webkit_jscc"	<< ll.CallingConvWebKitJS, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      94,
+		NTType:     27,
+		Index:      93,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvWebKitJS, nil
@@ -978,8 +968,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "win64cc"	<< ll.CallingConvWin64, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      95,
+		NTType:     27,
+		Index:      94,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvWin64, nil
@@ -988,8 +978,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_64_sysvcc"	<< ll.CallingConvX86_64SysV, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      96,
+		NTType:     27,
+		Index:      95,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86_64SysV, nil
@@ -998,8 +988,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_fastcallcc"	<< ll.CallingConvX86FastCall, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      97,
+		NTType:     27,
+		Index:      96,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86FastCall, nil
@@ -1008,8 +998,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_intrcc"	<< ll.CallingConvX86Intr, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      98,
+		NTType:     27,
+		Index:      97,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86Intr, nil
@@ -1018,8 +1008,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_regcallcc"	<< ll.CallingConvX86RegCall, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      99,
+		NTType:     27,
+		Index:      98,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86RegCall, nil
@@ -1028,8 +1018,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_stdcallcc"	<< ll.CallingConvX86StdCall, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      100,
+		NTType:     27,
+		Index:      99,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86StdCall, nil
@@ -1038,8 +1028,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_thiscallcc"	<< ll.CallingConvX86ThisCall, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      101,
+		NTType:     27,
+		Index:      100,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86ThisCall, nil
@@ -1048,8 +1038,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "x86_vectorcallcc"	<< ll.CallingConvX86VectorCall, nil >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      102,
+		NTType:     27,
+		Index:      101,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ll.CallingConvX86VectorCall, nil
@@ -1058,8 +1048,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `CallingConv : "cc" int_lit	<< astx.NewCallingConv(X[1]) >>`,
 		Id:         "CallingConv",
-		NTType:     28,
-		Index:      103,
+		NTType:     27,
+		Index:      102,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.NewCallingConv(X[1])
@@ -1068,8 +1058,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptGC : empty	<< "", nil >>`,
 		Id:         "OptGC",
-		NTType:     29,
-		Index:      104,
+		NTType:     28,
+		Index:      103,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return "", nil
@@ -1078,8 +1068,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptGC : "gc" StringLit	<< X[1].(string), nil >>`,
 		Id:         "OptGC",
-		NTType:     29,
-		Index:      105,
+		NTType:     28,
+		Index:      104,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1].(string), nil
@@ -1088,8 +1078,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPrefix : empty	<< (*ast.TypeConst)(nil), nil >>`,
 		Id:         "OptPrefix",
-		NTType:     30,
-		Index:      106,
+		NTType:     29,
+		Index:      105,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ast.TypeConst)(nil), nil
@@ -1098,8 +1088,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPrefix : "prefix" Type Constant	<< astx.TypeConst(X[1], X[2]), nil >>`,
 		Id:         "OptPrefix",
-		NTType:     30,
-		Index:      107,
+		NTType:     29,
+		Index:      106,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.TypeConst(X[1], X[2]), nil
@@ -1108,8 +1098,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPrologue : empty	<< (*ast.TypeConst)(nil), nil >>`,
 		Id:         "OptPrologue",
-		NTType:     31,
-		Index:      108,
+		NTType:     30,
+		Index:      107,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ast.TypeConst)(nil), nil
@@ -1118,8 +1108,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPrologue : "prologue" Type Constant	<< astx.TypeConst(X[1], X[2]), nil >>`,
 		Id:         "OptPrologue",
-		NTType:     31,
-		Index:      109,
+		NTType:     30,
+		Index:      108,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.TypeConst(X[1], X[2]), nil
@@ -1128,8 +1118,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPersonality : empty	<< (*ast.TypeConst)(nil), nil >>`,
 		Id:         "OptPersonality",
-		NTType:     32,
-		Index:      110,
+		NTType:     31,
+		Index:      109,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ast.TypeConst)(nil), nil
@@ -1138,8 +1128,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPersonality : "personality" Type Constant	<< astx.TypeConst(X[1], X[2]), nil >>`,
 		Id:         "OptPersonality",
-		NTType:     32,
-		Index:      111,
+		NTType:     31,
+		Index:      110,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.TypeConst(X[1], X[2]), nil
@@ -1148,8 +1138,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FunctionBody : "{" BasicBlockList UseListOrders "}"	<< &ast.FunctionBody{Blocks: X[1].([]*ast.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil >>`,
 		Id:         "FunctionBody",
-		NTType:     33,
-		Index:      112,
+		NTType:     32,
+		Index:      111,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.FunctionBody{Blocks: X[1].([]*ast.BasicBlock), UseListOrders: X[2].([]*ast.UseListOrder)}, nil
@@ -1158,8 +1148,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `AttrGroupDef : "attributes" AttrGroupID "=" "{" FuncAttrs "}"	<< &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ll.FuncAttribute)}, nil >>`,
 		Id:         "AttrGroupDef",
-		NTType:     34,
-		Index:      113,
+		NTType:     33,
+		Index:      112,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.AttrGroupDef{ID: X[1].(*ast.AttrGroupID), FuncAttrs: X[4].([]ll.FuncAttribute)}, nil
@@ -1168,8 +1158,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NamedMetadataDef : MetadataName "=" "!" "{" MetadataNodes "}"	<< &ast.NamedMetadataDef{Name: X[0].(*ast.MetadataName), Nodes: X[4].([]ast.MetadataNode)}, nil >>`,
 		Id:         "NamedMetadataDef",
-		NTType:     35,
-		Index:      114,
+		NTType:     34,
+		Index:      113,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.NamedMetadataDef{Name: X[0].(*ast.MetadataName), Nodes: X[4].([]ast.MetadataNode)}, nil
@@ -1178,8 +1168,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNodes : empty	<< ([]ast.MetadataNode)(nil), nil >>`,
 		Id:         "MetadataNodes",
-		NTType:     36,
-		Index:      115,
+		NTType:     35,
+		Index:      114,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]ast.MetadataNode)(nil), nil
@@ -1188,8 +1178,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNodes : MetadataNodeList	<<  >>`,
 		Id:         "MetadataNodes",
-		NTType:     36,
-		Index:      116,
+		NTType:     35,
+		Index:      115,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1198,8 +1188,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNodeList : MetadataNode	<< []ast.MetadataNode{X[0].(ast.MetadataNode)}, nil >>`,
 		Id:         "MetadataNodeList",
-		NTType:     37,
-		Index:      117,
+		NTType:     36,
+		Index:      116,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []ast.MetadataNode{X[0].(ast.MetadataNode)}, nil
@@ -1208,8 +1198,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNodeList : MetadataNodeList "," MetadataNode	<< append(X[0].([]ast.MetadataNode), X[2].(ast.MetadataNode)), nil >>`,
 		Id:         "MetadataNodeList",
-		NTType:     37,
-		Index:      118,
+		NTType:     36,
+		Index:      117,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]ast.MetadataNode), X[2].(ast.MetadataNode)), nil
@@ -1218,8 +1208,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNode : MetadataID	<<  >>`,
 		Id:         "MetadataNode",
-		NTType:     38,
-		Index:      119,
+		NTType:     37,
+		Index:      118,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1228,8 +1218,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataNode : DIExpression	<<  >>`,
 		Id:         "MetadataNode",
-		NTType:     38,
-		Index:      120,
+		NTType:     37,
+		Index:      119,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1238,8 +1228,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataDef : MetadataID "=" OptDistinct MDTuple	<< &ast.MetadataDef{ID: X[0].(*ast.MetadataID), Distinct: X[2].(bool), Node: X[3].(ast.MDNode)}, nil >>`,
 		Id:         "MetadataDef",
-		NTType:     39,
-		Index:      121,
+		NTType:     38,
+		Index:      120,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.MetadataDef{ID: X[0].(*ast.MetadataID), Distinct: X[2].(bool), Node: X[3].(ast.MDNode)}, nil
@@ -1248,8 +1238,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataDef : MetadataID "=" OptDistinct SpecializedMDNode	<< &ast.MetadataDef{ID: X[0].(*ast.MetadataID), Distinct: X[2].(bool), Node: X[3].(ast.MDNode)}, nil >>`,
 		Id:         "MetadataDef",
-		NTType:     39,
-		Index:      122,
+		NTType:     38,
+		Index:      121,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.MetadataDef{ID: X[0].(*ast.MetadataID), Distinct: X[2].(bool), Node: X[3].(ast.MDNode)}, nil
@@ -1258,8 +1248,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptDistinct : empty	<< false, nil >>`,
 		Id:         "OptDistinct",
-		NTType:     40,
-		Index:      123,
+		NTType:     39,
+		Index:      122,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -1268,8 +1258,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptDistinct : "distinct"	<< true, nil >>`,
 		Id:         "OptDistinct",
-		NTType:     40,
-		Index:      124,
+		NTType:     39,
+		Index:      123,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
@@ -1278,8 +1268,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrders : empty	<< ([]*ast.UseListOrder)(nil), nil >>`,
 		Id:         "UseListOrders",
-		NTType:     41,
-		Index:      125,
+		NTType:     40,
+		Index:      124,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]*ast.UseListOrder)(nil), nil
@@ -1288,8 +1278,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrders : UseListOrderList	<<  >>`,
 		Id:         "UseListOrders",
-		NTType:     41,
-		Index:      126,
+		NTType:     40,
+		Index:      125,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1298,8 +1288,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrderList : UseListOrder	<< []*ast.UseListOrder{X[0].(*ast.UseListOrder)}, nil >>`,
 		Id:         "UseListOrderList",
-		NTType:     42,
-		Index:      127,
+		NTType:     41,
+		Index:      126,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []*ast.UseListOrder{X[0].(*ast.UseListOrder)}, nil
@@ -1308,8 +1298,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrderList : UseListOrderList UseListOrder	<< append(X[0].([]*ast.UseListOrder), X[1].(*ast.UseListOrder)), nil >>`,
 		Id:         "UseListOrderList",
-		NTType:     42,
-		Index:      128,
+		NTType:     41,
+		Index:      127,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]*ast.UseListOrder), X[1].(*ast.UseListOrder)), nil
@@ -1318,8 +1308,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrder : "uselistorder" Type Value "," "{" IndexList "}"	<< &ast.UseListOrder{Type: X[1].(types.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil >>`,
 		Id:         "UseListOrder",
-		NTType:     43,
-		Index:      129,
+		NTType:     42,
+		Index:      128,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.UseListOrder{Type: X[1].(types.Type), Value: X[2].(ast.Value), Indices: X[5].([]int64)}, nil
@@ -1328,8 +1318,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `UseListOrderBB : "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"	<< &ast.UseListOrderBB{Func: X[1].(*ast.GlobalIdent), Block: X[3].(*ast.LocalIdent), Indices: X[6].([]int64)}, nil >>`,
 		Id:         "UseListOrderBB",
-		NTType:     44,
-		Index:      130,
+		NTType:     43,
+		Index:      129,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.UseListOrderBB{Func: X[1].(*ast.GlobalIdent), Block: X[3].(*ast.LocalIdent), Indices: X[6].([]int64)}, nil
@@ -1338,8 +1328,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `GlobalIdent : global_ident	<< &ast.GlobalIdent{Ident: astx.String(X[0])}, nil >>`,
 		Id:         "GlobalIdent",
-		NTType:     45,
-		Index:      131,
+		NTType:     44,
+		Index:      130,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.GlobalIdent{Ident: astx.String(X[0])}, nil
@@ -1348,8 +1338,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `LocalIdent : local_ident	<< &ast.LocalIdent{Ident: astx.String(X[0])}, nil >>`,
 		Id:         "LocalIdent",
-		NTType:     46,
-		Index:      132,
+		NTType:     45,
+		Index:      131,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.LocalIdent{Ident: astx.String(X[0])}, nil
@@ -1358,8 +1348,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `LabelIdent : label_ident	<< &ast.LabelIdent{Ident: astx.String(X[0])}, nil >>`,
 		Id:         "LabelIdent",
-		NTType:     47,
-		Index:      133,
+		NTType:     46,
+		Index:      132,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.LabelIdent{Ident: astx.String(X[0])}, nil
@@ -1368,8 +1358,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `AttrGroupID : attr_group_id	<< &ast.AttrGroupID{ID: astx.String(X[0])}, nil >>`,
 		Id:         "AttrGroupID",
-		NTType:     48,
-		Index:      134,
+		NTType:     47,
+		Index:      133,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.AttrGroupID{ID: astx.String(X[0])}, nil
@@ -1378,8 +1368,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ComdatName : comdat_name	<< &ast.ComdatName{Name: astx.String(X[0])}, nil >>`,
 		Id:         "ComdatName",
-		NTType:     49,
-		Index:      135,
+		NTType:     48,
+		Index:      134,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.ComdatName{Name: astx.String(X[0])}, nil
@@ -1388,8 +1378,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataName : metadata_name	<< &ast.MetadataName{Name: astx.String(X[0])}, nil >>`,
 		Id:         "MetadataName",
-		NTType:     50,
-		Index:      136,
+		NTType:     49,
+		Index:      135,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.MetadataName{Name: astx.String(X[0])}, nil
@@ -1398,8 +1388,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataID : metadata_id	<< &ast.MetadataID{ID: astx.String(X[0])}, nil >>`,
 		Id:         "MetadataID",
-		NTType:     51,
-		Index:      137,
+		NTType:     50,
+		Index:      136,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ast.MetadataID{ID: astx.String(X[0])}, nil
@@ -1408,8 +1398,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Type : VoidType	<<  >>`,
 		Id:         "Type",
-		NTType:     52,
-		Index:      138,
+		NTType:     51,
+		Index:      137,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1418,8 +1408,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Type : FuncType	<<  >>`,
 		Id:         "Type",
-		NTType:     52,
-		Index:      139,
+		NTType:     51,
+		Index:      138,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1428,8 +1418,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Type : FirstClassType	<<  >>`,
 		Id:         "Type",
-		NTType:     52,
-		Index:      140,
+		NTType:     51,
+		Index:      139,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1438,8 +1428,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FirstClassType : ConcreteType	<<  >>`,
 		Id:         "FirstClassType",
-		NTType:     53,
-		Index:      141,
+		NTType:     52,
+		Index:      140,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1448,8 +1438,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FirstClassType : MetadataType	<<  >>`,
 		Id:         "FirstClassType",
-		NTType:     53,
-		Index:      142,
+		NTType:     52,
+		Index:      141,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1458,8 +1448,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : IntType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      143,
+		NTType:     53,
+		Index:      142,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1468,8 +1458,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : FloatType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      144,
+		NTType:     53,
+		Index:      143,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1478,8 +1468,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : PointerType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      145,
+		NTType:     53,
+		Index:      144,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1488,8 +1478,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : VectorType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      146,
+		NTType:     53,
+		Index:      145,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1498,8 +1488,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : LabelType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      147,
+		NTType:     53,
+		Index:      146,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1508,8 +1498,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : ArrayType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      148,
+		NTType:     53,
+		Index:      147,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1518,8 +1508,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : StructType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      149,
+		NTType:     53,
+		Index:      148,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1528,8 +1518,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : NamedType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      150,
+		NTType:     53,
+		Index:      149,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1538,8 +1528,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : MMXType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      151,
+		NTType:     53,
+		Index:      150,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1548,8 +1538,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ConcreteType : TokenType	<<  >>`,
 		Id:         "ConcreteType",
-		NTType:     54,
-		Index:      152,
+		NTType:     53,
+		Index:      151,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -1558,8 +1548,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `VoidType : "void"	<< &types.VoidType{}, nil >>`,
 		Id:         "VoidType",
-		NTType:     55,
-		Index:      153,
+		NTType:     54,
+		Index:      152,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.VoidType{}, nil
@@ -1568,8 +1558,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FuncType : Type "(" Params ")"	<< &types.FuncType{RetType: X[0].(types.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil >>`,
 		Id:         "FuncType",
-		NTType:     56,
-		Index:      154,
+		NTType:     55,
+		Index:      153,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.FuncType{RetType: X[0].(types.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil
@@ -1578,8 +1568,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IntType : int_type	<< astx.NewIntType(X[0]) >>`,
 		Id:         "IntType",
-		NTType:     57,
-		Index:      155,
+		NTType:     56,
+		Index:      154,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.NewIntType(X[0])
@@ -1588,8 +1578,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatType : FloatKind	<< &types.FloatType{Kind: X[0].(types.FloatKind)}, nil >>`,
 		Id:         "FloatType",
-		NTType:     58,
-		Index:      156,
+		NTType:     57,
+		Index:      155,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.FloatType{Kind: X[0].(types.FloatKind)}, nil
@@ -1598,8 +1588,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "half"	<< types.FloatKindHalf, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      157,
+		NTType:     58,
+		Index:      156,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindHalf, nil
@@ -1608,8 +1598,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "float"	<< types.FloatKindFloat, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      158,
+		NTType:     58,
+		Index:      157,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindFloat, nil
@@ -1618,8 +1608,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "double"	<< types.FloatKindDouble, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      159,
+		NTType:     58,
+		Index:      158,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindDouble, nil
@@ -1628,8 +1618,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "x86_fp80"	<< types.FloatKindX86FP80, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      160,
+		NTType:     58,
+		Index:      159,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindX86FP80, nil
@@ -1638,8 +1628,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "fp128"	<< types.FloatKindFP128, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      161,
+		NTType:     58,
+		Index:      160,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindFP128, nil
@@ -1648,8 +1638,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `FloatKind : "ppc_fp128"	<< types.FloatKindPPCFP128, nil >>`,
 		Id:         "FloatKind",
-		NTType:     59,
-		Index:      162,
+		NTType:     58,
+		Index:      161,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return types.FloatKindPPCFP128, nil
@@ -1658,8 +1648,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MMXType : "x86_mmx"	<< &types.MMXType{}, nil >>`,
 		Id:         "MMXType",
-		NTType:     60,
-		Index:      163,
+		NTType:     59,
+		Index:      162,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.MMXType{}, nil
@@ -1668,8 +1658,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `PointerType : Type OptAddrSpace "*"	<< &types.PointerType{ElemType: X[0].(types.Type), AddrSpace: X[1].(ll.AddrSpace)}, nil >>`,
 		Id:         "PointerType",
-		NTType:     61,
-		Index:      164,
+		NTType:     60,
+		Index:      163,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.PointerType{ElemType: X[0].(types.Type), AddrSpace: X[1].(ll.AddrSpace)}, nil
@@ -1678,8 +1668,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `VectorType : "<" int_lit "x" Type ">"	<< &types.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil >>`,
 		Id:         "VectorType",
-		NTType:     62,
-		Index:      165,
+		NTType:     61,
+		Index:      164,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.VectorType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil
@@ -1688,8 +1678,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `LabelType : "label"	<< &types.LabelType{}, nil >>`,
 		Id:         "LabelType",
-		NTType:     63,
-		Index:      166,
+		NTType:     62,
+		Index:      165,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.LabelType{}, nil
@@ -1698,8 +1688,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TokenType : "token"	<< &types.TokenType{}, nil >>`,
 		Id:         "TokenType",
-		NTType:     64,
-		Index:      167,
+		NTType:     63,
+		Index:      166,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.TokenType{}, nil
@@ -1708,8 +1698,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `MetadataType : "metadata"	<< &types.MetadataType{}, nil >>`,
 		Id:         "MetadataType",
-		NTType:     65,
-		Index:      168,
+		NTType:     64,
+		Index:      167,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.MetadataType{}, nil
@@ -1718,8 +1708,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ArrayType : "[" int_lit "x" Type "]"	<< &types.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil >>`,
 		Id:         "ArrayType",
-		NTType:     66,
-		Index:      169,
+		NTType:     65,
+		Index:      168,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.ArrayType{Len: astx.Int(X[1]), ElemType: X[3].(types.Type)}, nil
@@ -1728,8 +1718,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `StructType : "{" "}"	<< &types.StructType{}, nil >>`,
 		Id:         "StructType",
-		NTType:     67,
-		Index:      170,
+		NTType:     66,
+		Index:      169,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.StructType{}, nil
@@ -1738,8 +1728,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `StructType : "{" TypeList "}"	<< &types.StructType{Fields: X[1].([]types.Type)}, nil >>`,
 		Id:         "StructType",
-		NTType:     67,
-		Index:      171,
+		NTType:     66,
+		Index:      170,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.StructType{Fields: X[1].([]types.Type)}, nil
@@ -1748,8 +1738,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `StructType : "<" "{" "}" ">"	<< &types.StructType{Packed: true}, nil >>`,
 		Id:         "StructType",
-		NTType:     67,
-		Index:      172,
+		NTType:     66,
+		Index:      171,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.StructType{Packed: true}, nil
@@ -1758,8 +1748,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `StructType : "<" "{" TypeList "}" ">"	<< &types.StructType{Packed: true, Fields: X[2].([]types.Type)}, nil >>`,
 		Id:         "StructType",
-		NTType:     67,
-		Index:      173,
+		NTType:     66,
+		Index:      172,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &types.StructType{Packed: true, Fields: X[2].([]types.Type)}, nil
@@ -1768,8 +1758,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TypeList : Type	<< []types.Type{X[0].(types.Type)}, nil >>`,
 		Id:         "TypeList",
-		NTType:     68,
-		Index:      174,
+		NTType:     67,
+		Index:      173,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []types.Type{X[0].(types.Type)}, nil
@@ -1778,11 +1768,21 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TypeList : TypeList "," Type	<< append(X[0].([]types.Type), X[2].(types.Type)), nil >>`,
 		Id:         "TypeList",
-		NTType:     68,
-		Index:      175,
+		NTType:     67,
+		Index:      174,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]types.Type), X[2].(types.Type)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `OpaqueType : "opaque"	<< &types.StructType{Opaque: true}, nil >>`,
+		Id:         "OpaqueType",
+		NTType:     68,
+		Index:      175,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return &types.StructType{Opaque: true}, nil
 		},
 	},
 	ProdTabEntry{

@@ -83,13 +83,12 @@ func (m *Module) irType(old types.Type) types.Type {
 	case *types.StructType:
 		typ := &types.StructType{
 			Packed: old.Packed,
+			Opaque: old.Opaque,
 		}
 		for _, field := range old.Fields {
 			typ.Fields = append(typ.Fields, m.irType(field))
 		}
 		return typ
-	case *types.OpaqueType:
-		return &types.OpaqueType{}
 	case *types.NamedType:
 		return m.typeDefs[old.Name]
 	default:

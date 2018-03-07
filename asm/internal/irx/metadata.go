@@ -99,7 +99,7 @@ func (m *Module) irDIExpressionField(old ast.DIExpressionField) metadata.DIExpre
 	case *ast.IntConst:
 		return m.irIntConst(old)
 	case ll.DwarfOp:
-		return ll.DwarfOp(old)
+		return old
 	default:
 		panic(fmt.Errorf("support for DIExpression field type %T not yet implemented", old))
 	}
@@ -247,7 +247,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DIDerivedType:
 		return &metadata.DIDerivedType{
-			Tag:               ll.DwarfTag(old.Tag),
+			Tag:               old.Tag,
 			Name:              old.Name,
 			Scope:             m.irMDField(old.Scope),
 			File:              m.irMDField(old.File),
@@ -262,7 +262,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DICompositeType:
 		return &metadata.DICompositeType{
-			Tag:            ll.DwarfTag(old.Tag),
+			Tag:            old.Tag,
 			Name:           old.Name,
 			Scope:          m.irMDField(old.Scope),
 			File:           m.irMDField(old.File),
@@ -273,7 +273,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			Offset:         old.Offset,
 			Flags:          old.Flags,
 			Elements:       m.irMDField(old.Elements),
-			RuntimeLang:    ll.DwarfLang(old.RuntimeLang),
+			RuntimeLang:    old.RuntimeLang,
 			VtableHolder:   m.irMDField(old.VtableHolder),
 			TemplateParams: m.irMDField(old.TemplateParams),
 			Identifier:     old.Identifier,
@@ -297,7 +297,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DITemplateValueParameter:
 		return &metadata.DITemplateValueParameter{
-			Tag:   ll.DwarfTag(old.Tag),
+			Tag:   old.Tag,
 			Name:  old.Name,
 			Type:  m.irMDField(old.Type),
 			Value: m.irMDField(old.Value),
@@ -341,7 +341,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 			IsDefinition:   old.IsDefinition,
 			ScopeLine:      old.ScopeLine,
 			ContainingType: m.irMDField(old.ContainingType),
-			Virtuality:     ll.DwarfVirtuality(old.Virtuality),
+			Virtuality:     old.Virtuality,
 			VirtualIndex:   old.VirtualIndex,
 			ThisAdjustment: old.ThisAdjustment,
 			Flags:          old.Flags,
@@ -404,7 +404,7 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DIImportedEntity:
 		return &metadata.DIImportedEntity{
-			Tag:    ll.DwarfTag(old.Tag),
+			Tag:    old.Tag,
 			Scope:  m.irMDField(old.Scope),
 			Entity: m.irMDField(old.Entity),
 			File:   m.irMDField(old.File),
@@ -413,21 +413,21 @@ func (m *Module) irSpecializedMDNode(old ast.SpecializedMDNode) metadata.Special
 		}
 	case *ast.DIMacro:
 		return &metadata.DIMacro{
-			Type:  ll.DwarfMacinfo(old.Type),
+			Type:  old.Type,
 			Line:  old.Line,
 			Name:  old.Name,
 			Value: old.Value,
 		}
 	case *ast.DIMacroFile:
 		return &metadata.DIMacroFile{
-			Type:  ll.DwarfMacinfo(old.Type),
+			Type:  old.Type,
 			Line:  old.Line,
 			File:  m.irMDField(old.File),
 			Nodes: m.irMDField(old.Nodes),
 		}
 	case *ast.GenericDINode:
 		return &metadata.GenericDINode{
-			Tag:      ll.DwarfTag(old.Tag),
+			Tag:      old.Tag,
 			Header:   old.Header,
 			Operands: m.irMDFields(old.Operands),
 		}
