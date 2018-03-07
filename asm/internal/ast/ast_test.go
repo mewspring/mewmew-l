@@ -450,23 +450,23 @@ var (
 
 // Ensure that each unwind target implements the ast.UnwindTarget interface.
 var (
-	_ ast.UnwindTarget = (*ast.UnwindToCaller)(nil)
-	_ ast.UnwindTarget = (*ir.BasicBlock)(nil)
+	_ ll.UnwindTarget = (*ll.UnwindToCaller)(nil)
+	_ ll.UnwindTarget = (*ir.BasicBlock)(nil)
 )
 
 // Ensure that each terminator implements the ast.Terminator interface.
 var (
-	_ ir.Terminator = (*ast.RetTerm)(nil)
-	_ ir.Terminator = (*ast.BrTerm)(nil)
-	_ ir.Terminator = (*ast.CondBrTerm)(nil)
-	_ ir.Terminator = (*ast.SwitchTerm)(nil)
-	_ ir.Terminator = (*ast.IndirectBrTerm)(nil)
-	_ ir.Terminator = (*ast.InvokeTerm)(nil)
-	_ ir.Terminator = (*ast.ResumeTerm)(nil)
-	_ ir.Terminator = (*ast.CatchSwitchTerm)(nil)
-	_ ir.Terminator = (*ast.CatchRetTerm)(nil)
-	_ ir.Terminator = (*ast.CleanupRetTerm)(nil)
-	_ ir.Terminator = (*ast.UnreachableTerm)(nil)
+	_ ir.Terminator = (*ir.RetTerm)(nil)
+	_ ir.Terminator = (*ir.BrTerm)(nil)
+	_ ir.Terminator = (*ir.CondBrTerm)(nil)
+	_ ir.Terminator = (*ir.SwitchTerm)(nil)
+	_ ir.Terminator = (*ir.IndirectBrTerm)(nil)
+	_ ir.Terminator = (*ir.InvokeTerm)(nil)
+	_ ir.Terminator = (*ir.ResumeTerm)(nil)
+	_ ir.Terminator = (*ir.CatchSwitchTerm)(nil)
+	_ ir.Terminator = (*ir.CatchRetTerm)(nil)
+	_ ir.Terminator = (*ir.CleanupRetTerm)(nil)
+	_ ir.Terminator = (*ir.UnreachableTerm)(nil)
 )
 
 // Ensure that each value implements the ast.Value interface.

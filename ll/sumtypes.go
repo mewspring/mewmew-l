@@ -101,6 +101,20 @@ func (ReturnAttr) isReturnAttribute()        {}
 // ast.TopLevelEntity interface.
 func (*ComdatDef) IsTopLevelEntity() {}
 
+// UnwindTarget is an unwind target of a catchswitch or cleanupret terminator.
+type UnwindTarget interface {
+	fmt.Stringer
+	// IsUnwindTarget ensures that only unwind targets can be assigned to the
+	// ast.UnwindTarget interface.
+	IsUnwindTarget()
+}
+
+// IsUnwindTarget ensures that only unwind targets can be assigned to the
+// ast.UnwindTarget interface.
+func (*UnwindToCaller) IsUnwindTarget() {}
+
+//func (*Label) IsUnwindTarget()          {}
+
 // TODO: Figure out how to handle value interface.
 
 // IsValue ensures that only values can be assigned to the ast.Value interface.

@@ -1146,6 +1146,15 @@ const (
 	UnnamedAddrUnnamedAddr                         // unnamed_addr
 )
 
+// UnwindToCaller specifies the caller as an unwind target.
+type UnwindToCaller struct{}
+
+// String returns a string representation of the unwind target.
+func (*UnwindToCaller) String() string {
+	// "to" "caller"
+	return "to caller"
+}
+
 //go:generate stringer -linecomment -type Visibility
 
 // Visibility specifies the visibility of a global identifier.

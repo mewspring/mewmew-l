@@ -84,3 +84,17 @@ func (*VAArgInst) IsInstruction()          {}
 func (*LandingPadInst) IsInstruction()     {}
 func (*CatchPadInst) IsInstruction()       {}
 func (*CleanupPadInst) IsInstruction()     {}
+
+// IsTerminator ensures that only terminators can be assigned to the
+// ast.Terminator interface.
+func (*RetTerm) IsTerminator()         {}
+func (*BrTerm) IsTerminator()          {}
+func (*CondBrTerm) IsTerminator()      {}
+func (*SwitchTerm) IsTerminator()      {}
+func (*IndirectBrTerm) IsTerminator()  {}
+func (*InvokeTerm) IsTerminator()      {}
+func (*ResumeTerm) IsTerminator()      {}
+func (*CatchSwitchTerm) IsTerminator() {}
+func (*CatchRetTerm) IsTerminator()    {}
+func (*CleanupRetTerm) IsTerminator()  {}
+func (*UnreachableTerm) IsTerminator() {}

@@ -4819,63 +4819,63 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `RetTerm : "ret" VoidType OptCommaSepMetadataAttachmentList	<< &ast.RetTerm{Metadata: X[2].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `RetTerm : "ret" VoidType OptCommaSepMetadataAttachmentList	<< &ir.RetTerm{Metadata: X[2].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "RetTerm",
 		NTType:     207,
 		Index:      479,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.RetTerm{Metadata: X[2].([]*metadata.MetadataAttachment)}, nil
+			return &ir.RetTerm{Metadata: X[2].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `RetTerm : "ret" ConcreteType Value OptCommaSepMetadataAttachmentList	<< &ast.RetTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `RetTerm : "ret" ConcreteType Value OptCommaSepMetadataAttachmentList	<< &ir.RetTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "RetTerm",
 		NTType:     207,
 		Index:      480,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.RetTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.RetTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BrTerm : "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.BrTerm{Target: astx.Label(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `BrTerm : "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ir.BrTerm{Target: astx.Label(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "BrTerm",
 		NTType:     208,
 		Index:      481,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BrTerm{Target: astx.Label(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.BrTerm{Target: astx.Label(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CondBrTerm : "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.CondBrTerm{Cond: astx.TypeValue(X[1], X[2]), TargetTrue: astx.Label(X[4], X[5]), TargetFalse: astx.Label(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CondBrTerm : "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ir.CondBrTerm{Cond: astx.TypeValue(X[1], X[2]), TargetTrue: astx.Label(X[4], X[5]), TargetFalse: astx.Label(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CondBrTerm",
 		NTType:     209,
 		Index:      482,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CondBrTerm{Cond: astx.TypeValue(X[1], X[2]), TargetTrue: astx.Label(X[4], X[5]), TargetFalse: astx.Label(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CondBrTerm{Cond: astx.TypeValue(X[1], X[2]), TargetTrue: astx.Label(X[4], X[5]), TargetFalse: astx.Label(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SwitchTerm : "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList	<< &ast.SwitchTerm{X: astx.TypeValue(X[1], X[2]), Default: astx.Label(X[4], X[5]), Cases: X[7].([]*ast.Case), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SwitchTerm : "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList	<< &ir.SwitchTerm{X: astx.TypeValue(X[1], X[2]), Default: astx.Label(X[4], X[5]), Cases: X[7].([]*ir.Case), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SwitchTerm",
 		NTType:     210,
 		Index:      483,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SwitchTerm{X: astx.TypeValue(X[1], X[2]), Default: astx.Label(X[4], X[5]), Cases: X[7].([]*ast.Case), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SwitchTerm{X: astx.TypeValue(X[1], X[2]), Default: astx.Label(X[4], X[5]), Cases: X[7].([]*ir.Case), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Cases : empty	<< ([]*ast.Case)(nil), nil >>`,
+		String: `Cases : empty	<< ([]*ir.Case)(nil), nil >>`,
 		Id:         "Cases",
 		NTType:     211,
 		Index:      484,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.Case)(nil), nil
+			return ([]*ir.Case)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -4889,43 +4889,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `CaseList : Case	<< []*ast.Case{X[0].(*ast.Case)}, nil >>`,
+		String: `CaseList : Case	<< []*ir.Case{X[0].(*ir.Case)}, nil >>`,
 		Id:         "CaseList",
 		NTType:     212,
 		Index:      486,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.Case{X[0].(*ast.Case)}, nil
+			return []*ir.Case{X[0].(*ir.Case)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CaseList : CaseList Case	<< append(X[0].([]*ast.Case), X[1].(*ast.Case)), nil >>`,
+		String: `CaseList : CaseList Case	<< append(X[0].([]*ir.Case), X[1].(*ir.Case)), nil >>`,
 		Id:         "CaseList",
 		NTType:     212,
 		Index:      487,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.Case), X[1].(*ast.Case)), nil
+			return append(X[0].([]*ir.Case), X[1].(*ir.Case)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Case : Type IntConst "," LabelType LocalIdent	<< &ast.Case{X: astx.TypeConst(X[0], X[1]), Target: astx.Label(X[3], X[4])}, nil >>`,
+		String: `Case : Type IntConst "," LabelType LocalIdent	<< &ir.Case{X: astx.TypeConst(X[0], X[1]), Target: astx.Label(X[3], X[4])}, nil >>`,
 		Id:         "Case",
 		NTType:     213,
 		Index:      488,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Case{X: astx.TypeConst(X[0], X[1]), Target: astx.Label(X[3], X[4])}, nil
+			return &ir.Case{X: astx.TypeConst(X[0], X[1]), Target: astx.Label(X[3], X[4])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectBrTerm : "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList	<< &ast.IndirectBrTerm{Addr: astx.TypeValue(X[1], X[2]), Targets: X[5].([]*ir.BasicBlock), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `IndirectBrTerm : "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList	<< &ir.IndirectBrTerm{Addr: astx.TypeValue(X[1], X[2]), Targets: X[5].([]*ir.BasicBlock), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "IndirectBrTerm",
 		NTType:     214,
 		Index:      489,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IndirectBrTerm{Addr: astx.TypeValue(X[1], X[2]), Targets: X[5].([]*ir.BasicBlock), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
+			return &ir.IndirectBrTerm{Addr: astx.TypeValue(X[1], X[2]), Targets: X[5].([]*ir.BasicBlock), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4959,43 +4959,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(value.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ir.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(value.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "InvokeTerm",
 		NTType:     217,
 		Index:      493,
 		NumSymbols: 17,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(value.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil
+			return &ir.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(value.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ResumeTerm : "resume" Type Value OptCommaSepMetadataAttachmentList	<< &ast.ResumeTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ResumeTerm : "resume" Type Value OptCommaSepMetadataAttachmentList	<< &ir.ResumeTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ResumeTerm",
 		NTType:     218,
 		Index:      494,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ResumeTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ResumeTerm{X: astx.TypeValue(X[1], X[2]), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CatchSwitchTerm : "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ast.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ir.BasicBlock), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CatchSwitchTerm : "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ir.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ir.BasicBlock), UnwindTarget: X[7].(ll.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CatchSwitchTerm",
 		NTType:     219,
 		Index:      495,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ir.BasicBlock), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ir.BasicBlock), UnwindTarget: X[7].(ll.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UnwindTarget : "to" "caller"	<< &ast.UnwindToCaller{}, nil >>`,
+		String: `UnwindTarget : "to" "caller"	<< &ll.UnwindToCaller{}, nil >>`,
 		Id:         "UnwindTarget",
 		NTType:     220,
 		Index:      496,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UnwindToCaller{}, nil
+			return &ll.UnwindToCaller{}, nil
 		},
 	},
 	ProdTabEntry{
@@ -5009,33 +5009,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `CatchRetTerm : "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.CatchRetTerm{From: X[2].(value.Value), To: astx.Label(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CatchRetTerm : "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ir.CatchRetTerm{From: X[2].(value.Value), To: astx.Label(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CatchRetTerm",
 		NTType:     221,
 		Index:      498,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CatchRetTerm{From: X[2].(value.Value), To: astx.Label(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CatchRetTerm{From: X[2].(value.Value), To: astx.Label(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CleanupRetTerm : "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ast.CleanupRetTerm{From: X[2].(value.Value), UnwindTarget: X[4].(ast.UnwindTarget), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CleanupRetTerm : "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ir.CleanupRetTerm{From: X[2].(value.Value), UnwindTarget: X[4].(ll.UnwindTarget), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CleanupRetTerm",
 		NTType:     222,
 		Index:      499,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CleanupRetTerm{From: X[2].(value.Value), UnwindTarget: X[4].(ast.UnwindTarget), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CleanupRetTerm{From: X[2].(value.Value), UnwindTarget: X[4].(ll.UnwindTarget), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UnreachableTerm : "unreachable" OptCommaSepMetadataAttachmentList	<< &ast.UnreachableTerm{Metadata: X[1].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `UnreachableTerm : "unreachable" OptCommaSepMetadataAttachmentList	<< &ir.UnreachableTerm{Metadata: X[1].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "UnreachableTerm",
 		NTType:     223,
 		Index:      500,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UnreachableTerm{Metadata: X[1].([]*metadata.MetadataAttachment)}, nil
+			return &ir.UnreachableTerm{Metadata: X[1].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
