@@ -57,21 +57,6 @@ func (*ICmpExpr) IsConstant()           {}
 func (*FCmpExpr) IsConstant()           {}
 func (*SelectExpr) IsConstant()         {}
 
-// IsDIExpressionField ensures that only DIExpression fields can be assigned to
-// the metadata.DIExpressionField interface.
-func (*IntConst) IsDIExpressionField() {}
-
-// IsIntOrMDField ensures that only intergers and metadata fields can be
-// assigned to the metadata.IntOrMDField interface.
-func (*IntConst) IsIntOrMDField() {}
-
-// MDField
-func (*NullConst) IsIntOrMDField() {}
-
-// IsMDField ensures that only metadata fields can be assigned to the
-// metadata.MDField interface.
-func (*NullConst) IsMDField() {}
-
 // IsExceptionScope ensures that only exception scopes can be assigned to the
 // ast.ExceptionScope interface.
 func (*NoneConst) IsExceptionScope() {}

@@ -115,7 +115,7 @@ func (*MetadataID) IsMDNode() {}
 
 // IsDIExpressionField ensures that only DIExpression fields can be assigned to
 // the ast.DIExpressionField interface.
-func (*IntConst) IsDIExpressionField() {}
+//func (*MDInt) IsDIExpressionField() {}
 
 //func (DwarfOp) IsDIExpressionField()   {}
 
@@ -133,7 +133,7 @@ type IntOrMDField interface {
 
 // IsIntOrMDField ensures that only intergers and metadata fields can be
 // assigned to the ast.IntOrMDField interface.
-func (*IntConst) IsIntOrMDField() {}
+//func (*MDInt) IsIntOrMDField() {}
 
 // Metadata
 func (*TypeValue) IsIntOrMDField() {}

@@ -37,6 +37,9 @@ func (m *Module) irTypeConst(old *ast.TypeConst) ir.Constant {
 	// TODO: Figure out how to set type of constant in a clean way.
 	c := m.irConstant(old.Const)
 	switch c := c.(type) {
+	case *ir.Global:
+		// Already translated from *ast.GlobalIdent
+		return c
 	// Constants.
 	case *constant.BoolConst:
 		if typ := m.irType(old.Typ); !typ.Equal(types.I1) {

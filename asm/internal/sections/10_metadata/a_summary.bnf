@@ -37,7 +37,8 @@ MDFieldList
 
 MDField
 	// Null is a special case since it is typeless.
-	: NullConst
+	: "null"
+	<< &metadata.MDNull{}, nil >>
 	| Metadata
 ;
 

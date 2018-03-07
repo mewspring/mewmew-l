@@ -2,6 +2,7 @@ package metadata
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
@@ -68,7 +69,7 @@ type Value struct {
 
 // String returns the string representation of the metadata value.
 func (md *Value) String() string {
-	return fmt.Sprintf("%v %v", md.Type, md.Value)
+	return fmt.Sprintf("%v %v", md.Type, md.Value.Ident())
 }
 
 // --- [ Metadata String ] -----------------------------------------------------
@@ -82,6 +83,30 @@ type MDString struct {
 func (md *MDString) String() string {
 	// "!" StringLit
 	return fmt.Sprintf("!%v", enc.Quote(md.Value))
+}
+
+// --- [ Metadata NULL-literal ] -----------------------------------------------
+
+// MDNull is a metadata null literal.
+type MDNull struct{}
+
+// String returns the string representation of the metadata null literal.
+func (md *MDNull) String() string {
+	// "null"
+	return "null"
+}
+
+// --- [ Metadata Integer Literal ] --------------------------------------------
+
+// MDInt is a metadata integer literal.
+type MDInt struct {
+	X int64
+}
+
+// String returns the string representation of the metadata integer literal.
+func (md *MDInt) String() string {
+	// int_lit
+	return strconv.FormatInt(md.X, 10)
 }
 
 // --- [ Metadata Attachment ] -------------------------------------------------

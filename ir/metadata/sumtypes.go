@@ -25,8 +25,7 @@ type MDField interface {
 
 // IsMDField ensures that only metadata fields can be assigned to the
 // metadata.MDField interface.
-//
-// *constant.NullConst
+func (*MDNull) IsMDField() {}
 
 // Metadata
 func (*Value) IsMDField()       {}
@@ -195,7 +194,7 @@ type DIExpressionField interface {
 // IsDIExpressionField ensures that only DIExpression fields can be assigned to
 // the metadata.DIExpressionField interface.
 //
-// *IntConst
+func (*MDInt) IsDIExpressionField() {}
 
 // IntOrMDField is an integer or metadata field.
 type IntOrMDField interface {
@@ -207,11 +206,10 @@ type IntOrMDField interface {
 
 // IsIntOrMDField ensures that only intergers and metadata fields can be
 // assigned to the metadata.IntOrMDField interface.
-//
-// *constant.IntConst
+func (*MDInt) IsIntOrMDField() {}
 
 // MDField
-// *constant.NullConst
+func (*MDNull) IsIntOrMDField() {}
 
 // Metadata
 func (*Value) IsIntOrMDField()       {}
