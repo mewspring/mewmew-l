@@ -179,3 +179,9 @@ func (*MetadataID) IsIntOrMDField() {}
 func (*MetadataID) IsMetadataNode() {}
 
 //func (*DIExpression) IsMetadataNode() {}
+
+// ___ [ Function Attribute ] __________________________________________________
+
+// IsFuncAttribute ensures that only function attributes can be assigned to the
+// ast.FuncAttribute interface.
+func (*AttrGroupID) IsFuncAttribute() {}

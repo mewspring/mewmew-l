@@ -11,6 +11,7 @@ import (
 
 	"github.com/mewkiz/pkg/osutil"
 	"github.com/mewmew/l/asm"
+	"github.com/mewmew/l/ir"
 	"github.com/pkg/errors"
 )
 
@@ -209,3 +210,59 @@ func diff(a, b string, words bool) error {
 	}
 	return nil
 }
+
+// Ensure that each instruction implements the ast.Instruction interface.
+var (
+	_ ir.Instruction = (*ir.AddInst)(nil)
+	_ ir.Instruction = (*ir.FAddInst)(nil)
+	_ ir.Instruction = (*ir.SubInst)(nil)
+	_ ir.Instruction = (*ir.FSubInst)(nil)
+	_ ir.Instruction = (*ir.MulInst)(nil)
+	_ ir.Instruction = (*ir.FMulInst)(nil)
+	_ ir.Instruction = (*ir.UDivInst)(nil)
+	_ ir.Instruction = (*ir.SDivInst)(nil)
+	_ ir.Instruction = (*ir.FDivInst)(nil)
+	_ ir.Instruction = (*ir.URemInst)(nil)
+	_ ir.Instruction = (*ir.SRemInst)(nil)
+	_ ir.Instruction = (*ir.FRemInst)(nil)
+	_ ir.Instruction = (*ir.ShlInst)(nil)
+	_ ir.Instruction = (*ir.LShrInst)(nil)
+	_ ir.Instruction = (*ir.AShrInst)(nil)
+	_ ir.Instruction = (*ir.AndInst)(nil)
+	_ ir.Instruction = (*ir.OrInst)(nil)
+	_ ir.Instruction = (*ir.XorInst)(nil)
+	_ ir.Instruction = (*ir.ExtractElementInst)(nil)
+	_ ir.Instruction = (*ir.InsertElementInst)(nil)
+	_ ir.Instruction = (*ir.ShuffleVectorInst)(nil)
+	_ ir.Instruction = (*ir.ExtractValueInst)(nil)
+	_ ir.Instruction = (*ir.InsertValueInst)(nil)
+	_ ir.Instruction = (*ir.AllocaInst)(nil)
+	_ ir.Instruction = (*ir.LoadInst)(nil)
+	_ ir.Instruction = (*ir.StoreInst)(nil)
+	_ ir.Instruction = (*ir.FenceInst)(nil)
+	_ ir.Instruction = (*ir.CmpXchgInst)(nil)
+	_ ir.Instruction = (*ir.AtomicRMWInst)(nil)
+	_ ir.Instruction = (*ir.GetElementPtrInst)(nil)
+	_ ir.Instruction = (*ir.TruncInst)(nil)
+	_ ir.Instruction = (*ir.ZExtInst)(nil)
+	_ ir.Instruction = (*ir.SExtInst)(nil)
+	_ ir.Instruction = (*ir.FPTruncInst)(nil)
+	_ ir.Instruction = (*ir.FPExtInst)(nil)
+	_ ir.Instruction = (*ir.FPToUIInst)(nil)
+	_ ir.Instruction = (*ir.FPToSIInst)(nil)
+	_ ir.Instruction = (*ir.UIToFPInst)(nil)
+	_ ir.Instruction = (*ir.SIToFPInst)(nil)
+	_ ir.Instruction = (*ir.PtrToIntInst)(nil)
+	_ ir.Instruction = (*ir.IntToPtrInst)(nil)
+	_ ir.Instruction = (*ir.BitCastInst)(nil)
+	_ ir.Instruction = (*ir.AddrSpaceCastInst)(nil)
+	_ ir.Instruction = (*ir.ICmpInst)(nil)
+	_ ir.Instruction = (*ir.FCmpInst)(nil)
+	_ ir.Instruction = (*ir.PhiInst)(nil)
+	_ ir.Instruction = (*ir.SelectInst)(nil)
+	_ ir.Instruction = (*ir.CallInst)(nil)
+	_ ir.Instruction = (*ir.VAArgInst)(nil)
+	_ ir.Instruction = (*ir.LandingPadInst)(nil)
+	_ ir.Instruction = (*ir.CatchPadInst)(nil)
+	_ ir.Instruction = (*ir.CleanupPadInst)(nil)
+)

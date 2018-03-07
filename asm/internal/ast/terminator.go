@@ -148,9 +148,9 @@ type InvokeTerm struct {
 	ReturnAttrs    []ll.ReturnAttribute
 	RetType        types.Type
 	Callee         Value
-	Args           []Argument
+	Args           []ll.Argument
 	FuncAttrs      []ll.FuncAttribute
-	OperandBundles []*OperandBundle
+	OperandBundles []*ll.OperandBundle
 	Normal         *Label
 	Exception      *Label
 	Metadata       []*metadata.MetadataAttachment
@@ -215,7 +215,7 @@ func (term *ResumeTerm) String() string {
 
 // CatchSwitchTerm is an LLVM IR catchswitch terminator.
 type CatchSwitchTerm struct {
-	Scope        ExceptionScope
+	Scope        ll.ExceptionScope
 	Handlers     []*Label
 	UnwindTarget UnwindTarget
 	Metadata     []*metadata.MetadataAttachment

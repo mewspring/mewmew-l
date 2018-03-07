@@ -17,21 +17,21 @@
 
 AllocaInst
 	: "alloca" OptInAlloca OptSwiftError Type OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), AddrSpace: $5.(types.AddrSpace), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), AddrSpace: $5.(types.AddrSpace), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), AddrSpace: $7.(types.AddrSpace), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), Alignment: $5.(*ll.Alignment), AddrSpace: $7.(types.AddrSpace), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), AddrSpace: $8.(types.AddrSpace), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), AddrSpace: $8.(types.AddrSpace), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList
-	<< &ast.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), AddrSpace: $10.(types.AddrSpace), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AllocaInst{InAlloca: $1.(bool), SwiftError: $2.(bool), ElemType: $3.(types.Type), NElems: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), AddrSpace: $10.(types.AddrSpace), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptInAlloca
@@ -64,14 +64,14 @@ OptSwiftError
 LoadInst
 	// Load.
 	: "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ast.LoadInst{Volatile: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.LoadInst{Volatile: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.LoadInst{Volatile: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Alignment: $7.(*ll.Alignment), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.LoadInst{Volatile: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Alignment: $7.(*ll.Alignment), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 	// Atomic load.
 	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	<< &ast.LoadInst{Atomic: true, Volatile: $2.(bool), ElemType: $3.(types.Type), Src: astx.TypeValue($5, $6), SyncScope: $7.(*ll.SyncScope), AtomicOrdering: $8.(ll.AtomicOrdering), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.LoadInst{Atomic: true, Volatile: $2.(bool), ElemType: $3.(types.Type), Src: astx.TypeValue($5, $6), SyncScope: $7.(*ll.SyncScope), AtomicOrdering: $8.(ll.AtomicOrdering), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.LoadInst{Atomic: true, Volatile: $2.(bool), ElemType: $3.(types.Type), Src: astx.TypeValue($5, $6), SyncScope: $7.(*ll.SyncScope), AtomicOrdering: $8.(ll.AtomicOrdering), Alignment: $10.(*ll.Alignment), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.LoadInst{Atomic: true, Volatile: $2.(bool), ElemType: $3.(types.Type), Src: astx.TypeValue($5, $6), SyncScope: $7.(*ll.SyncScope), AtomicOrdering: $8.(ll.AtomicOrdering), Alignment: $10.(*ll.Alignment), Metadata: $11.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,13 +93,13 @@ LoadInst
 
 StoreInst
 	: "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ast.StoreInst{Volatile: $1.(bool), Src: astx.TypeValue($2, $3), Dst: astx.TypeValue($5, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.StoreInst{Volatile: $1.(bool), Src: astx.TypeValue($2, $3), Dst: astx.TypeValue($5, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
 	| "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.StoreInst{Volatile: $1.(bool), Src: astx.TypeValue($2, $3), Dst: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.StoreInst{Volatile: $1.(bool), Src: astx.TypeValue($2, $3), Dst: astx.TypeValue($5, $6), Alignment: $8.(*ll.Alignment), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	<< &ast.StoreInst{Atomic: true, Volatile: $2.(bool), Src: astx.TypeValue($3, $4), Dst: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Metadata: $10.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.StoreInst{Atomic: true, Volatile: $2.(bool), Src: astx.TypeValue($3, $4), Dst: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Metadata: $10.([]*metadata.MetadataAttachment)}, nil >>
 	| "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList
-	<< &ast.StoreInst{Atomic: true, Volatile: $2.(bool), Src: astx.TypeValue($3, $4), Dst: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Alignment: $11.(*ll.Alignment), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.StoreInst{Atomic: true, Volatile: $2.(bool), Src: astx.TypeValue($3, $4), Dst: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Alignment: $11.(*ll.Alignment), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,7 +112,7 @@ StoreInst
 
 FenceInst
 	: "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	<< &ast.FenceInst{SyncScope: $1.(*ll.SyncScope), AtomicOrdering: $2.(ll.AtomicOrdering), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.FenceInst{SyncScope: $1.(*ll.SyncScope), AtomicOrdering: $2.(ll.AtomicOrdering), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,7 +126,7 @@ FenceInst
 
 CmpXchgInst
 	: "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
-	<< &ast.CmpXchgInst{Weak: $1.(bool), Volatile: $2.(bool), Ptr: astx.TypeValue($3, $4), Cmp: astx.TypeValue($6, $7), New: astx.TypeValue($9, $10), SyncScope: $11.(*ll.SyncScope), Success: $12.(ll.AtomicOrdering), Failure: $13.(ll.AtomicOrdering), Metadata: $14.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.CmpXchgInst{Weak: $1.(bool), Volatile: $2.(bool), Ptr: astx.TypeValue($3, $4), Cmp: astx.TypeValue($6, $7), New: astx.TypeValue($9, $10), SyncScope: $11.(*ll.SyncScope), Success: $12.(ll.AtomicOrdering), Failure: $13.(ll.AtomicOrdering), Metadata: $14.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptWeak
@@ -145,7 +145,7 @@ OptWeak
 
 AtomicRMWInst
 	: "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
-	<< &ast.AtomicRMWInst{Volatile: $1.(bool), Op: $2.(ll.BinOp), Ptr: astx.TypeValue($3, $4), X: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Metadata: $10.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AtomicRMWInst{Volatile: $1.(bool), Op: $2.(ll.BinOp), Ptr: astx.TypeValue($3, $4), X: astx.TypeValue($6, $7), SyncScope: $8.(*ll.SyncScope), AtomicOrdering: $9.(ll.AtomicOrdering), Metadata: $10.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 BinOp
@@ -178,8 +178,8 @@ BinOp
 
 GetElementPtrInst
 	: "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ast.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList
-	<< &ast.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Indices: $7.([]value.Value), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Indices: $7.([]value.Value), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

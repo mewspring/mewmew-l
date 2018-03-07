@@ -434,21 +434,21 @@ OptInBounds
 
 OperandBundles
 	: empty
-	<< ([]*ast.OperandBundle)(nil), nil >>
+	<< ([]*ll.OperandBundle)(nil), nil >>
 	| "[" OperandBundleList "]"
 	<< $1, nil >>
 ;
 
 OperandBundleList
 	: OperandBundle
-	<< []*ast.OperandBundle{$0.(*ast.OperandBundle)}, nil >>
+	<< []*ll.OperandBundle{$0.(*ll.OperandBundle)}, nil >>
 	| OperandBundleList OperandBundle
-	<< append($0.([]*ast.OperandBundle), $1.(*ast.OperandBundle)), nil >>
+	<< append($0.([]*ll.OperandBundle), $1.(*ll.OperandBundle)), nil >>
 ;
 
 OperandBundle
 	: StringLit "(" TypeValues ")"
-	<< &ast.OperandBundle{Tag: $0.(string), Inputs: $2.([]value.Value)}, nil >>
+	<< &ll.OperandBundle{Tag: $0.(string), Inputs: $2.([]value.Value)}, nil >>
 ;
 
 OptVolatile
@@ -560,9 +560,9 @@ TypeConst
 
 Args
 	: empty
-	<< ([]ast.Argument)(nil), nil >>
+	<< ([]ll.Argument)(nil), nil >>
 	| "..."
-	<< ([]ast.Argument)(nil), nil >>
+	<< ([]ll.Argument)(nil), nil >>
 	| ArgList
 	<< $0, nil >>
 	| ArgList "," "..."
@@ -571,9 +571,9 @@ Args
 
 ArgList
 	: Arg
-	<< []ast.Argument{$0.(ast.Argument)}, nil >>
+	<< []ll.Argument{$0.(ll.Argument)}, nil >>
 	| ArgList "," Arg
-	<< append($0.([]ast.Argument), $2.(ast.Argument)), nil >>
+	<< append($0.([]ll.Argument), $2.(ll.Argument)), nil >>
 ;
 
 // ref: ParseMetadataAsValue
@@ -587,7 +587,7 @@ ArgList
 
 Arg
 	: ConcreteType ParamAttrs Value
-	<< &ast.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ll.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ll.ParamAttribute)}, nil >>
 	| MetadataType Metadata
 	<< &ast.MetadataValue{Metadata: $1.(metadata.Metadata)}, nil >>
 ;
@@ -596,15 +596,15 @@ Arg
 
 ExceptionArgs
 	: empty
-	<< ([]ast.Argument)(nil), nil >>
+	<< ([]ll.Argument)(nil), nil >>
 	| ExceptionArgList
 ;
 
 ExceptionArgList
 	: ExceptionArg
-	<< []ast.Argument{$0.(ast.Argument)}, nil >>
+	<< []ll.Argument{$0.(ll.Argument)}, nil >>
 	| ExceptionArgList "," ExceptionArg
-	<< append($0.([]ast.Argument), $2.(ast.Argument)), nil >>
+	<< append($0.([]ll.Argument), $2.(ll.Argument)), nil >>
 ;
 
 ExceptionArg

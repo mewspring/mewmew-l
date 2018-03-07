@@ -10,7 +10,7 @@
 
 ShlInst
 	: "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.ShlInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.ShlInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ ShlInst
 
 LShrInst
 	: "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.LShrInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.LShrInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ LShrInst
 
 AShrInst
 	: "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.AShrInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AShrInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +49,7 @@ AShrInst
 
 AndInst
 	: "and" Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.AndInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.AndInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,7 +62,7 @@ AndInst
 
 OrInst
 	: "or" Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.OrInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.OrInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,6 +75,6 @@ OrInst
 
 XorInst
 	: "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.XorInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.XorInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

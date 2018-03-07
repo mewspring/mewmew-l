@@ -126,7 +126,7 @@ Label
 
 InvokeTerm
 	: "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
-	<< &ast.InvokeTerm{CallingConv: $1.(ll.CallingConv), ReturnAttrs: $2.([]ll.ReturnAttribute), RetType: $3.(types.Type), Callee: $4.(ast.Value), Args: $6.([]ast.Argument), FuncAttrs: $8.([]ll.FuncAttribute), OperandBundles: $9.([]*ast.OperandBundle), Normal: astx.Label($11, $12), Exception: astx.Label($14, $15), Metadata: $16.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.InvokeTerm{CallingConv: $1.(ll.CallingConv), ReturnAttrs: $2.([]ll.ReturnAttribute), RetType: $3.(types.Type), Callee: $4.(ast.Value), Args: $6.([]ll.Argument), FuncAttrs: $8.([]ll.FuncAttribute), OperandBundles: $9.([]*ll.OperandBundle), Normal: astx.Label($11, $12), Exception: astx.Label($14, $15), Metadata: $16.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // --- [ resume ] --------------------------------------------------------------
@@ -152,7 +152,7 @@ ResumeTerm
 
 CatchSwitchTerm
 	: "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
-	<< &ast.CatchSwitchTerm{Scope: $2.(ast.ExceptionScope), Handlers: $4.([]*ast.Label), UnwindTarget: $7.(ast.UnwindTarget), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.CatchSwitchTerm{Scope: $2.(ll.ExceptionScope), Handlers: $4.([]*ast.Label), UnwindTarget: $7.(ast.UnwindTarget), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 UnwindTarget

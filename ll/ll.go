@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll/types"
 )
 
@@ -35,6 +36,24 @@ func (a *AllocSize) String() string {
 	default:
 		return fmt.Sprintf("allocsize(%d, %d)", a.BaseSize, a.N)
 	}
+}
+
+// Arg is a function call argument.
+type Arg struct {
+	X          value.Value
+	ParamAttrs []ParamAttribute
+}
+
+// String returns a string representation of the function call argument.
+func (a *Arg) String() string {
+	// ConcreteType ParamAttrs Value
+	buf := &strings.Builder{}
+	buf.WriteString(a.X.Type().String())
+	for _, attr := range a.ParamAttrs {
+		fmt.Fprintf(buf, " %v", attr)
+	}
+	fmt.Fprintf(buf, " %v", a.X.Ident())
+	return buf.String()
 }
 
 //go:generate stringer -linecomment -type AtomicOrdering
@@ -887,6 +906,27 @@ type ModuleAsm struct {
 func (a *ModuleAsm) String() string {
 	// "module" "asm" StringLit
 	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
+}
+
+// OperandBundle is a tagged set of SSA values.
+type OperandBundle struct {
+	Tag    string
+	Inputs []value.Value
+}
+
+// String returns a string representation of the operand bundle.
+func (o *OperandBundle) String() string {
+	// string_lit "(" TypeValues ")"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v(", enc.Quote(o.Tag))
+	for i, input := range o.Inputs {
+		if i != 0 {
+			buf.WriteString(" ")
+		}
+		buf.WriteString(input.String())
+	}
+	buf.WriteString(")")
+	return buf.String()
 }
 
 //go:generate stringer -linecomment -type OverflowFlag

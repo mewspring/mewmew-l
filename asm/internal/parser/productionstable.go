@@ -1559,7 +1559,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncType : Type "(" Params ")"	<< &types.FuncType{RetType: X[0].(types.Type), Params: X[2].(*astx.Params).Params, Variadic: X[2].(*astx.Params).Variadic}, nil >>`,
+		String: `FuncType : Type "(" Params ")"	<< &types.FuncType{RetType: X[0].(types.Type), Params: astx.ParamTypes(X[2]), Variadic: X[2].(*astx.Params).Variadic}, nil >>`,
 		Id:         "FuncType",
 		NTType:     55,
 		Index:      153,
@@ -1789,7 +1789,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NamedType : LocalIdent	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Ident}, nil >>`,
+		String: `NamedType : LocalIdent	<< &types.NamedType{Name: astx.LocalIdent(X[0])}, nil >>`,
 		Id:         "NamedType",
 		NTType:     69,
 		Index:      176,
@@ -3729,313 +3729,313 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AddInst : "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AddInst : "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AddInst",
 		NTType:     143,
 		Index:      370,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AddInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FAddInst : "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FAddInst : "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FAddInst",
 		NTType:     144,
 		Index:      371,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FAddInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SubInst : "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SubInst : "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SubInst",
 		NTType:     145,
 		Index:      372,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SubInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FSubInst : "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FSubInst : "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FSubInst",
 		NTType:     146,
 		Index:      373,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FSubInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MulInst : "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `MulInst : "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "MulInst",
 		NTType:     147,
 		Index:      374,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.MulInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FMulInst : "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FMulInst : "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FMulInst",
 		NTType:     148,
 		Index:      375,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FMulInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UDivInst : "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.UDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `UDivInst : "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.UDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "UDivInst",
 		NTType:     149,
 		Index:      376,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.UDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SDivInst : "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.SDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SDivInst : "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.SDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SDivInst",
 		NTType:     150,
 		Index:      377,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SDivInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FDivInst : "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FDivInst : "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FDivInst",
 		NTType:     151,
 		Index:      378,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FDivInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `URemInst : "urem" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.URemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `URemInst : "urem" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.URemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "URemInst",
 		NTType:     152,
 		Index:      379,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.URemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.URemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SRemInst : "srem" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.SRemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SRemInst : "srem" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.SRemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SRemInst",
 		NTType:     153,
 		Index:      380,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SRemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SRemInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FRemInst : "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FRemInst : "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FRemInst",
 		NTType:     154,
 		Index:      381,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FRemInst{FastMathFlags: X[1].([]ll.FastMathFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ShlInst : "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ShlInst : "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ShlInst",
 		NTType:     155,
 		Index:      382,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ShlInst{OverflowFlags: X[1].([]ll.OverflowFlag), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LShrInst : "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.LShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LShrInst : "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.LShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LShrInst",
 		NTType:     156,
 		Index:      383,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AShrInst : "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.AShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AShrInst : "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.AShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AShrInst",
 		NTType:     157,
 		Index:      384,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AShrInst{Exact: X[1].(bool), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AndInst : "and" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.AndInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AndInst : "and" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.AndInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AndInst",
 		NTType:     158,
 		Index:      385,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AndInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AndInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OrInst : "or" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.OrInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `OrInst : "or" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.OrInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "OrInst",
 		NTType:     159,
 		Index:      386,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.OrInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.OrInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `XorInst : "xor" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.XorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `XorInst : "xor" Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.XorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "XorInst",
 		NTType:     160,
 		Index:      387,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.XorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.XorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[1], X[4]), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExtractElementInst : "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.ExtractElementInst{X: astx.TypeValue(X[1], X[2]), Index: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ExtractElementInst : "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.ExtractElementInst{X: astx.TypeValue(X[1], X[2]), Index: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ExtractElementInst",
 		NTType:     161,
 		Index:      388,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ExtractElementInst{X: astx.TypeValue(X[1], X[2]), Index: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ExtractElementInst{X: astx.TypeValue(X[1], X[2]), Index: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `InsertElementInst : "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.InsertElementInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Index: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `InsertElementInst : "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.InsertElementInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Index: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "InsertElementInst",
 		NTType:     162,
 		Index:      389,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InsertElementInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Index: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.InsertElementInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Index: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ShuffleVectorInst : "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.ShuffleVectorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[4], X[5]), Mask: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ShuffleVectorInst : "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.ShuffleVectorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[4], X[5]), Mask: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ShuffleVectorInst",
 		NTType:     163,
 		Index:      390,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ShuffleVectorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[4], X[5]), Mask: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ShuffleVectorInst{X: astx.TypeValue(X[1], X[2]), Y: astx.TypeValue(X[4], X[5]), Mask: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExtractValueInst : "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList	<< &ast.ExtractValueInst{X: astx.TypeValue(X[1], X[2]), Indices: X[4].([]int64), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ExtractValueInst : "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList	<< &ir.ExtractValueInst{X: astx.TypeValue(X[1], X[2]), Indices: X[4].([]int64), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ExtractValueInst",
 		NTType:     164,
 		Index:      391,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ExtractValueInst{X: astx.TypeValue(X[1], X[2]), Indices: X[4].([]int64), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ExtractValueInst{X: astx.TypeValue(X[1], X[2]), Indices: X[4].([]int64), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `InsertValueInst : "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList	<< &ast.InsertValueInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Indices: X[7].([]int64), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `InsertValueInst : "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList	<< &ir.InsertValueInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Indices: X[7].([]int64), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "InsertValueInst",
 		NTType:     165,
 		Index:      392,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InsertValueInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Indices: X[7].([]int64), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ir.InsertValueInst{X: astx.TypeValue(X[1], X[2]), Elem: astx.TypeValue(X[4], X[5]), Indices: X[7].([]int64), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      393,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      394,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      395,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      396,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(types.AddrSpace), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(types.AddrSpace), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      397,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(types.AddrSpace), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), AddrSpace: X[5].(types.AddrSpace), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(types.AddrSpace), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(types.AddrSpace), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      398,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(types.AddrSpace), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), Alignment: X[5].(*ll.Alignment), AddrSpace: X[7].(types.AddrSpace), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(types.AddrSpace), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(types.AddrSpace), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      399,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(types.AddrSpace), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), AddrSpace: X[8].(types.AddrSpace), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(types.AddrSpace), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AllocaInst : "alloca" OptInAlloca OptSwiftError Type "," Type Value "," Alignment "," AddrSpace OptCommaSepMetadataAttachmentList	<< &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(types.AddrSpace), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AllocaInst",
 		NTType:     166,
 		Index:      400,
 		NumSymbols: 12,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(types.AddrSpace), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AllocaInst{InAlloca: X[1].(bool), SwiftError: X[2].(bool), ElemType: X[3].(types.Type), NElems: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), AddrSpace: X[10].(types.AddrSpace), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4079,103 +4079,103 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" OptVolatile Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      405,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" OptVolatile Type "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      406,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LoadInst{Volatile: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Alignment: X[7].(*ll.Alignment), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ir.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      407,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LoadInst : "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LoadInst",
 		NTType:     169,
 		Index:      408,
 		NumSymbols: 12,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LoadInst{Atomic: true, Volatile: X[2].(bool), ElemType: X[3].(types.Type), Src: astx.TypeValue(X[5], X[6]), SyncScope: X[7].(*ll.SyncScope), AtomicOrdering: X[8].(ll.AtomicOrdering), Alignment: X[10].(*ll.Alignment), Metadata: X[11].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" OptVolatile Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      409,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
+			return &ir.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" OptVolatile Type Value "," Type Value "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      410,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.StoreInst{Volatile: X[1].(bool), Src: astx.TypeValue(X[2], X[3]), Dst: astx.TypeValue(X[5], X[6]), Alignment: X[8].(*ll.Alignment), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ir.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      411,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil
+			return &ir.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `StoreInst : "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering "," Alignment OptCommaSepMetadataAttachmentList	<< &ir.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "StoreInst",
 		NTType:     170,
 		Index:      412,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil
+			return &ir.StoreInst{Atomic: true, Volatile: X[2].(bool), Src: astx.TypeValue(X[3], X[4]), Dst: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Alignment: X[11].(*ll.Alignment), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FenceInst : "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FenceInst : "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ir.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FenceInst",
 		NTType:     171,
 		Index:      413,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FenceInst{SyncScope: X[1].(*ll.SyncScope), AtomicOrdering: X[2].(ll.AtomicOrdering), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CmpXchgInst : "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CmpXchgInst : "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ir.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CmpXchgInst",
 		NTType:     172,
 		Index:      414,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CmpXchgInst{Weak: X[1].(bool), Volatile: X[2].(bool), Ptr: astx.TypeValue(X[3], X[4]), Cmp: astx.TypeValue(X[6], X[7]), New: astx.TypeValue(X[9], X[10]), SyncScope: X[11].(*ll.SyncScope), Success: X[12].(ll.AtomicOrdering), Failure: X[13].(ll.AtomicOrdering), Metadata: X[14].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4199,13 +4199,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AtomicRMWInst : "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AtomicRMWInst : "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList	<< &ir.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AtomicRMWInst",
 		NTType:     174,
 		Index:      417,
 		NumSymbols: 11,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AtomicRMWInst{Volatile: X[1].(bool), Op: X[2].(ll.BinOp), Ptr: astx.TypeValue(X[3], X[4]), X: astx.TypeValue(X[6], X[7]), SyncScope: X[8].(*ll.SyncScope), AtomicOrdering: X[9].(ll.AtomicOrdering), Metadata: X[10].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4319,233 +4319,233 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "GetElementPtrInst",
 		NTType:     176,
 		Index:      429,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ir.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "GetElementPtrInst",
 		NTType:     176,
 		Index:      430,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ir.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TruncInst : "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `TruncInst : "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "TruncInst",
 		NTType:     177,
 		Index:      431,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.TruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ZExtInst : "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ZExtInst : "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ZExtInst",
 		NTType:     178,
 		Index:      432,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ZExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SExtInst : "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SExtInst : "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SExtInst",
 		NTType:     179,
 		Index:      433,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPTruncInst : "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FPTruncInst : "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FPTruncInst",
 		NTType:     180,
 		Index:      434,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FPTruncInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPExtInst : "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FPExtInst : "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FPExtInst",
 		NTType:     181,
 		Index:      435,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FPExtInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToUIInst : "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FPToUIInst : "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FPToUIInst",
 		NTType:     182,
 		Index:      436,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FPToUIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FPToSIInst : "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FPToSIInst : "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FPToSIInst",
 		NTType:     183,
 		Index:      437,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FPToSIInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `UIToFPInst : "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `UIToFPInst : "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "UIToFPInst",
 		NTType:     184,
 		Index:      438,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.UIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SIToFPInst : "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SIToFPInst : "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SIToFPInst",
 		NTType:     185,
 		Index:      439,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SIToFPInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PtrToIntInst : "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `PtrToIntInst : "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "PtrToIntInst",
 		NTType:     186,
 		Index:      440,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.PtrToIntInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IntToPtrInst : "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `IntToPtrInst : "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "IntToPtrInst",
 		NTType:     187,
 		Index:      441,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.IntToPtrInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `BitCastInst : "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `BitCastInst : "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "BitCastInst",
 		NTType:     188,
 		Index:      442,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.BitCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `AddrSpaceCastInst : "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `AddrSpaceCastInst : "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList	<< &ir.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "AddrSpaceCastInst",
 		NTType:     189,
 		Index:      443,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.AddrSpaceCastInst{From: astx.TypeValue(X[1], X[2]), To: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ICmpInst : "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `ICmpInst : "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "ICmpInst",
 		NTType:     190,
 		Index:      444,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.ICmpInst{Pred: X[1].(ll.IPred), X: astx.TypeValue(X[2], X[3]), Y: astx.TypeValue(X[2], X[5]), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `FCmpInst : "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ast.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FCmpInst : "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList	<< &ir.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "FCmpInst",
 		NTType:     191,
 		Index:      445,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
+			return &ir.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: X[2].(ll.FPred), X: astx.TypeValue(X[3], X[4]), Y: astx.TypeValue(X[3], X[6]), Metadata: X[7].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ast.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ir.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "PhiInst",
 		NTType:     192,
 		Index:      446,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ast.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.PhiInst{Type: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IncList : Inc	<< []*ast.Incoming{X[0].(*ast.Incoming)}, nil >>`,
+		String: `IncList : Inc	<< []*ir.Incoming{X[0].(*ir.Incoming)}, nil >>`,
 		Id:         "IncList",
 		NTType:     193,
 		Index:      447,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.Incoming{X[0].(*ast.Incoming)}, nil
+			return []*ir.Incoming{X[0].(*ir.Incoming)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IncList : IncList "," Inc	<< append(X[0].([]*ast.Incoming), X[2].(*ast.Incoming)), nil >>`,
+		String: `IncList : IncList "," Inc	<< append(X[0].([]*ir.Incoming), X[2].(*ir.Incoming)), nil >>`,
 		Id:         "IncList",
 		NTType:     193,
 		Index:      448,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.Incoming), X[2].(*ast.Incoming)), nil
+			return append(X[0].([]*ir.Incoming), X[2].(*ir.Incoming)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Inc : "[" Value "," LocalIdent "]"	<< &ast.Incoming{X: X[1].(value.Value), Pred: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}}, nil >>`,
+		String: `Inc : "[" Value "," LocalIdent "]"	<< &ir.Incoming{X: X[1].(value.Value), Pred: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}}, nil >>`,
 		Id:         "Inc",
 		NTType:     194,
 		Index:      449,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Incoming{X: X[1].(value.Value), Pred: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}}, nil
+			return &ir.Incoming{X: X[1].(value.Value), Pred: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `SelectInst : "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ast.SelectInst{Cond: astx.TypeValue(X[1], X[2]), X: astx.TypeValue(X[4], X[5]), Y: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `SelectInst : "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList	<< &ir.SelectInst{Cond: astx.TypeValue(X[1], X[2]), X: astx.TypeValue(X[4], X[5]), Y: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "SelectInst",
 		NTType:     195,
 		Index:      450,
 		NumSymbols: 10,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SelectInst{Cond: astx.TypeValue(X[1], X[2]), X: astx.TypeValue(X[4], X[5]), Y: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
+			return &ir.SelectInst{Cond: astx.TypeValue(X[1], X[2]), X: astx.TypeValue(X[4], X[5]), Y: astx.TypeValue(X[7], X[8]), Metadata: X[9].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CallInst : OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList	<< &ast.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(value.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CallInst : OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList	<< &ir.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(value.Value), Args: X[8].([]ll.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ll.OperandBundle), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CallInst",
 		NTType:     196,
 		Index:      451,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(value.Value), Args: X[8].([]ast.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ast.OperandBundle), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CallInst{Tail: X[0].(ll.Tail), FastMathFlags: X[2].([]ll.FastMathFlag), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Callee: X[6].(value.Value), Args: X[8].([]ll.Argument), FuncAttrs: X[10].([]ll.FuncAttribute), OperandBundles: X[11].([]*ll.OperandBundle), Metadata: X[12].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4589,23 +4589,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `VAArgInst : "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList	<< &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `VAArgInst : "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList	<< &ir.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "VAArgInst",
 		NTType:     198,
 		Index:      456,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
+			return &ir.VAArgInst{ArgList: astx.TypeValue(X[1], X[2]), ArgType: X[4].(types.Type), Metadata: X[5].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ast.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ir.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LandingPadInst",
 		NTType:     199,
 		Index:      457,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ast.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
+			return &ir.LandingPadInst{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4629,13 +4629,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Clauses : empty	<< ([]*ast.Clause)(nil), nil >>`,
+		String: `Clauses : empty	<< ([]*ir.Clause)(nil), nil >>`,
 		Id:         "Clauses",
 		NTType:     201,
 		Index:      460,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.Clause)(nil), nil
+			return ([]*ir.Clause)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -4649,63 +4649,63 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ClauseList : Clause	<< []*ast.Clause{X[0].(*ast.Clause)}, nil >>`,
+		String: `ClauseList : Clause	<< []*ir.Clause{X[0].(*ir.Clause)}, nil >>`,
 		Id:         "ClauseList",
 		NTType:     202,
 		Index:      462,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.Clause{X[0].(*ast.Clause)}, nil
+			return []*ir.Clause{X[0].(*ir.Clause)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ClauseList : ClauseList Clause	<< append(X[0].([]*ast.Clause), X[1].(*ast.Clause)), nil >>`,
+		String: `ClauseList : ClauseList Clause	<< append(X[0].([]*ir.Clause), X[1].(*ir.Clause)), nil >>`,
 		Id:         "ClauseList",
 		NTType:     202,
 		Index:      463,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.Clause), X[1].(*ast.Clause)), nil
+			return append(X[0].([]*ir.Clause), X[1].(*ir.Clause)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Clause : "catch" Type Value	<< &ast.Clause{Catch: true, X: astx.TypeValue(X[1], X[2])}, nil >>`,
+		String: `Clause : "catch" Type Value	<< &ir.Clause{Catch: true, X: astx.TypeValue(X[1], X[2])}, nil >>`,
 		Id:         "Clause",
 		NTType:     203,
 		Index:      464,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Clause{Catch: true, X: astx.TypeValue(X[1], X[2])}, nil
+			return &ir.Clause{Catch: true, X: astx.TypeValue(X[1], X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Clause : "filter" Type ArrayConst	<< &ast.Clause{X: astx.TypeValue(X[1], X[2])}, nil >>`,
+		String: `Clause : "filter" Type ArrayConst	<< &ir.Clause{X: astx.TypeValue(X[1], X[2])}, nil >>`,
 		Id:         "Clause",
 		NTType:     203,
 		Index:      465,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Clause{X: astx.TypeValue(X[1], X[2])}, nil
+			return &ir.Clause{X: astx.TypeValue(X[1], X[2])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CatchPadInst : "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList	<< &ast.CatchPadInst{Scope: X[2].(*ast.LocalIdent), Args: X[4].([]ast.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CatchPadInst : "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList	<< &ir.CatchPadInst{Scope: X[2].(*ast.LocalIdent), Args: X[4].([]ll.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CatchPadInst",
 		NTType:     204,
 		Index:      466,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CatchPadInst{Scope: X[2].(*ast.LocalIdent), Args: X[4].([]ast.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CatchPadInst{Scope: X[2].(*ast.LocalIdent), Args: X[4].([]ll.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CleanupPadInst : "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList	<< &ast.CleanupPadInst{Scope: X[2].(ast.ExceptionScope), Args: X[4].([]ast.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CleanupPadInst : "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList	<< &ir.CleanupPadInst{Scope: X[2].(ll.ExceptionScope), Args: X[4].([]ll.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CleanupPadInst",
 		NTType:     205,
 		Index:      467,
 		NumSymbols: 7,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CleanupPadInst{Scope: X[2].(ast.ExceptionScope), Args: X[4].([]ast.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
+			return &ir.CleanupPadInst{Scope: X[2].(ll.ExceptionScope), Args: X[4].([]ll.Argument), Metadata: X[6].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4959,13 +4959,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `InvokeTerm : "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList	<< &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "InvokeTerm",
 		NTType:     217,
 		Index:      493,
 		NumSymbols: 17,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ast.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ast.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil
+			return &ast.InvokeTerm{CallingConv: X[1].(ll.CallingConv), ReturnAttrs: X[2].([]ll.ReturnAttribute), RetType: X[3].(types.Type), Callee: X[4].(ast.Value), Args: X[6].([]ll.Argument), FuncAttrs: X[8].([]ll.FuncAttribute), OperandBundles: X[9].([]*ll.OperandBundle), Normal: astx.Label(X[11], X[12]), Exception: astx.Label(X[14], X[15]), Metadata: X[16].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4979,13 +4979,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `CatchSwitchTerm : "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ast.CatchSwitchTerm{Scope: X[2].(ast.ExceptionScope), Handlers: X[4].([]*ast.Label), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `CatchSwitchTerm : "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList	<< &ast.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ast.Label), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "CatchSwitchTerm",
 		NTType:     219,
 		Index:      495,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.CatchSwitchTerm{Scope: X[2].(ast.ExceptionScope), Handlers: X[4].([]*ast.Label), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ast.CatchSwitchTerm{Scope: X[2].(ll.ExceptionScope), Handlers: X[4].([]*ast.Label), UnwindTarget: X[7].(ast.UnwindTarget), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10549,13 +10549,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OperandBundles : empty	<< ([]*ast.OperandBundle)(nil), nil >>`,
+		String: `OperandBundles : empty	<< ([]*ll.OperandBundle)(nil), nil >>`,
 		Id:         "OperandBundles",
 		NTType:     409,
 		Index:      1052,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.OperandBundle)(nil), nil
+			return ([]*ll.OperandBundle)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10569,33 +10569,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OperandBundleList : OperandBundle	<< []*ast.OperandBundle{X[0].(*ast.OperandBundle)}, nil >>`,
+		String: `OperandBundleList : OperandBundle	<< []*ll.OperandBundle{X[0].(*ll.OperandBundle)}, nil >>`,
 		Id:         "OperandBundleList",
 		NTType:     410,
 		Index:      1054,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.OperandBundle{X[0].(*ast.OperandBundle)}, nil
+			return []*ll.OperandBundle{X[0].(*ll.OperandBundle)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `OperandBundleList : OperandBundleList OperandBundle	<< append(X[0].([]*ast.OperandBundle), X[1].(*ast.OperandBundle)), nil >>`,
+		String: `OperandBundleList : OperandBundleList OperandBundle	<< append(X[0].([]*ll.OperandBundle), X[1].(*ll.OperandBundle)), nil >>`,
 		Id:         "OperandBundleList",
 		NTType:     410,
 		Index:      1055,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.OperandBundle), X[1].(*ast.OperandBundle)), nil
+			return append(X[0].([]*ll.OperandBundle), X[1].(*ll.OperandBundle)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `OperandBundle : StringLit "(" TypeValues ")"	<< &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil >>`,
+		String: `OperandBundle : StringLit "(" TypeValues ")"	<< &ll.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil >>`,
 		Id:         "OperandBundle",
 		NTType:     411,
 		Index:      1056,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil
+			return &ll.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10889,23 +10889,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Args : empty	<< ([]ast.Argument)(nil), nil >>`,
+		String: `Args : empty	<< ([]ll.Argument)(nil), nil >>`,
 		Id:         "Args",
 		NTType:     426,
 		Index:      1086,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.Argument)(nil), nil
+			return ([]ll.Argument)(nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Args : "..."	<< ([]ast.Argument)(nil), nil >>`,
+		String: `Args : "..."	<< ([]ll.Argument)(nil), nil >>`,
 		Id:         "Args",
 		NTType:     426,
 		Index:      1087,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.Argument)(nil), nil
+			return ([]ll.Argument)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10929,33 +10929,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ArgList : Arg	<< []ast.Argument{X[0].(ast.Argument)}, nil >>`,
+		String: `ArgList : Arg	<< []ll.Argument{X[0].(ll.Argument)}, nil >>`,
 		Id:         "ArgList",
 		NTType:     427,
 		Index:      1090,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.Argument{X[0].(ast.Argument)}, nil
+			return []ll.Argument{X[0].(ll.Argument)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ArgList : ArgList "," Arg	<< append(X[0].([]ast.Argument), X[2].(ast.Argument)), nil >>`,
+		String: `ArgList : ArgList "," Arg	<< append(X[0].([]ll.Argument), X[2].(ll.Argument)), nil >>`,
 		Id:         "ArgList",
 		NTType:     427,
 		Index:      1091,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.Argument), X[2].(ast.Argument)), nil
+			return append(X[0].([]ll.Argument), X[2].(ll.Argument)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Arg : ConcreteType ParamAttrs Value	<< &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil >>`,
+		String: `Arg : ConcreteType ParamAttrs Value	<< &ll.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil >>`,
 		Id:         "Arg",
 		NTType:     428,
 		Index:      1092,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil
+			return &ll.Arg{X: astx.TypeValue(X[0], X[2]), ParamAttrs: X[1].([]ll.ParamAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10969,13 +10969,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ExceptionArgs : empty	<< ([]ast.Argument)(nil), nil >>`,
+		String: `ExceptionArgs : empty	<< ([]ll.Argument)(nil), nil >>`,
 		Id:         "ExceptionArgs",
 		NTType:     429,
 		Index:      1094,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]ast.Argument)(nil), nil
+			return ([]ll.Argument)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10989,23 +10989,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ExceptionArgList : ExceptionArg	<< []ast.Argument{X[0].(ast.Argument)}, nil >>`,
+		String: `ExceptionArgList : ExceptionArg	<< []ll.Argument{X[0].(ll.Argument)}, nil >>`,
 		Id:         "ExceptionArgList",
 		NTType:     430,
 		Index:      1096,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ast.Argument{X[0].(ast.Argument)}, nil
+			return []ll.Argument{X[0].(ll.Argument)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `ExceptionArgList : ExceptionArgList "," ExceptionArg	<< append(X[0].([]ast.Argument), X[2].(ast.Argument)), nil >>`,
+		String: `ExceptionArgList : ExceptionArgList "," ExceptionArg	<< append(X[0].([]ll.Argument), X[2].(ll.Argument)), nil >>`,
 		Id:         "ExceptionArgList",
 		NTType:     430,
 		Index:      1097,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ast.Argument), X[2].(ast.Argument)), nil
+			return append(X[0].([]ll.Argument), X[2].(ll.Argument)), nil
 		},
 	},
 	ProdTabEntry{
@@ -11099,7 +11099,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Param : Type ParamAttrs LocalIdent	<< &ll.Param{Typ: X[0].(types.Type), Name: X[2].(*ast.LocalIdent).Ident, Attrs: X[1].([]ll.ParamAttribute)}, nil >>`,
+		String: `Param : Type ParamAttrs LocalIdent	<< &ll.Param{Typ: X[0].(types.Type), Name: astx.LocalIdent(X[2]), Attrs: X[1].([]ll.ParamAttribute)}, nil >>`,
 		Id:         "Param",
 		NTType:     434,
 		Index:      1107,

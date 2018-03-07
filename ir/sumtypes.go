@@ -25,3 +25,58 @@ type Terminator interface {
 // IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
 func (*ValueInstruction) IsInstruction() {}
+
+// IsInstruction ensures that only instructions can be assigned to the
+// ast.Instruction interface.
+func (*AddInst) IsInstruction()            {}
+func (*FAddInst) IsInstruction()           {}
+func (*SubInst) IsInstruction()            {}
+func (*FSubInst) IsInstruction()           {}
+func (*MulInst) IsInstruction()            {}
+func (*FMulInst) IsInstruction()           {}
+func (*UDivInst) IsInstruction()           {}
+func (*SDivInst) IsInstruction()           {}
+func (*FDivInst) IsInstruction()           {}
+func (*URemInst) IsInstruction()           {}
+func (*SRemInst) IsInstruction()           {}
+func (*FRemInst) IsInstruction()           {}
+func (*ShlInst) IsInstruction()            {}
+func (*LShrInst) IsInstruction()           {}
+func (*AShrInst) IsInstruction()           {}
+func (*AndInst) IsInstruction()            {}
+func (*OrInst) IsInstruction()             {}
+func (*XorInst) IsInstruction()            {}
+func (*ExtractElementInst) IsInstruction() {}
+func (*InsertElementInst) IsInstruction()  {}
+func (*ShuffleVectorInst) IsInstruction()  {}
+func (*ExtractValueInst) IsInstruction()   {}
+func (*InsertValueInst) IsInstruction()    {}
+func (*AllocaInst) IsInstruction()         {}
+func (*LoadInst) IsInstruction()           {}
+func (*StoreInst) IsInstruction()          {}
+func (*FenceInst) IsInstruction()          {}
+func (*CmpXchgInst) IsInstruction()        {}
+func (*AtomicRMWInst) IsInstruction()      {}
+func (*GetElementPtrInst) IsInstruction()  {}
+func (*TruncInst) IsInstruction()          {}
+func (*ZExtInst) IsInstruction()           {}
+func (*SExtInst) IsInstruction()           {}
+func (*FPTruncInst) IsInstruction()        {}
+func (*FPExtInst) IsInstruction()          {}
+func (*FPToUIInst) IsInstruction()         {}
+func (*FPToSIInst) IsInstruction()         {}
+func (*UIToFPInst) IsInstruction()         {}
+func (*SIToFPInst) IsInstruction()         {}
+func (*PtrToIntInst) IsInstruction()       {}
+func (*IntToPtrInst) IsInstruction()       {}
+func (*BitCastInst) IsInstruction()        {}
+func (*AddrSpaceCastInst) IsInstruction()  {}
+func (*ICmpInst) IsInstruction()           {}
+func (*FCmpInst) IsInstruction()           {}
+func (*PhiInst) IsInstruction()            {}
+func (*SelectInst) IsInstruction()         {}
+func (*CallInst) IsInstruction()           {}
+func (*VAArgInst) IsInstruction()          {}
+func (*LandingPadInst) IsInstruction()     {}
+func (*CatchPadInst) IsInstruction()       {}
+func (*CleanupPadInst) IsInstruction()     {}

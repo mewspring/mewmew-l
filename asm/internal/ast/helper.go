@@ -2,12 +2,8 @@ package ast
 
 import (
 	"fmt"
-	"strings"
 
-	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
 
@@ -53,44 +49,10 @@ func (v *TypeValue) Ident() string {
 	return v.Value.String()
 }
 
-// ExceptionScope is an exception scope.
-type ExceptionScope interface {
-	fmt.Stringer
-	// IsExceptionScope ensures that only exception scopes can be assigned to the
-	// ast.ExceptionScope interface.
-	IsExceptionScope()
-}
-
 // IsExceptionScope ensures that only exception scopes can be assigned to the
 // ast.ExceptionScope interface.
 func (*NoneConst) IsExceptionScope()  {}
 func (*LocalIdent) IsExceptionScope() {}
-
-// Argument is a function call argument.
-type Argument interface {
-	fmt.Stringer
-	// IsArgument ensures that only function call arguments can be assigned to
-	// the ast.Argument interface.
-	IsArgument()
-}
-
-// Arg is a function call argument.
-type Arg struct {
-	X          value.Value
-	ParamAttrs []ll.ParamAttribute
-}
-
-// String returns a string representation of the function call argument.
-func (a *Arg) String() string {
-	// ConcreteType ParamAttrs Value
-	buf := &strings.Builder{}
-	buf.WriteString(a.X.Type().String())
-	for _, attr := range a.ParamAttrs {
-		fmt.Fprintf(buf, " %v", attr)
-	}
-	fmt.Fprintf(buf, " %v", a.X.Ident())
-	return buf.String()
-}
 
 // MetadataValue is a metadata value function call argument.
 type MetadataValue struct {
@@ -107,30 +69,9 @@ func (a *MetadataValue) String() string {
 
 // IsArgument ensures that only function call arguments can be assigned to the
 // ast.Argument interface.
-func (*Arg) IsArgument()           {} // used as function argument
+//func (*Arg) IsArgument()           {} // used as function argument
 func (*TypeValue) IsArgument()     {} // used as exception argument
 func (*MetadataValue) IsArgument() {}
-
-// OperandBundle is a tagged set of SSA values.
-type OperandBundle struct {
-	Tag    string
-	Inputs []value.Value
-}
-
-// String returns a string representation of the operand bundle.
-func (o *OperandBundle) String() string {
-	// string_lit "(" TypeValues ")"
-	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v(", enc.Quote(o.Tag))
-	for i, input := range o.Inputs {
-		if i != 0 {
-			buf.WriteString(" ")
-		}
-		buf.WriteString(input.String())
-	}
-	buf.WriteString(")")
-	return buf.String()
-}
 
 // Label is a basic block label.
 type Label struct {

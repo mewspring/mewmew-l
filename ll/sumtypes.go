@@ -2,11 +2,31 @@ package ll
 
 import "fmt"
 
+// Argument is a function call argument.
+type Argument interface {
+	fmt.Stringer
+	// IsArgument ensures that only function call arguments can be assigned to
+	// the ast.Argument interface.
+	IsArgument()
+}
+
+// IsArgument ensures that only function call arguments can be assigned to the
+// ast.Argument interface.
+func (*Arg) IsArgument() {} // used as function argument
+
 // TODO: Figure out how to handle DIExpressionField interface.
 
 // IsDIExpressionField ensures that only DIExpression fields can be assigned to
 // the ast.DIExpressionField interface.
 func (DwarfOp) IsDIExpressionField() {}
+
+// ExceptionScope is an exception scope.
+type ExceptionScope interface {
+	fmt.Stringer
+	// IsExceptionScope ensures that only exception scopes can be assigned to the
+	// ast.ExceptionScope interface.
+	IsExceptionScope()
+}
 
 // TODO: Figure out how to handle FuncAttribute interface.
 
