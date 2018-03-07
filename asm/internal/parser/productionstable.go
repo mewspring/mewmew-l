@@ -5090,13 +5090,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `MDField : NullConst	<<  >>`,
+		String: `MDField : "null"	<< &metadata.MDNull{}, nil >>`,
 		Id:         "MDField",
 		NTType:     227,
 		Index:      506,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
+			return &metadata.MDNull{}, nil
 		},
 	},
 	ProdTabEntry{
@@ -7740,13 +7740,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DIExpressionField : IntConst	<<  >>`,
+		String: `DIExpressionField : IntLit	<< &constant.MDInt{X: X[0].(int64)}, nil >>`,
 		Id:         "DIExpressionField",
 		NTType:     312,
 		Index:      771,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
+			return &constant.MDInt{X: X[0].(int64)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -8610,13 +8610,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `IntOrMDField : IntConst	<<  >>`,
+		String: `IntOrMDField : IntLit	<< &constant.MDInt{X: X[0].(int64)}, nil >>`,
 		Id:         "IntOrMDField",
 		NTType:     357,
 		Index:      858,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
+			return &constant.MDInt{X: X[0].(int64)}, nil
 		},
 	},
 	ProdTabEntry{
