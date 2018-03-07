@@ -178,7 +178,7 @@ func (m *Module) irMetadata(old metadata.Metadata) metadata.Metadata {
 	switch old := old.(type) {
 	case *ast.TypeValue:
 		return &metadata.Value{
-			Type:  m.irType(old.Type),
+			Type:  m.irType(old.Typ),
 			Value: m.irValue(old.Value),
 		}
 	case *metadata.MDString:

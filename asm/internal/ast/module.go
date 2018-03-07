@@ -359,13 +359,13 @@ func (hdr *FunctionHeader) String() string {
 		fmt.Fprintf(buf, " gc %v", enc.Quote(hdr.GC))
 	}
 	if hdr.Prefix != nil {
-		fmt.Fprintf(buf, " prefix %v %v", hdr.Prefix.Type, hdr.Prefix.Const)
+		fmt.Fprintf(buf, " prefix %v", hdr.Prefix)
 	}
 	if hdr.Prologue != nil {
-		fmt.Fprintf(buf, " prologue %v %v", hdr.Prologue.Type, hdr.Prologue.Const)
+		fmt.Fprintf(buf, " prologue %v", hdr.Prologue)
 	}
 	if hdr.Personality != nil {
-		fmt.Fprintf(buf, " personality %v %v", hdr.Personality.Type, hdr.Personality.Const)
+		fmt.Fprintf(buf, " personality %v", hdr.Personality)
 	}
 	return buf.String()
 }

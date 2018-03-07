@@ -15,6 +15,7 @@ import (
 	"github.com/mewmew/l/asm/internal/parser"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/pkg/errors"
 )
@@ -581,4 +582,10 @@ var (
 	_ ast.Value = (*ast.ICmpExpr)(nil)
 	_ ast.Value = (*ast.FCmpExpr)(nil)
 	_ ast.Value = (*ast.SelectExpr)(nil)
+)
+
+// Ensure that each value implements the value.Value interface.
+var (
+	_ value.Value = (*ast.TypeValue)(nil)
+	_ value.Value = (*ast.TypeConst)(nil)
 )

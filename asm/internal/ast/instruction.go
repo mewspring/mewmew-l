@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -16,7 +17,7 @@ import (
 // AddInst is an LLVM IR add instruction.
 type AddInst struct {
 	OverflowFlags []ll.OverflowFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -28,7 +29,7 @@ func (inst *AddInst) String() string {
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}

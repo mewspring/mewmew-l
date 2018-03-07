@@ -66,7 +66,7 @@ func Int(tok interface{}) int64 {
 // TypeValue returns a type-value pair based on the given type and value.
 func TypeValue(typ, value interface{}) *ast.TypeValue {
 	return &ast.TypeValue{
-		Type:  typ.(types.Type),
+		Typ:   typ.(types.Type),
 		Value: value.(ast.Value),
 	}
 }
@@ -74,7 +74,7 @@ func TypeValue(typ, value interface{}) *ast.TypeValue {
 // TypeConst returns a type-constant pair based on the given type and constant.
 func TypeConst(typ, val interface{}) *ast.TypeConst {
 	return &ast.TypeConst{
-		Type:  typ.(types.Type),
+		Typ:   typ.(types.Type),
 		Const: val.(ast.Constant),
 	}
 }

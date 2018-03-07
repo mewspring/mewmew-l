@@ -128,7 +128,7 @@ func (c *ArrayConst) String() string {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		fmt.Fprintf(buf, "%v %v", elem.Type, elem.Const)
+		buf.WriteString(elem.String())
 	}
 	buf.WriteString("]")
 	return buf.String()
@@ -161,7 +161,7 @@ func (c *VectorConst) String() string {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		fmt.Fprintf(buf, "%v %v", elem.Type, elem.Const)
+		buf.WriteString(elem.String())
 	}
 	buf.WriteString(">")
 	return buf.String()

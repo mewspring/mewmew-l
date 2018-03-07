@@ -548,7 +548,7 @@ TypeConstList
 
 TypeConst
 	: Type Constant
-	<< &ast.TypeConst{Type: $0.(types.Type), Const: $1.(ast.Constant)}, nil >>
+	<< &ast.TypeConst{Typ: $0.(types.Type), Const: $1.(ast.Constant)}, nil >>
 ;
 
 // ref: ParseParameterList

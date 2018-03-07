@@ -12,24 +12,44 @@ import (
 
 // TypeConst is a type-constant pair.
 type TypeConst struct {
-	Type  types.Type
+	Typ   types.Type
 	Const Constant
 }
 
 // String returns the string representation of the type-constant pair.
 func (c *TypeConst) String() string {
-	return fmt.Sprintf("%v %v", c.Type, c.Const)
+	return fmt.Sprintf("%v %v", c.Typ, c.Const)
+}
+
+// Type returns the type of the value.
+func (v *TypeConst) Type() types.Type {
+	return v.Typ
+}
+
+// Ident returns the identifier associated with the value.
+func (v *TypeConst) Ident() string {
+	return v.Const.String()
 }
 
 // TypeValue is a type-value pair.
 type TypeValue struct {
-	Type  types.Type
+	Typ   types.Type
 	Value Value
 }
 
 // String returns a string representation of the type-value pair.
 func (v *TypeValue) String() string {
-	return fmt.Sprintf("%v %v", v.Type, v.Value)
+	return fmt.Sprintf("%v %v", v.Typ, v.Value)
+}
+
+// Type returns the type of the value.
+func (v *TypeValue) Type() types.Type {
+	return v.Typ
+}
+
+// Ident returns the identifier associated with the value.
+func (v *TypeValue) Ident() string {
+	return v.Value.String()
 }
 
 // ExceptionScope is an exception scope.
@@ -63,7 +83,7 @@ type Arg struct {
 func (a *Arg) String() string {
 	// ConcreteType ParamAttrs Value
 	buf := &strings.Builder{}
-	buf.WriteString(a.X.Type.String())
+	buf.WriteString(a.X.Typ.String())
 	for _, attr := range a.ParamAttrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}

@@ -10884,7 +10884,7 @@ var productionsTable = ProdTab{
 		Index:      1085,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeConst{Type: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil
+			return &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil
 		},
 	},
 	ProdTabEntry{
