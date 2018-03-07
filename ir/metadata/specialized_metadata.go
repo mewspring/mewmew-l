@@ -8,16 +8,6 @@ import (
 	"github.com/mewmew/l/ll"
 )
 
-// --- [ Specialized Metadata Nodes ] ------------------------------------------
-
-// SpecializedMDNode is a specialized metadata node.
-type SpecializedMDNode interface {
-	fmt.Stringer
-	// isSpecializedMDNode ensures that only specialized metadata nodes can be
-	// assigned to the metadata.SpecializedMDNode interface.
-	isSpecializedMDNode()
-}
-
 // ~~~ [ DICompileUnit ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // DICompileUnit is a specialized metadata node.
@@ -859,16 +849,6 @@ func (md *DIExpression) String() string {
 	return buf.String()
 }
 
-// ### [ Helper functions ] ####################################################
-
-// DIExpressionField is a DIExpression field.
-type DIExpressionField interface {
-	fmt.Stringer
-	// IsDIExpressionField ensures that only DIExpression fields can be assigned
-	// to the metadata.DIExpressionField interface.
-	IsDIExpressionField()
-}
-
 // ~~~ [ DIGlobalVariableExpression ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // DIGlobalVariableExpression is a specialized metadata node.
@@ -1066,85 +1046,6 @@ func (md *GenericDINode) String() string {
 	return fmt.Sprintf("!GenericDINode(%v)", strings.Join(fields, ", "))
 }
 
-// ### [ Helper functions ] ####################################################
-
-// isSpecializedMDNode ensures that only specialized metadata nodes can be
-// assigned to the metadata.SpecializedMDNode interface.
-func (*DICompileUnit) isSpecializedMDNode()              {}
-func (*DIFile) isSpecializedMDNode()                     {}
-func (*DIBasicType) isSpecializedMDNode()                {}
-func (*DISubroutineType) isSpecializedMDNode()           {}
-func (*DIDerivedType) isSpecializedMDNode()              {}
-func (*DICompositeType) isSpecializedMDNode()            {}
-func (*DISubrange) isSpecializedMDNode()                 {}
-func (*DIEnumerator) isSpecializedMDNode()               {}
-func (*DITemplateTypeParameter) isSpecializedMDNode()    {}
-func (*DITemplateValueParameter) isSpecializedMDNode()   {}
-func (*DIModule) isSpecializedMDNode()                   {}
-func (*DINamespace) isSpecializedMDNode()                {}
-func (*DIGlobalVariable) isSpecializedMDNode()           {}
-func (*DISubprogram) isSpecializedMDNode()               {}
-func (*DILexicalBlock) isSpecializedMDNode()             {}
-func (*DILexicalBlockFile) isSpecializedMDNode()         {}
-func (*DILocation) isSpecializedMDNode()                 {}
-func (*DILocalVariable) isSpecializedMDNode()            {}
-func (*DIExpression) isSpecializedMDNode()               {}
-func (*DIGlobalVariableExpression) isSpecializedMDNode() {}
-func (*DIObjCProperty) isSpecializedMDNode()             {}
-func (*DIImportedEntity) isSpecializedMDNode()           {}
-func (*DIMacro) isSpecializedMDNode()                    {}
-func (*DIMacroFile) isSpecializedMDNode()                {}
-func (*GenericDINode) isSpecializedMDNode()              {}
-
-// ___ [ Helpers ] _____________________________________________________________
-
-// IntOrMDField is an integer or metadata field.
-type IntOrMDField interface {
-	fmt.Stringer
-	// IsIntOrMDField ensures that only intergers and metadata fields can be
-	// assigned to the metadata.IntOrMDField interface.
-	IsIntOrMDField()
-}
-
-// ### [ Helper functions ] ####################################################
-
-// IsIntOrMDField ensures that only intergers and metadata fields can be
-// assigned to the metadata.IntOrMDField interface.
-//
-// *constant.IntConst
-
-// MDField
-// *constant.NullConst
-
-// Metadata
-func (*Value) IsIntOrMDField()       {}
-func (*MDString) IsIntOrMDField()    {}
-func (*MDTuple) IsIntOrMDField()     {}
-func (*MetadataDef) IsIntOrMDField() {}
-
-// SpecializedMDNode
-func (*DICompileUnit) IsIntOrMDField()              {}
-func (*DIFile) IsIntOrMDField()                     {}
-func (*DIBasicType) IsIntOrMDField()                {}
-func (*DISubroutineType) IsIntOrMDField()           {}
-func (*DIDerivedType) IsIntOrMDField()              {}
-func (*DICompositeType) IsIntOrMDField()            {}
-func (*DISubrange) IsIntOrMDField()                 {}
-func (*DIEnumerator) IsIntOrMDField()               {}
-func (*DITemplateTypeParameter) IsIntOrMDField()    {}
-func (*DITemplateValueParameter) IsIntOrMDField()   {}
-func (*DIModule) IsIntOrMDField()                   {}
-func (*DINamespace) IsIntOrMDField()                {}
-func (*DIGlobalVariable) IsIntOrMDField()           {}
-func (*DISubprogram) IsIntOrMDField()               {}
-func (*DILexicalBlock) IsIntOrMDField()             {}
-func (*DILexicalBlockFile) IsIntOrMDField()         {}
-func (*DILocation) IsIntOrMDField()                 {}
-func (*DILocalVariable) IsIntOrMDField()            {}
-func (*DIExpression) IsIntOrMDField()               {}
-func (*DIGlobalVariableExpression) IsIntOrMDField() {}
-func (*DIObjCProperty) IsIntOrMDField()             {}
-func (*DIImportedEntity) IsIntOrMDField()           {}
-func (*DIMacro) IsIntOrMDField()                    {}
-func (*DIMacroFile) IsIntOrMDField()                {}
-func (*GenericDINode) IsIntOrMDField()              {}
+// IsGlobalAttribute ensures that only global attributes can be assigned to the
+// ast.GlobalAttribute interface.
+func (*MetadataAttachment) IsGlobalAttribute() {}
