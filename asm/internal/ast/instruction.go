@@ -1138,7 +1138,7 @@ type Incoming struct {
 // String returns the string representation of the incoming value.
 func (inc *Incoming) String() string {
 	// "[" Value "," LocalIdent "]"
-	return fmt.Sprintf("[ %v, %v ]", inc.X.Ident(), inc.Pred)
+	return fmt.Sprintf("[ %v, %v ]", inc.X.Ident(), inc.Pred.Name)
 }
 
 // ~~~[ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
