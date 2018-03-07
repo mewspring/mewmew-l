@@ -7,6 +7,7 @@ import (
 	"github.com/mewmew/l/asm/internal/astx"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -4328,13 +4329,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `GetElementPtrInst : "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList	<< &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "GetElementPtrInst",
 		NTType:     176,
 		Index:      430,
 		NumSymbols: 9,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]*ast.TypeValue), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
+			return &ast.GetElementPtrInst{InBounds: X[1].(bool), ElemType: X[2].(types.Type), Src: astx.TypeValue(X[4], X[5]), Indices: X[7].([]value.Value), Metadata: X[8].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10588,13 +10589,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OperandBundle : StringLit "(" TypeValues ")"	<< &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]*ast.TypeValue)}, nil >>`,
+		String: `OperandBundle : StringLit "(" TypeValues ")"	<< &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil >>`,
 		Id:         "OperandBundle",
 		NTType:     411,
 		Index:      1056,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]*ast.TypeValue)}, nil
+			return &ast.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -10768,13 +10769,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeValues : empty	<< ([]*ast.TypeValue)(nil), nil >>`,
+		String: `TypeValues : empty	<< ([]value.Value)(nil), nil >>`,
 		Id:         "TypeValues",
 		NTType:     419,
 		Index:      1074,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ([]*ast.TypeValue)(nil), nil
+			return ([]value.Value)(nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -10788,43 +10789,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeValueList : TypeValue	<< []*ast.TypeValue{X[0].(*ast.TypeValue)}, nil >>`,
+		String: `TypeValueList : TypeValue	<< []value.Value{X[0].(*ast.TypeValue)}, nil >>`,
 		Id:         "TypeValueList",
 		NTType:     420,
 		Index:      1076,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.TypeValue{X[0].(*ast.TypeValue)}, nil
+			return []value.Value{X[0].(*ast.TypeValue)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeValueList : TypeValueList TypeValue	<< append(X[0].([]*ast.TypeValue), X[1].(*ast.TypeValue)), nil >>`,
+		String: `TypeValueList : TypeValueList TypeValue	<< append(X[0].([]value.Value), X[1].(*ast.TypeValue)), nil >>`,
 		Id:         "TypeValueList",
 		NTType:     420,
 		Index:      1077,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.TypeValue), X[1].(*ast.TypeValue)), nil
+			return append(X[0].([]value.Value), X[1].(*ast.TypeValue)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `CommaSepTypeValueList : TypeValue	<< []*ast.TypeValue{X[0].(*ast.TypeValue)}, nil >>`,
+		String: `CommaSepTypeValueList : TypeValue	<< []value.Value{X[0].(*ast.TypeValue)}, nil >>`,
 		Id:         "CommaSepTypeValueList",
 		NTType:     421,
 		Index:      1078,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []*ast.TypeValue{X[0].(*ast.TypeValue)}, nil
+			return []value.Value{X[0].(*ast.TypeValue)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `CommaSepTypeValueList : CommaSepTypeValueList "," TypeValue	<< append(X[0].([]*ast.TypeValue), X[2].(*ast.TypeValue)), nil >>`,
+		String: `CommaSepTypeValueList : CommaSepTypeValueList "," TypeValue	<< append(X[0].([]value.Value), X[2].(*ast.TypeValue)), nil >>`,
 		Id:         "CommaSepTypeValueList",
 		NTType:     421,
 		Index:      1079,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]*ast.TypeValue), X[2].(*ast.TypeValue)), nil
+			return append(X[0].([]value.Value), X[2].(*ast.TypeValue)), nil
 		},
 	},
 	ProdTabEntry{
@@ -10878,7 +10879,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeConst : Type Constant	<< &ast.TypeConst{Type: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil >>`,
+		String: `TypeConst : Type Constant	<< &ast.TypeConst{Typ: X[0].(types.Type), Const: X[1].(ast.Constant)}, nil >>`,
 		Id:         "TypeConst",
 		NTType:     425,
 		Index:      1085,

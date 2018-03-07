@@ -448,7 +448,7 @@ OperandBundleList
 
 OperandBundle
 	: StringLit "(" TypeValues ")"
-	<< &ast.OperandBundle{Tag: $0.(string), Inputs: $2.([]*ast.TypeValue)}, nil >>
+	<< &ast.OperandBundle{Tag: $0.(string), Inputs: $2.([]value.Value)}, nil >>
 ;
 
 OptVolatile
@@ -510,22 +510,22 @@ Index
 
 TypeValues
 	: empty
-	<< ([]*ast.TypeValue)(nil), nil >>
+	<< ([]value.Value)(nil), nil >>
 	| TypeValueList
 ;
 
 TypeValueList
 	: TypeValue
-	<< []*ast.TypeValue{$0.(*ast.TypeValue)}, nil >>
+	<< []value.Value{$0.(*ast.TypeValue)}, nil >>
 	| TypeValueList TypeValue
-	<< append($0.([]*ast.TypeValue), $1.(*ast.TypeValue)), nil >>
+	<< append($0.([]value.Value), $1.(*ast.TypeValue)), nil >>
 ;
 
 CommaSepTypeValueList
 	: TypeValue
-	<< []*ast.TypeValue{$0.(*ast.TypeValue)}, nil >>
+	<< []value.Value{$0.(*ast.TypeValue)}, nil >>
 	| CommaSepTypeValueList "," TypeValue
-	<< append($0.([]*ast.TypeValue), $2.(*ast.TypeValue)), nil >>
+	<< append($0.([]value.Value), $2.(*ast.TypeValue)), nil >>
 ;
 
 TypeValue

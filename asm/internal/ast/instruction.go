@@ -41,7 +41,7 @@ func (inst *AddInst) String() string {
 // FAddInst is an LLVM IR fadd instruction.
 type FAddInst struct {
 	FastMathFlags []ll.FastMathFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -53,7 +53,7 @@ func (inst *FAddInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -65,7 +65,7 @@ func (inst *FAddInst) String() string {
 // SubInst is an LLVM IR sub instruction.
 type SubInst struct {
 	OverflowFlags []ll.OverflowFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -77,7 +77,7 @@ func (inst *SubInst) String() string {
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -89,7 +89,7 @@ func (inst *SubInst) String() string {
 // FSubInst is an LLVM IR fsub instruction.
 type FSubInst struct {
 	FastMathFlags []ll.FastMathFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -101,7 +101,7 @@ func (inst *FSubInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -113,7 +113,7 @@ func (inst *FSubInst) String() string {
 // MulInst is an LLVM IR mul instruction.
 type MulInst struct {
 	OverflowFlags []ll.OverflowFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -125,7 +125,7 @@ func (inst *MulInst) String() string {
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -137,7 +137,7 @@ func (inst *MulInst) String() string {
 // FMulInst is an LLVM IR fmul instruction.
 type FMulInst struct {
 	FastMathFlags []ll.FastMathFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -149,7 +149,7 @@ func (inst *FMulInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -161,7 +161,7 @@ func (inst *FMulInst) String() string {
 // UDivInst is an LLVM IR udiv instruction.
 type UDivInst struct {
 	Exact    bool
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -173,7 +173,7 @@ func (inst *UDivInst) String() string {
 	if inst.Exact {
 		buf.WriteString(" exact")
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -185,7 +185,7 @@ func (inst *UDivInst) String() string {
 // SDivInst is an LLVM IR sdiv instruction.
 type SDivInst struct {
 	Exact    bool
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -197,7 +197,7 @@ func (inst *SDivInst) String() string {
 	if inst.Exact {
 		buf.WriteString(" exact")
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -209,7 +209,7 @@ func (inst *SDivInst) String() string {
 // FDivInst is an LLVM IR fdiv instruction.
 type FDivInst struct {
 	FastMathFlags []ll.FastMathFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -221,7 +221,7 @@ func (inst *FDivInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -232,7 +232,7 @@ func (inst *FDivInst) String() string {
 
 // URemInst is an LLVM IR urem instruction.
 type URemInst struct {
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -240,7 +240,7 @@ type URemInst struct {
 func (inst *URemInst) String() string {
 	// "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "urem %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "urem %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -251,7 +251,7 @@ func (inst *URemInst) String() string {
 
 // SRemInst is an LLVM IR srem instruction.
 type SRemInst struct {
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -259,7 +259,7 @@ type SRemInst struct {
 func (inst *SRemInst) String() string {
 	// "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "srem %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "srem %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -271,7 +271,7 @@ func (inst *SRemInst) String() string {
 // FRemInst is an LLVM IR frem instruction.
 type FRemInst struct {
 	FastMathFlags []ll.FastMathFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -283,7 +283,7 @@ func (inst *FRemInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -297,7 +297,7 @@ func (inst *FRemInst) String() string {
 // ShlInst is an LLVM IR shl instruction.
 type ShlInst struct {
 	OverflowFlags []ll.OverflowFlag
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -309,7 +309,7 @@ func (inst *ShlInst) String() string {
 	for _, flag := range inst.OverflowFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -321,7 +321,7 @@ func (inst *ShlInst) String() string {
 // LShrInst is an LLVM IR lshr instruction.
 type LShrInst struct {
 	Exact    bool
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -333,7 +333,7 @@ func (inst *LShrInst) String() string {
 	if inst.Exact {
 		buf.WriteString(" exact")
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -345,7 +345,7 @@ func (inst *LShrInst) String() string {
 // AShrInst is an LLVM IR ashr instruction.
 type AShrInst struct {
 	Exact    bool
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -357,7 +357,7 @@ func (inst *AShrInst) String() string {
 	if inst.Exact {
 		buf.WriteString(" exact")
 	}
-	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -368,7 +368,7 @@ func (inst *AShrInst) String() string {
 
 // AndInst is an LLVM IR and instruction.
 type AndInst struct {
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -376,7 +376,7 @@ type AndInst struct {
 func (inst *AndInst) String() string {
 	// "and" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "and %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "and %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -387,7 +387,7 @@ func (inst *AndInst) String() string {
 
 // OrInst is an LLVM IR or instruction.
 type OrInst struct {
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -395,7 +395,7 @@ type OrInst struct {
 func (inst *OrInst) String() string {
 	// "or" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "or %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "or %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -406,7 +406,7 @@ func (inst *OrInst) String() string {
 
 // XorInst is an LLVM IR xor instruction.
 type XorInst struct {
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -414,7 +414,7 @@ type XorInst struct {
 func (inst *XorInst) String() string {
 	// "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "xor %v, %v", inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "xor %v, %v", inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -427,8 +427,8 @@ func (inst *XorInst) String() string {
 
 // ExtractElementInst is an LLVM IR extractelement instruction.
 type ExtractElementInst struct {
-	X        *TypeValue
-	Index    *TypeValue
+	X        value.Value
+	Index    value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -447,9 +447,9 @@ func (inst *ExtractElementInst) String() string {
 
 // InsertElementInst is an LLVM IR insertelement instruction.
 type InsertElementInst struct {
-	X        *TypeValue
-	Elem     *TypeValue
-	Index    *TypeValue
+	X        value.Value
+	Elem     value.Value
+	Index    value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -468,8 +468,8 @@ func (inst *InsertElementInst) String() string {
 
 // ShuffleVectorInst is an LLVM IR shufflevector instruction.
 type ShuffleVectorInst struct {
-	X, Y     *TypeValue
-	Mask     *TypeValue
+	X, Y     value.Value
+	Mask     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -490,7 +490,7 @@ func (inst *ShuffleVectorInst) String() string {
 
 // ExtractValueInst is an LLVM IR extractvalue instruction.
 type ExtractValueInst struct {
-	X        *TypeValue
+	X        value.Value
 	Indices  []int64
 	Metadata []*metadata.MetadataAttachment
 }
@@ -513,8 +513,8 @@ func (inst *ExtractValueInst) String() string {
 
 // InsertValueInst is an LLVM IR insertvalue instruction.
 type InsertValueInst struct {
-	X        *TypeValue
-	Elem     *TypeValue
+	X        value.Value
+	Elem     value.Value
 	Indices  []int64
 	Metadata []*metadata.MetadataAttachment
 }
@@ -542,7 +542,7 @@ type AllocaInst struct {
 	InAlloca   bool
 	SwiftError bool
 	ElemType   types.Type
-	NElems     *TypeValue    // nil if not present
+	NElems     value.Value   // nil if not present
 	Alignment  *ll.Alignment // nil if not present
 	AddrSpace  ll.AddrSpace  // zero if not present
 	Metadata   []*metadata.MetadataAttachment
@@ -582,7 +582,7 @@ type LoadInst struct {
 	Atomic         bool
 	Volatile       bool
 	ElemType       types.Type
-	Src            *TypeValue
+	Src            value.Value
 	SyncScope      *ll.SyncScope     // nil if not present
 	AtomicOrdering ll.AtomicOrdering // zero value if not present
 	Alignment      *ll.Alignment     // nil if not present
@@ -623,8 +623,8 @@ func (inst *LoadInst) String() string {
 type StoreInst struct {
 	Atomic         bool
 	Volatile       bool
-	Src            *TypeValue
-	Dst            *TypeValue
+	Src            value.Value
+	Dst            value.Value
 	SyncScope      *ll.SyncScope     // nil if not present
 	AtomicOrdering ll.AtomicOrdering // zero value if not present
 	Alignment      *ll.Alignment     // nil if not present
@@ -689,9 +689,9 @@ func (inst *FenceInst) String() string {
 type CmpXchgInst struct {
 	Weak      bool
 	Volatile  bool
-	Ptr       *TypeValue
-	Cmp       *TypeValue
-	New       *TypeValue
+	Ptr       value.Value
+	Cmp       value.Value
+	New       value.Value
 	SyncScope *ll.SyncScope // nil if not present
 	Success   ll.AtomicOrdering
 	Failure   ll.AtomicOrdering
@@ -727,8 +727,8 @@ func (inst *CmpXchgInst) String() string {
 type AtomicRMWInst struct {
 	Volatile       bool
 	Op             ll.BinOp
-	Ptr            *TypeValue
-	X              *TypeValue
+	Ptr            value.Value
+	X              value.Value
 	SyncScope      *ll.SyncScope // nil if not present
 	AtomicOrdering ll.AtomicOrdering
 	Metadata       []*metadata.MetadataAttachment
@@ -759,8 +759,8 @@ func (inst *AtomicRMWInst) String() string {
 type GetElementPtrInst struct {
 	InBounds bool
 	ElemType types.Type
-	Src      *TypeValue
-	Indices  []*TypeValue
+	Src      value.Value
+	Indices  []value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -788,7 +788,7 @@ func (inst *GetElementPtrInst) String() string {
 
 // TruncInst is an LLVM IR trunc instruction.
 type TruncInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -808,7 +808,7 @@ func (inst *TruncInst) String() string {
 
 // ZExtInst is an LLVM IR zext instruction.
 type ZExtInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -828,7 +828,7 @@ func (inst *ZExtInst) String() string {
 
 // SExtInst is an LLVM IR sext instruction.
 type SExtInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -848,7 +848,7 @@ func (inst *SExtInst) String() string {
 
 // FPTruncInst is an LLVM IR fptrunc instruction.
 type FPTruncInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -868,7 +868,7 @@ func (inst *FPTruncInst) String() string {
 
 // FPExtInst is an LLVM IR fpext instruction.
 type FPExtInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -888,7 +888,7 @@ func (inst *FPExtInst) String() string {
 
 // FPToUIInst is an LLVM IR fptoui instruction.
 type FPToUIInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -908,7 +908,7 @@ func (inst *FPToUIInst) String() string {
 
 // FPToSIInst is an LLVM IR fptosi instruction.
 type FPToSIInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -928,7 +928,7 @@ func (inst *FPToSIInst) String() string {
 
 // UIToFPInst is an LLVM IR uitofp instruction.
 type UIToFPInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -948,7 +948,7 @@ func (inst *UIToFPInst) String() string {
 
 // SIToFPInst is an LLVM IR sitofp instruction.
 type SIToFPInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -968,7 +968,7 @@ func (inst *SIToFPInst) String() string {
 
 // PtrToIntInst is an LLVM IR ptrtoint instruction.
 type PtrToIntInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -988,7 +988,7 @@ func (inst *PtrToIntInst) String() string {
 
 // IntToPtrInst is an LLVM IR inttoptr instruction.
 type IntToPtrInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1008,7 +1008,7 @@ func (inst *IntToPtrInst) String() string {
 
 // BitCastInst is an LLVM IR bitcast instruction.
 type BitCastInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1028,7 +1028,7 @@ func (inst *BitCastInst) String() string {
 
 // AddrSpaceCastInst is an LLVM IR addrspacecast instruction.
 type AddrSpaceCastInst struct {
-	From     *TypeValue
+	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1051,7 +1051,7 @@ func (inst *AddrSpaceCastInst) String() string {
 // ICmpInst is an LLVM IR icmp instruction.
 type ICmpInst struct {
 	Pred     ll.IPred
-	X, Y     *TypeValue
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -1059,7 +1059,7 @@ type ICmpInst struct {
 func (inst *ICmpInst) String() string {
 	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -1072,7 +1072,7 @@ func (inst *ICmpInst) String() string {
 type FCmpInst struct {
 	FastMathFlags []ll.FastMathFlag
 	Pred          ll.FPred
-	X, Y          *TypeValue
+	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
@@ -1084,7 +1084,7 @@ func (inst *FCmpInst) String() string {
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	fmt.Fprintf(buf, " %v %v, %v", inst.Pred, inst.X, inst.Y.Value)
+	fmt.Fprintf(buf, " %v %v, %v", inst.Pred, inst.X, inst.Y.Ident())
 	for _, md := range inst.Metadata {
 		fmt.Fprintf(buf, ", %v", md)
 	}
@@ -1133,8 +1133,8 @@ func (inc *Incoming) String() string {
 
 // SelectInst is an LLVM IR select instruction.
 type SelectInst struct {
-	Cond     *TypeValue
-	X, Y     *TypeValue
+	Cond     value.Value
+	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -1210,7 +1210,7 @@ func (inst *CallInst) String() string {
 
 // VAArgInst is an LLVM IR vaarg instruction.
 type VAArgInst struct {
-	ArgList  *TypeValue
+	ArgList  value.Value
 	ArgType  types.Type
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1256,7 +1256,7 @@ func (inst *LandingPadInst) String() string {
 // Clause is an exception clause.
 type Clause struct {
 	Catch bool // catch if true, filter otherwise
-	X     *TypeValue
+	X     value.Value
 }
 
 func (clause *Clause) String() string {

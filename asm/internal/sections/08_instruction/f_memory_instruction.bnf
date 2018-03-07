@@ -180,6 +180,6 @@ GetElementPtrInst
 	: "getelementptr" OptInBounds Type "," Type Value OptCommaSepMetadataAttachmentList
 	<< &ast.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 	| "getelementptr" OptInBounds Type "," Type Value "," CommaSepTypeValueList OptCommaSepMetadataAttachmentList
-	<< &ast.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Indices: $7.([]*ast.TypeValue), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ast.GetElementPtrInst{InBounds: $1.(bool), ElemType: $2.(types.Type), Src: astx.TypeValue($4, $5), Indices: $7.([]value.Value), Metadata: $8.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

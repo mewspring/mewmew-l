@@ -19,6 +19,7 @@ import (
 	"github.com/mewmew/l/asm/internal/astx"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )

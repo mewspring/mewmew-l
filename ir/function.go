@@ -21,3 +21,8 @@ func (f *Function) Ident() string {
 // IsConstant ensures that only constants can be assigned to the
 // constant.Constant interface.
 func (*Function) IsConstant() {}
+
+// String returns the string representation of the function.
+func (*Function) String() string {
+	panic("ir.Function.String: not yet implemented")
+}

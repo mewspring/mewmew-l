@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -15,7 +16,7 @@ import (
 
 // RetTerm is an LLVM IR ret terminator.
 type RetTerm struct {
-	X        *TypeValue // nil if void return
+	X        value.Value // nil if void return
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -58,7 +59,7 @@ func (term *BrTerm) String() string {
 
 // CondBrTerm is a conditional LLVM IR br terminator.
 type CondBrTerm struct {
-	Cond        *TypeValue
+	Cond        value.Value
 	TargetTrue  *Label
 	TargetFalse *Label
 	Metadata    []*metadata.MetadataAttachment
@@ -79,7 +80,7 @@ func (term *CondBrTerm) String() string {
 
 // SwitchTerm is an LLVM IR switch terminator.
 type SwitchTerm struct {
-	X        *TypeValue
+	X        value.Value
 	Default  *Label
 	Cases    []*Case
 	Metadata []*metadata.MetadataAttachment
@@ -116,7 +117,7 @@ func (c *Case) String() string {
 
 // IndirectBrTerm is an LLVM IR indirectbr terminator.
 type IndirectBrTerm struct {
-	Addr     *TypeValue
+	Addr     value.Value
 	Targets  []*Label
 	Metadata []*metadata.MetadataAttachment
 }
@@ -195,7 +196,7 @@ func (term *InvokeTerm) String() string {
 
 // ResumeTerm is an LLVM IR resume terminator.
 type ResumeTerm struct {
-	X        *TypeValue
+	X        value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 

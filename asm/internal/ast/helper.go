@@ -6,6 +6,7 @@ import (
 
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -75,7 +76,7 @@ type Argument interface {
 
 // Arg is a function call argument.
 type Arg struct {
-	X          *TypeValue
+	X          value.Value
 	ParamAttrs []ll.ParamAttribute
 }
 
@@ -83,11 +84,11 @@ type Arg struct {
 func (a *Arg) String() string {
 	// ConcreteType ParamAttrs Value
 	buf := &strings.Builder{}
-	buf.WriteString(a.X.Typ.String())
+	buf.WriteString(a.X.Type().String())
 	for _, attr := range a.ParamAttrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}
-	fmt.Fprintf(buf, " %v", a.X.Value)
+	fmt.Fprintf(buf, " %v", a.X.Ident())
 	return buf.String()
 }
 
@@ -113,7 +114,7 @@ func (*MetadataValue) isArgument() {}
 // OperandBundle is a tagged set of SSA values.
 type OperandBundle struct {
 	Tag    string
-	Inputs []*TypeValue
+	Inputs []value.Value
 }
 
 // String returns a string representation of the operand bundle.
