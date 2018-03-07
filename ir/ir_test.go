@@ -1,4 +1,4 @@
-package irx_test
+package ir_test
 
 import (
 	"flag"
@@ -10,10 +10,7 @@ import (
 	"testing"
 
 	"github.com/mewkiz/pkg/osutil"
-	"github.com/mewmew/l/asm/internal/ast"
-	"github.com/mewmew/l/asm/internal/irx"
-	"github.com/mewmew/l/asm/internal/lexer"
-	"github.com/mewmew/l/asm/internal/parser"
+	"github.com/mewmew/l/asm"
 	"github.com/pkg/errors"
 )
 
@@ -160,23 +157,7 @@ func TestParse(t *testing.T) {
 			}
 			want = string(buf)
 		}
-		l := lexer.NewLexer(buf)
-		p := parser.NewParser()
-		module, err := p.Parse(l)
-		if err != nil {
-			t.Errorf("%q: unable to parse file %q; %+v", g.path, g.path, err)
-			continue
-		}
-		mod, ok := module.(*ast.Module)
-		if !ok {
-			t.Errorf("%q: invalid module type, expected *ast.Module, got %T", g.path, module)
-			continue
-		}
-		m, err := irx.Translate(mod)
-		if err != nil {
-			t.Errorf("%q: unable to translate module; %+v", g.path, err)
-			continue
-		}
+		m, err := asm.ParseBytes(buf)
 		got := m.String()
 		if want != got {
 			if err := diff(want, got, words); err != nil {

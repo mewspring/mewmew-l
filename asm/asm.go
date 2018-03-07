@@ -6,13 +6,15 @@ import (
 	"io/ioutil"
 
 	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/internal/irx"
 	"github.com/mewmew/l/asm/internal/lexer"
 	"github.com/mewmew/l/asm/internal/parser"
+	"github.com/mewmew/l/ir"
 	"github.com/pkg/errors"
 )
 
 // ParseFile parses the given LLVM IR assembly file into an LLVM IR module.
-func ParseFile(path string) (*ast.Module, error) {
+func ParseFile(path string) (*ir.Module, error) {
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -22,7 +24,7 @@ func ParseFile(path string) (*ast.Module, error) {
 
 // Parse parses the given LLVM IR assembly file into an LLVM IR module, reading
 // from r.
-func Parse(r io.Reader) (*ast.Module, error) {
+func Parse(r io.Reader) (*ir.Module, error) {
 	buf, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -32,23 +34,22 @@ func Parse(r io.Reader) (*ast.Module, error) {
 
 // ParseBytes parses the given LLVM IR assembly file into an LLVM IR module,
 // reading from b.
-func ParseBytes(b []byte) (*ast.Module, error) {
+func ParseBytes(b []byte) (*ir.Module, error) {
 	module, err := parseBytes(b)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-	return module, nil
 	// Translate the AST of the module to an equivalent LLVM IR module.
-	//m, err := irx.Translate(module)
-	//if err != nil {
-	//	return nil, errors.WithStack(err)
-	//}
-	//return m, nil
+	m, err := irx.Translate(module)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	return m, nil
 }
 
 // ParseString parses the given LLVM IR assembly file into an LLVM IR module,
 // reading from s.
-func ParseString(s string) (*ast.Module, error) {
+func ParseString(s string) (*ir.Module, error) {
 	return ParseBytes([]byte(s))
 }
 
