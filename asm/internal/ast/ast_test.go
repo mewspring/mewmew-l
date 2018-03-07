@@ -14,7 +14,6 @@ import (
 	"github.com/mewmew/l/asm/internal/lexer"
 	"github.com/mewmew/l/asm/internal/parser"
 	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
 	"github.com/pkg/errors"
 )
 
@@ -521,24 +520,6 @@ var (
 	_ ast.Terminator = (*ast.CatchRetTerm)(nil)
 	_ ast.Terminator = (*ast.CleanupRetTerm)(nil)
 	_ ast.Terminator = (*ast.UnreachableTerm)(nil)
-)
-
-// Ensure that each type implements the ast.Type interface.
-var (
-	_ types.Type = (*types.VoidType)(nil)
-	_ types.Type = (*types.FuncType)(nil)
-	_ types.Type = (*types.IntType)(nil)
-	_ types.Type = (*types.FloatType)(nil)
-	_ types.Type = (*types.MMXType)(nil)
-	_ types.Type = (*types.PointerType)(nil)
-	_ types.Type = (*types.VectorType)(nil)
-	_ types.Type = (*types.LabelType)(nil)
-	_ types.Type = (*types.TokenType)(nil)
-	_ types.Type = (*types.MetadataType)(nil)
-	_ types.Type = (*types.ArrayType)(nil)
-	_ types.Type = (*types.StructType)(nil)
-	_ types.Type = (*types.OpaqueType)(nil)
-	_ types.Type = (*types.NamedType)(nil)
 )
 
 // Ensure that each value implements the ast.Value interface.
