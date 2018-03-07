@@ -28,6 +28,10 @@ func (v *TypeConst) Ident() string {
 	return v.Const.String()
 }
 
+// IsConstant ensures that only constants can be assigned to the ast.Constant
+// interface.
+func (v *TypeConst) IsConstant() {}
+
 // TypeValue is a type-value pair.
 type TypeValue struct {
 	Typ   types.Type
@@ -72,14 +76,3 @@ func (a *MetadataValue) String() string {
 //func (*Arg) IsArgument()           {} // used as function argument
 func (*TypeValue) IsArgument()     {} // used as exception argument
 func (*MetadataValue) IsArgument() {}
-
-// Label is a basic block label.
-type Label struct {
-	// label type is implicit.
-	Name *LocalIdent
-}
-
-// String returns a string representation of the basic block label.
-func (l *Label) String() string {
-	return fmt.Sprintf("label %v", l.Name)
-}

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
@@ -40,7 +42,11 @@ func (term *RetTerm) String() string {
 
 // BrTerm is an unconditional LLVM IR br terminator.
 type BrTerm struct {
-	Target   *Label
+	// Note, Target is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	Target   *ir.BasicBlock
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -59,9 +65,19 @@ func (term *BrTerm) String() string {
 
 // CondBrTerm is a conditional LLVM IR br terminator.
 type CondBrTerm struct {
-	Cond        value.Value
-	TargetTrue  *Label
-	TargetFalse *Label
+	Cond value.Value
+
+	// Note, TargetTrue is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	TargetTrue *ir.BasicBlock
+
+	// Note, TargetFalse is reduced from `LabelType LocalIdent`, and stored
+	// during translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a
+	// nil Terminator is used to identify AST basic blocks.
+
+	TargetFalse *ir.BasicBlock
 	Metadata    []*metadata.MetadataAttachment
 }
 
@@ -80,8 +96,13 @@ func (term *CondBrTerm) String() string {
 
 // SwitchTerm is an LLVM IR switch terminator.
 type SwitchTerm struct {
-	X        value.Value
-	Default  *Label
+	X value.Value
+
+	// Note, Default is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	Default  *ir.BasicBlock
 	Cases    []*Case
 	Metadata []*metadata.MetadataAttachment
 }
@@ -103,8 +124,13 @@ func (term *SwitchTerm) String() string {
 
 // Case is a case of a switch terminator.
 type Case struct {
-	X      *TypeConst
-	Target *Label
+	X constant.Constant
+
+	// Note, Target is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	Target *ir.BasicBlock
 }
 
 // String returns a string representation of the case.
@@ -117,8 +143,13 @@ func (c *Case) String() string {
 
 // IndirectBrTerm is an LLVM IR indirectbr terminator.
 type IndirectBrTerm struct {
-	Addr     value.Value
-	Targets  []*Label
+	Addr value.Value
+
+	// Note, Targets is reduced from `LabelList`, and stored during translation
+	// as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil Terminator is
+	// used to identify AST basic blocks.
+
+	Targets  []*ir.BasicBlock
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -144,16 +175,32 @@ func (term *IndirectBrTerm) String() string {
 
 // InvokeTerm is an LLVM IR invoke terminator.
 type InvokeTerm struct {
-	CallingConv    ll.CallingConv
-	ReturnAttrs    []ll.ReturnAttribute
-	RetType        types.Type
-	Callee         Value
+	CallingConv ll.CallingConv
+	ReturnAttrs []ll.ReturnAttribute
+	RetType     types.Type
+
+	// Note, the type of Callee is not present in the AST of the invoke
+	// terminator, but rather it has to be inferred by looking up the global or
+	// local symbol if possible, and otherwise resort to the result type of the
+	// invoke terminator. A nil Type() is used to identify AST callee values.
+
+	Callee         value.Value
 	Args           []ll.Argument
 	FuncAttrs      []ll.FuncAttribute
 	OperandBundles []*ll.OperandBundle
-	Normal         *Label
-	Exception      *Label
-	Metadata       []*metadata.MetadataAttachment
+
+	// Note, Normal is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	Normal *ir.BasicBlock
+
+	// Note, Exception is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	Exception *ir.BasicBlock
+	Metadata  []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -215,8 +262,13 @@ func (term *ResumeTerm) String() string {
 
 // CatchSwitchTerm is an LLVM IR catchswitch terminator.
 type CatchSwitchTerm struct {
-	Scope        ll.ExceptionScope
-	Handlers     []*Label
+	Scope ll.ExceptionScope
+
+	// Note, Handlers is reduced from `LabelList`, and stored during translation
+	// as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil Terminator is
+	// used to identify AST basic blocks.
+
+	Handlers     []*ir.BasicBlock
 	UnwindTarget UnwindTarget
 	Metadata     []*metadata.MetadataAttachment
 }
@@ -242,9 +294,9 @@ func (term *CatchSwitchTerm) String() string {
 // UnwindTarget is an unwind target of a catchswitch or cleanupret terminator.
 type UnwindTarget interface {
 	fmt.Stringer
-	// isUnwindTarget ensures that only unwind targets can be assigned to the
+	// IsUnwindTarget ensures that only unwind targets can be assigned to the
 	// ast.UnwindTarget interface.
-	isUnwindTarget()
+	IsUnwindTarget()
 }
 
 // UnwindToCaller specifies the caller as an unwind target.
@@ -258,17 +310,27 @@ func (*UnwindToCaller) String() string {
 
 // ### [ Helper functions ] ####################################################
 
-// isUnwindTarget ensures that only unwind targets can be assigned to the
+// IsUnwindTarget ensures that only unwind targets can be assigned to the
 // ast.UnwindTarget interface.
-func (*UnwindToCaller) isUnwindTarget() {}
-func (*Label) isUnwindTarget()          {}
+func (*UnwindToCaller) IsUnwindTarget() {}
+
+//func (*Label) IsUnwindTarget()          {}
 
 // --- [ catchret ] ------------------------------------------------------------
 
 // CatchRetTerm is an LLVM IR catchret terminator.
 type CatchRetTerm struct {
-	From     Value // catchpad
-	To       *Label
+	// Note, the type of From is not present in the AST of the catchret
+	// instruction, but has to be resolved by local identifier lookup. A nil
+	// Type() is used to identify AST From values.
+
+	From value.Value // catchpad
+
+	// Note, To is reduced from `LabelType LocalIdent`, and stored during
+	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
+	// Terminator is used to identify AST basic blocks.
+
+	To       *ir.BasicBlock
 	Metadata []*metadata.MetadataAttachment
 }
 
@@ -287,7 +349,11 @@ func (term *CatchRetTerm) String() string {
 
 // CleanupRetTerm is an LLVM IR cleanupret terminator.
 type CleanupRetTerm struct {
-	From         Value // cleanuppad
+	// Note, the type of From is not present in the AST of the cleanupret
+	// instruction, but has to be resolved by local identifier lookup. A nil
+	// Type() is used to identify AST From values.
+
+	From         value.Value // cleanuppad
 	UnwindTarget UnwindTarget
 	Metadata     []*metadata.MetadataAttachment
 }

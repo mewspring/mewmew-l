@@ -12,9 +12,9 @@ import (
 // A Constant is an LLVM IR constant.
 type Constant interface {
 	fmt.Stringer
-	// isConstant ensures that only constants can be assigned to the ast.Constant
+	// IsConstant ensures that only constants can be assigned to the ast.Constant
 	// interface.
-	isConstant()
+	IsConstant()
 }
 
 // --- [ Boolean Constants ] ---------------------------------------------------
@@ -205,60 +205,60 @@ func (c *BlockAddressConst) String() string {
 
 // ### [ Helper functions ] ####################################################
 
-// isConstant ensures that only constants can be assigned to the ast.Constant
+// IsConstant ensures that only constants can be assigned to the ast.Constant
 // interface.
-func (*BoolConst) isConstant()            {}
-func (*IntConst) isConstant()             {}
-func (*FloatConst) isConstant()           {}
-func (*NullConst) isConstant()            {}
-func (*NoneConst) isConstant()            {}
-func (*StructConst) isConstant()          {}
-func (*ArrayConst) isConstant()           {}
-func (*CharArrayConst) isConstant()       {}
-func (*VectorConst) isConstant()          {}
-func (*ZeroInitializerConst) isConstant() {}
-func (*GlobalIdent) isConstant()          {}
-func (*UndefConst) isConstant()           {}
-func (*BlockAddressConst) isConstant()    {}
+func (*BoolConst) IsConstant()            {}
+func (*IntConst) IsConstant()             {}
+func (*FloatConst) IsConstant()           {}
+func (*NullConst) IsConstant()            {}
+func (*NoneConst) IsConstant()            {}
+func (*StructConst) IsConstant()          {}
+func (*ArrayConst) IsConstant()           {}
+func (*CharArrayConst) IsConstant()       {}
+func (*VectorConst) IsConstant()          {}
+func (*ZeroInitializerConst) IsConstant() {}
+func (*GlobalIdent) IsConstant()          {}
+func (*UndefConst) IsConstant()           {}
+func (*BlockAddressConst) IsConstant()    {}
 
 // ConstantExpr
-func (*AddExpr) isConstant()            {}
-func (*FAddExpr) isConstant()           {}
-func (*SubExpr) isConstant()            {}
-func (*FSubExpr) isConstant()           {}
-func (*MulExpr) isConstant()            {}
-func (*FMulExpr) isConstant()           {}
-func (*UDivExpr) isConstant()           {}
-func (*SDivExpr) isConstant()           {}
-func (*FDivExpr) isConstant()           {}
-func (*URemExpr) isConstant()           {}
-func (*SRemExpr) isConstant()           {}
-func (*FRemExpr) isConstant()           {}
-func (*ShlExpr) isConstant()            {}
-func (*LShrExpr) isConstant()           {}
-func (*AShrExpr) isConstant()           {}
-func (*AndExpr) isConstant()            {}
-func (*OrExpr) isConstant()             {}
-func (*XorExpr) isConstant()            {}
-func (*ExtractElementExpr) isConstant() {}
-func (*InsertElementExpr) isConstant()  {}
-func (*ShuffleVectorExpr) isConstant()  {}
-func (*ExtractValueExpr) isConstant()   {}
-func (*InsertValueExpr) isConstant()    {}
-func (*GetElementPtrExpr) isConstant()  {}
-func (*TruncExpr) isConstant()          {}
-func (*ZExtExpr) isConstant()           {}
-func (*SExtExpr) isConstant()           {}
-func (*FPTruncExpr) isConstant()        {}
-func (*FPExtExpr) isConstant()          {}
-func (*FPToUIExpr) isConstant()         {}
-func (*FPToSIExpr) isConstant()         {}
-func (*UIToFPExpr) isConstant()         {}
-func (*SIToFPExpr) isConstant()         {}
-func (*PtrToIntExpr) isConstant()       {}
-func (*IntToPtrExpr) isConstant()       {}
-func (*BitCastExpr) isConstant()        {}
-func (*AddrSpaceCastExpr) isConstant()  {}
-func (*ICmpExpr) isConstant()           {}
-func (*FCmpExpr) isConstant()           {}
-func (*SelectExpr) isConstant()         {}
+func (*AddExpr) IsConstant()            {}
+func (*FAddExpr) IsConstant()           {}
+func (*SubExpr) IsConstant()            {}
+func (*FSubExpr) IsConstant()           {}
+func (*MulExpr) IsConstant()            {}
+func (*FMulExpr) IsConstant()           {}
+func (*UDivExpr) IsConstant()           {}
+func (*SDivExpr) IsConstant()           {}
+func (*FDivExpr) IsConstant()           {}
+func (*URemExpr) IsConstant()           {}
+func (*SRemExpr) IsConstant()           {}
+func (*FRemExpr) IsConstant()           {}
+func (*ShlExpr) IsConstant()            {}
+func (*LShrExpr) IsConstant()           {}
+func (*AShrExpr) IsConstant()           {}
+func (*AndExpr) IsConstant()            {}
+func (*OrExpr) IsConstant()             {}
+func (*XorExpr) IsConstant()            {}
+func (*ExtractElementExpr) IsConstant() {}
+func (*InsertElementExpr) IsConstant()  {}
+func (*ShuffleVectorExpr) IsConstant()  {}
+func (*ExtractValueExpr) IsConstant()   {}
+func (*InsertValueExpr) IsConstant()    {}
+func (*GetElementPtrExpr) IsConstant()  {}
+func (*TruncExpr) IsConstant()          {}
+func (*ZExtExpr) IsConstant()           {}
+func (*SExtExpr) IsConstant()           {}
+func (*FPTruncExpr) IsConstant()        {}
+func (*FPExtExpr) IsConstant()          {}
+func (*FPToUIExpr) IsConstant()         {}
+func (*FPToSIExpr) IsConstant()         {}
+func (*UIToFPExpr) IsConstant()         {}
+func (*SIToFPExpr) IsConstant()         {}
+func (*PtrToIntExpr) IsConstant()       {}
+func (*IntToPtrExpr) IsConstant()       {}
+func (*BitCastExpr) IsConstant()        {}
+func (*AddrSpaceCastExpr) IsConstant()  {}
+func (*ICmpExpr) IsConstant()           {}
+func (*FCmpExpr) IsConstant()           {}
+func (*SelectExpr) IsConstant()         {}

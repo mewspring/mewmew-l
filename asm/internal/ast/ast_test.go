@@ -451,7 +451,7 @@ var (
 // Ensure that each unwind target implements the ast.UnwindTarget interface.
 var (
 	_ ast.UnwindTarget = (*ast.UnwindToCaller)(nil)
-	_ ast.UnwindTarget = (*ast.Label)(nil)
+	_ ast.UnwindTarget = (*ir.BasicBlock)(nil)
 )
 
 // Ensure that each terminator implements the ast.Terminator interface.

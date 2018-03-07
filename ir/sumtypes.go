@@ -22,6 +22,10 @@ type Terminator interface {
 	IsTerminator()
 }
 
+// IsUnwindTarget ensures that only unwind targets can be assigned to the
+// ast.UnwindTarget interface.
+func (*BasicBlock) IsUnwindTarget() {}
+
 // IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
 func (*ValueInstruction) IsInstruction() {}

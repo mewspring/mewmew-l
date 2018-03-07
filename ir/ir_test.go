@@ -211,7 +211,7 @@ func diff(a, b string, words bool) error {
 	return nil
 }
 
-// Ensure that each instruction implements the ast.Instruction interface.
+// Ensure that each instruction implements the ir.Instruction interface.
 var (
 	_ ir.Instruction = (*ir.AddInst)(nil)
 	_ ir.Instruction = (*ir.FAddInst)(nil)

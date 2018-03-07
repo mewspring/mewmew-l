@@ -10,6 +10,7 @@ import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/asm/internal/token"
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 	"github.com/pkg/errors"
@@ -91,12 +92,12 @@ func TypeConst(typ, val interface{}) *ast.TypeConst {
 }
 
 // Label returns a label based on the given label type and name.
-func Label(typ, name interface{}) *ast.Label {
+func Label(typ, name interface{}) *ir.BasicBlock {
 	if _, ok := typ.(*types.LabelType); !ok {
 		panic(errors.Errorf(`invalid label type, expected *ast.LabelType, got %T`, typ))
 	}
-	return &ast.Label{
-		Name: name.(*ast.LocalIdent),
+	return &ir.BasicBlock{
+		Name: name.(*ast.LocalIdent).Name,
 	}
 }
 

@@ -382,7 +382,7 @@ func (body *FunctionBody) String() string {
 	buf := &strings.Builder{}
 	buf.WriteString("{\n")
 	for _, block := range body.Blocks {
-		fmt.Fprintf(buf, "%v\n", block)
+		fmt.Fprintf(buf, "%v\n", block.Def())
 	}
 	for _, useList := range body.UseListOrders {
 		fmt.Fprintf(buf, "%v\n", useList)
