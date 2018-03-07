@@ -900,20 +900,20 @@ DILocalVariableField
 
 DIExpression
 	: "!DIExpression" "(" DIExpressionFields ")"
-	<< &ast.DIExpression{Fields: $2.([]ast.DIExpressionField)}, nil >>
+	<< &metadata.DIExpression{Fields: $2.([]metadata.DIExpressionField)}, nil >>
 ;
 
 DIExpressionFields
 	: empty
-	<< ([]ast.DIExpressionField)(nil), nil >>
+	<< ([]metadata.DIExpressionField)(nil), nil >>
 	| DIExpressionFieldList
 ;
 
 DIExpressionFieldList
 	: DIExpressionField
-	<< []ast.DIExpressionField{$0.(ast.DIExpressionField)}, nil >>
+	<< []metadata.DIExpressionField{$0.(metadata.DIExpressionField)}, nil >>
 	| DIExpressionFieldList "," DIExpressionField
-	<< append($0.([]ast.DIExpressionField), $2.(ast.DIExpressionField)), nil >>
+	<< append($0.([]metadata.DIExpressionField), $2.(metadata.DIExpressionField)), nil >>
 ;
 
 DIExpressionField

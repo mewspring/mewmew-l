@@ -5,15 +5,15 @@ import "fmt"
 // MetadataNode is a metadata node.
 type MetadataNode interface {
 	fmt.Stringer
-	// isMetadataNode ensures that only metadata nodes can be assigned to the
+	// IsMetadataNode ensures that only metadata nodes can be assigned to the
 	// metadata.MDNode interface.
-	isMetadataNode()
+	IsMetadataNode()
 }
 
-// isMetadataNode ensures that only metadata nodes can be assigned to the
+// IsMetadataNode ensures that only metadata nodes can be assigned to the
 // metadata.MDNode interface.
-func (*MetadataDef) isMetadataNode()  {}
-func (*DIExpression) isMetadataNode() {}
+func (*MetadataDef) IsMetadataNode()  {}
+func (*DIExpression) IsMetadataNode() {}
 
 // MDField is a metadata field.
 type MDField interface {
@@ -65,86 +65,86 @@ func (*GenericDINode) IsMDField()              {}
 // node.
 type Metadata interface {
 	fmt.Stringer
-	// isMetadata ensures that only metadata can be assigned to the
+	// IsMetadata ensures that only metadata can be assigned to the
 	// metadata.Metadata interface.
-	isMetadata()
+	IsMetadata()
 }
 
 // ### [ Helper functions ] ####################################################
 
-// isMetadata ensures that only metadata can be assigned to the
+// IsMetadata ensures that only metadata can be assigned to the
 // metadata.Metadata interface.
-func (*Value) isMetadata()       {}
-func (*MDString) isMetadata()    {}
-func (*MDTuple) isMetadata()     {}
-func (*MetadataDef) isMetadata() {}
+func (*Value) IsMetadata()       {}
+func (*MDString) IsMetadata()    {}
+func (*MDTuple) IsMetadata()     {}
+func (*MetadataDef) IsMetadata() {}
 
 // SpecializedMDNode
-func (*DICompileUnit) isMetadata()              {}
-func (*DIFile) isMetadata()                     {}
-func (*DIBasicType) isMetadata()                {}
-func (*DISubroutineType) isMetadata()           {}
-func (*DIDerivedType) isMetadata()              {}
-func (*DICompositeType) isMetadata()            {}
-func (*DISubrange) isMetadata()                 {}
-func (*DIEnumerator) isMetadata()               {}
-func (*DITemplateTypeParameter) isMetadata()    {}
-func (*DITemplateValueParameter) isMetadata()   {}
-func (*DIModule) isMetadata()                   {}
-func (*DINamespace) isMetadata()                {}
-func (*DIGlobalVariable) isMetadata()           {}
-func (*DISubprogram) isMetadata()               {}
-func (*DILexicalBlock) isMetadata()             {}
-func (*DILexicalBlockFile) isMetadata()         {}
-func (*DILocation) isMetadata()                 {}
-func (*DILocalVariable) isMetadata()            {}
-func (*DIExpression) isMetadata()               {}
-func (*DIGlobalVariableExpression) isMetadata() {}
-func (*DIObjCProperty) isMetadata()             {}
-func (*DIImportedEntity) isMetadata()           {}
-func (*DIMacro) isMetadata()                    {}
-func (*DIMacroFile) isMetadata()                {}
-func (*GenericDINode) isMetadata()              {}
+func (*DICompileUnit) IsMetadata()              {}
+func (*DIFile) IsMetadata()                     {}
+func (*DIBasicType) IsMetadata()                {}
+func (*DISubroutineType) IsMetadata()           {}
+func (*DIDerivedType) IsMetadata()              {}
+func (*DICompositeType) IsMetadata()            {}
+func (*DISubrange) IsMetadata()                 {}
+func (*DIEnumerator) IsMetadata()               {}
+func (*DITemplateTypeParameter) IsMetadata()    {}
+func (*DITemplateValueParameter) IsMetadata()   {}
+func (*DIModule) IsMetadata()                   {}
+func (*DINamespace) IsMetadata()                {}
+func (*DIGlobalVariable) IsMetadata()           {}
+func (*DISubprogram) IsMetadata()               {}
+func (*DILexicalBlock) IsMetadata()             {}
+func (*DILexicalBlockFile) IsMetadata()         {}
+func (*DILocation) IsMetadata()                 {}
+func (*DILocalVariable) IsMetadata()            {}
+func (*DIExpression) IsMetadata()               {}
+func (*DIGlobalVariableExpression) IsMetadata() {}
+func (*DIObjCProperty) IsMetadata()             {}
+func (*DIImportedEntity) IsMetadata()           {}
+func (*DIMacro) IsMetadata()                    {}
+func (*DIMacroFile) IsMetadata()                {}
+func (*GenericDINode) IsMetadata()              {}
 
 // MDNode is a metadata node.
 type MDNode interface {
 	fmt.Stringer
-	// isMDNode ensures that only metadata nodes can be assigned to the
+	// IsMDNode ensures that only metadata nodes can be assigned to the
 	// metadata.MDNode interface.
-	isMDNode()
+	IsMDNode()
 }
 
-// isMDNode ensures that only metadata nodes can be assigned to the
+// IsMDNode ensures that only metadata nodes can be assigned to the
 // metadata.MDNode interface.
-func (*MDTuple) isMDNode()     {}
-func (*MetadataDef) isMDNode() {}
+func (*MDTuple) IsMDNode()     {}
+func (*MetadataDef) IsMDNode() {}
 
 // SpecializedMDNode
-func (*DICompileUnit) isMDNode()              {}
-func (*DIFile) isMDNode()                     {}
-func (*DIBasicType) isMDNode()                {}
-func (*DISubroutineType) isMDNode()           {}
-func (*DIDerivedType) isMDNode()              {}
-func (*DICompositeType) isMDNode()            {}
-func (*DISubrange) isMDNode()                 {}
-func (*DIEnumerator) isMDNode()               {}
-func (*DITemplateTypeParameter) isMDNode()    {}
-func (*DITemplateValueParameter) isMDNode()   {}
-func (*DIModule) isMDNode()                   {}
-func (*DINamespace) isMDNode()                {}
-func (*DIGlobalVariable) isMDNode()           {}
-func (*DISubprogram) isMDNode()               {}
-func (*DILexicalBlock) isMDNode()             {}
-func (*DILexicalBlockFile) isMDNode()         {}
-func (*DILocation) isMDNode()                 {}
-func (*DILocalVariable) isMDNode()            {}
-func (*DIExpression) isMDNode()               {}
-func (*DIGlobalVariableExpression) isMDNode() {}
-func (*DIObjCProperty) isMDNode()             {}
-func (*DIImportedEntity) isMDNode()           {}
-func (*DIMacro) isMDNode()                    {}
-func (*DIMacroFile) isMDNode()                {}
-func (*GenericDINode) isMDNode()              {}
+func (*DICompileUnit) IsMDNode()              {}
+func (*DIFile) IsMDNode()                     {}
+func (*DIBasicType) IsMDNode()                {}
+func (*DISubroutineType) IsMDNode()           {}
+func (*DIDerivedType) IsMDNode()              {}
+func (*DICompositeType) IsMDNode()            {}
+func (*DISubrange) IsMDNode()                 {}
+func (*DIEnumerator) IsMDNode()               {}
+func (*DITemplateTypeParameter) IsMDNode()    {}
+func (*DITemplateValueParameter) IsMDNode()   {}
+func (*DIModule) IsMDNode()                   {}
+func (*DINamespace) IsMDNode()                {}
+func (*DIGlobalVariable) IsMDNode()           {}
+func (*DISubprogram) IsMDNode()               {}
+func (*DILexicalBlock) IsMDNode()             {}
+func (*DILexicalBlockFile) IsMDNode()         {}
+func (*DILocation) IsMDNode()                 {}
+func (*DILocalVariable) IsMDNode()            {}
+func (*DIExpression) IsMDNode()               {}
+func (*DIGlobalVariableExpression) IsMDNode() {}
+func (*DIObjCProperty) IsMDNode()             {}
+func (*DIImportedEntity) IsMDNode()           {}
+func (*DIMacro) IsMDNode()                    {}
+func (*DIMacroFile) IsMDNode()                {}
+func (*GenericDINode) IsMDNode()              {}
 
 // --- [ Specialized Metadata Nodes ] ------------------------------------------
 
@@ -191,6 +191,11 @@ type DIExpressionField interface {
 	// to the metadata.DIExpressionField interface.
 	IsDIExpressionField()
 }
+
+// IsDIExpressionField ensures that only DIExpression fields can be assigned to
+// the metadata.DIExpressionField interface.
+//
+// *IntConst
 
 // IntOrMDField is an integer or metadata field.
 type IntOrMDField interface {
@@ -240,3 +245,12 @@ func (*DIImportedEntity) IsIntOrMDField()           {}
 func (*DIMacro) IsIntOrMDField()                    {}
 func (*DIMacroFile) IsIntOrMDField()                {}
 func (*GenericDINode) IsIntOrMDField()              {}
+
+// IsGlobalAttribute ensures that only global attributes can be assigned to the
+// ll.GlobalAttribute interface.
+func (*MetadataAttachment) IsGlobalAttribute() {}
+
+// IsTopLevelEntity ensures that only top-level entities can be assigned to the
+// ast.TopLevelEntity interface.
+func (*NamedMetadataDef) IsTopLevelEntity() {}
+func (*MetadataDef) IsTopLevelEntity()      {}

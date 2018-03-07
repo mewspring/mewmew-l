@@ -589,7 +589,7 @@ Arg
 	: ConcreteType ParamAttrs Value
 	<< &ast.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ll.ParamAttribute)}, nil >>
 	| MetadataType Metadata
-	<< &ast.MetadataValue{Metadata: $1.(ast.Metadata)}, nil >>
+	<< &ast.MetadataValue{Metadata: $1.(metadata.Metadata)}, nil >>
 ;
 
 // ref: ParseExceptionArgs
@@ -611,7 +611,7 @@ ExceptionArg
 	: ConcreteType Value
 	<< astx.TypeValue($0, $1), nil >>
 	| MetadataType Metadata
-	<< &ast.MetadataValue{Metadata: $1.(ast.Metadata)}, nil >>
+	<< &ast.MetadataValue{Metadata: $1.(metadata.Metadata)}, nil >>
 ;
 
 // ref: ParseArgumentList

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -73,7 +74,7 @@ func (a *Arg) String() string {
 // MetadataValue is a metadata value function call argument.
 type MetadataValue struct {
 	// metadata type is implicit.
-	Metadata Metadata
+	Metadata metadata.Metadata
 }
 
 // String returns a string representation of the metadata value function call

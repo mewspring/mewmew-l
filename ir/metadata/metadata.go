@@ -88,6 +88,7 @@ func (md *MDString) String() string {
 
 // MetadataAttachment is a metadata attachment.
 type MetadataAttachment struct {
+	// Metadata attachment name (MetadataName).
 	Name string
 	Node MDNode
 }

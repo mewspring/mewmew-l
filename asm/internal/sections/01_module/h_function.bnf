@@ -8,7 +8,7 @@
 
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
-	<< &ast.Function{Linkage: $2.(ll.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.Function{Linkage: $2.(ll.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +21,7 @@ FunctionDecl
 
 FunctionDef
 	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
-	<< &ast.Function{Linkage: $1.(ll.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.Function{Linkage: $1.(ll.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ref: ParseFunctionHeader

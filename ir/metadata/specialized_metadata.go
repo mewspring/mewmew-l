@@ -1045,7 +1045,3 @@ func (md *GenericDINode) String() string {
 	}
 	return fmt.Sprintf("!GenericDINode(%v)", strings.Join(fields, ", "))
 }
-
-// IsGlobalAttribute ensures that only global attributes can be assigned to the
-// ast.GlobalAttribute interface.
-func (*MetadataAttachment) IsGlobalAttribute() {}

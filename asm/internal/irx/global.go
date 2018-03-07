@@ -6,6 +6,7 @@ import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 	"github.com/rickypai/natsort"
@@ -109,7 +110,7 @@ func (m *Module) irGlobalAttr(old ll.GlobalAttribute) ll.GlobalAttribute {
 		return old
 	case *ll.Alignment:
 		return old
-	case *ast.MetadataAttachment:
+	case *metadata.MetadataAttachment:
 		return m.irMetadataAttachment(old)
 	default:
 		panic(fmt.Errorf("support for global attribute type %T not yet implemented", old))

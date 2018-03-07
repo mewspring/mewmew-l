@@ -8,7 +8,7 @@
 
 MDTuple
 	: "!" MDFields
-	<< &ast.MDTuple{Fields: $1.([]ast.MDField)}, nil >>
+	<< &metadata.MDTuple{Fields: $1.([]metadata.MDField)}, nil >>
 ;
 
 // ref: ParseMDNodeVector
@@ -21,16 +21,16 @@ MDTuple
 
 MDFields
 	: "{" "}"
-	<< ([]ast.MDField)(nil), nil >>
+	<< ([]metadata.MDField)(nil), nil >>
 	| "{" MDFieldList "}"
 	<< $1, nil >>
 ;
 
 MDFieldList
 	: MDField
-	<< []ast.MDField{$0.(ast.MDField)}, nil >>
+	<< []metadata.MDField{$0.(metadata.MDField)}, nil >>
 	| MDFieldList "," MDField
-	<< append($0.([]ast.MDField), $2.(ast.MDField)), nil >>
+	<< append($0.([]metadata.MDField), $2.(metadata.MDField)), nil >>
 ;
 
 // ref: ParseMDField(MDField &)
@@ -72,7 +72,7 @@ Metadata
 
 MDString
 	: "!" StringLit
-	<< &ast.MDString{Value: $1.(string)}, nil >>
+	<< &metadata.MDString{Value: $1.(string)}, nil >>
 ;
 
 // --- [ Metadata Attachment ] -------------------------------------------------
@@ -83,7 +83,7 @@ MDString
 
 MetadataAttachment
 	: MetadataName MDNode
-	<< &ast.MetadataAttachment{Name: $0.(*ast.MetadataName), Node: $1.(ast.MDNode)}, nil >>
+	<< &metadata.MetadataAttachment{Name: $0.(*ast.MetadataName).Name, Node: $1.(metadata.MDNode)}, nil >>
 ;
 
 // --- [ Metadata Node ] -------------------------------------------------------
@@ -110,15 +110,15 @@ MDNode
 
 MetadataAttachments
 	: empty
-	<< ([]*ast.MetadataAttachment)(nil), nil >>
+	<< ([]*metadata.MetadataAttachment)(nil), nil >>
 	| MetadataAttachmentList
 ;
 
 MetadataAttachmentList
 	: MetadataAttachment
-	<< []*ast.MetadataAttachment{$0.(*ast.MetadataAttachment)}, nil >>
+	<< []*metadata.MetadataAttachment{$0.(*metadata.MetadataAttachment)}, nil >>
 	| MetadataAttachmentList MetadataAttachment
-	<< append($0.([]*ast.MetadataAttachment), $1.(*ast.MetadataAttachment)), nil >>
+	<< append($0.([]*metadata.MetadataAttachment), $1.(*metadata.MetadataAttachment)), nil >>
 ;
 
 // ref: ParseInstructionMetadata
@@ -127,15 +127,15 @@ MetadataAttachmentList
 
 OptCommaSepMetadataAttachmentList
 	: empty
-	<< ([]*ast.MetadataAttachment)(nil), nil >>
+	<< ([]*metadata.MetadataAttachment)(nil), nil >>
 	| "," CommaSepMetadataAttachmentList
 	<< $1, nil >>
 ;
 
 CommaSepMetadataAttachmentList
 	: MetadataAttachment
-	<< []*ast.MetadataAttachment{$0.(*ast.MetadataAttachment)}, nil >>
+	<< []*metadata.MetadataAttachment{$0.(*metadata.MetadataAttachment)}, nil >>
 	| CommaSepMetadataAttachmentList "," MetadataAttachment
-	<< append($0.([]*ast.MetadataAttachment), $2.(*ast.MetadataAttachment)), nil >>
+	<< append($0.([]*metadata.MetadataAttachment), $2.(*metadata.MetadataAttachment)), nil >>
 ;
 

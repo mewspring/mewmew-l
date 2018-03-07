@@ -8,20 +8,20 @@
 
 NamedMetadataDef
 	: MetadataName "=" "!" "{" MetadataNodes "}"
-	<< &ast.NamedMetadataDef{Name: $0.(*ast.MetadataName), Nodes: $4.([]ast.MetadataNode)}, nil >>
+	<< &metadata.NamedMetadataDef{Name: $0.(*ast.MetadataName).Name, Nodes: $4.([]metadata.MetadataNode)}, nil >>
 ;
 
 MetadataNodes
 	: empty
-	<< ([]ast.MetadataNode)(nil), nil >>
+	<< ([]metadata.MetadataNode)(nil), nil >>
 	| MetadataNodeList
 ;
 
 MetadataNodeList
 	: MetadataNode
-	<< []ast.MetadataNode{$0.(ast.MetadataNode)}, nil >>
+	<< []metadata.MetadataNode{$0.(metadata.MetadataNode)}, nil >>
 	| MetadataNodeList "," MetadataNode
-	<< append($0.([]ast.MetadataNode), $2.(ast.MetadataNode)), nil >>
+	<< append($0.([]metadata.MetadataNode), $2.(metadata.MetadataNode)), nil >>
 ;
 
 MetadataNode
@@ -42,9 +42,9 @@ MetadataNode
 
 MetadataDef
 	: MetadataID "=" OptDistinct MDTuple
-	<< &ast.MetadataDef{ID: $0.(*ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
+	<< &metadata.MetadataDef{ID: $0.(*ast.MetadataID).ID, Distinct: $2.(bool), Node: $3.(metadata.MDNode)}, nil >>
 	| MetadataID "=" OptDistinct SpecializedMDNode
-	<< &ast.MetadataDef{ID: $0.(*ast.MetadataID), Distinct: $2.(bool), Node: $3.(ast.MDNode)}, nil >>
+	<< &metadata.MetadataDef{ID: $0.(*ast.MetadataID).ID, Distinct: $2.(bool), Node: $3.(metadata.MDNode)}, nil >>
 ;
 
 OptDistinct

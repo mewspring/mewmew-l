@@ -32,9 +32,9 @@ type Module struct {
 	// maps from attribute group ID to attribute group definition.
 	attrGroupID map[string]*ast.AttrGroupDef
 	// maps from metadata name to named metadata definition.
-	metadataName map[string]*ast.NamedMetadataDef
+	metadataName map[string]*metadata.NamedMetadataDef
 	// maps from metadata ID to metadata definition.
-	metadataID map[string]*ast.MetadataDef
+	metadataID map[string]*metadata.MetadataDef
 
 	// maps from identifier to IR definition.
 
@@ -72,8 +72,8 @@ func NewModule() *Module {
 		comdatName:   make(map[string]*ll.ComdatDef),
 		globalIdent:  make(map[string]interface{}),
 		attrGroupID:  make(map[string]*ast.AttrGroupDef),
-		metadataName: make(map[string]*ast.NamedMetadataDef),
-		metadataID:   make(map[string]*ast.MetadataDef),
+		metadataName: make(map[string]*metadata.NamedMetadataDef),
+		metadataID:   make(map[string]*metadata.MetadataDef),
 
 		typeDefs:          make(map[string]*types.NamedType),
 		globals:           make(map[string]*ir.Global),

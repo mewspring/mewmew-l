@@ -3,19 +3,19 @@ package astx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 )
 
 // NewDICompileUnit returns a new DICompileUnit specialized metadata node.
-func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) {
+func NewDICompileUnit(fields []*SpecializedMDField) (*metadata.DICompileUnit, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DICompileUnit{}
+	node := &metadata.DICompileUnit{}
 	if v, ok := m["language:"]; ok {
 		node.Language = v.(ll.DwarfLang)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["producer:"]; ok {
 		node.Producer = v.(string)
@@ -36,19 +36,19 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 		node.EmissionKind = v.(ll.EmissionKind)
 	}
 	if v, ok := m["enums:"]; ok {
-		node.Enums = v.(ast.MDField)
+		node.Enums = v.(metadata.MDField)
 	}
 	if v, ok := m["retainedTypes:"]; ok {
-		node.RetainedTypes = v.(ast.MDField)
+		node.RetainedTypes = v.(metadata.MDField)
 	}
 	if v, ok := m["globals:"]; ok {
-		node.Globals = v.(ast.MDField)
+		node.Globals = v.(metadata.MDField)
 	}
 	if v, ok := m["imports:"]; ok {
-		node.Imports = v.(ast.MDField)
+		node.Imports = v.(metadata.MDField)
 	}
 	if v, ok := m["macros:"]; ok {
-		node.Macros = v.(ast.MDField)
+		node.Macros = v.(metadata.MDField)
 	}
 	if v, ok := m["dwoId:"]; ok {
 		node.DwoID = v.(int64)
@@ -66,9 +66,9 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*ast.DICompileUnit, error) 
 }
 
 // NewDIFile returns a new DIFile specialized metadata node.
-func NewDIFile(fields []*SpecializedMDField) (*ast.DIFile, error) {
+func NewDIFile(fields []*SpecializedMDField) (*metadata.DIFile, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIFile{}
+	node := &metadata.DIFile{}
 	if v, ok := m["filename:"]; ok {
 		node.Filename = v.(string)
 	}
@@ -85,9 +85,9 @@ func NewDIFile(fields []*SpecializedMDField) (*ast.DIFile, error) {
 }
 
 // NewDIBasicType returns a new DIBasicType specialized metadata node.
-func NewDIBasicType(fields []*SpecializedMDField) (*ast.DIBasicType, error) {
+func NewDIBasicType(fields []*SpecializedMDField) (*metadata.DIBasicType, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIBasicType{}
+	node := &metadata.DIBasicType{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
@@ -107,9 +107,9 @@ func NewDIBasicType(fields []*SpecializedMDField) (*ast.DIBasicType, error) {
 }
 
 // NewDISubroutineType returns a new DISubroutineType specialized metadata node.
-func NewDISubroutineType(fields []*SpecializedMDField) (*ast.DISubroutineType, error) {
+func NewDISubroutineType(fields []*SpecializedMDField) (*metadata.DISubroutineType, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DISubroutineType{}
+	node := &metadata.DISubroutineType{}
 	if v, ok := m["flags:"]; ok {
 		node.Flags = v.([]ll.DIFlag)
 	}
@@ -117,15 +117,15 @@ func NewDISubroutineType(fields []*SpecializedMDField) (*ast.DISubroutineType, e
 		node.CC = v.(ll.DwarfCC)
 	}
 	if v, ok := m["types:"]; ok {
-		node.Types = v.(ast.MDField)
+		node.Types = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDIDerivedType returns a new DIDerivedType specialized metadata node.
-func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) {
+func NewDIDerivedType(fields []*SpecializedMDField) (*metadata.DIDerivedType, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIDerivedType{}
+	node := &metadata.DIDerivedType{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
@@ -133,16 +133,16 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 		node.Name = v.(string)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["baseType:"]; ok {
-		node.BaseType = v.(ast.MDField)
+		node.BaseType = v.(metadata.MDField)
 	}
 	if v, ok := m["size:"]; ok {
 		node.Size = v.(int64)
@@ -157,7 +157,7 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["extraData:"]; ok {
-		node.ExtraData = v.(ast.MDField)
+		node.ExtraData = v.(metadata.MDField)
 	}
 	if v, ok := m["dwarfAddressSpace:"]; ok {
 		node.DwarfAddressSpace = v.(int64)
@@ -166,9 +166,9 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*ast.DIDerivedType, error) 
 }
 
 // NewDICompositeType returns a new DICompositeType specialized metadata node.
-func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, error) {
+func NewDICompositeType(fields []*SpecializedMDField) (*metadata.DICompositeType, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DICompositeType{}
+	node := &metadata.DICompositeType{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
@@ -176,16 +176,16 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 		node.Name = v.(string)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["baseType:"]; ok {
-		node.BaseType = v.(ast.MDField)
+		node.BaseType = v.(metadata.MDField)
 	}
 	if v, ok := m["size:"]; ok {
 		node.Size = v.(int64)
@@ -200,32 +200,32 @@ func NewDICompositeType(fields []*SpecializedMDField) (*ast.DICompositeType, err
 		node.Flags = v.([]ll.DIFlag)
 	}
 	if v, ok := m["elements:"]; ok {
-		node.Elements = v.(ast.MDField)
+		node.Elements = v.(metadata.MDField)
 	}
 	if v, ok := m["runtimeLang:"]; ok {
 		node.RuntimeLang = v.(ll.DwarfLang)
 	}
 	if v, ok := m["vtableHolder:"]; ok {
-		node.VtableHolder = v.(ast.MDField)
+		node.VtableHolder = v.(metadata.MDField)
 	}
 	if v, ok := m["templateParams:"]; ok {
-		node.TemplateParams = v.(ast.MDField)
+		node.TemplateParams = v.(metadata.MDField)
 	}
 	if v, ok := m["identifier:"]; ok {
 		node.Identifier = v.(string)
 	}
 	if v, ok := m["discriminator:"]; ok {
-		node.Discriminator = v.(ast.MDField)
+		node.Discriminator = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDISubrange returns a new DISubrange specialized metadata node.
-func NewDISubrange(fields []*SpecializedMDField) (*ast.DISubrange, error) {
+func NewDISubrange(fields []*SpecializedMDField) (*metadata.DISubrange, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DISubrange{}
+	node := &metadata.DISubrange{}
 	if v, ok := m["count:"]; ok {
-		node.Count = v.(ast.IntOrMDField)
+		node.Count = v.(metadata.IntOrMDField)
 	}
 	if v, ok := m["lowerBound:"]; ok {
 		node.LowerBound = v.(int64)
@@ -234,9 +234,9 @@ func NewDISubrange(fields []*SpecializedMDField) (*ast.DISubrange, error) {
 }
 
 // NewDIEnumerator returns a new DIEnumerator specialized metadata node.
-func NewDIEnumerator(fields []*SpecializedMDField) (*ast.DIEnumerator, error) {
+func NewDIEnumerator(fields []*SpecializedMDField) (*metadata.DIEnumerator, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIEnumerator{}
+	node := &metadata.DIEnumerator{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
@@ -251,23 +251,23 @@ func NewDIEnumerator(fields []*SpecializedMDField) (*ast.DIEnumerator, error) {
 
 // NewDITemplateTypeParameter returns a new DITemplateTypeParameter specialized
 // metadata node.
-func NewDITemplateTypeParameter(fields []*SpecializedMDField) (*ast.DITemplateTypeParameter, error) {
+func NewDITemplateTypeParameter(fields []*SpecializedMDField) (*metadata.DITemplateTypeParameter, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DITemplateTypeParameter{}
+	node := &metadata.DITemplateTypeParameter{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDITemplateValueParameter returns a new DITemplateValueParameter
 // specialized metadata node.
-func NewDITemplateValueParameter(fields []*SpecializedMDField) (*ast.DITemplateValueParameter, error) {
+func NewDITemplateValueParameter(fields []*SpecializedMDField) (*metadata.DITemplateValueParameter, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DITemplateValueParameter{}
+	node := &metadata.DITemplateValueParameter{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
@@ -275,20 +275,20 @@ func NewDITemplateValueParameter(fields []*SpecializedMDField) (*ast.DITemplateV
 		node.Name = v.(string)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	if v, ok := m["value:"]; ok {
-		node.Value = v.(ast.MDField)
+		node.Value = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDIModule returns a new DIModule specialized metadata node.
-func NewDIModule(fields []*SpecializedMDField) (*ast.DIModule, error) {
+func NewDIModule(fields []*SpecializedMDField) (*metadata.DIModule, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIModule{}
+	node := &metadata.DIModule{}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -306,11 +306,11 @@ func NewDIModule(fields []*SpecializedMDField) (*ast.DIModule, error) {
 }
 
 // NewDINamespace returns a new DINamespace specialized metadata node.
-func NewDINamespace(fields []*SpecializedMDField) (*ast.DINamespace, error) {
+func NewDINamespace(fields []*SpecializedMDField) (*metadata.DINamespace, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DINamespace{}
+	node := &metadata.DINamespace{}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -322,26 +322,26 @@ func NewDINamespace(fields []*SpecializedMDField) (*ast.DINamespace, error) {
 }
 
 // NewDIGlobalVariable returns a new DIGlobalVariable specialized metadata node.
-func NewDIGlobalVariable(fields []*SpecializedMDField) (*ast.DIGlobalVariable, error) {
+func NewDIGlobalVariable(fields []*SpecializedMDField) (*metadata.DIGlobalVariable, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIGlobalVariable{}
+	node := &metadata.DIGlobalVariable{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["linkageName:"]; ok {
 		node.LinkageName = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	if v, ok := m["isLocal:"]; ok {
 		node.IsLocal = v.(bool)
@@ -350,7 +350,7 @@ func NewDIGlobalVariable(fields []*SpecializedMDField) (*ast.DIGlobalVariable, e
 		node.IsDefinition = v.(bool)
 	}
 	if v, ok := m["declaration:"]; ok {
-		node.Declaration = v.(ast.MDField)
+		node.Declaration = v.(metadata.MDField)
 	}
 	if v, ok := m["align:"]; ok {
 		node.Align = v.(int64)
@@ -359,26 +359,26 @@ func NewDIGlobalVariable(fields []*SpecializedMDField) (*ast.DIGlobalVariable, e
 }
 
 // NewDISubprogram returns a new DISubprogram specialized metadata node.
-func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
+func NewDISubprogram(fields []*SpecializedMDField) (*metadata.DISubprogram, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DISubprogram{}
+	node := &metadata.DISubprogram{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["linkageName:"]; ok {
 		node.LinkageName = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	if v, ok := m["isLocal:"]; ok {
 		node.IsLocal = v.(bool)
@@ -390,7 +390,7 @@ func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 		node.ScopeLine = v.(int64)
 	}
 	if v, ok := m["containingType:"]; ok {
-		node.ContainingType = v.(ast.MDField)
+		node.ContainingType = v.(metadata.MDField)
 	}
 	if v, ok := m["virtuality:"]; ok {
 		node.Virtuality = v.(ll.DwarfVirtuality)
@@ -408,32 +408,32 @@ func NewDISubprogram(fields []*SpecializedMDField) (*ast.DISubprogram, error) {
 		node.IsOptimized = v.(bool)
 	}
 	if v, ok := m["unit:"]; ok {
-		node.Unit = v.(ast.MDField)
+		node.Unit = v.(metadata.MDField)
 	}
 	if v, ok := m["templateParams:"]; ok {
-		node.TemplateParams = v.(ast.MDField)
+		node.TemplateParams = v.(metadata.MDField)
 	}
 	if v, ok := m["declaration:"]; ok {
-		node.Declaration = v.(ast.MDField)
+		node.Declaration = v.(metadata.MDField)
 	}
 	if v, ok := m["variables:"]; ok {
-		node.Variables = v.(ast.MDField)
+		node.Variables = v.(metadata.MDField)
 	}
 	if v, ok := m["thrownTypes:"]; ok {
-		node.ThrownTypes = v.(ast.MDField)
+		node.ThrownTypes = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDILexicalBlock returns a new DILexicalBlock specialized metadata node.
-func NewDILexicalBlock(fields []*SpecializedMDField) (*ast.DILexicalBlock, error) {
+func NewDILexicalBlock(fields []*SpecializedMDField) (*metadata.DILexicalBlock, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DILexicalBlock{}
+	node := &metadata.DILexicalBlock{}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -446,14 +446,14 @@ func NewDILexicalBlock(fields []*SpecializedMDField) (*ast.DILexicalBlock, error
 
 // NewDILexicalBlockFile returns a new DILexicalBlockFile specialized metadata
 // node.
-func NewDILexicalBlockFile(fields []*SpecializedMDField) (*ast.DILexicalBlockFile, error) {
+func NewDILexicalBlockFile(fields []*SpecializedMDField) (*metadata.DILexicalBlockFile, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DILexicalBlockFile{}
+	node := &metadata.DILexicalBlockFile{}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["discriminator:"]; ok {
 		node.Discriminator = v.(int64)
@@ -462,9 +462,9 @@ func NewDILexicalBlockFile(fields []*SpecializedMDField) (*ast.DILexicalBlockFil
 }
 
 // NewDILocation returns a new DILocation specialized metadata node.
-func NewDILocation(fields []*SpecializedMDField) (*ast.DILocation, error) {
+func NewDILocation(fields []*SpecializedMDField) (*metadata.DILocation, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DILocation{}
+	node := &metadata.DILocation{}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
@@ -472,18 +472,18 @@ func NewDILocation(fields []*SpecializedMDField) (*ast.DILocation, error) {
 		node.Column = v.(int64)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["inlinedAt:"]; ok {
-		node.InlinedAt = v.(ast.MDField)
+		node.InlinedAt = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDILocalVariable returns a new DILocalVariable specialized metadata node.
-func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, error) {
+func NewDILocalVariable(fields []*SpecializedMDField) (*metadata.DILocalVariable, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DILocalVariable{}
+	node := &metadata.DILocalVariable{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
@@ -491,16 +491,16 @@ func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, err
 		node.Arg = v.(int64)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	if v, ok := m["flags:"]; ok {
 		node.Flags = v.([]ll.DIFlag)
@@ -513,27 +513,27 @@ func NewDILocalVariable(fields []*SpecializedMDField) (*ast.DILocalVariable, err
 
 // NewDIGlobalVariableExpression returns a new DIGlobalVariableExpression
 // specialized metadata node.
-func NewDIGlobalVariableExpression(fields []*SpecializedMDField) (*ast.DIGlobalVariableExpression, error) {
+func NewDIGlobalVariableExpression(fields []*SpecializedMDField) (*metadata.DIGlobalVariableExpression, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIGlobalVariableExpression{}
+	node := &metadata.DIGlobalVariableExpression{}
 	if v, ok := m["var:"]; ok {
-		node.Var = v.(ast.MDField)
+		node.Var = v.(metadata.MDField)
 	}
 	if v, ok := m["expr:"]; ok {
-		node.Expr = v.(ast.MDField)
+		node.Expr = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDIObjCProperty returns a new DIObjCProperty specialized metadata node.
-func NewDIObjCProperty(fields []*SpecializedMDField) (*ast.DIObjCProperty, error) {
+func NewDIObjCProperty(fields []*SpecializedMDField) (*metadata.DIObjCProperty, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIObjCProperty{}
+	node := &metadata.DIObjCProperty{}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -548,26 +548,26 @@ func NewDIObjCProperty(fields []*SpecializedMDField) (*ast.DIObjCProperty, error
 		node.Attributes = v.(int64)
 	}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ast.MDField)
+		node.Type = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewDIImportedEntity returns a new DIImportedEntity specialized metadata node.
-func NewDIImportedEntity(fields []*SpecializedMDField) (*ast.DIImportedEntity, error) {
+func NewDIImportedEntity(fields []*SpecializedMDField) (*metadata.DIImportedEntity, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIImportedEntity{}
+	node := &metadata.DIImportedEntity{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
 	if v, ok := m["scope:"]; ok {
-		node.Scope = v.(ast.MDField)
+		node.Scope = v.(metadata.MDField)
 	}
 	if v, ok := m["entity:"]; ok {
-		node.Entity = v.(ast.MDField)
+		node.Entity = v.(metadata.MDField)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -579,9 +579,9 @@ func NewDIImportedEntity(fields []*SpecializedMDField) (*ast.DIImportedEntity, e
 }
 
 // NewDIMacro returns a new DIMacro specialized metadata node.
-func NewDIMacro(fields []*SpecializedMDField) (*ast.DIMacro, error) {
+func NewDIMacro(fields []*SpecializedMDField) (*metadata.DIMacro, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIMacro{}
+	node := &metadata.DIMacro{}
 	if v, ok := m["type:"]; ok {
 		node.Type = v.(ll.DwarfMacinfo)
 	}
@@ -598,9 +598,9 @@ func NewDIMacro(fields []*SpecializedMDField) (*ast.DIMacro, error) {
 }
 
 // NewDIMacroFile returns a new DIMacroFile specialized metadata node.
-func NewDIMacroFile(fields []*SpecializedMDField) (*ast.DIMacroFile, error) {
+func NewDIMacroFile(fields []*SpecializedMDField) (*metadata.DIMacroFile, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.DIMacroFile{}
+	node := &metadata.DIMacroFile{}
 	if v, ok := m["type:"]; ok {
 		node.Type = v.(ll.DwarfMacinfo)
 	}
@@ -608,18 +608,18 @@ func NewDIMacroFile(fields []*SpecializedMDField) (*ast.DIMacroFile, error) {
 		node.Line = v.(int64)
 	}
 	if v, ok := m["file:"]; ok {
-		node.File = v.(ast.MDField)
+		node.File = v.(metadata.MDField)
 	}
 	if v, ok := m["nodes:"]; ok {
-		node.Nodes = v.(ast.MDField)
+		node.Nodes = v.(metadata.MDField)
 	}
 	return node, nil
 }
 
 // NewGenericDINode returns a new GenericDINode specialized metadata node.
-func NewGenericDINode(fields []*SpecializedMDField) (*ast.GenericDINode, error) {
+func NewGenericDINode(fields []*SpecializedMDField) (*metadata.GenericDINode, error) {
 	m := getMDFieldMap(fields)
-	node := &ast.GenericDINode{}
+	node := &metadata.GenericDINode{}
 	if v, ok := m["tag:"]; ok {
 		node.Tag = v.(ll.DwarfTag)
 	}
@@ -627,7 +627,7 @@ func NewGenericDINode(fields []*SpecializedMDField) (*ast.GenericDINode, error) 
 		node.Header = v.(string)
 	}
 	if v, ok := m["operands:"]; ok {
-		node.Operands = v.([]ast.MDField)
+		node.Operands = v.([]metadata.MDField)
 	}
 	return node, nil
 }

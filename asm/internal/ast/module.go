@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -21,7 +22,28 @@ func (m *Module) String() string {
 	// TopLevelEntities
 	buf := &strings.Builder{}
 	for _, entity := range m.Entities {
-		fmt.Fprintln(buf, entity.String())
+		switch entity := entity.(type) {
+		case *metadata.NamedMetadataDef:
+			// MetadataName "=" "!" "{" MetadataNodes "}"
+			fmt.Fprintf(buf, "%v = !{", entity.Name)
+			for i, node := range entity.Nodes {
+				if i != 0 {
+					buf.WriteString(", ")
+				}
+				buf.WriteString(node.String())
+			}
+			fmt.Fprintln(buf, "}")
+		case *metadata.MetadataDef:
+			// MetadataID "=" OptDistinct MDTuple
+			// MetadataID "=" OptDistinct SpecializedMDNode
+			fmt.Fprintf(buf, "%v = ", entity.ID)
+			if entity.Distinct {
+				buf.WriteString("distinct ")
+			}
+			fmt.Fprintln(buf, entity.Node)
+		default:
+			fmt.Fprintln(buf, entity.String())
+		}
 	}
 	return buf.String()
 }
@@ -171,10 +193,6 @@ func (g *Global) String() string {
 	return buf.String()
 }
 
-// IsGlobalAttribute ensures that only global attributes can be assigned to the
-// ast.GlobalAttribute interface.
-func (*MetadataAttachment) IsGlobalAttribute() {}
-
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // An IndirectSymbol is an alias or an ifunc.
@@ -230,7 +248,7 @@ type Function struct {
 	Linkage  ll.Linkage
 	Header   *FunctionHeader
 	Body     *FunctionBody // nil if declaration
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns the string representation of the function.
@@ -400,64 +418,6 @@ func (def *AttrGroupDef) String() string {
 	return buf.String()
 }
 
-// ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// NamedMetadataDef is a named metadata definition.
-type NamedMetadataDef struct {
-	Name  *MetadataName
-	Nodes []MetadataNode
-}
-
-// String returns the string representation of the named metadata definition.
-func (def *NamedMetadataDef) String() string {
-	// MetadataName "=" "!" "{" MetadataNodes "}"
-	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v = !{", def.Name)
-	for i, node := range def.Nodes {
-		if i != 0 {
-			buf.WriteString(", ")
-		}
-		buf.WriteString(node.String())
-	}
-	buf.WriteString("}")
-	return buf.String()
-}
-
-// MetadataNode is a metadata node.
-type MetadataNode interface {
-	fmt.Stringer
-	// isMetadataNode ensures that only netadata nodes can be assigned to the
-	// ast.MetadataNode interface.
-	isMetadataNode()
-}
-
-// isMetadataNode ensures that only netadata nodes can be assigned to the
-// ast.MetadataNode interface.
-func (*MetadataID) isMetadataNode()   {}
-func (*DIExpression) isMetadataNode() {}
-
-// ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// MetadataDef is a metadata definition.
-type MetadataDef struct {
-	ID       *MetadataID
-	Distinct bool
-	Node     MDNode // MDTuple or SpecializedMDNode
-}
-
-// String returns the string representation of the metadata definition.
-func (def *MetadataDef) String() string {
-	// MetadataID "=" OptDistinct MDTuple
-	// MetadataID "=" OptDistinct SpecializedMDNode
-	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v = ", def.ID)
-	if def.Distinct {
-		buf.WriteString("distinct ")
-	}
-	buf.WriteString(def.Node.String())
-	return buf.String()
-}
-
 // ~~~ [ Use-list Order Directives ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // UseListOrder is a use-list order directive.
@@ -520,11 +480,9 @@ func (*DataLayout) IsTopLevelEntity()   {}
 func (*TypeDef) IsTopLevelEntity() {}
 
 //func (*ComdatDef) IsTopLevelEntity()        {}
-func (*Global) IsTopLevelEntity()           {}
-func (*IndirectSymbol) IsTopLevelEntity()   {}
-func (*Function) IsTopLevelEntity()         {}
-func (*AttrGroupDef) IsTopLevelEntity()     {}
-func (*NamedMetadataDef) IsTopLevelEntity() {}
-func (*MetadataDef) IsTopLevelEntity()      {}
-func (*UseListOrder) IsTopLevelEntity()     {}
-func (*UseListOrderBB) IsTopLevelEntity()   {}
+func (*Global) IsTopLevelEntity()         {}
+func (*IndirectSymbol) IsTopLevelEntity() {}
+func (*Function) IsTopLevelEntity()       {}
+func (*AttrGroupDef) IsTopLevelEntity()   {}
+func (*UseListOrder) IsTopLevelEntity()   {}
+func (*UseListOrderBB) IsTopLevelEntity() {}

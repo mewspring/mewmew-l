@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -23,7 +24,7 @@ type Terminator interface {
 // RetTerm is an LLVM IR ret terminator.
 type RetTerm struct {
 	X        *TypeValue // nil if void return
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -47,7 +48,7 @@ func (term *RetTerm) String() string {
 // BrTerm is an unconditional LLVM IR br terminator.
 type BrTerm struct {
 	Target   *Label
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -68,7 +69,7 @@ type CondBrTerm struct {
 	Cond        *TypeValue
 	TargetTrue  *Label
 	TargetFalse *Label
-	Metadata    []*MetadataAttachment
+	Metadata    []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -89,7 +90,7 @@ type SwitchTerm struct {
 	X        *TypeValue
 	Default  *Label
 	Cases    []*Case
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -125,7 +126,7 @@ func (c *Case) String() string {
 type IndirectBrTerm struct {
 	Addr     *TypeValue
 	Targets  []*Label
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -159,7 +160,7 @@ type InvokeTerm struct {
 	OperandBundles []*OperandBundle
 	Normal         *Label
 	Exception      *Label
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -203,7 +204,7 @@ func (term *InvokeTerm) String() string {
 // ResumeTerm is an LLVM IR resume terminator.
 type ResumeTerm struct {
 	X        *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -224,7 +225,7 @@ type CatchSwitchTerm struct {
 	Scope        ExceptionScope
 	Handlers     []*Label
 	UnwindTarget UnwindTarget
-	Metadata     []*MetadataAttachment
+	Metadata     []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -275,7 +276,7 @@ func (*Label) isUnwindTarget()          {}
 type CatchRetTerm struct {
 	From     Value // catchpad
 	To       *Label
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -295,7 +296,7 @@ func (term *CatchRetTerm) String() string {
 type CleanupRetTerm struct {
 	From         Value // cleanuppad
 	UnwindTarget UnwindTarget
-	Metadata     []*MetadataAttachment
+	Metadata     []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
@@ -313,7 +314,7 @@ func (term *CleanupRetTerm) String() string {
 
 // UnreachableTerm is an LLVM IR unreachable terminator.
 type UnreachableTerm struct {
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.

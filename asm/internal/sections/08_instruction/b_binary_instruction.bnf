@@ -10,7 +10,7 @@
 
 AddInst
 	: "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.AddInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.AddInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ AddInst
 
 FAddInst
 	: "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FAddInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FAddInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ FAddInst
 
 SubInst
 	: "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.SubInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.SubInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +49,7 @@ SubInst
 
 FSubInst
 	: "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FSubInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FSubInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,7 +62,7 @@ FSubInst
 
 MulInst
 	: "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.MulInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.MulInst{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,7 +75,7 @@ MulInst
 
 FMulInst
 	: "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FMulInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FMulInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +88,7 @@ FMulInst
 
 UDivInst
 	: "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.UDivInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.UDivInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,7 +101,7 @@ UDivInst
 
 SDivInst
 	: "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.SDivInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.SDivInst{Exact: $1.(bool), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,7 +114,7 @@ SDivInst
 
 FDivInst
 	: "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FDivInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FDivInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +127,7 @@ FDivInst
 
 URemInst
 	: "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.URemInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.URemInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -140,7 +140,7 @@ URemInst
 
 SRemInst
 	: "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.SRemInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.SRemInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($1, $4), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,6 +153,6 @@ SRemInst
 
 FRemInst
 	: "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ast.FRemInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*ast.MetadataAttachment)}, nil >>
+	<< &ast.FRemInst{FastMathFlags: $1.([]ll.FastMathFlag), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

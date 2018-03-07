@@ -5,6 +5,7 @@ import (
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 )
 
@@ -75,16 +76,16 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("attribute group ID %q already present; prev `%v`, new `%v`", id, prev, entity))
 			}
 			m.attrGroupID[id] = entity
-		case *ast.NamedMetadataDef:
+		case *metadata.NamedMetadataDef:
 			// Named metadata definitions.
-			name := entity.Name.Name
+			name := entity.Name
 			if prev, ok := m.metadataName[name]; ok {
 				panic(fmt.Errorf("metadata name %q already present; prev `%v`, new `%v`", name, prev, entity))
 			}
 			m.metadataName[name] = entity
-		case *ast.MetadataDef:
+		case *metadata.MetadataDef:
 			// Metadata definitions.
-			id := entity.ID.ID
+			id := entity.ID
 			if prev, ok := m.metadataID[id]; ok {
 				panic(fmt.Errorf("metadata ID %q already present; prev `%v`, new `%v`", id, prev, entity))
 			}

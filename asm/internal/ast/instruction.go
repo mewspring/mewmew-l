@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -38,7 +39,7 @@ func (v *ValueInstruction) String() string {
 type AddInst struct {
 	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -62,7 +63,7 @@ func (inst *AddInst) String() string {
 type FAddInst struct {
 	FastMathFlags []ll.FastMathFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -86,7 +87,7 @@ func (inst *FAddInst) String() string {
 type SubInst struct {
 	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -110,7 +111,7 @@ func (inst *SubInst) String() string {
 type FSubInst struct {
 	FastMathFlags []ll.FastMathFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -134,7 +135,7 @@ func (inst *FSubInst) String() string {
 type MulInst struct {
 	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -158,7 +159,7 @@ func (inst *MulInst) String() string {
 type FMulInst struct {
 	FastMathFlags []ll.FastMathFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -182,7 +183,7 @@ func (inst *FMulInst) String() string {
 type UDivInst struct {
 	Exact    bool
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -206,7 +207,7 @@ func (inst *UDivInst) String() string {
 type SDivInst struct {
 	Exact    bool
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -230,7 +231,7 @@ func (inst *SDivInst) String() string {
 type FDivInst struct {
 	FastMathFlags []ll.FastMathFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -253,7 +254,7 @@ func (inst *FDivInst) String() string {
 // URemInst is an LLVM IR urem instruction.
 type URemInst struct {
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -272,7 +273,7 @@ func (inst *URemInst) String() string {
 // SRemInst is an LLVM IR srem instruction.
 type SRemInst struct {
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -292,7 +293,7 @@ func (inst *SRemInst) String() string {
 type FRemInst struct {
 	FastMathFlags []ll.FastMathFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -318,7 +319,7 @@ func (inst *FRemInst) String() string {
 type ShlInst struct {
 	OverflowFlags []ll.OverflowFlag
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -342,7 +343,7 @@ func (inst *ShlInst) String() string {
 type LShrInst struct {
 	Exact    bool
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -366,7 +367,7 @@ func (inst *LShrInst) String() string {
 type AShrInst struct {
 	Exact    bool
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -389,7 +390,7 @@ func (inst *AShrInst) String() string {
 // AndInst is an LLVM IR and instruction.
 type AndInst struct {
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -408,7 +409,7 @@ func (inst *AndInst) String() string {
 // OrInst is an LLVM IR or instruction.
 type OrInst struct {
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -427,7 +428,7 @@ func (inst *OrInst) String() string {
 // XorInst is an LLVM IR xor instruction.
 type XorInst struct {
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -449,7 +450,7 @@ func (inst *XorInst) String() string {
 type ExtractElementInst struct {
 	X        *TypeValue
 	Index    *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -470,7 +471,7 @@ type InsertElementInst struct {
 	X        *TypeValue
 	Elem     *TypeValue
 	Index    *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -490,7 +491,7 @@ func (inst *InsertElementInst) String() string {
 type ShuffleVectorInst struct {
 	X, Y     *TypeValue
 	Mask     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -512,7 +513,7 @@ func (inst *ShuffleVectorInst) String() string {
 type ExtractValueInst struct {
 	X        *TypeValue
 	Indices  []int64
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -536,7 +537,7 @@ type InsertValueInst struct {
 	X        *TypeValue
 	Elem     *TypeValue
 	Indices  []int64
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -565,7 +566,7 @@ type AllocaInst struct {
 	NElems     *TypeValue    // nil if not present
 	Alignment  *ll.Alignment // nil if not present
 	AddrSpace  ll.AddrSpace  // zero if not present
-	Metadata   []*MetadataAttachment
+	Metadata   []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -606,7 +607,7 @@ type LoadInst struct {
 	SyncScope      *ll.SyncScope     // nil if not present
 	AtomicOrdering ll.AtomicOrdering // zero value if not present
 	Alignment      *ll.Alignment     // nil if not present
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -648,7 +649,7 @@ type StoreInst struct {
 	SyncScope      *ll.SyncScope     // nil if not present
 	AtomicOrdering ll.AtomicOrdering // zero value if not present
 	Alignment      *ll.Alignment     // nil if not present
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -685,7 +686,7 @@ func (inst *StoreInst) String() string {
 type FenceInst struct {
 	SyncScope      *ll.SyncScope // nil if not present
 	AtomicOrdering ll.AtomicOrdering
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -715,7 +716,7 @@ type CmpXchgInst struct {
 	SyncScope *ll.SyncScope // nil if not present
 	Success   ll.AtomicOrdering
 	Failure   ll.AtomicOrdering
-	Metadata  []*MetadataAttachment
+	Metadata  []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -751,7 +752,7 @@ type AtomicRMWInst struct {
 	X              *TypeValue
 	SyncScope      *ll.SyncScope // nil if not present
 	AtomicOrdering ll.AtomicOrdering
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -781,7 +782,7 @@ type GetElementPtrInst struct {
 	ElemType types.Type
 	Src      *TypeValue
 	Indices  []*TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -810,7 +811,7 @@ func (inst *GetElementPtrInst) String() string {
 type TruncInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -830,7 +831,7 @@ func (inst *TruncInst) String() string {
 type ZExtInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -850,7 +851,7 @@ func (inst *ZExtInst) String() string {
 type SExtInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -870,7 +871,7 @@ func (inst *SExtInst) String() string {
 type FPTruncInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -890,7 +891,7 @@ func (inst *FPTruncInst) String() string {
 type FPExtInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -910,7 +911,7 @@ func (inst *FPExtInst) String() string {
 type FPToUIInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -930,7 +931,7 @@ func (inst *FPToUIInst) String() string {
 type FPToSIInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -950,7 +951,7 @@ func (inst *FPToSIInst) String() string {
 type UIToFPInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -970,7 +971,7 @@ func (inst *UIToFPInst) String() string {
 type SIToFPInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -990,7 +991,7 @@ func (inst *SIToFPInst) String() string {
 type PtrToIntInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1010,7 +1011,7 @@ func (inst *PtrToIntInst) String() string {
 type IntToPtrInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1030,7 +1031,7 @@ func (inst *IntToPtrInst) String() string {
 type BitCastInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1050,7 +1051,7 @@ func (inst *BitCastInst) String() string {
 type AddrSpaceCastInst struct {
 	From     *TypeValue
 	To       types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1072,7 +1073,7 @@ func (inst *AddrSpaceCastInst) String() string {
 type ICmpInst struct {
 	Pred     ll.IPred
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1093,7 +1094,7 @@ type FCmpInst struct {
 	FastMathFlags []ll.FastMathFlag
 	Pred          ll.FPred
 	X, Y          *TypeValue
-	Metadata      []*MetadataAttachment
+	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1117,7 +1118,7 @@ func (inst *FCmpInst) String() string {
 type PhiInst struct {
 	Type     types.Type
 	Incs     []*Incoming
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1155,7 +1156,7 @@ func (inc *Incoming) String() string {
 type SelectInst struct {
 	Cond     *TypeValue
 	X, Y     *TypeValue
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1182,7 +1183,7 @@ type CallInst struct {
 	Args           []Argument
 	FuncAttrs      []ll.FuncAttribute
 	OperandBundles []*OperandBundle
-	Metadata       []*MetadataAttachment
+	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1232,7 +1233,7 @@ func (inst *CallInst) String() string {
 type VAArgInst struct {
 	ArgList  *TypeValue
 	ArgType  types.Type
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1253,7 +1254,7 @@ type LandingPadInst struct {
 	Type     types.Type
 	Cleanup  bool
 	Clauses  []*Clause
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1298,7 +1299,7 @@ func (clause *Clause) String() string {
 type CatchPadInst struct {
 	Scope    *LocalIdent
 	Args     []Argument
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
@@ -1325,7 +1326,7 @@ func (inst *CatchPadInst) String() string {
 type CleanupPadInst struct {
 	Scope    ExceptionScope
 	Args     []Argument
-	Metadata []*MetadataAttachment
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
