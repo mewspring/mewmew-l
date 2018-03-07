@@ -3,6 +3,7 @@ package irx
 import (
 	"fmt"
 
+	"github.com/kr/pretty"
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
@@ -12,6 +13,7 @@ import (
 // irConstant returns the LLVM IR constant corresponding to the given AST constant.
 func (m *Module) irConstant(old ir.Constant) ir.Constant {
 	switch old := old.(type) {
+	// TODO: Add remaning ir.Constant's.
 	case *ast.TypeConst:
 		return m.irTypeConst(old)
 	case *ast.IntConst:
@@ -20,6 +22,14 @@ func (m *Module) irConstant(old ir.Constant) ir.Constant {
 		return m.irGlobal(old)
 	case *constant.BitCastExpr:
 		return m.irBitCastExpr(old)
+	case *constant.CharArrayConst:
+		c := &constant.CharArrayConst{
+			Value: old.Value,
+		}
+		if old.Typ != nil {
+			c.Typ = m.irType(old.Typ).(*types.ArrayType)
+		}
+		return c
 	default:
 		panic(fmt.Errorf("support for constant %T not yet implemented", old))
 	}
@@ -65,6 +75,7 @@ func (m *Module) irTypeConst(old *ast.TypeConst) ir.Constant {
 	case *constant.ArrayConst:
 		c.Typ = m.irType(old.Typ).(*types.ArrayType)
 	case *constant.CharArrayConst:
+		pretty.Println("c:", c)
 		c.Typ = m.irType(old.Typ).(*types.ArrayType)
 	case *constant.VectorConst:
 		c.Typ = m.irType(old.Typ).(*types.VectorType)

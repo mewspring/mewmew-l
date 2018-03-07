@@ -183,7 +183,7 @@ func (g *Global) String() string {
 	}
 	fmt.Fprintf(buf, " %v", g.Type)
 	if g.Init != nil {
-		fmt.Fprintf(buf, " %v", g.Init)
+		fmt.Fprintf(buf, " %v", g.Init.Ident())
 	}
 	for _, attr := range g.GlobalAttrs {
 		fmt.Fprintf(buf, ", %v", attr)
