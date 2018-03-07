@@ -630,7 +630,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: X[15].(ir.Constant), Prologue: X[16].(ir.Constant), Personality: X[17].(ir.Constant)}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     25,
 		Index:      60,
@@ -1080,7 +1080,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPrefix : empty	<< nil, nil >>`,
+		String: `OptPrefix : empty	<<  >>`,
 		Id:         "OptPrefix",
 		NTType:     29,
 		Index:      105,
@@ -1100,7 +1100,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPrologue : empty	<< nil, nil >>`,
+		String: `OptPrologue : empty	<<  >>`,
 		Id:         "OptPrologue",
 		NTType:     30,
 		Index:      107,
@@ -1120,7 +1120,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptPersonality : empty	<< nil, nil >>`,
+		String: `OptPersonality : empty	<<  >>`,
 		Id:         "OptPersonality",
 		NTType:     31,
 		Index:      109,
