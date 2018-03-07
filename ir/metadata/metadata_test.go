@@ -1,14 +1,13 @@
 package metadata_test
 
 import (
-	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 )
 
 // Ensure that each metadata field implements the metadata.MDField interface.
 var (
-	_ metadata.MDField = (*constant.NullConst)(nil)
+	_ metadata.MDField = (*metadata.MDNull)(nil)
 	_ metadata.MDField = (*metadata.Value)(nil)
 	_ metadata.MDField = (*metadata.MDString)(nil)
 	_ metadata.MDField = (*metadata.MDTuple)(nil)
@@ -107,7 +106,7 @@ var (
 // Ensure that each DIExpression field implements the metadata.DIExpressionField
 // interface.
 var (
-	_ metadata.DIExpressionField = (*constant.IntConst)(nil)
+	_ metadata.DIExpressionField = (*metadata.MDInt)(nil)
 	_ metadata.DIExpressionField = ll.DwarfOp(0)
 )
 
@@ -144,8 +143,8 @@ var (
 // Ensure that each integer and metadata field implements the
 // metadata.IntOrMDField interface.
 var (
-	_ metadata.IntOrMDField = (*constant.IntConst)(nil)
-	_ metadata.IntOrMDField = (*constant.NullConst)(nil)
+	_ metadata.IntOrMDField = (*metadata.MDInt)(nil)
+	_ metadata.IntOrMDField = (*metadata.MDNull)(nil)
 	_ metadata.IntOrMDField = (*metadata.Value)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDString)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDTuple)(nil)

@@ -2,7 +2,7 @@ package metadata
 
 import (
 	"fmt"
-	"strconv"
+	"math/big"
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
@@ -100,13 +100,24 @@ func (md *MDNull) String() string {
 
 // MDInt is a metadata integer literal.
 type MDInt struct {
-	X int64
+	X *big.Int
+}
+
+// NewMDIntFromString returns a new metadata integer literal based on the given string.
+func NewMDIntFromString(s string) *MDInt {
+	x := &big.Int{}
+	if _, ok := x.SetString(s, 10); !ok {
+		panic(fmt.Errorf("unable to set metadata integer literal %q", s))
+	}
+	return &MDInt{
+		X: x,
+	}
 }
 
 // String returns the string representation of the metadata integer literal.
 func (md *MDInt) String() string {
 	// int_lit
-	return strconv.FormatInt(md.X, 10)
+	return md.X.String()
 }
 
 // --- [ Metadata Attachment ] -------------------------------------------------

@@ -917,8 +917,8 @@ DIExpressionFieldList
 ;
 
 DIExpressionField
-	: IntLit
-	<< &constant.MDInt{X: $0.(int64)}, nil >>
+	: int_lit
+	<< metadata.NewMDIntFromString(astx.String($0)), nil >>
 	| DwarfOp
 ;
 
@@ -1301,8 +1301,8 @@ TemplateParamsField
 // ref: ParseMDField(MDSignedOrMDField &)
 
 IntOrMDField
-	: IntLit
-	<< &constant.MDInt{X: $0.(int64)}, nil >>
+	: int_lit
+	<< metadata.NewMDIntFromString(astx.String($0)), nil >>
 	| MDField
 ;
 

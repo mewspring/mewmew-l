@@ -7740,13 +7740,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DIExpressionField : IntLit	<< &constant.MDInt{X: X[0].(int64)}, nil >>`,
+		String: `DIExpressionField : int_lit	<< metadata.NewMDIntFromString(astx.String(X[0])) nil >>`,
 		Id:         "DIExpressionField",
 		NTType:     312,
 		Index:      771,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &constant.MDInt{X: X[0].(int64)}, nil
+			return metadata.NewMDIntFromString(astx.String(X[0])), nil
 		},
 	},
 	ProdTabEntry{
@@ -8610,13 +8610,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `IntOrMDField : IntLit	<< &constant.MDInt{X: X[0].(int64)}, nil >>`,
+		String: `IntOrMDField : int_lit	<< metadata.NewMDIntFromString(astx.String(X[0])), nil >>`,
 		Id:         "IntOrMDField",
 		NTType:     357,
 		Index:      858,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &constant.MDInt{X: X[0].(int64)}, nil
+			return metadata.NewMDIntFromString(astx.String(X[0])), nil
 		},
 	},
 	ProdTabEntry{

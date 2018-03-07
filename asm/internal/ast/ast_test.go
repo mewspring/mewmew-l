@@ -283,7 +283,7 @@ var (
 
 // Ensure that each metadata field implements the ast.MDField interface.
 var (
-	_ metadata.MDField = (*constant.NullConst)(nil)
+	_ metadata.MDField = (*metadata.MDNull)(nil)
 	_ metadata.MDField = (*ast.TypeValue)(nil)
 	_ metadata.MDField = (*metadata.MDString)(nil)
 	_ metadata.MDField = (*metadata.MDTuple)(nil)
@@ -382,7 +382,7 @@ var (
 // Ensure that each DIExpression field implements the ast.DIExpressionField
 // interface.
 var (
-	_ metadata.DIExpressionField = (*ast.IntConst)(nil)
+	_ metadata.DIExpressionField = (*metadata.MDInt)(nil)
 	_ metadata.DIExpressionField = ll.DwarfOp(0)
 )
 
@@ -419,8 +419,8 @@ var (
 // Ensure that each integer and metadata field implements the ast.IntOrMDField
 // interface.
 var (
-	_ metadata.IntOrMDField = (*ast.IntConst)(nil)
-	_ metadata.IntOrMDField = (*constant.NullConst)(nil)
+	_ metadata.IntOrMDField = (*metadata.MDInt)(nil)
+	_ metadata.IntOrMDField = (*metadata.MDNull)(nil)
 	_ metadata.IntOrMDField = (*ast.TypeValue)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDString)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDTuple)(nil)

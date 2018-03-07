@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/mewmew/l/asm/internal/ast"
-	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
 	"github.com/rickypai/natsort"
@@ -96,8 +95,8 @@ func (m *Module) irDIExpressionFields(old []metadata.DIExpressionField) []metada
 // the given AST DIExpression field.
 func (m *Module) irDIExpressionField(old metadata.DIExpressionField) metadata.DIExpressionField {
 	switch old := old.(type) {
-	case *ast.IntConst:
-		return m.irIntConst(old)
+	case *metadata.MDInt:
+		return old
 	case ll.DwarfOp:
 		return old
 	default:
@@ -146,8 +145,8 @@ func (m *Module) irMDFields(old []metadata.MDField) []metadata.MDField {
 // metadata field.
 func (m *Module) irMDField(old metadata.MDField) metadata.MDField {
 	switch old := old.(type) {
-	case *constant.NullConst:
-		return &constant.NullConst{}
+	case *metadata.MDNull:
+		return old
 	case metadata.Metadata:
 		return m.irMetadata(old).(metadata.MDField)
 	case metadata.SpecializedMDNode:
@@ -163,8 +162,8 @@ func (m *Module) irMDField(old metadata.MDField) metadata.MDField {
 // the given AST integer or metadata field.
 func (m *Module) irIntOrMDField(old ast.IntOrMDField) metadata.IntOrMDField {
 	switch old := old.(type) {
-	case *ast.IntConst:
-		return m.irIntConst(old)
+	case *metadata.MDInt:
+		return old
 	case metadata.MDField:
 		return m.irMDField(old).(metadata.IntOrMDField)
 	default:
