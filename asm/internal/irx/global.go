@@ -77,12 +77,12 @@ func (m *Module) resolveGlobal(old *ir.Global, g *ir.Global) {
 	g.AddrSpace = old.AddrSpace
 	g.ExternallyInitialized = old.ExternallyInitialized
 	g.Immutable = old.Immutable
-	g.ContentType = m.irType(old.Typ)
+	g.ContentType = m.irType(old.ContentType)
 	g.Typ = &types.PointerType{
 		ElemType: g.ContentType,
 	}
 	if old.Init != nil {
-		// TODO: Set type of g.Iint from g.ContentType.
+		// TODO: Set type of g.Iint from g.ContentType?
 		g.Init = m.irConstant(old.Init)
 	}
 	g.GlobalAttrs = m.irGlobalAttrs(old.GlobalAttrs)
