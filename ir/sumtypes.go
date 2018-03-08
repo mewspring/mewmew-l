@@ -41,59 +41,71 @@ type Instruction interface {
 
 // IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
-func (*ValueInstruction) IsInstruction()   {}
-func (*AddInst) IsInstruction()            {}
-func (*FAddInst) IsInstruction()           {}
-func (*SubInst) IsInstruction()            {}
-func (*FSubInst) IsInstruction()           {}
-func (*MulInst) IsInstruction()            {}
-func (*FMulInst) IsInstruction()           {}
-func (*UDivInst) IsInstruction()           {}
-func (*SDivInst) IsInstruction()           {}
-func (*FDivInst) IsInstruction()           {}
-func (*URemInst) IsInstruction()           {}
-func (*SRemInst) IsInstruction()           {}
-func (*FRemInst) IsInstruction()           {}
-func (*ShlInst) IsInstruction()            {}
-func (*LShrInst) IsInstruction()           {}
-func (*AShrInst) IsInstruction()           {}
-func (*AndInst) IsInstruction()            {}
-func (*OrInst) IsInstruction()             {}
-func (*XorInst) IsInstruction()            {}
-func (*ExtractElementInst) IsInstruction() {}
-func (*InsertElementInst) IsInstruction()  {}
-func (*ShuffleVectorInst) IsInstruction()  {}
-func (*ExtractValueInst) IsInstruction()   {}
-func (*InsertValueInst) IsInstruction()    {}
-func (*AllocaInst) IsInstruction()         {}
-func (*LoadInst) IsInstruction()           {}
-func (*StoreInst) IsInstruction()          {}
-func (*FenceInst) IsInstruction()          {}
-func (*CmpXchgInst) IsInstruction()        {}
-func (*AtomicRMWInst) IsInstruction()      {}
-func (*GetElementPtrInst) IsInstruction()  {}
-func (*TruncInst) IsInstruction()          {}
-func (*ZExtInst) IsInstruction()           {}
-func (*SExtInst) IsInstruction()           {}
-func (*FPTruncInst) IsInstruction()        {}
-func (*FPExtInst) IsInstruction()          {}
-func (*FPToUIInst) IsInstruction()         {}
-func (*FPToSIInst) IsInstruction()         {}
-func (*UIToFPInst) IsInstruction()         {}
-func (*SIToFPInst) IsInstruction()         {}
-func (*PtrToIntInst) IsInstruction()       {}
-func (*IntToPtrInst) IsInstruction()       {}
-func (*BitCastInst) IsInstruction()        {}
-func (*AddrSpaceCastInst) IsInstruction()  {}
-func (*ICmpInst) IsInstruction()           {}
-func (*FCmpInst) IsInstruction()           {}
-func (*PhiInst) IsInstruction()            {}
-func (*SelectInst) IsInstruction()         {}
-func (*CallInst) IsInstruction()           {}
-func (*VAArgInst) IsInstruction()          {}
-func (*LandingPadInst) IsInstruction()     {}
-func (*CatchPadInst) IsInstruction()       {}
-func (*CleanupPadInst) IsInstruction()     {}
+func (*StoreInst) IsInstruction()     {}
+func (*FenceInst) IsInstruction()     {}
+func (*CmpXchgInst) IsInstruction()   {}
+func (*AtomicRMWInst) IsInstruction() {}
+func (*LocalDef) IsInstruction()      {}
+
+// A ValueInstruction is an instruction which produces a value.
+type ValueInstruction interface {
+	// String returns the string representation of the instruction.
+	fmt.Stringer
+	// IsValueInstruction ensures that only value instructions can be assigned to
+	// the ir.ValueInstruction interface.
+	IsValueInstruction()
+}
+
+// IsValueInstruction ensures that only value instructions can be assigned to
+// the ir.ValueInstruction interface.
+func (*AddInst) IsValueInstruction()            {}
+func (*FAddInst) IsValueInstruction()           {}
+func (*SubInst) IsValueInstruction()            {}
+func (*FSubInst) IsValueInstruction()           {}
+func (*MulInst) IsValueInstruction()            {}
+func (*FMulInst) IsValueInstruction()           {}
+func (*UDivInst) IsValueInstruction()           {}
+func (*SDivInst) IsValueInstruction()           {}
+func (*FDivInst) IsValueInstruction()           {}
+func (*URemInst) IsValueInstruction()           {}
+func (*SRemInst) IsValueInstruction()           {}
+func (*FRemInst) IsValueInstruction()           {}
+func (*ShlInst) IsValueInstruction()            {}
+func (*LShrInst) IsValueInstruction()           {}
+func (*AShrInst) IsValueInstruction()           {}
+func (*AndInst) IsValueInstruction()            {}
+func (*OrInst) IsValueInstruction()             {}
+func (*XorInst) IsValueInstruction()            {}
+func (*ExtractElementInst) IsValueInstruction() {}
+func (*InsertElementInst) IsValueInstruction()  {}
+func (*ShuffleVectorInst) IsValueInstruction()  {}
+func (*ExtractValueInst) IsValueInstruction()   {}
+func (*InsertValueInst) IsValueInstruction()    {}
+func (*AllocaInst) IsValueInstruction()         {}
+func (*LoadInst) IsValueInstruction()           {}
+func (*GetElementPtrInst) IsValueInstruction()  {}
+func (*TruncInst) IsValueInstruction()          {}
+func (*ZExtInst) IsValueInstruction()           {}
+func (*SExtInst) IsValueInstruction()           {}
+func (*FPTruncInst) IsValueInstruction()        {}
+func (*FPExtInst) IsValueInstruction()          {}
+func (*FPToUIInst) IsValueInstruction()         {}
+func (*FPToSIInst) IsValueInstruction()         {}
+func (*UIToFPInst) IsValueInstruction()         {}
+func (*SIToFPInst) IsValueInstruction()         {}
+func (*PtrToIntInst) IsValueInstruction()       {}
+func (*IntToPtrInst) IsValueInstruction()       {}
+func (*BitCastInst) IsValueInstruction()        {}
+func (*AddrSpaceCastInst) IsValueInstruction()  {}
+func (*ICmpInst) IsValueInstruction()           {}
+func (*FCmpInst) IsValueInstruction()           {}
+func (*PhiInst) IsValueInstruction()            {}
+func (*SelectInst) IsValueInstruction()         {}
+func (*CallInst) IsValueInstruction()           {}
+func (*VAArgInst) IsValueInstruction()          {}
+func (*LandingPadInst) IsValueInstruction()     {}
+func (*CatchPadInst) IsValueInstruction()       {}
+func (*CleanupPadInst) IsValueInstruction()     {}
 
 // A Terminator is an LLVM IR terminator.
 type Terminator interface {

@@ -3230,23 +3230,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Instruction : LocalIdent "=" ValueInstruction	<< &ir.ValueInstruction{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.Instruction)}, nil >>`,
+		String: `Instruction : LocalIdent "=" ValueInstruction	<< &ir.LocalDef{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.ValueInstruction)}, nil >>`,
 		Id:         "Instruction",
 		NTType:     141,
 		Index:      320,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.ValueInstruction{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.Instruction)}, nil
+			return &ir.LocalDef{Name: astx.LocalIdent(X[0]), Inst: X[2].(ir.ValueInstruction)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `Instruction : ValueInstruction	<< &ir.ValueInstruction{Inst: X[0].(ir.Instruction)}, nil >>`,
+		String: `Instruction : ValueInstruction	<< &ir.LocalDef{Inst: X[0].(ir.ValueInstruction)}, nil >>`,
 		Id:         "Instruction",
 		NTType:     141,
 		Index:      321,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.ValueInstruction{Inst: X[0].(ir.Instruction)}, nil
+			return &ir.LocalDef{Inst: X[0].(ir.ValueInstruction)}, nil
 		},
 	},
 	ProdTabEntry{

@@ -12,15 +12,16 @@ import (
 
 // === [ Instructions ] ========================================================
 
-// A ValueInstruction assigns the result of an LLVM IR instruction to a name.
-type ValueInstruction struct {
+// A LocalDef is a local definition which assigns the result of an LLVM IR
+// instruction to a name.
+type LocalDef struct {
 	// Result name (LocalIdent); or empty if unnamed.
 	Name string
-	Inst Instruction
+	Inst ValueInstruction
 }
 
 // String returns a string representation of the instruction.
-func (v *ValueInstruction) String() string {
+func (v *LocalDef) String() string {
 	// ValueInstruction
 	// LocalIdent "=" ValueInstruction
 	if len(v.Name) == 0 {
