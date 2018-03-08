@@ -1218,7 +1218,7 @@ func (inst *CallInst) String() string {
 	for _, attr := range inst.ReturnAttrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}
-	fmt.Fprintf(buf, " %v %v(", inst.RetType, inst.Callee)
+	fmt.Fprintf(buf, " %v %v(", inst.RetType, inst.Callee.Ident())
 	for i, arg := range inst.Args {
 		if i != 0 {
 			buf.WriteString(", ")

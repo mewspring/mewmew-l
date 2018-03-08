@@ -7,6 +7,7 @@ import (
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ll"
+	"github.com/mewmew/l/ll/types"
 )
 
 // Translate translates the AST of the given module to an equivalent LLVM IR
@@ -35,9 +36,9 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 	// Create maps from identifier to definition.
 	for _, entity := range entities {
 		switch entity := entity.(type) {
-		case *ast.TypeDef:
+		case *types.NamedType:
 			// Type definitions.
-			ident := entity.Name.Name
+			ident := entity.Name
 			if prev, ok := m.localIdent[ident]; ok {
 				panic(fmt.Errorf("type identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
@@ -64,7 +65,7 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 			}
 			m.globalIdent[ident] = entity
 		case *ast.Function:
-			ident := entity.Header.Name.Name
+			ident := entity.Header.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}

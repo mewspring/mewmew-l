@@ -51,6 +51,7 @@ func (*MetadataValue) IsArgument() {}
 // IsConstant ensures that only constants can be assigned to the ast.Constant
 // interface.
 func (*TypeConst) IsConstant()   {}
+func (*FloatConst) IsConstant()  {}
 func (*GlobalIdent) IsConstant() {}
 
 // --- [ ll.ExceptionScope ] ---------------------------------------------------

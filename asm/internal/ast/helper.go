@@ -49,7 +49,7 @@ func (c *TypeConst) Type() types.Type {
 
 // Ident returns the identifier associated with the constant.
 func (c *TypeConst) Ident() string {
-	return c.Const.String()
+	return c.Const.Ident()
 }
 
 // MetadataValue is a metadata value function call argument.

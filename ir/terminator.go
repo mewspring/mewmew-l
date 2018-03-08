@@ -212,7 +212,7 @@ func (term *InvokeTerm) String() string {
 	for _, attr := range term.ReturnAttrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}
-	fmt.Fprintf(buf, "%v %v(", term.RetType, term.Callee)
+	fmt.Fprintf(buf, "%v %v(", term.RetType, term.Callee.Ident())
 	for i, arg := range term.Args {
 		if i != 0 {
 			buf.WriteString(", ")

@@ -27,6 +27,17 @@ func (m *Module) String() string {
 	buf := &strings.Builder{}
 	for _, entity := range m.Entities {
 		switch entity := entity.(type) {
+		// Type definitions.
+		case *types.NamedType:
+			// LocalIdent "=" "type" OpaqueType
+			// LocalIdent "=" "type" Type
+			fmt.Fprintf(buf, "%v = type %v\n", entity.Name, entity.Def)
+
+		// Global declarations and definitions.
+		case *ir.Global:
+			fmt.Fprintln(buf, entity.Def())
+
+		// Named metadata definitions.
 		case *metadata.NamedMetadataDef:
 			// MetadataName "=" "!" "{" MetadataNodes "}"
 			fmt.Fprintf(buf, "%v = !{", entity.Name)
@@ -37,6 +48,8 @@ func (m *Module) String() string {
 				buf.WriteString(node.String())
 			}
 			fmt.Fprintln(buf, "}")
+
+		// Metadata definitions.
 		case *metadata.MetadataDef:
 			// MetadataID "=" OptDistinct MDTuple
 			// MetadataID "=" OptDistinct SpecializedMDNode
@@ -112,21 +125,6 @@ func (t *DataLayout) String() string {
 // the ast.TargetDefinition interface.
 func (*TargetTriple) isTargetDefinition() {}
 func (*DataLayout) isTargetDefinition()   {}
-
-// ~~~ [ Type Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// TypeDef is a type definition top-level entity.
-type TypeDef struct {
-	Name *LocalIdent
-	Def  types.Type
-}
-
-// String returns the string representation of the type definition.
-func (t *TypeDef) String() string {
-	// LocalIdent "=" "type" OpaqueType
-	// LocalIdent "=" "type" Type
-	return fmt.Sprintf("%s = type %s", t.Name, t.Def)
-}
 
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -229,7 +227,7 @@ type FunctionHeader struct {
 	CallingConv     ll.CallingConv     // zero value if not present
 	ReturnAttrs     []ll.ReturnAttribute
 	RetType         types.Type
-	Name            *GlobalIdent
+	Name            string // *GlobalIdent
 	Params          []*ll.Param
 	Variadic        bool
 	UnnamedAddr     ll.UnnamedAddr
@@ -385,7 +383,7 @@ func (*DataLayout) IsTopLevelEntity()   {}
 
 // TODO: Figure out how to handle TopLevelEntity interface.
 //func (*ModuleAsm) IsTopLevelEntity()        {}
-func (*TypeDef) IsTopLevelEntity() {}
+//func (*TypeDef) IsTopLevelEntity() {}
 
 //func (*ComdatDef) IsTopLevelEntity()        {}
 //func (*Global) IsTopLevelEntity()         {}

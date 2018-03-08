@@ -138,8 +138,8 @@ func NewIntConst(tok interface{}) (*constant.IntConst, error) {
 
 // NewFloatConst returns a new floating-point constant corresponding to the
 // given token.
-func NewFloatConst(tok interface{}) (*constant.FloatConst, error) {
-	return constant.NewFloatFromString(String(tok)), nil
+func NewFloatConst(tok interface{}) (*ast.FloatConst, error) {
+	return &ast.FloatConst{X: String(tok)}, nil
 }
 
 // NewCallingConv returns a new calling convention corresponding to the given

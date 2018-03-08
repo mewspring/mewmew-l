@@ -1,7 +1,6 @@
 package irx
 
 import (
-	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/value"
@@ -19,7 +18,7 @@ type Module struct {
 	// maps from identifier to AST definition.
 
 	// maps from local identifier to type definition.
-	localIdent map[string]*ast.TypeDef
+	localIdent map[string]*types.NamedType
 	// maps from comdat name to comdat definition.
 	comdatName map[string]*ll.ComdatDef
 	// maps from global identifier to global variable, indirect symbol, or
@@ -68,7 +67,7 @@ func NewModule() *Module {
 	return &Module{
 		Module: &ir.Module{},
 
-		localIdent:   make(map[string]*ast.TypeDef),
+		localIdent:   make(map[string]*types.NamedType),
 		comdatName:   make(map[string]*ll.ComdatDef),
 		globalIdent:  make(map[string]interface{}),
 		attrGroupID:  make(map[string]*ir.AttrGroupDef),

@@ -31,7 +31,7 @@ func (block *BasicBlock) String() string {
 // Type returns the type of the basic block.
 func (block *BasicBlock) Type() types.Type {
 	// LabelType
-	return &types.LabelType{}
+	return types.Label
 }
 
 // Ident returns the identifier associated with the basic block.

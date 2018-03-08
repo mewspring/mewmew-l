@@ -280,23 +280,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      25,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil
+			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" Type	<< &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" Type	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      26,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TypeDef{Name: X[0].(*ast.LocalIdent), Def: X[3].(types.Type)}, nil
+			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -630,13 +630,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent).Name, Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     25,
 		Index:      60,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
+			return &ast.FunctionHeader{Preemption: X[0].(ll.Preemption), Visibility: X[1].(ll.Visibility), DLLStorageClass: X[2].(ll.DLLStorageClass), CallingConv: X[3].(ll.CallingConv), ReturnAttrs: X[4].([]ll.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent).Name, Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ll.UnnamedAddr), FuncAttrs: X[11].([]ll.FuncAttribute), Section: X[12].(*ll.Section), Comdat: X[13].(*ll.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
 		},
 	},
 	ProdTabEntry{
