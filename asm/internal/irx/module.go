@@ -49,16 +49,16 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("comdat name %q already present; prev `%v`, new `%v`", name, prev, entity))
 			}
 			m.comdatName[name] = entity
-		case *ast.Global:
+		case *ir.Global:
 			// Global declarations and definitions.
-			ident := entity.Name.Name
+			ident := entity.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
 		case *ast.IndirectSymbol:
 			// Indirect symbol definitions.
-			ident := entity.Name.Name
+			ident := entity.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
@@ -69,9 +69,9 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
-		case *ast.AttrGroupDef:
+		case *ir.AttrGroupDef:
 			// Attribute group definitions.
-			id := entity.ID.ID
+			id := entity.ID
 			if prev, ok := m.attrGroupID[id]; ok {
 				panic(fmt.Errorf("attribute group ID %q already present; prev `%v`, new `%v`", id, prev, entity))
 			}

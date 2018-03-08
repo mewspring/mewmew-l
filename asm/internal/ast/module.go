@@ -1,3 +1,5 @@
+// Package ast declares the types used to represent abstract syntax trees of
+// LLVM IR modules.
 package ast
 
 import (
@@ -7,6 +9,7 @@ import (
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 )
@@ -125,80 +128,12 @@ func (t *TypeDef) String() string {
 	return fmt.Sprintf("%s = type %s", t.Name, t.Def)
 }
 
-// ~~~ [ Global Variable Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// Global is a global variable declaration or a global variable definition.
-type Global struct {
-	Name                  *GlobalIdent
-	Linkage               ll.Linkage         // zero value if not present
-	Preemption            ll.Preemption      // zero value if not present
-	Visibility            ll.Visibility      // zero value if not present
-	DLLStorageClass       ll.DLLStorageClass // zero value if not present
-	ThreadLocal           *ll.ThreadLocal    // nil if not present
-	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
-	AddrSpace             types.AddrSpace    // zero value if not present
-	ExternallyInitialized bool
-	Immutable             bool
-	Type                  types.Type
-	Init                  ir.Constant // nil if declaration
-	GlobalAttrs           []ll.GlobalAttribute
-	FuncAttrs             []ll.FuncAttribute
-}
-
-// String returns a string representation of the global variable.
-func (g *Global) String() string {
-	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility
-	// OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace
-	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v =", g.Name)
-	if g.Linkage != ll.LinkageNone {
-		fmt.Fprintf(buf, " %v", g.Linkage)
-	}
-	if g.Preemption != ll.PreemptionNone {
-		fmt.Fprintf(buf, " %v", g.Preemption)
-	}
-	if g.Visibility != ll.VisibilityNone {
-		fmt.Fprintf(buf, " %v", g.Visibility)
-	}
-	if g.DLLStorageClass != ll.DLLStorageClassNone {
-		fmt.Fprintf(buf, " %v", g.DLLStorageClass)
-	}
-	if g.ThreadLocal != nil {
-		fmt.Fprintf(buf, " %v", g.ThreadLocal)
-	}
-	if g.UnnamedAddr != ll.UnnamedAddrNone {
-		fmt.Fprintf(buf, " %v", g.UnnamedAddr)
-	}
-	if g.AddrSpace != 0 {
-		fmt.Fprintf(buf, " %v", g.AddrSpace)
-	}
-	if g.ExternallyInitialized {
-		buf.WriteString(" externallyinitialized")
-	}
-	if g.Immutable {
-		buf.WriteString(" constant")
-	} else {
-		buf.WriteString(" global")
-	}
-	fmt.Fprintf(buf, " %v", g.Type)
-	if g.Init != nil {
-		fmt.Fprintf(buf, " %v", g.Init.Ident())
-	}
-	for _, attr := range g.GlobalAttrs {
-		fmt.Fprintf(buf, ", %v", attr)
-	}
-	for _, attr := range g.FuncAttrs {
-		fmt.Fprintf(buf, " %v", attr)
-	}
-	return buf.String()
-}
-
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // An IndirectSymbol is an alias or an ifunc.
 type IndirectSymbol struct {
-	Name            *GlobalIdent
+	// Alias or IFunc name (*GlobalIdent).
+	Name            string
 	Linkage         ll.Linkage
 	Preemption      ll.Preemption
 	Visibility      ll.Visibility
@@ -207,7 +142,7 @@ type IndirectSymbol struct {
 	UnnamedAddr     ll.UnnamedAddr
 	Alias           bool // alias if true, ifunc otherwise.
 	Type            types.Type
-	Const           *TypeConst // aliasee or resolver
+	Const           ir.Constant // aliasee or resolver
 }
 
 // String returns the string representation of the indirect symbol.
@@ -391,40 +326,12 @@ func (body *FunctionBody) String() string {
 	return buf.String()
 }
 
-// ~~~ [ Attribute Group Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// AttrGroupDef is a attribute group definition.
-type AttrGroupDef struct {
-	ID        *AttrGroupID
-	FuncAttrs []ll.FuncAttribute
-}
-
-// String returns the string representation of the attribute group definition.
-func (def *AttrGroupDef) String() string {
-	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
-	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "attributes %v = { ", def.ID)
-	for i, attr := range def.FuncAttrs {
-		if i != 0 {
-			buf.WriteString(" ")
-		}
-		// Note, alignment is printed as `align = 8` in attribute groups.
-		if attr, ok := attr.(*ll.Alignment); ok {
-			fmt.Fprintf(buf, "align = %d", attr.Align)
-			continue
-		}
-		buf.WriteString(attr.String())
-	}
-	buf.WriteString(" }")
-	return buf.String()
-}
-
 // ~~~ [ Use-list Order Directives ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // UseListOrder is a use-list order directive.
 type UseListOrder struct {
-	Type    types.Type
-	Value   Value
+	Type    types.Type // TODO: Consider getting rid of type and let value.Value store the type.
+	Value   value.Value
 	Indices []int64
 }
 
@@ -481,9 +388,8 @@ func (*DataLayout) IsTopLevelEntity()   {}
 func (*TypeDef) IsTopLevelEntity() {}
 
 //func (*ComdatDef) IsTopLevelEntity()        {}
-func (*Global) IsTopLevelEntity()         {}
+//func (*Global) IsTopLevelEntity()         {}
 func (*IndirectSymbol) IsTopLevelEntity() {}
 func (*Function) IsTopLevelEntity()       {}
-func (*AttrGroupDef) IsTopLevelEntity()   {}
 func (*UseListOrder) IsTopLevelEntity()   {}
 func (*UseListOrderBB) IsTopLevelEntity() {}

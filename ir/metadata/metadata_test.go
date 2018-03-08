@@ -7,11 +7,14 @@ import (
 
 // Ensure that each metadata field implements the metadata.MDField interface.
 var (
+	// MDField
 	_ metadata.MDField = (*metadata.MDNull)(nil)
+	// Metadata
 	_ metadata.MDField = (*metadata.Value)(nil)
 	_ metadata.MDField = (*metadata.MDString)(nil)
 	_ metadata.MDField = (*metadata.MDTuple)(nil)
 	_ metadata.MDField = (*metadata.MetadataDef)(nil)
+	// SpecializedMDNode
 	_ metadata.MDField = (*metadata.DICompileUnit)(nil)
 	_ metadata.MDField = (*metadata.DIFile)(nil)
 	_ metadata.MDField = (*metadata.DIBasicType)(nil)
@@ -41,10 +44,12 @@ var (
 
 // Ensure that each metadata implements the metadata.Metadata interface.
 var (
+	// Metadata
 	_ metadata.Metadata = (*metadata.Value)(nil)
 	_ metadata.Metadata = (*metadata.MDString)(nil)
 	_ metadata.Metadata = (*metadata.MDTuple)(nil)
 	_ metadata.Metadata = (*metadata.MetadataDef)(nil)
+	// SpecializedMDNode
 	_ metadata.Metadata = (*metadata.DICompileUnit)(nil)
 	_ metadata.Metadata = (*metadata.DIFile)(nil)
 	_ metadata.Metadata = (*metadata.DIBasicType)(nil)
@@ -74,8 +79,10 @@ var (
 
 // Ensure that each metadata node implements the metadata.MDNode interface.
 var (
+	// MDNode
 	_ metadata.MDNode = (*metadata.MDTuple)(nil)
 	_ metadata.MDNode = (*metadata.MetadataDef)(nil)
+	// SpecializedMDNode
 	_ metadata.MDNode = (*metadata.DICompileUnit)(nil)
 	_ metadata.MDNode = (*metadata.DIFile)(nil)
 	_ metadata.MDNode = (*metadata.DIBasicType)(nil)
@@ -106,6 +113,7 @@ var (
 // Ensure that each DIExpression field implements the metadata.DIExpressionField
 // interface.
 var (
+	// DIExpressionField
 	_ metadata.DIExpressionField = (*metadata.MDInt)(nil)
 	_ metadata.DIExpressionField = ll.DwarfOp(0)
 )
@@ -113,6 +121,7 @@ var (
 // Ensure that each specialized metadata node implements the
 // metadata.SpecializedMDNode interface.
 var (
+	// SpecializedMDNode
 	_ metadata.SpecializedMDNode = (*metadata.DICompileUnit)(nil)
 	_ metadata.SpecializedMDNode = (*metadata.DIFile)(nil)
 	_ metadata.SpecializedMDNode = (*metadata.DIBasicType)(nil)
@@ -143,12 +152,16 @@ var (
 // Ensure that each integer and metadata field implements the
 // metadata.IntOrMDField interface.
 var (
+	// IntOrMDField
 	_ metadata.IntOrMDField = (*metadata.MDInt)(nil)
+	// MDField
 	_ metadata.IntOrMDField = (*metadata.MDNull)(nil)
+	// Metadata
 	_ metadata.IntOrMDField = (*metadata.Value)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDString)(nil)
 	_ metadata.IntOrMDField = (*metadata.MDTuple)(nil)
 	_ metadata.IntOrMDField = (*metadata.MetadataDef)(nil)
+	// SpecializedMDNode
 	_ metadata.IntOrMDField = (*metadata.DICompileUnit)(nil)
 	_ metadata.IntOrMDField = (*metadata.DIFile)(nil)
 	_ metadata.IntOrMDField = (*metadata.DIBasicType)(nil)

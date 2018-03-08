@@ -114,3 +114,8 @@ type Constant interface {
 // IsConstant ensures that only constants can be assigned to the
 // ir.Constant interface.
 func (*Global) IsConstant() {}
+
+// IsTopLevelEntity ensures that only top-level entities can be assigned to the
+// ast.TopLevelEntity interface.
+func (*Global) IsTopLevelEntity()       {}
+func (*AttrGroupDef) IsTopLevelEntity() {}

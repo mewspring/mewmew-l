@@ -11,6 +11,8 @@ import (
 	"github.com/mewmew/l/asm/internal/token"
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/constant"
+	"github.com/mewmew/l/ir/value"
 	"github.com/mewmew/l/ll"
 	"github.com/mewmew/l/ll/types"
 	"github.com/pkg/errors"
@@ -76,10 +78,10 @@ func Int(tok interface{}) int64 {
 }
 
 // TypeValue returns a type-value pair based on the given type and value.
-func TypeValue(typ, value interface{}) *ast.TypeValue {
+func TypeValue(typ, val interface{}) *ast.TypeValue {
 	return &ast.TypeValue{
 		Typ:   typ.(types.Type),
-		Value: value.(ast.Value),
+		Value: val.(value.Value),
 	}
 }
 
@@ -130,14 +132,14 @@ func NewIntType(tok interface{}) (*types.IntType, error) {
 }
 
 // NewIntConst returns a new integer constant corresponding to the given token.
-func NewIntConst(tok interface{}) (*ast.IntConst, error) {
-	return &ast.IntConst{X: String(tok)}, nil
+func NewIntConst(tok interface{}) (*constant.IntConst, error) {
+	return constant.NewIntFromString(String(tok)), nil
 }
 
 // NewFloatConst returns a new floating-point constant corresponding to the
 // given token.
-func NewFloatConst(tok interface{}) (*ast.FloatConst, error) {
-	return &ast.FloatConst{X: String(tok)}, nil
+func NewFloatConst(tok interface{}) (*constant.FloatConst, error) {
+	return constant.NewFloatFromString(String(tok)), nil
 }
 
 // NewCallingConv returns a new calling convention corresponding to the given

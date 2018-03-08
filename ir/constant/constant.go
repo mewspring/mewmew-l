@@ -2,6 +2,7 @@ package constant
 
 import (
 	"fmt"
+	"log"
 	"math/big"
 	"strings"
 
@@ -102,10 +103,13 @@ func NewFloat(x float64) *FloatConst {
 // NewFloatFromString returns a new floating-point constant based on the given
 // string.
 func NewFloatFromString(s string) *FloatConst {
-	// TODO: Handle hexadecimal representation of floating-point constants.
 	x := &big.Float{}
 	if _, ok := x.SetString(s); !ok {
-		panic(fmt.Errorf("unable to set floating-point constant %q", s))
+		// TODO: Handle hexadecimal representation of floating-point constants.
+		//
+		// Fallback to 0.0 value for now.
+		log.Printf("unable to set floating-point constant %q", s)
+		x.SetFloat64(0)
 	}
 	return &FloatConst{
 		X: x,

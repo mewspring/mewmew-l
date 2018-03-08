@@ -160,7 +160,7 @@ func (m *Module) irMDField(old metadata.MDField) metadata.MDField {
 
 // irIntOrMDField returns the LLVM IR integer or metadata field corresponding to
 // the given AST integer or metadata field.
-func (m *Module) irIntOrMDField(old ast.IntOrMDField) metadata.IntOrMDField {
+func (m *Module) irIntOrMDField(old metadata.IntOrMDField) metadata.IntOrMDField {
 	switch old := old.(type) {
 	case *metadata.MDInt:
 		return old

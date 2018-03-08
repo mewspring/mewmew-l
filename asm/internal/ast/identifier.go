@@ -1,5 +1,11 @@
 package ast
 
+import (
+	"fmt"
+
+	"github.com/mewmew/l/ll/types"
+)
+
 // === [ Identifiers ] =========================================================
 
 // --- [ Global Identifiers ] --------------------------------------------------
@@ -9,8 +15,19 @@ type GlobalIdent struct {
 	Name string
 }
 
-// String returns the string representation of the global identifier.
+// String returns the string representation of the global identifier as a type-
+// value pair.
 func (i *GlobalIdent) String() string {
+	return fmt.Sprintf("%v %v", i.Type(), i.Ident())
+}
+
+// Type returns the type of the global identifier.
+func (i *GlobalIdent) Type() types.Type {
+	panic("ast.GlobalIdent.Type: unintended use of Type; type resolution not complete")
+}
+
+// Ident returns the identifier associated with the global identifier.
+func (i *GlobalIdent) Ident() string {
 	// global_ident
 	return i.Name
 }
@@ -22,8 +39,19 @@ type LocalIdent struct {
 	Name string
 }
 
-// String returns the string representation of the local identifier.
+// String returns the string representation of the local identifier as a type-
+// value pair.
 func (i *LocalIdent) String() string {
+	return fmt.Sprintf("%v %v", i.Type(), i.Ident())
+}
+
+// Type returns the type of the local identifier.
+func (i *LocalIdent) Type() types.Type {
+	panic("ast.LocalIdent.Type: unintended use of Type; type resolution not complete")
+}
+
+// Ident returns the identifier associated with the local identifier.
+func (i *LocalIdent) Ident() string {
 	// local_ident
 	return i.Name
 }

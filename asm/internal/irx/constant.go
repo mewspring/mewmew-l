@@ -16,7 +16,7 @@ func (m *Module) irConstant(old ir.Constant) ir.Constant {
 	// TODO: Add remaning ir.Constant's.
 	case *ast.TypeConst:
 		return m.irTypeConst(old)
-	case *ast.IntConst:
+	case *constant.IntConst:
 		return m.irIntConst(old)
 	case *ast.GlobalIdent:
 		return m.irGlobal(old)
@@ -37,8 +37,11 @@ func (m *Module) irConstant(old ir.Constant) ir.Constant {
 
 // irIntConst returns the LLVM IR integer constant corresponding to the given
 // AST integer constant.
-func (m *Module) irIntConst(old *ast.IntConst) *constant.IntConst {
-	return constant.NewIntFromString(old.X)
+func (m *Module) irIntConst(old *constant.IntConst) *constant.IntConst {
+	if old.Typ != nil {
+		old.Typ = m.irType(old.Typ).(*types.IntType)
+	}
+	return old
 }
 
 // irConstant returns the LLVM IR constant corresponding to the given AST type-

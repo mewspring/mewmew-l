@@ -23,7 +23,7 @@ UseListOrderList
 
 UseListOrder
 	: "uselistorder" Type Value "," "{" IndexList "}"
-	<< &ast.UseListOrder{Type: $1.(types.Type), Value: $2.(ast.Value), Indices: $5.([]int64)}, nil >>
+	<< &ast.UseListOrder{Type: $1.(types.Type), Value: $2.(value.Value), Indices: $5.([]int64)}, nil >>
 ;
 
 // ref: ParseUseListOrderBB

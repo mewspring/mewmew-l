@@ -8,8 +8,11 @@ import (
 	"github.com/mewmew/l/ll/types"
 )
 
+// ~~~ [ Global Variable Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
+	// Global variable name (*GlobalIdent).
 	Name                  string
 	Linkage               ll.Linkage         // zero value if not present
 	Preemption            ll.Preemption      // zero value if not present

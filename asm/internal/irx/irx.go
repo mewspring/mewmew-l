@@ -30,7 +30,7 @@ type Module struct {
 	//    *ast.Function
 	globalIdent map[string]interface{}
 	// maps from attribute group ID to attribute group definition.
-	attrGroupID map[string]*ast.AttrGroupDef
+	attrGroupID map[string]*ir.AttrGroupDef
 	// maps from metadata name to named metadata definition.
 	metadataName map[string]*metadata.NamedMetadataDef
 	// maps from metadata ID to metadata definition.
@@ -71,7 +71,7 @@ func NewModule() *Module {
 		localIdent:   make(map[string]*ast.TypeDef),
 		comdatName:   make(map[string]*ll.ComdatDef),
 		globalIdent:  make(map[string]interface{}),
-		attrGroupID:  make(map[string]*ast.AttrGroupDef),
+		attrGroupID:  make(map[string]*ir.AttrGroupDef),
 		metadataName: make(map[string]*metadata.NamedMetadataDef),
 		metadataID:   make(map[string]*metadata.MetadataDef),
 

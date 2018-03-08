@@ -652,6 +652,7 @@ func (c *InsertValueExpr) Ident() string {
 
 // GetElementPtrExpr is an LLVM IR getelementptr expression.
 type GetElementPtrExpr struct {
+	Typ      *types.PointerType
 	InBounds bool
 	ElemType types.Type
 	Src      ir.Constant
@@ -666,7 +667,7 @@ func (c *GetElementPtrExpr) String() string {
 
 // Type returns the type of the bitcast expression.
 func (c *GetElementPtrExpr) Type() types.Type {
-	panic("constant.GetElementPtrExpr.Type: not yet implemented")
+	return c.Typ
 }
 
 // Ident returns the identifier associated with the bitcast expression.

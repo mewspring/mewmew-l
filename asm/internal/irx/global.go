@@ -16,7 +16,7 @@ func (m *Module) indexGlobals() {
 	// Index global variables, indirect symbols and functions.
 	for name, old := range m.globalIdent {
 		switch old.(type) {
-		case *ast.Global:
+		case *ir.Global:
 			m.globals[name] = &ir.Global{
 				Name: name,
 			}
@@ -36,7 +36,7 @@ func (m *Module) resolveGlobals() {
 	// Index global variables, indirect symbols and functions.
 	for name, old := range m.globalIdent {
 		switch old := old.(type) {
-		case *ast.Global:
+		case *ir.Global:
 			m.resolveGlobal(old, m.globals[name])
 		//case *ast.IndirectSymbol:
 		//case *ast.Function:
@@ -66,8 +66,8 @@ func (m *Module) resolveGlobals() {
 }
 
 // resolveGlobal resolves the given global variable.
-func (m *Module) resolveGlobal(old *ast.Global, g *ir.Global) {
-	g.Name = old.Name.Name
+func (m *Module) resolveGlobal(old *ir.Global, g *ir.Global) {
+	g.Name = old.Name
 	g.Linkage = old.Linkage
 	g.Preemption = old.Preemption
 	g.Visibility = old.Visibility
@@ -77,11 +77,12 @@ func (m *Module) resolveGlobal(old *ast.Global, g *ir.Global) {
 	g.AddrSpace = old.AddrSpace
 	g.ExternallyInitialized = old.ExternallyInitialized
 	g.Immutable = old.Immutable
-	g.ContentType = m.irType(old.Type)
+	g.ContentType = m.irType(old.Typ)
 	g.Typ = &types.PointerType{
 		ElemType: g.ContentType,
 	}
 	if old.Init != nil {
+		// TODO: Set type of g.Iint from g.ContentType.
 		g.Init = m.irConstant(old.Init)
 	}
 	g.GlobalAttrs = m.irGlobalAttrs(old.GlobalAttrs)
