@@ -64,8 +64,8 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
-		case *ast.Function:
-			ident := entity.Header.Name
+		case *ir.Function:
+			ident := entity.Name
 			if prev, ok := m.globalIdent[ident]; ok {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}

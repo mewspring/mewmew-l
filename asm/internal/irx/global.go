@@ -21,9 +21,11 @@ func (m *Module) indexGlobals() {
 				Name: name,
 			}
 		//case *ast.IndirectSymbol:
-		case *ast.Function:
-			m.functions[name] = &ir.Function{
-				Name: name,
+		case *ir.Function:
+			m.funcs[name] = &ir.Function{
+				FunctionHeader: &ir.FunctionHeader{
+					Name: name,
+				},
 			}
 		default:
 			panic(fmt.Errorf("support for global %T not yet implemented", old))
@@ -39,7 +41,7 @@ func (m *Module) resolveGlobals() {
 		case *ir.Global:
 			m.resolveGlobal(old, m.globals[name])
 		//case *ast.IndirectSymbol:
-		//case *ast.Function:
+		//case *ir.Function:
 		default:
 			panic(fmt.Errorf("support for global %T not yet implemented", old))
 		}
@@ -55,14 +57,14 @@ func (m *Module) resolveGlobals() {
 		m.Globals = append(m.Globals, m.globals[name])
 	}
 	// Add function declarations and defintions to module.
-	//names = names[:0]
-	//for name := range m.functions {
-	//	names = append(names, name)
-	//}
-	//natsort.Strings(names)
-	//for _, name := range names {
-	//	m.Functions = append(m.Functions, m.functions[name])
-	//}
+	names = names[:0]
+	for name := range m.funcs {
+		names = append(names, name)
+	}
+	natsort.Strings(names)
+	for _, name := range names {
+		m.Funcs = append(m.Funcs, m.funcs[name])
+	}
 }
 
 // resolveGlobal resolves the given global variable.
@@ -163,7 +165,7 @@ func (m *Module) irGlobal(old *ast.GlobalIdent) ir.Constant {
 	//if ifunc, ok := m.ifuncs[old.Name]; ok {
 	//	return ifunc
 	//}
-	if f, ok := m.functions[old.Name]; ok {
+	if f, ok := m.funcs[old.Name]; ok {
 		return f
 	}
 	panic(fmt.Errorf("unable to locate global %q", old.Name))

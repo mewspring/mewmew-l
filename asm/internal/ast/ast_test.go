@@ -2,6 +2,7 @@ package ast_test
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -145,6 +146,7 @@ func TestParse(t *testing.T) {
 		{path: "testdata/sqlite/shell.ll"},
 	}
 	for _, g := range golden {
+		fmt.Println("path:", g.path)
 		buf, err := ioutil.ReadFile(g.path)
 		if err != nil {
 			t.Errorf("%q: unable to read file %q; %v", g.path, g.path, err)

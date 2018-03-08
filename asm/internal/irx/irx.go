@@ -24,9 +24,9 @@ type Module struct {
 	// maps from global identifier to global variable, indirect symbol, or
 	// function.
 	//
-	//    *ast.Global
+	//    *ir.Global
 	//    *ast.IndirectSymbol
-	//    *ast.Function
+	//    *ir.Function
 	globalIdent map[string]interface{}
 	// maps from attribute group ID to attribute group definition.
 	attrGroupID map[string]*ir.AttrGroupDef
@@ -46,7 +46,7 @@ type Module struct {
 	// maps from attribute group ID to attribute group definition.
 	attrGroupDefs map[string]*ir.AttrGroupDef
 	// maps from global identifier to function declaration or definition.
-	functions map[string]*ir.Function
+	funcs map[string]*ir.Function
 	// maps from metadata name to named metadata definition.
 	namedMetadataDefs map[string]*metadata.NamedMetadataDef
 	// maps from metadata ID to metadata definition.
@@ -76,7 +76,7 @@ func NewModule() *Module {
 
 		typeDefs:          make(map[string]*types.NamedType),
 		globals:           make(map[string]*ir.Global),
-		functions:         make(map[string]*ir.Function),
+		funcs:             make(map[string]*ir.Function),
 		attrGroupDefs:     make(map[string]*ir.AttrGroupDef),
 		namedMetadataDefs: make(map[string]*metadata.NamedMetadataDef),
 		metadataDefs:      make(map[string]*metadata.MetadataDef),

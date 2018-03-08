@@ -183,6 +183,6 @@ UndefConst
 
 BlockAddressConst
 	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"
-	<< &constant.BlockAddressConst{Func: &ir.Function{Name: $2.(*ast.GlobalIdent).Name}, Block: &ir.BasicBlock{Name: $4.(*ast.LocalIdent).Name}}, nil >>
+	<< &constant.BlockAddressConst{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: $2.(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: $4.(*ast.LocalIdent).Name}}, nil >>
 ;
 

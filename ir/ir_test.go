@@ -244,6 +244,7 @@ var (
 	_ ir.Instruction = (*ir.FenceInst)(nil)
 	_ ir.Instruction = (*ir.CmpXchgInst)(nil)
 	_ ir.Instruction = (*ir.AtomicRMWInst)(nil)
+	_ ir.Instruction = (*ir.ValueInstruction)(nil)
 	_ ir.Instruction = (*ir.GetElementPtrInst)(nil)
 	_ ir.Instruction = (*ir.TruncInst)(nil)
 	_ ir.Instruction = (*ir.ZExtInst)(nil)

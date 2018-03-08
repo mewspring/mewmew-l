@@ -8,7 +8,7 @@
 
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
-	<< &ast.Function{Linkage: $2.(ll.Linkage), Header: $3.(*ast.FunctionHeader), Metadata: $1.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.Function{Linkage: $2.(ll.Linkage), FunctionHeader: $3.(*ir.FunctionHeader), Metadata: $1.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +21,7 @@ FunctionDecl
 
 FunctionDef
 	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
-	<< &ast.Function{Linkage: $1.(ll.Linkage), Header: $2.(*ast.FunctionHeader), Body: $4.(*ast.FunctionBody), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.Function{Linkage: $1.(ll.Linkage), FunctionHeader: $2.(*ir.FunctionHeader), FunctionBody: $4.(*ir.FunctionBody), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ref: ParseFunctionHeader
@@ -36,7 +36,7 @@ FunctionDef
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
-	<< &ast.FunctionHeader{Preemption: $0.(ll.Preemption), Visibility: $1.(ll.Visibility), DLLStorageClass: $2.(ll.DLLStorageClass), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Name: $6.(*ast.GlobalIdent).Name, Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ll.UnnamedAddr), FuncAttrs: $11.([]ll.FuncAttribute), Section: $12.(*ll.Section), Comdat: $13.(*ll.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
+	<< &ir.FunctionHeader{Preemption: $0.(ll.Preemption), Visibility: $1.(ll.Visibility), DLLStorageClass: $2.(ll.DLLStorageClass), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Name: $6.(*ast.GlobalIdent).Name, Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ll.UnnamedAddr), FuncAttrs: $11.([]ll.FuncAttribute), Section: $12.(*ll.Section), Comdat: $13.(*ll.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
 ;
 
 // ref: ParseOptionalCallingConv
@@ -161,6 +161,6 @@ OptPersonality
 
 FunctionBody
 	: "{" BasicBlockList UseListOrders "}"
-	<< &ast.FunctionBody{Blocks: $1.([]*ir.BasicBlock), UseListOrders: $2.([]*ast.UseListOrder)}, nil >>
+	<< &ir.FunctionBody{Blocks: $1.([]*ir.BasicBlock), UseListOrders: $2.([]*ir.UseListOrder)}, nil >>
 ;
 

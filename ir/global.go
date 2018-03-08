@@ -23,14 +23,15 @@ type Global struct {
 	AddrSpace             types.AddrSpace    // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
-	Typ                   *types.PointerType
+	Typ                   *types.PointerType // pointer to ContentType.
 	ContentType           types.Type
-	Init                  Constant // nil if declaration
-	GlobalAttrs           []ll.GlobalAttribute
+	Init                  Constant             // nil if declaration
+	GlobalAttrs           []ll.GlobalAttribute // global attributes, including metadata.
 	FuncAttrs             []ll.FuncAttribute
 }
 
-// String returns a string representation of the global variable.
+// String returns the string representation of the global variable as a type-
+// value pair.
 func (g *Global) String() string {
 	return fmt.Sprintf("%v %v", g.Type(), g.Ident())
 }

@@ -6,6 +6,27 @@ import (
 	"github.com/mewmew/l/ir/value"
 )
 
+// IsTopLevelEntity ensures that only top-level entities can be assigned to the
+// ast.TopLevelEntity interface.
+func (*Global) IsTopLevelEntity()         {}
+func (*Function) IsTopLevelEntity()       {}
+func (*AttrGroupDef) IsTopLevelEntity()   {}
+func (*UseListOrder) IsTopLevelEntity()   {}
+func (*UseListOrderBB) IsTopLevelEntity() {}
+
+// A Constant is an LLVM IR constant.
+type Constant interface {
+	value.Value
+	// IsConstant ensures that only constants can be assigned to the
+	// constant.Constant interface.
+	IsConstant()
+}
+
+// IsConstant ensures that only constants can be assigned to the
+// ir.Constant interface.
+func (*Global) IsConstant()   {}
+func (*Function) IsConstant() {}
+
 // IsFuncAttribute ensures that only function attributes can be assigned to the
 // ast.FuncAttribute interface.
 func (*AttrGroupDef) IsFuncAttribute() {}
@@ -18,24 +39,9 @@ type Instruction interface {
 	IsInstruction()
 }
 
-// A Terminator is an LLVM IR terminator.
-type Terminator interface {
-	fmt.Stringer
-	// IsTerminator ensures that only terminators can be assigned to the
-	// ast.Terminator interface.
-	IsTerminator()
-}
-
-// IsUnwindTarget ensures that only unwind targets can be assigned to the
-// ast.UnwindTarget interface.
-func (*BasicBlock) IsUnwindTarget() {}
-
 // IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
-func (*ValueInstruction) IsInstruction() {}
-
-// IsInstruction ensures that only instructions can be assigned to the
-// ast.Instruction interface.
+func (*ValueInstruction) IsInstruction()   {}
 func (*AddInst) IsInstruction()            {}
 func (*FAddInst) IsInstruction()           {}
 func (*SubInst) IsInstruction()            {}
@@ -89,6 +95,14 @@ func (*LandingPadInst) IsInstruction()     {}
 func (*CatchPadInst) IsInstruction()       {}
 func (*CleanupPadInst) IsInstruction()     {}
 
+// A Terminator is an LLVM IR terminator.
+type Terminator interface {
+	fmt.Stringer
+	// IsTerminator ensures that only terminators can be assigned to the
+	// ast.Terminator interface.
+	IsTerminator()
+}
+
 // IsTerminator ensures that only terminators can be assigned to the
 // ast.Terminator interface.
 func (*RetTerm) IsTerminator()         {}
@@ -103,19 +117,6 @@ func (*CatchRetTerm) IsTerminator()    {}
 func (*CleanupRetTerm) IsTerminator()  {}
 func (*UnreachableTerm) IsTerminator() {}
 
-// A Constant is an LLVM IR constant.
-type Constant interface {
-	value.Value
-	// IsConstant ensures that only constants can be assigned to the
-	// constant.Constant interface.
-	IsConstant()
-}
-
-// IsConstant ensures that only constants can be assigned to the
-// ir.Constant interface.
-func (*Global) IsConstant() {}
-
-// IsTopLevelEntity ensures that only top-level entities can be assigned to the
-// ast.TopLevelEntity interface.
-func (*Global) IsTopLevelEntity()       {}
-func (*AttrGroupDef) IsTopLevelEntity() {}
+// IsUnwindTarget ensures that only unwind targets can be assigned to the
+// ast.UnwindTarget interface.
+func (*BasicBlock) IsUnwindTarget() {}
