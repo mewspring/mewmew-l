@@ -19,8 +19,23 @@ type NamedMetadataDef struct {
 }
 
 // String returns the string representation of the named metadata definition.
-func (def *NamedMetadataDef) String() string {
-	return def.Name
+func (md *NamedMetadataDef) String() string {
+	return md.Name
+}
+
+// Def returns the LLVM syntax representation of the named metadata definition.
+func (md *NamedMetadataDef) Def() string {
+	// MetadataName "=" "!" "{" MetadataNodes "}"
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v = !{", md.Name)
+	for i, node := range md.Nodes {
+		if i != 0 {
+			buf.WriteString(", ")
+		}
+		buf.WriteString(node.String())
+	}
+	buf.WriteString("}")
+	return buf.String()
 }
 
 // ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,8 +48,21 @@ type MetadataDef struct {
 }
 
 // String returns the string representation of the metadata definition.
-func (def *MetadataDef) String() string {
-	return def.ID
+func (md *MetadataDef) String() string {
+	return md.ID
+}
+
+// Def returns the LLVM syntax representation of the metadata definition.
+func (md *MetadataDef) Def() string {
+	// MetadataID "=" OptDistinct MDTuple
+	// MetadataID "=" OptDistinct SpecializedMDNode
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "%v = ", md.ID)
+	if md.Distinct {
+		buf.WriteString("distinct ")
+	}
+	buf.WriteString(md.Node.String())
+	return buf.String()
 }
 
 // === [ Metadata Nodes and Metadata Strings ] =================================

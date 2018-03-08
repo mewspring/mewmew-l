@@ -18,7 +18,7 @@ func (m *Module) resolveTypeDefs() {
 	// Resolve type definitions.
 	for name, old := range m.localIdent {
 		t := m.typeDefs[name]
-		t.Def = m.irType(old.Def)
+		t.Type = m.irType(old.Type)
 	}
 	// Add type defintions to module.
 	var names []string

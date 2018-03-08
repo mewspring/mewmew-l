@@ -187,6 +187,11 @@ type ComdatDef struct {
 
 // String returns the string representation of the comdat definition.
 func (c *ComdatDef) String() string {
+	return c.Name
+}
+
+// Def returns the LLVM syntax representation of the attribute group definition.
+func (c *ComdatDef) Def() string {
 	// ComdatName "=" "comdat" SelectionKind
 	return fmt.Sprintf("%v = comdat %v", c.Name, c.Kind)
 }
@@ -901,9 +906,9 @@ type ModuleAsm struct {
 	Asm string
 }
 
-// String returns the string representation of the module-level inline assembly
-// top-level entity.
-func (a *ModuleAsm) String() string {
+// Def returns the LLVM syntax representation of the module-level inline
+// assembly definition.
+func (a *ModuleAsm) Def() string {
 	// "module" "asm" StringLit
 	return fmt.Sprintf("module asm %v", enc.Quote(a.Asm))
 }

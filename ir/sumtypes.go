@@ -8,7 +8,11 @@ import (
 
 // IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
+func (*SourceFilename) IsTopLevelEntity() {}
+func (*TargetTriple) IsTopLevelEntity()   {}
+func (*DataLayout) IsTopLevelEntity()     {}
 func (*Global) IsTopLevelEntity()         {}
+func (*IndirectSymbol) IsTopLevelEntity() {}
 func (*Function) IsTopLevelEntity()       {}
 func (*AttrGroupDef) IsTopLevelEntity()   {}
 func (*UseListOrder) IsTopLevelEntity()   {}

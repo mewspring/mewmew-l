@@ -57,7 +57,7 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 				panic(fmt.Errorf("global identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))
 			}
 			m.globalIdent[ident] = entity
-		case *ast.IndirectSymbol:
+		case *ir.IndirectSymbol:
 			// Indirect symbol definitions.
 			ident := entity.Name
 			if prev, ok := m.globalIdent[ident]; ok {

@@ -1,7 +1,5 @@
 package ast
 
-import "fmt"
-
 // --- [ metadata.MDField ] ----------------------------------------------------
 
 // IsMDField ensures that only metadata fields can be assigned to the
@@ -66,7 +64,9 @@ func (*LocalIdent) IsExceptionScope() {}
 
 // A TopLevelEntity is a top-level entity of a module.
 type TopLevelEntity interface {
-	fmt.Stringer
+	// Def returns the LLVM syntax representation of the top-level entity
+	// definition.
+	Def() string
 	// IsTopLevelEntity ensures that only top-level entities can be assigned to
 	// the ast.TopLevelEntity interface.
 	IsTopLevelEntity()
@@ -74,15 +74,15 @@ type TopLevelEntity interface {
 
 // IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
-func (*SourceFilename) IsTopLevelEntity() {}
-func (*TargetTriple) IsTopLevelEntity()   {}
-func (*DataLayout) IsTopLevelEntity()     {}
+//func (*SourceFilename) IsTopLevelEntity() {}
+//func (*TargetTriple) IsTopLevelEntity()   {}
+//func (*DataLayout) IsTopLevelEntity()     {}
 
 //func (*ModuleAsm) IsTopLevelEntity()    {}
 //func (*TypeDef) IsTopLevelEntity()      {}
 //func (*ComdatDef) IsTopLevelEntity()    {}
 //func (*Global) IsTopLevelEntity()       {}
-func (*IndirectSymbol) IsTopLevelEntity() {}
+//func (*IndirectSymbol) IsTopLevelEntity() {}
 
 //func (*Function) IsTopLevelEntity()       {}
 //func (*UseListOrder) IsTopLevelEntity()   {}
@@ -91,14 +91,14 @@ func (*IndirectSymbol) IsTopLevelEntity() {}
 // --- [ ast.TargetDefinition ] ------------------------------------------------
 
 // TargetDefinition is a target definition top-level entity.
-type TargetDefinition interface {
-	fmt.Stringer
-	// isTargetDefinition ensures that only target definitions can be assigned to
-	// the ast.TargetDefinition interface.
-	isTargetDefinition()
-}
+//type TargetDefinition interface {
+//	fmt.Stringer
+//	// isTargetDefinition ensures that only target definitions can be assigned to
+//	// the ast.TargetDefinition interface.
+//	isTargetDefinition()
+//}
 
 // isTargetDefinition ensures that only target definitions can be assigned to
 // the ast.TargetDefinition interface.
-func (*TargetTriple) isTargetDefinition() {}
-func (*DataLayout) isTargetDefinition()   {}
+//func (*TargetTriple) isTargetDefinition() {}
+//func (*DataLayout) isTargetDefinition()   {}

@@ -240,33 +240,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `SourceFilename : "source_filename" "=" StringLit	<< &ast.SourceFilename{Name: X[2].(string)}, nil >>`,
+		String: `SourceFilename : "source_filename" "=" StringLit	<< &ir.SourceFilename{Name: X[2].(string)}, nil >>`,
 		Id:         "SourceFilename",
 		NTType:     5,
 		Index:      21,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.SourceFilename{Name: X[2].(string)}, nil
+			return &ir.SourceFilename{Name: X[2].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TargetDefinition : "target" "triple" "=" StringLit	<< &ast.TargetTriple{TargetTriple: X[3].(string)}, nil >>`,
+		String: `TargetDefinition : "target" "triple" "=" StringLit	<< &ir.TargetTriple{TargetTriple: X[3].(string)}, nil >>`,
 		Id:         "TargetDefinition",
 		NTType:     6,
 		Index:      22,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.TargetTriple{TargetTriple: X[3].(string)}, nil
+			return &ir.TargetTriple{TargetTriple: X[3].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TargetDefinition : "target" "datalayout" "=" StringLit	<< &ast.DataLayout{DataLayout: X[3].(string)}, nil >>`,
+		String: `TargetDefinition : "target" "datalayout" "=" StringLit	<< &ir.DataLayout{DataLayout: X[3].(string)}, nil >>`,
 		Id:         "TargetDefinition",
 		NTType:     6,
 		Index:      23,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.DataLayout{DataLayout: X[3].(string)}, nil
+			return &ir.DataLayout{DataLayout: X[3].(string)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -280,23 +280,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      25,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil
+			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" Type	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" Type	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      26,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Def: X[3].(types.Type)}, nil
+			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -570,23 +570,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     21,
 		Index:      54,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     21,
 		Index:      55,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Type: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ll.Linkage), Preemption: X[3].(ll.Preemption), Visibility: X[4].(ll.Visibility), DLLStorageClass: X[5].(ll.DLLStorageClass), ThreadLocal: X[6].(*ll.ThreadLocal), UnnamedAddr: X[7].(ll.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{

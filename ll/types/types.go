@@ -55,7 +55,7 @@ func (t *VoidType) Equal(u Type) bool {
 	case *VoidType:
 		return true
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -95,7 +95,7 @@ func (t *FuncType) Equal(u Type) bool {
 		}
 		return t.Variadic == u.Variadic
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -135,7 +135,7 @@ func (t *IntType) Equal(u Type) bool {
 	case *IntType:
 		return t.BitSize == u.BitSize
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -160,7 +160,7 @@ func (t *FloatType) Equal(u Type) bool {
 	case *FloatType:
 		return t.Kind == u.Kind
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -196,7 +196,7 @@ func (t *MMXType) Equal(u Type) bool {
 	case *MMXType:
 		return true
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -226,7 +226,7 @@ func (t *PointerType) Equal(u Type) bool {
 		}
 		return t.AddrSpace == u.AddrSpace
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -271,7 +271,7 @@ func (t *VectorType) Equal(u Type) bool {
 		}
 		return t.ElemType.Equal(u.ElemType)
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -293,7 +293,7 @@ func (t *LabelType) Equal(u Type) bool {
 	case *LabelType:
 		return true
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -315,7 +315,7 @@ func (t *TokenType) Equal(u Type) bool {
 	case *TokenType:
 		return true
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -337,7 +337,7 @@ func (t *MetadataType) Equal(u Type) bool {
 	case *MetadataType:
 		return true
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -367,7 +367,7 @@ func (t *ArrayType) Equal(u Type) bool {
 		}
 		return t.ElemType.Equal(u.ElemType)
 	case *NamedType:
-		return t.Equal(u.Def)
+		return t.Equal(u.Type)
 	}
 	return false
 }
@@ -450,19 +450,19 @@ type NamedType struct {
 	// Type name (LocalIdent).
 	Name string
 	// Type definition.
-	Def Type
+	Type Type
 }
 
 // Equal reports whether t and u are of equal type.
 func (t *NamedType) Equal(u Type) bool {
 	tname := make(map[string]bool)
 	for {
-		switch tdef := t.Def.(type) {
+		switch tdef := t.Type.(type) {
 		case *StructType:
 			uname := make(map[string]bool)
 			if u, ok := u.(*NamedType); ok {
 				for {
-					switch udef := u.Def.(type) {
+					switch udef := u.Type.(type) {
 					case *StructType:
 						// Identified struct types are uniqued by type names, not by
 						// structural identity.
@@ -494,7 +494,7 @@ func (t *NamedType) Equal(u Type) bool {
 			t = tdef
 		default:
 			// t is alias for non-struct type.
-			return t.Def.Equal(u)
+			return t.Type.Equal(u)
 		}
 	}
 }
@@ -503,6 +503,13 @@ func (t *NamedType) Equal(u Type) bool {
 func (t *NamedType) String() string {
 	// LocalIdent
 	return t.Name
+}
+
+// Def returns the LLVM syntax representation of the type definition.
+func (t *NamedType) Def() string {
+	// LocalIdent "=" "type" OpaqueType
+	// LocalIdent "=" "type" Type
+	return fmt.Sprintf("%v = type %v", t.Name, t.Type)
 }
 
 // ### [ Helper functions ] ####################################################
@@ -519,7 +526,7 @@ func IsPointer(t Type) bool {
 				panic(fmt.Errorf("cycle detected in named type %q", u.Name))
 			}
 			tname[u.Name] = true
-			t = u.Def
+			t = u.Type
 		default:
 			return false
 		}
