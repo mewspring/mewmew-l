@@ -12,8 +12,8 @@
 
 TypeDef
 	: LocalIdent "=" "type" OpaqueType
-	<< &typed.NamedType{Name: $0.(*ast.LocalIdent).Name, Def: $3.(types.Type)}, nil >>
+	<< &types.NamedType{Name: $0.(*ast.LocalIdent).Name, Def: $3.(types.Type)}, nil >>
 	| LocalIdent "=" "type" Type
-	<< &typed.NamedType{Name: $0.(*ast.LocalIdent).Name, Def: $3.(types.Type)}, nil >>
+	<< &types.NamedType{Name: $0.(*ast.LocalIdent).Name, Def: $3.(types.Type)}, nil >>
 ;
 
