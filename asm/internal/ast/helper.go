@@ -5,8 +5,8 @@ import (
 
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll/types"
 )
 
 // TypeValue is a type-value pair.

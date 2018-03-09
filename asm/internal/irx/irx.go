@@ -3,9 +3,8 @@ package irx
 import (
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
 )
 
 // A Module represents an LLVM IR module generator.
@@ -20,7 +19,7 @@ type Module struct {
 	// maps from local identifier to type definition.
 	localIdent map[string]*types.NamedType
 	// maps from comdat name to comdat definition.
-	comdatName map[string]*ll.ComdatDef
+	comdatName map[string]*ir.ComdatDef
 	// maps from global identifier to global variable, indirect symbol, or
 	// function.
 	//
@@ -68,7 +67,7 @@ func NewModule() *Module {
 		Module: &ir.Module{},
 
 		localIdent:   make(map[string]*types.NamedType),
-		comdatName:   make(map[string]*ll.ComdatDef),
+		comdatName:   make(map[string]*ir.ComdatDef),
 		globalIdent:  make(map[string]interface{}),
 		attrGroupID:  make(map[string]*ir.AttrGroupDef),
 		metadataName: make(map[string]*metadata.NamedMetadataDef),

@@ -8,7 +8,7 @@
 
 GetElementPtrExpr
 	: "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
-	<< &constant.GetElementPtrExpr{InBounds: $1.(bool), ElemType: $3.(types.Type), Src: astx.TypeConst($5, $6), Indices: $8.([]*constant.Index)}, nil >>
+	<< &constant.ExprGetElementPtr{InBounds: $1.(bool), ElemType: $3.(types.Type), Src: astx.TypeConst($5, $6), Indices: $8.([]*constant.Index)}, nil >>
 ;
 
 // ref: ParseGlobalValueVector

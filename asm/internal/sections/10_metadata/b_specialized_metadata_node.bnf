@@ -1164,16 +1164,6 @@ GenericDINodeField
 
 // ### [ Helper productions ] ##################################################
 
-// ref: ParseMDField(DwarfLangField &)
-
-DwarfLang
-	: IntLit
-	<< ll.DwarfLang($0.(int64)), nil >>
-	// DW_LANG_foo
-	| dwarf_lang
-	<< astx.NewDwarfLang($0) >>
-;
-
 FileField
 	: "file:" MDField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
@@ -1184,32 +1174,9 @@ IsOptimizedField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
 ;
 
-EmissionKind
-	: IntLit             << ll.EmissionKind($0.(int64)), nil >>
-	| "FullDebug"        << ll.EmissionKindFullDebug, nil >>
-	| "LineTablesOnly"   << ll.EmissionKindLineTablesOnly, nil >>
-	| "NoDebug"          << ll.EmissionKindNoDebug, nil >>
-;
-
-ChecksumKind
-	// CSK_foo
-	: checksum_kind
-	<< astx.NewChecksumKind($0) >>
-;
-
 TagField
 	: "tag:" DwarfTag
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
-;
-
-// ref: ParseMDField(DwarfTagField &)
-
-DwarfTag
-	: IntLit
-	<< ll.DwarfTag($0.(int64)), nil >>
-	// DW_TAG_foo
-	| dwarf_tag
-	<< astx.NewDwarfTag($0) >>
 ;
 
 NameField
@@ -1227,50 +1194,9 @@ AlignField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
 ;
 
-// ref: ParseMDField(DwarfAttEncodingField &)
-
-DwarfAttEncoding
-	: IntLit
-	<< ll.DwarfAttEncoding($0.(int64)), nil >>
-	// DW_ATE_foo
-	| dwarf_att_encoding
-	<< astx.NewDwarfAttEncoding($0) >>
-;
-
 FlagsField
 	: "flags:" DIFlagList
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
-;
-
-// ref: ParseMDField(DIFlagField &)
-//
-//  ::= uint32
-//  ::= DIFlagVector
-//  ::= DIFlagVector '|' DIFlagFwdDecl '|' uint32 '|' DIFlagPublic
-
-DIFlagList
-	: DIFlag
-	<< []ll.DIFlag{$0.(ll.DIFlag)}, nil >>
-	| DIFlagList "|" DIFlag
-	<< append($0.([]ll.DIFlag), $2.(ll.DIFlag)), nil >>
-;
-
-DIFlag
-	: IntLit
-	<< ll.DIFlag($0.(int64)), nil >>
-	// DIFlagFoo
-	| di_flag
-	<< astx.NewDIFlag($0) >>
-;
-
-// ref: ParseMDField(DwarfCCField &Result)
-
-DwarfCC
-	: IntLit
-	<< ll.DwarfCC($0.(int64)), nil >>
-	// DW_CC_foo
-	| dwarf_cc
-	<< astx.NewDwarfCC($0) >>
 ;
 
 LineField
@@ -1331,39 +1257,13 @@ DeclarationField
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
 ;
 
-// ref: ParseMDField(DwarfVirtualityField &)
-
-DwarfVirtuality
-	: IntLit
-	<< ll.DwarfVirtuality($0.(int64)), nil >>
-	// DW_VIRTUALITY_foo
-	| dwarf_virtuality
-	<< astx.NewDwarfVirtuality($0) >>
-;
-
 ColumnField
 	: "column:" IntLit
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
 ;
 
-DwarfOp
-	// DW_OP_foo
-	: dwarf_op
-	<< astx.NewDwarfOp($0) >>
-;
-
 TypeMacinfoField
 	: "type:" DwarfMacinfo
 	<< &astx.SpecializedMDField{Key: astx.String($0), Value: $1}, nil >>
-;
-
-// ref: ParseMDField(DwarfMacinfoTypeField &)
-
-DwarfMacinfo
-	: IntLit
-	<< ll.DwarfMacinfo($0.(int64)), nil >>
-	// DW_MACINFO_foo
-	| dwarf_macinfo
-	<< astx.NewDwarfMacinfo($0) >>
 ;
 

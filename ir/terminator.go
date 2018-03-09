@@ -5,23 +5,22 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
 )
 
-// === [ Terminator ] ==========================================================
+// === [ Terminators ] =========================================================
 
 // --- [ ret ] -----------------------------------------------------------------
 
-// RetTerm is an LLVM IR ret terminator.
-type RetTerm struct {
+// TermRet is an LLVM IR ret terminator.
+type TermRet struct {
 	X        value.Value // nil if void return
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
-func (term *RetTerm) String() string {
+func (term *TermRet) String() string {
 	// "ret" VoidType OptCommaSepMetadataAttachmentList
 	// "ret" ConcreteType Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -38,8 +37,8 @@ func (term *RetTerm) String() string {
 
 // --- [ br ] ------------------------------------------------------------------
 
-// BrTerm is an unconditional LLVM IR br terminator.
-type BrTerm struct {
+// TermBr is an unconditional LLVM IR br terminator.
+type TermBr struct {
 	// Note, Target is reduced from `LabelType LocalIdent`, and stored during
 	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
 	// Terminator is used to identify AST basic blocks.
@@ -49,7 +48,7 @@ type BrTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *BrTerm) String() string {
+func (term *TermBr) String() string {
 	// "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "br %v", term.Target)
@@ -59,10 +58,8 @@ func (term *BrTerm) String() string {
 	return buf.String()
 }
 
-// --- [ condbr ] --------------------------------------------------------------
-
-// CondBrTerm is a conditional LLVM IR br terminator.
-type CondBrTerm struct {
+// TermCondBr is a conditional LLVM IR br terminator.
+type TermCondBr struct {
 	Cond value.Value
 
 	// Note, TargetTrue is reduced from `LabelType LocalIdent`, and stored during
@@ -80,7 +77,7 @@ type CondBrTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *CondBrTerm) String() string {
+func (term *TermCondBr) String() string {
 	// "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "br %v, %v, %v", term.Cond, term.TargetTrue, term.TargetFalse)
@@ -92,8 +89,8 @@ func (term *CondBrTerm) String() string {
 
 // --- [ switch ] --------------------------------------------------------------
 
-// SwitchTerm is an LLVM IR switch terminator.
-type SwitchTerm struct {
+// TermSwitch is an LLVM IR switch terminator.
+type TermSwitch struct {
 	X value.Value
 
 	// Note, Default is reduced from `LabelType LocalIdent`, and stored during
@@ -106,7 +103,7 @@ type SwitchTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *SwitchTerm) String() string {
+func (term *TermSwitch) String() string {
 	// "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "switch %v, %v [\n", term.X, term.Default)
@@ -139,8 +136,8 @@ func (c *Case) String() string {
 
 // --- [ indirectbr ] ----------------------------------------------------------
 
-// IndirectBrTerm is an LLVM IR indirectbr terminator.
-type IndirectBrTerm struct {
+// TermIndirectBr is an LLVM IR indirectbr terminator.
+type TermIndirectBr struct {
 	Addr value.Value
 
 	// Note, Targets is reduced from `LabelList`, and stored during translation
@@ -152,7 +149,7 @@ type IndirectBrTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *IndirectBrTerm) String() string {
+func (term *TermIndirectBr) String() string {
 	// "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "indirectbr %v, [", term.Addr)
@@ -171,10 +168,10 @@ func (term *IndirectBrTerm) String() string {
 
 // --- [ invoke ] --------------------------------------------------------------
 
-// InvokeTerm is an LLVM IR invoke terminator.
-type InvokeTerm struct {
-	CallingConv ll.CallingConv
-	ReturnAttrs []ll.ReturnAttribute
+// TermInvoke is an LLVM IR invoke terminator.
+type TermInvoke struct {
+	CallingConv CallingConv
+	ReturnAttrs []ReturnAttribute
 	RetType     types.Type
 
 	// Note, the type of Callee is not present in the AST of the invoke
@@ -183,9 +180,9 @@ type InvokeTerm struct {
 	// invoke terminator. A nil Type() is used to identify AST callee values.
 
 	Callee         value.Value
-	Args           []ll.Argument
-	FuncAttrs      []ll.FuncAttribute
-	OperandBundles []*ll.OperandBundle
+	Args           []Argument
+	FuncAttrs      []FuncAttribute
+	OperandBundles []*OperandBundle
 
 	// Note, Normal is reduced from `LabelType LocalIdent`, and stored during
 	// translation as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil
@@ -202,11 +199,11 @@ type InvokeTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *InvokeTerm) String() string {
+func (term *TermInvoke) String() string {
 	// "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("invoke")
-	if term.CallingConv != ll.CallingConvNone {
+	if term.CallingConv != CallingConvNone {
 		fmt.Fprintf(buf, " %v", term.CallingConv)
 	}
 	for _, attr := range term.ReturnAttrs {
@@ -239,14 +236,14 @@ func (term *InvokeTerm) String() string {
 
 // --- [ resume ] --------------------------------------------------------------
 
-// ResumeTerm is an LLVM IR resume terminator.
-type ResumeTerm struct {
+// TermResume is an LLVM IR resume terminator.
+type TermResume struct {
 	X        value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
-func (term *ResumeTerm) String() string {
+func (term *TermResume) String() string {
 	// "resume" Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "resume %v", term.X)
@@ -258,21 +255,21 @@ func (term *ResumeTerm) String() string {
 
 // --- [ catchswitch ] ---------------------------------------------------------
 
-// CatchSwitchTerm is an LLVM IR catchswitch terminator.
-type CatchSwitchTerm struct {
-	Scope ll.ExceptionScope
+// TermCatchSwitch is an LLVM IR catchswitch terminator.
+type TermCatchSwitch struct {
+	Scope ExceptionScope
 
 	// Note, Handlers is reduced from `LabelList`, and stored during translation
 	// as &ir.BasicBlock{Name: name.(*ast.LocalIdent).Name}; a nil Terminator is
 	// used to identify AST basic blocks.
 
 	Handlers     []*BasicBlock
-	UnwindTarget ll.UnwindTarget
+	UnwindTarget UnwindTarget
 	Metadata     []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
-func (term *CatchSwitchTerm) String() string {
+func (term *TermCatchSwitch) String() string {
 	// "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchswitch within %v [", term.Scope)
@@ -291,8 +288,8 @@ func (term *CatchSwitchTerm) String() string {
 
 // --- [ catchret ] ------------------------------------------------------------
 
-// CatchRetTerm is an LLVM IR catchret terminator.
-type CatchRetTerm struct {
+// TermCatchRet is an LLVM IR catchret terminator.
+type TermCatchRet struct {
 	// Note, the type of From is not present in the AST of the catchret
 	// instruction, but has to be resolved by local identifier lookup. A nil
 	// Type() is used to identify AST From values.
@@ -308,7 +305,7 @@ type CatchRetTerm struct {
 }
 
 // String returns a string representation of the terminator.
-func (term *CatchRetTerm) String() string {
+func (term *TermCatchRet) String() string {
 	// "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchret from %v to %v", term.From, term.To)
@@ -320,19 +317,19 @@ func (term *CatchRetTerm) String() string {
 
 // --- [ cleanupret ] ----------------------------------------------------------
 
-// CleanupRetTerm is an LLVM IR cleanupret terminator.
-type CleanupRetTerm struct {
+// TermCleanupRet is an LLVM IR cleanupret terminator.
+type TermCleanupRet struct {
 	// Note, the type of From is not present in the AST of the cleanupret
 	// instruction, but has to be resolved by local identifier lookup. A nil
 	// Type() is used to identify AST From values.
 
 	From         value.Value // cleanuppad
-	UnwindTarget ll.UnwindTarget
+	UnwindTarget UnwindTarget
 	Metadata     []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
-func (term *CleanupRetTerm) String() string {
+func (term *TermCleanupRet) String() string {
 	// "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "cleanupret from %v unwind %v", term.From, term.UnwindTarget)
@@ -344,13 +341,13 @@ func (term *CleanupRetTerm) String() string {
 
 // --- [ unreachable ] ---------------------------------------------------------
 
-// UnreachableTerm is an LLVM IR unreachable terminator.
-type UnreachableTerm struct {
+// TermUnreachable is an LLVM IR unreachable terminator.
+type TermUnreachable struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the terminator.
-func (term *UnreachableTerm) String() string {
+func (term *TermUnreachable) String() string {
 	// "unreachable" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("unreachable")
@@ -358,4 +355,15 @@ func (term *UnreachableTerm) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// ___ [ Helpers ] _____________________________________________________________
+
+// UnwindToCaller specifies the caller as an unwind target.
+type UnwindToCaller struct{}
+
+// String returns a string representation of the unwind target.
+func (*UnwindToCaller) String() string {
+	// "to" "caller"
+	return "to caller"
 }

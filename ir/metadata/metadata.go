@@ -2,15 +2,14 @@ package metadata
 
 import (
 	"fmt"
-	"math/big"
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll/types"
 )
 
-// ~~~ [ Named Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~ [ Named Metadata Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // NamedMetadataDef is a named metadata definition.
 type NamedMetadataDef struct {
@@ -38,7 +37,7 @@ func (md *NamedMetadataDef) Def() string {
 	return buf.String()
 }
 
-// ~~~ [ Standalone Metadata ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~ [ Metadata Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // MetadataDef is a metadata definition.
 type MetadataDef struct {
@@ -89,6 +88,8 @@ func (md *MDTuple) String() string {
 	return buf.String()
 }
 
+// --- [ Metadata Value ] ------------------------------------------------------
+
 // A Value is a metadata value.
 type Value struct {
 	Type  types.Type
@@ -111,41 +112,6 @@ type MDString struct {
 func (md *MDString) String() string {
 	// "!" StringLit
 	return fmt.Sprintf("!%v", enc.Quote(md.Value))
-}
-
-// --- [ Metadata NULL-literal ] -----------------------------------------------
-
-// MDNull is a metadata null literal.
-type MDNull struct{}
-
-// String returns the string representation of the metadata null literal.
-func (md *MDNull) String() string {
-	// "null"
-	return "null"
-}
-
-// --- [ Metadata Integer Literal ] --------------------------------------------
-
-// MDInt is a metadata integer literal.
-type MDInt struct {
-	X *big.Int
-}
-
-// NewMDIntFromString returns a new metadata integer literal based on the given string.
-func NewMDIntFromString(s string) *MDInt {
-	x := &big.Int{}
-	if _, ok := x.SetString(s, 10); !ok {
-		panic(fmt.Errorf("unable to set metadata integer literal %q", s))
-	}
-	return &MDInt{
-		X: x,
-	}
-}
-
-// String returns the string representation of the metadata integer literal.
-func (md *MDInt) String() string {
-	// int_lit
-	return md.X.String()
 }
 
 // --- [ Metadata Attachment ] -------------------------------------------------

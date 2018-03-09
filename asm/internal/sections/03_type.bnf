@@ -102,6 +102,22 @@ PointerType
 	<< &types.PointerType{ElemType: $0.(types.Type), AddrSpace: $1.(types.AddrSpace)}, nil >>
 ;
 
+// ref: ParseOptionalAddrSpace
+//
+//   := empty
+//   := 'addrspace' '(' uint32 ')'
+
+OptAddrSpace
+	: empty
+	<< types.AddrSpace(0), nil >>
+	| AddrSpace
+;
+
+AddrSpace
+	: "addrspace" "(" int_lit ")"
+	<< types.AddrSpace(astx.Int($2)), nil >>
+;
+
 // --- [ Vector Types ] --------------------------------------------------------
 
 // ref: ParseArrayVectorType

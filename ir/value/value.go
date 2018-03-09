@@ -4,7 +4,7 @@ package value
 import (
 	"fmt"
 
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
 
 // Value is an LLVM IR value.

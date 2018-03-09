@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
+
+// === [ Basic Blocks ] ========================================================
 
 // TODO: Handle block.Name when stored as LabelIdent, should print as LocalIdent
 // when used as value.

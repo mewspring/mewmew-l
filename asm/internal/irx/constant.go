@@ -7,7 +7,7 @@ import (
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
 
 // irConstant returns the LLVM IR constant corresponding to the given AST constant.
@@ -16,14 +16,14 @@ func (m *Module) irConstant(old ir.Constant) ir.Constant {
 	// TODO: Add remaning ir.Constant's.
 	case *ast.TypeConst:
 		return m.irTypeConst(old)
-	case *constant.IntConst:
+	case *constant.Int:
 		return m.irIntConst(old)
 	case *ast.GlobalIdent:
 		return m.irGlobal(old)
-	case *constant.BitCastExpr:
+	case *constant.ExprBitCast:
 		return m.irBitCastExpr(old)
-	case *constant.CharArrayConst:
-		c := &constant.CharArrayConst{
+	case *constant.CharArray:
+		c := &constant.CharArray{
 			Value: old.Value,
 		}
 		if old.Typ != nil {
@@ -37,7 +37,7 @@ func (m *Module) irConstant(old ir.Constant) ir.Constant {
 
 // irIntConst returns the LLVM IR integer constant corresponding to the given
 // AST integer constant.
-func (m *Module) irIntConst(old *constant.IntConst) *constant.IntConst {
+func (m *Module) irIntConst(old *constant.Int) *constant.Int {
 	if old.Typ != nil {
 		old.Typ = m.irType(old.Typ).(*types.IntType)
 	}
@@ -54,123 +54,123 @@ func (m *Module) irTypeConst(old *ast.TypeConst) ir.Constant {
 		// Already translated from *ast.GlobalIdent
 		return c
 	// Constants.
-	case *constant.BoolConst:
+	case *constant.Bool:
 		if typ := m.irType(old.Typ); !typ.Equal(types.I1) {
 			panic(fmt.Errorf("invalid boolean constant type; expected %q, got %q", types.I1, typ))
 		}
 		// nothing to do.
-	case *constant.IntConst:
+	case *constant.Int:
 		c.Typ = m.irType(old.Typ).(*types.IntType)
-	case *constant.FloatConst:
+	case *constant.Float:
 		c.Typ = m.irType(old.Typ).(*types.FloatType)
-	case *constant.NullConst:
+	case *constant.Null:
 		if typ := m.irType(old.Typ); !types.IsPointer(typ) {
 			panic(fmt.Errorf("invalid NULL-pointer constant type %q", typ))
 		}
 		// nothing to do.
-	case *constant.NoneConst:
+	case *constant.None:
 		if typ := m.irType(old.Typ); !typ.Equal(types.Token) {
 			panic(fmt.Errorf("invalid none constant type; expected %q, got %q", types.Token, typ))
 		}
 		// nothing to do.
-	case *constant.StructConst:
+	case *constant.Struct:
 		c.Typ = m.irType(old.Typ).(*types.StructType)
-	case *constant.ArrayConst:
+	case *constant.Array:
 		c.Typ = m.irType(old.Typ).(*types.ArrayType)
-	case *constant.CharArrayConst:
+	case *constant.CharArray:
 		pretty.Println("c:", c)
 		c.Typ = m.irType(old.Typ).(*types.ArrayType)
-	case *constant.VectorConst:
+	case *constant.Vector:
 		c.Typ = m.irType(old.Typ).(*types.VectorType)
-	case *constant.ZeroInitializerConst:
+	case *constant.ZeroInitializer:
 		c.Typ = m.irType(old.Typ)
-	case *constant.UndefConst:
+	case *constant.Undef:
 		c.Typ = m.irType(old.Typ)
-	case *constant.BlockAddressConst:
+	case *constant.BlockAddress:
 		if typ := m.irType(old.Typ); !typ.Equal(types.I8Ptr) {
 			panic(fmt.Errorf("invalid block address constant type; expected %q, got %q", types.I8Ptr, typ))
 		}
 		// nothing to do.
 	// Constant expressions.
-	case *constant.AddExpr:
+	case *constant.ExprAdd:
 		// TODO: Validate against X.Type().
-	case *constant.FAddExpr:
+	case *constant.ExprFAdd:
 		// TODO: Validate against X.Type().
-	case *constant.SubExpr:
+	case *constant.ExprSub:
 		// TODO: Validate against X.Type().
-	case *constant.FSubExpr:
+	case *constant.ExprFSub:
 		// TODO: Validate against X.Type().
-	case *constant.MulExpr:
+	case *constant.ExprMul:
 		// TODO: Validate against X.Type().
-	case *constant.FMulExpr:
+	case *constant.ExprFMul:
 		// TODO: Validate against X.Type().
-	case *constant.UDivExpr:
+	case *constant.ExprUDiv:
 		// TODO: Validate against X.Type().
-	case *constant.SDivExpr:
+	case *constant.ExprSDiv:
 		// TODO: Validate against X.Type().
-	case *constant.FDivExpr:
+	case *constant.ExprFDiv:
 		// TODO: Validate against X.Type().
-	case *constant.URemExpr:
+	case *constant.ExprURem:
 		// TODO: Validate against X.Type().
-	case *constant.SRemExpr:
+	case *constant.ExprSRem:
 		// TODO: Validate against X.Type().
-	case *constant.FRemExpr:
+	case *constant.ExprFRem:
 		// TODO: Validate against X.Type().
-	case *constant.ShlExpr:
+	case *constant.ExprShl:
 		// TODO: Validate against X.Type().
-	case *constant.LShrExpr:
+	case *constant.ExprLShr:
 		// TODO: Validate against X.Type().
-	case *constant.AShrExpr:
+	case *constant.ExprAShr:
 		// TODO: Validate against X.Type().
-	case *constant.AndExpr:
+	case *constant.ExprAnd:
 		// TODO: Validate against X.Type().
-	case *constant.OrExpr:
+	case *constant.ExprOr:
 		// TODO: Validate against X.Type().
-	case *constant.XorExpr:
+	case *constant.ExprXor:
 		// TODO: Validate against X.Type().
-	case *constant.ExtractElementExpr:
+	case *constant.ExprExtractElement:
 		// TODO: Figure out how to validate type.
-	case *constant.InsertElementExpr:
+	case *constant.ExprInsertElement:
 		// TODO: Validate against X.Type().
-	case *constant.ShuffleVectorExpr:
+	case *constant.ExprShuffleVector:
 		// TODO: Validate against X.Type().
-	case *constant.ExtractValueExpr:
+	case *constant.ExprExtractValue:
 		// TODO: Figure out how to validate type.
-	case *constant.InsertValueExpr:
+	case *constant.ExprInsertValue:
 		// TODO: Validate against X.Type().
-	case *constant.GetElementPtrExpr:
+	case *constant.ExprGetElementPtr:
 		// TODO: Figure out how to validate type.
-	case *constant.TruncExpr:
+	case *constant.ExprTrunc:
 		// TODO: Validate against To.
-	case *constant.ZExtExpr:
+	case *constant.ExprZExt:
 		// TODO: Validate against To.
-	case *constant.SExtExpr:
+	case *constant.ExprSExt:
 		// TODO: Validate against To.
-	case *constant.FPTruncExpr:
+	case *constant.ExprFPTrunc:
 		// TODO: Validate against To.
-	case *constant.FPExtExpr:
+	case *constant.ExprFPExt:
 		// TODO: Validate against To.
-	case *constant.FPToUIExpr:
+	case *constant.ExprFPToUI:
 		// TODO: Validate against To.
-	case *constant.FPToSIExpr:
+	case *constant.ExprFPToSI:
 		// TODO: Validate against To.
-	case *constant.UIToFPExpr:
+	case *constant.ExprUIToFP:
 		// TODO: Validate against To.
-	case *constant.SIToFPExpr:
+	case *constant.ExprSIToFP:
 		// TODO: Validate against To.
-	case *constant.PtrToIntExpr:
+	case *constant.ExprPtrToInt:
 		// TODO: Validate against To.
-	case *constant.IntToPtrExpr:
+	case *constant.ExprIntToPtr:
 		// TODO: Validate against To.
-	case *constant.BitCastExpr:
+	case *constant.ExprBitCast:
 		// TODO: Validate against To.
-	case *constant.AddrSpaceCastExpr:
+	case *constant.ExprAddrSpaceCast:
 		// TODO: Validate against To.
-	case *constant.ICmpExpr:
+	case *constant.ExprICmp:
 		// TODO: Figure out how to validate type.
-	case *constant.FCmpExpr:
+	case *constant.ExprFCmp:
 		// TODO: Figure out how to validate type.
-	case *constant.SelectExpr:
+	case *constant.ExprSelect:
 		// TODO: Validate against X.Type().
 	default:
 		panic(fmt.Errorf("support for constant type %T not yet implemented", c))

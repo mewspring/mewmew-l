@@ -5,9 +5,8 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
 )
 
 // === [ Instructions ] ========================================================
@@ -34,15 +33,15 @@ func (v *LocalDef) String() string {
 
 // ~~~[ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AddInst is an LLVM IR add instruction.
-type AddInst struct {
-	OverflowFlags []ll.OverflowFlag
+// InstAdd is an LLVM IR add instruction.
+type InstAdd struct {
+	OverflowFlags []OverflowFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AddInst) String() string {
+func (inst *InstAdd) String() string {
 	// "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("add")
@@ -58,15 +57,15 @@ func (inst *AddInst) String() string {
 
 // ~~~[ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FAddInst is an LLVM IR fadd instruction.
-type FAddInst struct {
-	FastMathFlags []ll.FastMathFlag
+// InstFAdd is an LLVM IR fadd instruction.
+type InstFAdd struct {
+	FastMathFlags []FastMathFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FAddInst) String() string {
+func (inst *InstFAdd) String() string {
 	// "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fadd")
@@ -82,15 +81,15 @@ func (inst *FAddInst) String() string {
 
 // ~~~[ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SubInst is an LLVM IR sub instruction.
-type SubInst struct {
-	OverflowFlags []ll.OverflowFlag
+// InstSub is an LLVM IR sub instruction.
+type InstSub struct {
+	OverflowFlags []OverflowFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SubInst) String() string {
+func (inst *InstSub) String() string {
 	// "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("sub")
@@ -106,15 +105,15 @@ func (inst *SubInst) String() string {
 
 // ~~~[ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FSubInst is an LLVM IR fsub instruction.
-type FSubInst struct {
-	FastMathFlags []ll.FastMathFlag
+// InstFSub is an LLVM IR fsub instruction.
+type InstFSub struct {
+	FastMathFlags []FastMathFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FSubInst) String() string {
+func (inst *InstFSub) String() string {
 	// "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fsub")
@@ -130,15 +129,15 @@ func (inst *FSubInst) String() string {
 
 // ~~~[ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// MulInst is an LLVM IR mul instruction.
-type MulInst struct {
-	OverflowFlags []ll.OverflowFlag
+// InstMul is an LLVM IR mul instruction.
+type InstMul struct {
+	OverflowFlags []OverflowFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *MulInst) String() string {
+func (inst *InstMul) String() string {
 	// "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("mul")
@@ -154,15 +153,15 @@ func (inst *MulInst) String() string {
 
 // ~~~[ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FMulInst is an LLVM IR fmul instruction.
-type FMulInst struct {
-	FastMathFlags []ll.FastMathFlag
+// InstFMul is an LLVM IR fmul instruction.
+type InstFMul struct {
+	FastMathFlags []FastMathFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FMulInst) String() string {
+func (inst *InstFMul) String() string {
 	// "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fmul")
@@ -178,15 +177,15 @@ func (inst *FMulInst) String() string {
 
 // ~~~[ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// UDivInst is an LLVM IR udiv instruction.
-type UDivInst struct {
+// InstUDiv is an LLVM IR udiv instruction.
+type InstUDiv struct {
 	Exact    bool
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *UDivInst) String() string {
+func (inst *InstUDiv) String() string {
 	// "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("udiv")
@@ -202,15 +201,15 @@ func (inst *UDivInst) String() string {
 
 // ~~~[ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SDivInst is an LLVM IR sdiv instruction.
-type SDivInst struct {
+// InstSDiv is an LLVM IR sdiv instruction.
+type InstSDiv struct {
 	Exact    bool
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SDivInst) String() string {
+func (inst *InstSDiv) String() string {
 	// "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("sdiv")
@@ -226,15 +225,15 @@ func (inst *SDivInst) String() string {
 
 // ~~~[ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FDivInst is an LLVM IR fdiv instruction.
-type FDivInst struct {
-	FastMathFlags []ll.FastMathFlag
+// InstFDiv is an LLVM IR fdiv instruction.
+type InstFDiv struct {
+	FastMathFlags []FastMathFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FDivInst) String() string {
+func (inst *InstFDiv) String() string {
 	// "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fdiv")
@@ -250,14 +249,14 @@ func (inst *FDivInst) String() string {
 
 // ~~~[ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// URemInst is an LLVM IR urem instruction.
-type URemInst struct {
+// InstURem is an LLVM IR urem instruction.
+type InstURem struct {
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *URemInst) String() string {
+func (inst *InstURem) String() string {
 	// "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "urem %v, %v", inst.X, inst.Y.Ident())
@@ -269,14 +268,14 @@ func (inst *URemInst) String() string {
 
 // ~~~[ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SRemInst is an LLVM IR srem instruction.
-type SRemInst struct {
+// InstSRem is an LLVM IR srem instruction.
+type InstSRem struct {
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SRemInst) String() string {
+func (inst *InstSRem) String() string {
 	// "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "srem %v, %v", inst.X, inst.Y.Ident())
@@ -288,15 +287,15 @@ func (inst *SRemInst) String() string {
 
 // ~~~[ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FRemInst is an LLVM IR frem instruction.
-type FRemInst struct {
-	FastMathFlags []ll.FastMathFlag
+// InstFRem is an LLVM IR frem instruction.
+type InstFRem struct {
+	FastMathFlags []FastMathFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FRemInst) String() string {
+func (inst *InstFRem) String() string {
 	// "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("frem")
@@ -314,15 +313,15 @@ func (inst *FRemInst) String() string {
 
 // ~~~[ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ShlInst is an LLVM IR shl instruction.
-type ShlInst struct {
-	OverflowFlags []ll.OverflowFlag
+// InstShl is an LLVM IR shl instruction.
+type InstShl struct {
+	OverflowFlags []OverflowFlag
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ShlInst) String() string {
+func (inst *InstShl) String() string {
 	// "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("shl")
@@ -338,15 +337,15 @@ func (inst *ShlInst) String() string {
 
 // ~~~[ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// LShrInst is an LLVM IR lshr instruction.
-type LShrInst struct {
+// InstLShr is an LLVM IR lshr instruction.
+type InstLShr struct {
 	Exact    bool
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *LShrInst) String() string {
+func (inst *InstLShr) String() string {
 	// "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("lshr")
@@ -362,15 +361,15 @@ func (inst *LShrInst) String() string {
 
 // ~~~[ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AShrInst is an LLVM IR ashr instruction.
-type AShrInst struct {
+// InstAShr is an LLVM IR ashr instruction.
+type InstAShr struct {
 	Exact    bool
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AShrInst) String() string {
+func (inst *InstAShr) String() string {
 	// "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("ashr")
@@ -386,14 +385,14 @@ func (inst *AShrInst) String() string {
 
 // ~~~[ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AndInst is an LLVM IR and instruction.
-type AndInst struct {
+// InstAnd is an LLVM IR and instruction.
+type InstAnd struct {
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AndInst) String() string {
+func (inst *InstAnd) String() string {
 	// "and" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "and %v, %v", inst.X, inst.Y.Ident())
@@ -405,14 +404,14 @@ func (inst *AndInst) String() string {
 
 // ~~~[ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// OrInst is an LLVM IR or instruction.
-type OrInst struct {
+// InstOr is an LLVM IR or instruction.
+type InstOr struct {
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *OrInst) String() string {
+func (inst *InstOr) String() string {
 	// "or" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "or %v, %v", inst.X, inst.Y.Ident())
@@ -424,14 +423,14 @@ func (inst *OrInst) String() string {
 
 // ~~~[ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// XorInst is an LLVM IR xor instruction.
-type XorInst struct {
+// InstXor is an LLVM IR xor instruction.
+type InstXor struct {
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *XorInst) String() string {
+func (inst *InstXor) String() string {
 	// "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "xor %v, %v", inst.X, inst.Y.Ident())
@@ -445,15 +444,15 @@ func (inst *XorInst) String() string {
 
 // ~~~[ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ExtractElementInst is an LLVM IR extractelement instruction.
-type ExtractElementInst struct {
+// InstExtractElement is an LLVM IR extractelement instruction.
+type InstExtractElement struct {
 	X        value.Value
 	Index    value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ExtractElementInst) String() string {
+func (inst *InstExtractElement) String() string {
 	// "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractelement %v, %v", inst.X, inst.Index)
@@ -465,8 +464,8 @@ func (inst *ExtractElementInst) String() string {
 
 // ~~~[ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// InsertElementInst is an LLVM IR insertelement instruction.
-type InsertElementInst struct {
+// InstInsertElement is an LLVM IR insertelement instruction.
+type InstInsertElement struct {
 	X        value.Value
 	Elem     value.Value
 	Index    value.Value
@@ -474,7 +473,7 @@ type InsertElementInst struct {
 }
 
 // String returns a string representation of the instruction.
-func (inst *InsertElementInst) String() string {
+func (inst *InstInsertElement) String() string {
 	// "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertelement %v, %v, %v", inst.X, inst.Elem, inst.Index)
@@ -486,15 +485,15 @@ func (inst *InsertElementInst) String() string {
 
 // ~~~[ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ShuffleVectorInst is an LLVM IR shufflevector instruction.
-type ShuffleVectorInst struct {
+// InstShuffleVector is an LLVM IR shufflevector instruction.
+type InstShuffleVector struct {
 	X, Y     value.Value
 	Mask     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ShuffleVectorInst) String() string {
+func (inst *InstShuffleVector) String() string {
 	// "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "shufflevector %v, %v, %v", inst.X, inst.Y, inst.Mask)
@@ -508,15 +507,15 @@ func (inst *ShuffleVectorInst) String() string {
 
 // ~~~[ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ExtractValueInst is an LLVM IR extractvalue instruction.
-type ExtractValueInst struct {
+// InstExtractValue is an LLVM IR extractvalue instruction.
+type InstExtractValue struct {
 	X        value.Value
 	Indices  []int64
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ExtractValueInst) String() string {
+func (inst *InstExtractValue) String() string {
 	// "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractvalue %v", inst.X)
@@ -531,8 +530,8 @@ func (inst *ExtractValueInst) String() string {
 
 // ~~~[ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// InsertValueInst is an LLVM IR insertvalue instruction.
-type InsertValueInst struct {
+// InstInsertValue is an LLVM IR insertvalue instruction.
+type InstInsertValue struct {
 	X        value.Value
 	Elem     value.Value
 	Indices  []int64
@@ -540,7 +539,7 @@ type InsertValueInst struct {
 }
 
 // String returns a string representation of the instruction.
-func (inst *InsertValueInst) String() string {
+func (inst *InstInsertValue) String() string {
 	// "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertvalue %v, %v", inst.X, inst.Elem)
@@ -557,19 +556,19 @@ func (inst *InsertValueInst) String() string {
 
 // ~~~[ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AllocaInst is an LLVM IR alloca instruction.
-type AllocaInst struct {
+// InstAlloca is an LLVM IR alloca instruction.
+type InstAlloca struct {
 	InAlloca   bool
 	SwiftError bool
 	ElemType   types.Type
 	NElems     value.Value     // nil if not present
-	Alignment  *ll.Alignment   // nil if not present
+	Alignment  *Alignment      // nil if not present
 	AddrSpace  types.AddrSpace // zero if not present
 	Metadata   []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AllocaInst) String() string {
+func (inst *InstAlloca) String() string {
 	// "alloca" OptInAlloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("alloca")
@@ -597,20 +596,20 @@ func (inst *AllocaInst) String() string {
 
 // ~~~[ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// LoadInst is an LLVM IR load instruction.
-type LoadInst struct {
+// InstLoad is an LLVM IR load instruction.
+type InstLoad struct {
 	Atomic         bool
 	Volatile       bool
 	ElemType       types.Type
 	Src            value.Value
-	SyncScope      *ll.SyncScope     // nil if not present
-	AtomicOrdering ll.AtomicOrdering // zero value if not present
-	Alignment      *ll.Alignment     // nil if not present
+	SyncScope      *SyncScope     // nil if not present
+	AtomicOrdering AtomicOrdering // zero value if not present
+	Alignment      *Alignment     // nil if not present
 	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *LoadInst) String() string {
+func (inst *InstLoad) String() string {
 	// "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -625,7 +624,7 @@ func (inst *LoadInst) String() string {
 	if inst.SyncScope != nil {
 		fmt.Fprintf(buf, " %v", inst.SyncScope)
 	}
-	if inst.AtomicOrdering != ll.AtomicOrderingNone {
+	if inst.AtomicOrdering != AtomicOrderingNone {
 		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
 	}
 	if inst.Alignment != nil {
@@ -639,20 +638,20 @@ func (inst *LoadInst) String() string {
 
 // ~~~[ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// StoreInst is an LLVM IR store instruction.
-type StoreInst struct {
+// InstStore is an LLVM IR store instruction.
+type InstStore struct {
 	Atomic         bool
 	Volatile       bool
 	Src            value.Value
 	Dst            value.Value
-	SyncScope      *ll.SyncScope     // nil if not present
-	AtomicOrdering ll.AtomicOrdering // zero value if not present
-	Alignment      *ll.Alignment     // nil if not present
+	SyncScope      *SyncScope     // nil if not present
+	AtomicOrdering AtomicOrdering // zero value if not present
+	Alignment      *Alignment     // nil if not present
 	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *StoreInst) String() string {
+func (inst *InstStore) String() string {
 	// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -667,7 +666,7 @@ func (inst *StoreInst) String() string {
 	if inst.SyncScope != nil {
 		fmt.Fprintf(buf, " %v", inst.SyncScope)
 	}
-	if inst.AtomicOrdering != ll.AtomicOrderingNone {
+	if inst.AtomicOrdering != AtomicOrderingNone {
 		fmt.Fprintf(buf, " %v", inst.AtomicOrdering)
 	}
 	if inst.Alignment != nil {
@@ -681,15 +680,15 @@ func (inst *StoreInst) String() string {
 
 // ~~~[ fence ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FenceInst is an LLVM IR fence instruction.
-type FenceInst struct {
-	SyncScope      *ll.SyncScope // nil if not present
-	AtomicOrdering ll.AtomicOrdering
+// InstFence is an LLVM IR fence instruction.
+type InstFence struct {
+	SyncScope      *SyncScope // nil if not present
+	AtomicOrdering AtomicOrdering
 	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FenceInst) String() string {
+func (inst *InstFence) String() string {
 	// "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fence")
@@ -705,21 +704,21 @@ func (inst *FenceInst) String() string {
 
 // ~~~[ cmpxchg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// CmpXchgInst is an LLVM IR cmpxchg instruction.
-type CmpXchgInst struct {
+// InstCmpXchg is an LLVM IR cmpxchg instruction.
+type InstCmpXchg struct {
 	Weak      bool
 	Volatile  bool
 	Ptr       value.Value
 	Cmp       value.Value
 	New       value.Value
-	SyncScope *ll.SyncScope // nil if not present
-	Success   ll.AtomicOrdering
-	Failure   ll.AtomicOrdering
+	SyncScope *SyncScope // nil if not present
+	Success   AtomicOrdering
+	Failure   AtomicOrdering
 	Metadata  []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *CmpXchgInst) String() string {
+func (inst *InstCmpXchg) String() string {
 	// "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("cmpxchg")
@@ -743,19 +742,19 @@ func (inst *CmpXchgInst) String() string {
 
 // ~~~[ atomicrmw ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AtomicRMWInst is an LLVM IR atomicrmw instruction.
-type AtomicRMWInst struct {
+// InstAtomicRMW is an LLVM IR atomicrmw instruction.
+type InstAtomicRMW struct {
 	Volatile       bool
-	Op             ll.BinOp
+	Op             BinOp
 	Ptr            value.Value
 	X              value.Value
-	SyncScope      *ll.SyncScope // nil if not present
-	AtomicOrdering ll.AtomicOrdering
+	SyncScope      *SyncScope // nil if not present
+	AtomicOrdering AtomicOrdering
 	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AtomicRMWInst) String() string {
+func (inst *InstAtomicRMW) String() string {
 	// "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("atomicrmw")
@@ -773,10 +772,30 @@ func (inst *AtomicRMWInst) String() string {
 	return buf.String()
 }
 
+//go:generate stringer -linecomment -type BinOp
+
+// BinOp is an AtomicRMW binary operation.
+type BinOp uint8
+
+// AtomicRMW binary operations.
+const (
+	BinOpAdd  BinOp = iota // add
+	BinOpAnd               // and
+	BinOpMax               // max
+	BinOpMin               // min
+	BinOpNAnd              // nand
+	BinOpOr                // or
+	BinOpSub               // sub
+	BinOpUMax              // umax
+	BinOpUMin              // umin
+	BinOpXChg              // xchg
+	BinOpXor               // xor
+)
+
 // ~~~[ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// GetElementPtrInst is an LLVM IR getelementptr instruction.
-type GetElementPtrInst struct {
+// InstGetElementPtr is an LLVM IR getelementptr instruction.
+type InstGetElementPtr struct {
 	InBounds bool
 	ElemType types.Type
 	Src      value.Value
@@ -785,7 +804,7 @@ type GetElementPtrInst struct {
 }
 
 // String returns a string representation of the instruction.
-func (inst *GetElementPtrInst) String() string {
+func (inst *InstGetElementPtr) String() string {
 	// "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("getelementptr")
@@ -806,15 +825,15 @@ func (inst *GetElementPtrInst) String() string {
 
 // ~~~[ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// TruncInst is an LLVM IR trunc instruction.
-type TruncInst struct {
+// InstTrunc is an LLVM IR trunc instruction.
+type InstTrunc struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *TruncInst) String() string {
+func (inst *InstTrunc) String() string {
 	// "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "trunc %v to %v", inst.From, inst.To)
@@ -826,15 +845,15 @@ func (inst *TruncInst) String() string {
 
 // ~~~[ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ZExtInst is an LLVM IR zext instruction.
-type ZExtInst struct {
+// InstZExt is an LLVM IR zext instruction.
+type InstZExt struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ZExtInst) String() string {
+func (inst *InstZExt) String() string {
 	// "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "zext %v to %v", inst.From, inst.To)
@@ -846,15 +865,15 @@ func (inst *ZExtInst) String() string {
 
 // ~~~[ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SExtInst is an LLVM IR sext instruction.
-type SExtInst struct {
+// InstSExt is an LLVM IR sext instruction.
+type InstSExt struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SExtInst) String() string {
+func (inst *InstSExt) String() string {
 	// "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sext %v to %v", inst.From, inst.To)
@@ -866,15 +885,15 @@ func (inst *SExtInst) String() string {
 
 // ~~~[ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPTruncInst is an LLVM IR fptrunc instruction.
-type FPTruncInst struct {
+// InstFPTrunc is an LLVM IR fptrunc instruction.
+type InstFPTrunc struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FPTruncInst) String() string {
+func (inst *InstFPTrunc) String() string {
 	// "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptrunc %v to %v", inst.From, inst.To)
@@ -886,15 +905,15 @@ func (inst *FPTruncInst) String() string {
 
 // ~~~[ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPExtInst is an LLVM IR fpext instruction.
-type FPExtInst struct {
+// InstFPExt is an LLVM IR fpext instruction.
+type InstFPExt struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FPExtInst) String() string {
+func (inst *InstFPExt) String() string {
 	// "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fpext %v to %v", inst.From, inst.To)
@@ -906,15 +925,15 @@ func (inst *FPExtInst) String() string {
 
 // ~~~[ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPToUIInst is an LLVM IR fptoui instruction.
-type FPToUIInst struct {
+// InstFPToUI is an LLVM IR fptoui instruction.
+type InstFPToUI struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FPToUIInst) String() string {
+func (inst *InstFPToUI) String() string {
 	// "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptoui %v to %v", inst.From, inst.To)
@@ -926,15 +945,15 @@ func (inst *FPToUIInst) String() string {
 
 // ~~~[ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPToSIInst is an LLVM IR fptosi instruction.
-type FPToSIInst struct {
+// InstFPToSI is an LLVM IR fptosi instruction.
+type InstFPToSI struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FPToSIInst) String() string {
+func (inst *InstFPToSI) String() string {
 	// "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptosi %v to %v", inst.From, inst.To)
@@ -946,15 +965,15 @@ func (inst *FPToSIInst) String() string {
 
 // ~~~[ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// UIToFPInst is an LLVM IR uitofp instruction.
-type UIToFPInst struct {
+// InstUIToFP is an LLVM IR uitofp instruction.
+type InstUIToFP struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *UIToFPInst) String() string {
+func (inst *InstUIToFP) String() string {
 	// "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "uitofp %v to %v", inst.From, inst.To)
@@ -966,15 +985,15 @@ func (inst *UIToFPInst) String() string {
 
 // ~~~[ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SIToFPInst is an LLVM IR sitofp instruction.
-type SIToFPInst struct {
+// InstSIToFP is an LLVM IR sitofp instruction.
+type InstSIToFP struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SIToFPInst) String() string {
+func (inst *InstSIToFP) String() string {
 	// "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sitofp %v to %v", inst.From, inst.To)
@@ -986,15 +1005,15 @@ func (inst *SIToFPInst) String() string {
 
 // ~~~[ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// PtrToIntInst is an LLVM IR ptrtoint instruction.
-type PtrToIntInst struct {
+// InstPtrToInt is an LLVM IR ptrtoint instruction.
+type InstPtrToInt struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *PtrToIntInst) String() string {
+func (inst *InstPtrToInt) String() string {
 	// "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "ptrtoint %v to %v", inst.From, inst.To)
@@ -1006,15 +1025,15 @@ func (inst *PtrToIntInst) String() string {
 
 // ~~~[ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// IntToPtrInst is an LLVM IR inttoptr instruction.
-type IntToPtrInst struct {
+// InstIntToPtr is an LLVM IR inttoptr instruction.
+type InstIntToPtr struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *IntToPtrInst) String() string {
+func (inst *InstIntToPtr) String() string {
 	// "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "inttoptr %v to %v", inst.From, inst.To)
@@ -1026,15 +1045,15 @@ func (inst *IntToPtrInst) String() string {
 
 // ~~~[ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// BitCastInst is an LLVM IR bitcast instruction.
-type BitCastInst struct {
+// InstBitCast is an LLVM IR bitcast instruction.
+type InstBitCast struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *BitCastInst) String() string {
+func (inst *InstBitCast) String() string {
 	// "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "bitcast %v to %v", inst.From, inst.To)
@@ -1046,15 +1065,15 @@ func (inst *BitCastInst) String() string {
 
 // ~~~[ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AddrSpaceCastInst is an LLVM IR addrspacecast instruction.
-type AddrSpaceCastInst struct {
+// InstAddrSpaceCast is an LLVM IR addrspacecast instruction.
+type InstAddrSpaceCast struct {
 	From     value.Value
 	To       types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *AddrSpaceCastInst) String() string {
+func (inst *InstAddrSpaceCast) String() string {
 	// "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "addrspacecast %v to %v", inst.From, inst.To)
@@ -1068,15 +1087,15 @@ func (inst *AddrSpaceCastInst) String() string {
 
 // ~~~[ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ICmpInst is an LLVM IR icmp instruction.
-type ICmpInst struct {
-	Pred     ll.IPred
+// InstICmp is an LLVM IR icmp instruction.
+type InstICmp struct {
+	Pred     IPred
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *ICmpInst) String() string {
+func (inst *InstICmp) String() string {
 	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Ident())
@@ -1088,16 +1107,16 @@ func (inst *ICmpInst) String() string {
 
 // ~~~[ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FCmpInst is an LLVM IR fcmp instruction.
-type FCmpInst struct {
-	FastMathFlags []ll.FastMathFlag
-	Pred          ll.FPred
+// InstFCmp is an LLVM IR fcmp instruction.
+type InstFCmp struct {
+	FastMathFlags []FastMathFlag
+	Pred          FPred
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *FCmpInst) String() string {
+func (inst *InstFCmp) String() string {
 	// "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fcmp")
@@ -1113,15 +1132,15 @@ func (inst *FCmpInst) String() string {
 
 // ~~~[ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// PhiInst is an LLVM IR phi instruction.
-type PhiInst struct {
+// InstPhi is an LLVM IR phi instruction.
+type InstPhi struct {
 	Type     types.Type
 	Incs     []*Incoming
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *PhiInst) String() string {
+func (inst *InstPhi) String() string {
 	// "phi" Type IncList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "phi %v ", inst.Type)
@@ -1162,15 +1181,15 @@ func (inc *Incoming) String() string {
 
 // ~~~[ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SelectInst is an LLVM IR select instruction.
-type SelectInst struct {
+// InstSelect is an LLVM IR select instruction.
+type InstSelect struct {
 	Cond     value.Value
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *SelectInst) String() string {
+func (inst *InstSelect) String() string {
 	// "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "select %v, %v, %v", inst.Cond, inst.X, inst.Y)
@@ -1182,12 +1201,12 @@ func (inst *SelectInst) String() string {
 
 // ~~~[ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// CallInst is an LLVM IR call instruction.
-type CallInst struct {
-	Tail          ll.Tail
-	FastMathFlags []ll.FastMathFlag
-	CallingConv   ll.CallingConv
-	ReturnAttrs   []ll.ReturnAttribute
+// InstCall is an LLVM IR call instruction.
+type InstCall struct {
+	Tail          Tail
+	FastMathFlags []FastMathFlag
+	CallingConv   CallingConv
+	ReturnAttrs   []ReturnAttribute
 	RetType       types.Type
 
 	// Note, the type of Callee is not present in the AST of the call
@@ -1196,24 +1215,24 @@ type CallInst struct {
 	// call instruction. A nil Type() is used to identify AST callee values.
 
 	Callee         value.Value
-	Args           []ll.Argument
-	FuncAttrs      []ll.FuncAttribute
-	OperandBundles []*ll.OperandBundle
+	Args           []Argument
+	FuncAttrs      []FuncAttribute
+	OperandBundles []*OperandBundle
 	Metadata       []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *CallInst) String() string {
+func (inst *InstCall) String() string {
 	// OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	if inst.Tail != ll.TailNone {
+	if inst.Tail != TailNone {
 		fmt.Fprintf(buf, "%v ", inst.Tail)
 	}
 	buf.WriteString("call")
 	for _, flag := range inst.FastMathFlags {
 		fmt.Fprintf(buf, " %v", flag)
 	}
-	if inst.CallingConv != ll.CallingConvNone {
+	if inst.CallingConv != CallingConvNone {
 		fmt.Fprintf(buf, " %v", inst.CallingConv)
 	}
 	for _, attr := range inst.ReturnAttrs {
@@ -1243,17 +1262,30 @@ func (inst *CallInst) String() string {
 	return buf.String()
 }
 
+//go:generate stringer -linecomment -type Tail
+
+// Tail is a tail call attribute.
+type Tail uint8
+
+// Tail call attributes.
+const (
+	TailNone     Tail = iota // none
+	TailMustTail             // musttail
+	TailNoTail               // notail
+	TailTail                 // tail
+)
+
 // ~~~[ vaarg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// VAArgInst is an LLVM IR vaarg instruction.
-type VAArgInst struct {
+// InstVAArg is an LLVM IR vaarg instruction.
+type InstVAArg struct {
 	ArgList  value.Value
 	ArgType  types.Type
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *VAArgInst) String() string {
+func (inst *InstVAArg) String() string {
 	// "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "va_arg %v, %v", inst.ArgList, inst.ArgType)
@@ -1265,8 +1297,8 @@ func (inst *VAArgInst) String() string {
 
 // ~~~[ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// LandingPadInst is an LLVM IR landingpad instruction.
-type LandingPadInst struct {
+// InstLandingPad is an LLVM IR landingpad instruction.
+type InstLandingPad struct {
 	Type     types.Type
 	Cleanup  bool
 	Clauses  []*Clause
@@ -1274,7 +1306,7 @@ type LandingPadInst struct {
 }
 
 // String returns a string representation of the instruction.
-func (inst *LandingPadInst) String() string {
+func (inst *InstLandingPad) String() string {
 	// "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "landingpad %v", inst.Type)
@@ -1312,20 +1344,20 @@ func (clause *Clause) String() string {
 
 // ~~~[ catchpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// CatchPadInst is an LLVM IR catchpad instruction.
-type CatchPadInst struct {
+// InstCatchPad is an LLVM IR catchpad instruction.
+type InstCatchPad struct {
 	// Note, Scope is of type *ast.LocalIdent in the AST.
 
 	// Exception scope.
 	Scope value.Value
 	// Exception arguments.
-	Args []ll.Argument
+	Args []Argument
 	// Metadata attachments.
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *CatchPadInst) String() string {
+func (inst *InstCatchPad) String() string {
 	// "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchpad within %v [", inst.Scope)
@@ -1344,15 +1376,15 @@ func (inst *CatchPadInst) String() string {
 
 // ~~~[ cleanuppad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// CleanupPadInst is an LLVM IR cleanuppad instruction.
-type CleanupPadInst struct {
-	Scope    ll.ExceptionScope
-	Args     []ll.Argument
+// InstCleanupPad is an LLVM IR cleanuppad instruction.
+type InstCleanupPad struct {
+	Scope    ExceptionScope
+	Args     []Argument
 	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns a string representation of the instruction.
-func (inst *CleanupPadInst) String() string {
+func (inst *InstCleanupPad) String() string {
 	// "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "cleanuppad within %v [", inst.Scope)

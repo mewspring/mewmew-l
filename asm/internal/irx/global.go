@@ -5,9 +5,7 @@ import (
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir"
-	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 	"github.com/rickypai/natsort"
 )
 
@@ -84,45 +82,20 @@ func (m *Module) resolveGlobal(old *ir.Global, g *ir.Global) {
 		ElemType: g.ContentType,
 	}
 	if old.Init != nil {
-		// TODO: Set type of g.Iint from g.ContentType?
+		// TODO: Set type of g.Init from g.ContentType?
 		g.Init = m.irConstant(old.Init)
 	}
-	g.GlobalAttrs = m.irGlobalAttrs(old.GlobalAttrs)
+	g.Section = old.Section
+	g.Comdat = old.Comdat
+	g.Align = old.Align
+	g.Metadata = m.irMetadataAttachments(old.Metadata)
 	g.FuncAttrs = m.irFuncAttrs(old.FuncAttrs)
-}
-
-// irGlobalAttrs returns the LLVM IR global attributes corresponding to the
-// given AST global attributes.
-func (m *Module) irGlobalAttrs(old []ll.GlobalAttribute) []ll.GlobalAttribute {
-	var attrs []ll.GlobalAttribute
-	for i := range old {
-		attr := m.irGlobalAttr(old[i])
-		attrs = append(attrs, attr)
-	}
-	return attrs
-}
-
-// irGlobalAttr returns the LLVM IR global attribute corresponding to the given
-// AST global attribute.
-func (m *Module) irGlobalAttr(old ll.GlobalAttribute) ll.GlobalAttribute {
-	switch old := old.(type) {
-	case *ll.Section:
-		return old
-	case *ll.Comdat:
-		return old
-	case *ll.Alignment:
-		return old
-	case *metadata.MetadataAttachment:
-		return m.irMetadataAttachment(old)
-	default:
-		panic(fmt.Errorf("support for global attribute type %T not yet implemented", old))
-	}
 }
 
 // irFuncAttrs returns the LLVM IR function attributes corresponding to the
 // given AST function attributes.
-func (m *Module) irFuncAttrs(old []ll.FuncAttribute) []ll.FuncAttribute {
-	var attrs []ll.FuncAttribute
+func (m *Module) irFuncAttrs(old []ir.FuncAttribute) []ir.FuncAttribute {
+	var attrs []ir.FuncAttribute
 	for i := range old {
 		attr := m.irFuncAttr(old[i])
 		attrs = append(attrs, attr)
@@ -132,21 +105,21 @@ func (m *Module) irFuncAttrs(old []ll.FuncAttribute) []ll.FuncAttribute {
 
 // irFuncAttr returns the LLVM IR function attribute corresponding to the given
 // AST function attribute.
-func (m *Module) irFuncAttr(old ll.FuncAttribute) ll.FuncAttribute {
+func (m *Module) irFuncAttr(old ir.FuncAttribute) ir.FuncAttribute {
 	switch old := old.(type) {
 	case *ast.AttrGroupID:
 		return m.attrGroupDefs[old.ID]
-	case *ll.Alignment:
+	case *ir.Alignment:
 		return old
-	case *ll.AllocSize:
+	case *ir.AllocSize:
 		return old
-	case *ll.StackAlignment:
+	case *ir.StackAlignment:
 		return old
-	case *ll.FuncAttrString:
+	case *ir.FuncAttrString:
 		return old
-	case *ll.FuncAttrPair:
+	case *ir.FuncAttrPair:
 		return old
-	case ll.FuncAttr:
+	case ir.FuncAttr:
 		return old
 	default:
 		panic(fmt.Errorf("support for global attribute type %T not yet implemented", old))

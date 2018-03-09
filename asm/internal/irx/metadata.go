@@ -5,7 +5,6 @@ import (
 
 	"github.com/mewmew/l/asm/internal/ast"
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ll"
 	"github.com/rickypai/natsort"
 )
 
@@ -97,7 +96,7 @@ func (m *Module) irDIExpressionField(old metadata.DIExpressionField) metadata.DI
 	switch old := old.(type) {
 	case *metadata.MDInt:
 		return old
-	case ll.DwarfOp:
+	case metadata.DwarfOp:
 		return old
 	default:
 		panic(fmt.Errorf("support for DIExpression field type %T not yet implemented", old))
@@ -433,6 +432,17 @@ func (m *Module) irSpecializedMDNode(old metadata.SpecializedMDNode) metadata.Sp
 	default:
 		panic(fmt.Errorf("support for specialized metadata node type %T not yet implemented", old))
 	}
+}
+
+// irMetadataAttachments returns the LLVM IR metadata attachments corresponding
+// to the given AST metadata attachments.
+func (m *Module) irMetadataAttachments(old []*metadata.MetadataAttachment) []*metadata.MetadataAttachment {
+	var mds []*metadata.MetadataAttachment
+	for i := range old {
+		md := m.irMetadataAttachment(old[i])
+		mds = append(mds, md)
+	}
+	return mds
 }
 
 // irMetadataAttachment returns the LLVM IR metadata attachment corresponding to

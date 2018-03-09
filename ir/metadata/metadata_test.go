@@ -2,7 +2,6 @@ package metadata_test
 
 import (
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ll"
 )
 
 // Ensure that each metadata field implements the metadata.MDField interface.
@@ -115,7 +114,7 @@ var (
 var (
 	// DIExpressionField
 	_ metadata.DIExpressionField = (*metadata.MDInt)(nil)
-	_ metadata.DIExpressionField = ll.DwarfOp(0)
+	_ metadata.DIExpressionField = metadata.DwarfOp(0)
 )
 
 // Ensure that each specialized metadata node implements the

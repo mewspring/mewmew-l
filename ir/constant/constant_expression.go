@@ -5,8 +5,7 @@ import (
 	"strings"
 
 	"github.com/mewmew/l/ir"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
 
 // === [ Constant expressions ] ================================================
@@ -15,25 +14,25 @@ import (
 
 // ~~~ [ add ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AddExpr is an LLVM IR add expression.
-type AddExpr struct {
-	OverflowFlags []ll.OverflowFlag
+// ExprAdd is an LLVM IR add expression.
+type ExprAdd struct {
+	OverflowFlags []ir.OverflowFlag
 	X, Y          ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *AddExpr) String() string {
+func (c *ExprAdd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *AddExpr) Type() types.Type {
+func (c *ExprAdd) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *AddExpr) Ident() string {
+func (c *ExprAdd) Ident() string {
 	// "add" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("add")
@@ -46,49 +45,49 @@ func (c *AddExpr) Ident() string {
 
 // ~~~ [ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FAddExpr is an LLVM IR fadd expression.
-type FAddExpr struct {
+// ExprFAdd is an LLVM IR fadd expression.
+type ExprFAdd struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FAddExpr) String() string {
+func (c *ExprFAdd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FAddExpr) Type() types.Type {
+func (c *ExprFAdd) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FAddExpr) Ident() string {
+func (c *ExprFAdd) Ident() string {
 	// "fadd" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fadd (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SubExpr is an LLVM IR sub expression.
-type SubExpr struct {
-	OverflowFlags []ll.OverflowFlag
+// ExprSub is an LLVM IR sub expression.
+type ExprSub struct {
+	OverflowFlags []ir.OverflowFlag
 	X, Y          ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SubExpr) String() string {
+func (c *ExprSub) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SubExpr) Type() types.Type {
+func (c *ExprSub) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SubExpr) Ident() string {
+func (c *ExprSub) Ident() string {
 	// "sub" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("sub")
@@ -101,49 +100,49 @@ func (c *SubExpr) Ident() string {
 
 // ~~~ [ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FSubExpr is an LLVM IR fsub expression.
-type FSubExpr struct {
+// ExprFSub is an LLVM IR fsub expression.
+type ExprFSub struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FSubExpr) String() string {
+func (c *ExprFSub) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FSubExpr) Type() types.Type {
+func (c *ExprFSub) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FSubExpr) Ident() string {
+func (c *ExprFSub) Ident() string {
 	// "fsub" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fsub (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// MulExpr is an LLVM IR mul expression.
-type MulExpr struct {
-	OverflowFlags []ll.OverflowFlag
+// ExprMul is an LLVM IR mul expression.
+type ExprMul struct {
+	OverflowFlags []ir.OverflowFlag
 	X, Y          ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *MulExpr) String() string {
+func (c *ExprMul) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *MulExpr) Type() types.Type {
+func (c *ExprMul) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *MulExpr) Ident() string {
+func (c *ExprMul) Ident() string {
 	// "mul" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("mul")
@@ -156,49 +155,49 @@ func (c *MulExpr) Ident() string {
 
 // ~~~ [ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FMulExpr is an LLVM IR fmul expression.
-type FMulExpr struct {
+// ExprFMul is an LLVM IR fmul expression.
+type ExprFMul struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FMulExpr) String() string {
+func (c *ExprFMul) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FMulExpr) Type() types.Type {
+func (c *ExprFMul) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FMulExpr) Ident() string {
+func (c *ExprFMul) Ident() string {
 	// "fmul" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fmul (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// UDivExpr is an LLVM IR udiv expression.
-type UDivExpr struct {
+// ExprUDiv is an LLVM IR udiv expression.
+type ExprUDiv struct {
 	Exact bool
 	X, Y  ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *UDivExpr) String() string {
+func (c *ExprUDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *UDivExpr) Type() types.Type {
+func (c *ExprUDiv) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *UDivExpr) Ident() string {
+func (c *ExprUDiv) Ident() string {
 	// "udiv" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("udiv")
@@ -211,25 +210,25 @@ func (c *UDivExpr) Ident() string {
 
 // ~~~ [ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SDivExpr is an LLVM IR sdiv expression.
-type SDivExpr struct {
+// ExprSDiv is an LLVM IR sdiv expression.
+type ExprSDiv struct {
 	Exact bool
 	X, Y  ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SDivExpr) String() string {
+func (c *ExprSDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SDivExpr) Type() types.Type {
+func (c *ExprSDiv) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SDivExpr) Ident() string {
+func (c *ExprSDiv) Ident() string {
 	// "sdiv" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("sdiv")
@@ -242,96 +241,96 @@ func (c *SDivExpr) Ident() string {
 
 // ~~~ [ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FDivExpr is an LLVM IR fdiv expression.
-type FDivExpr struct {
+// ExprFDiv is an LLVM IR fdiv expression.
+type ExprFDiv struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FDivExpr) String() string {
+func (c *ExprFDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FDivExpr) Type() types.Type {
+func (c *ExprFDiv) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FDivExpr) Ident() string {
+func (c *ExprFDiv) Ident() string {
 	// "fdiv" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fdiv (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// URemExpr is an LLVM IR urem expression.
-type URemExpr struct {
+// ExprURem is an LLVM IR urem expression.
+type ExprURem struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *URemExpr) String() string {
+func (c *ExprURem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *URemExpr) Type() types.Type {
+func (c *ExprURem) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *URemExpr) Ident() string {
+func (c *ExprURem) Ident() string {
 	// "urem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("urem (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SRemExpr is an LLVM IR srem expression.
-type SRemExpr struct {
+// ExprSRem is an LLVM IR srem expression.
+type ExprSRem struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SRemExpr) String() string {
+func (c *ExprSRem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SRemExpr) Type() types.Type {
+func (c *ExprSRem) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SRemExpr) Ident() string {
+func (c *ExprSRem) Ident() string {
 	// "srem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("srem (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FRemExpr is an LLVM IR frem expression.
-type FRemExpr struct {
+// ExprFRem is an LLVM IR frem expression.
+type ExprFRem struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FRemExpr) String() string {
+func (c *ExprFRem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FRemExpr) Type() types.Type {
+func (c *ExprFRem) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FRemExpr) Ident() string {
+func (c *ExprFRem) Ident() string {
 	// "frem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("frem (%v, %v)", c.X, c.Y)
 }
@@ -340,25 +339,25 @@ func (c *FRemExpr) Ident() string {
 
 // ~~~ [ shl ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ShlExpr is an LLVM IR shl expression.
-type ShlExpr struct {
-	OverflowFlags []ll.OverflowFlag
+// ExprShl is an LLVM IR shl expression.
+type ExprShl struct {
+	OverflowFlags []ir.OverflowFlag
 	X, Y          ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ShlExpr) String() string {
+func (c *ExprShl) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ShlExpr) Type() types.Type {
+func (c *ExprShl) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ShlExpr) Ident() string {
+func (c *ExprShl) Ident() string {
 	// "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("shl")
@@ -371,25 +370,25 @@ func (c *ShlExpr) Ident() string {
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// LShrExpr is an LLVM IR lshr expression.
-type LShrExpr struct {
+// ExprLShr is an LLVM IR lshr expression.
+type ExprLShr struct {
 	Exact bool
 	X, Y  ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *LShrExpr) String() string {
+func (c *ExprLShr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *LShrExpr) Type() types.Type {
+func (c *ExprLShr) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *LShrExpr) Ident() string {
+func (c *ExprLShr) Ident() string {
 	// "lshr" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("lshr")
@@ -402,25 +401,25 @@ func (c *LShrExpr) Ident() string {
 
 // ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AShrExpr is an LLVM IR ashr expression.
-type AShrExpr struct {
+// ExprAShr is an LLVM IR ashr expression.
+type ExprAShr struct {
 	Exact bool
 	X, Y  ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *AShrExpr) String() string {
+func (c *ExprAShr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *AShrExpr) Type() types.Type {
+func (c *ExprAShr) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *AShrExpr) Ident() string {
+func (c *ExprAShr) Ident() string {
 	// "ashr" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
 	buf.WriteString("ashr")
@@ -433,72 +432,72 @@ func (c *AShrExpr) Ident() string {
 
 // ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AndExpr is an LLVM IR and expression.
-type AndExpr struct {
+// ExprAnd is an LLVM IR and expression.
+type ExprAnd struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *AndExpr) String() string {
+func (c *ExprAnd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *AndExpr) Type() types.Type {
+func (c *ExprAnd) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *AndExpr) Ident() string {
+func (c *ExprAnd) Ident() string {
 	// "and" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("and (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// OrExpr is an LLVM IR or expression.
-type OrExpr struct {
+// ExprOr is an LLVM IR or expression.
+type ExprOr struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *OrExpr) String() string {
+func (c *ExprOr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *OrExpr) Type() types.Type {
+func (c *ExprOr) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *OrExpr) Ident() string {
+func (c *ExprOr) Ident() string {
 	// "or" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("or (%v, %v)", c.X, c.Y)
 }
 
 // ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// XorExpr is an LLVM IR xor expression.
-type XorExpr struct {
+// ExprXor is an LLVM IR xor expression.
+type ExprXor struct {
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *XorExpr) String() string {
+func (c *ExprXor) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *XorExpr) Type() types.Type {
+func (c *ExprXor) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *XorExpr) Ident() string {
+func (c *ExprXor) Ident() string {
 	// "xor" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("xor (%v, %v)", c.X, c.Y)
 }
@@ -507,33 +506,33 @@ func (c *XorExpr) Ident() string {
 
 // ~~~ [ extractelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ExtractElementExpr is an LLVM IR extractelement expression.
-type ExtractElementExpr struct {
+// ExprExtractElement is an LLVM IR extractelement expression.
+type ExprExtractElement struct {
 	X     ir.Constant
 	Index ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ExtractElementExpr) String() string {
+func (c *ExprExtractElement) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ExtractElementExpr) Type() types.Type {
+func (c *ExprExtractElement) Type() types.Type {
 	panic("constant.ExtractElementExpr.Type: not yet implemented")
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ExtractElementExpr) Ident() string {
+func (c *ExprExtractElement) Ident() string {
 	// "extractelement" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("extractelement (%v, %v)", c.X, c.Index)
 }
 
 // ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// InsertElementExpr is an LLVM IR insertelement expression.
-type InsertElementExpr struct {
+// ExprInsertElement is an LLVM IR insertelement expression.
+type ExprInsertElement struct {
 	X     ir.Constant
 	Elem  ir.Constant
 	Index ir.Constant
@@ -541,42 +540,42 @@ type InsertElementExpr struct {
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *InsertElementExpr) String() string {
+func (c *ExprInsertElement) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *InsertElementExpr) Type() types.Type {
+func (c *ExprInsertElement) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *InsertElementExpr) Ident() string {
+func (c *ExprInsertElement) Ident() string {
 	// "insertelement" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("insertelement (%v, %v, %v)", c.X, c.Elem, c.Index)
 }
 
 // ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ShuffleVectorExpr is an LLVM IR shufflevector expression.
-type ShuffleVectorExpr struct {
+// ExprShuffleVector is an LLVM IR shufflevector expression.
+type ExprShuffleVector struct {
 	X, Y ir.Constant
 	Mask ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ShuffleVectorExpr) String() string {
+func (c *ExprShuffleVector) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ShuffleVectorExpr) Type() types.Type {
+func (c *ExprShuffleVector) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ShuffleVectorExpr) Ident() string {
+func (c *ExprShuffleVector) Ident() string {
 	// "shufflevector" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("shufflevector (%v, %v, %v)", c.X, c.Y, c.Mask)
 }
@@ -585,25 +584,25 @@ func (c *ShuffleVectorExpr) Ident() string {
 
 // ~~~ [ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ExtractValueExpr is an LLVM IR extractvalue expression.
-type ExtractValueExpr struct {
+// ExprExtractValue is an LLVM IR extractvalue expression.
+type ExprExtractValue struct {
 	X       ir.Constant
 	Indices []int64
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ExtractValueExpr) String() string {
+func (c *ExprExtractValue) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ExtractValueExpr) Type() types.Type {
+func (c *ExprExtractValue) Type() types.Type {
 	panic("constant.ExtractValueExpr.Type: not yet implemented")
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ExtractValueExpr) Ident() string {
+func (c *ExprExtractValue) Ident() string {
 	// "extractvalue" "(" Type Constant Indices ")"
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractvalue (%v", c.X)
@@ -616,8 +615,8 @@ func (c *ExtractValueExpr) Ident() string {
 
 // ~~~ [ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// InsertValueExpr is an LLVM IR insertvalue expression.
-type InsertValueExpr struct {
+// ExprInsertValue is an LLVM IR insertvalue expression.
+type ExprInsertValue struct {
 	X       ir.Constant
 	Elem    ir.Constant
 	Indices []int64
@@ -625,17 +624,17 @@ type InsertValueExpr struct {
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *InsertValueExpr) String() string {
+func (c *ExprInsertValue) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *InsertValueExpr) Type() types.Type {
+func (c *ExprInsertValue) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *InsertValueExpr) Ident() string {
+func (c *ExprInsertValue) Ident() string {
 	// "insertvalue" "(" Type Constant "," Type Constant Indices ")"
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertvalue (%v, %v", c.X, c.Elem)
@@ -650,8 +649,8 @@ func (c *InsertValueExpr) Ident() string {
 
 // ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// GetElementPtrExpr is an LLVM IR getelementptr expression.
-type GetElementPtrExpr struct {
+// ExprGetElementPtr is an LLVM IR getelementptr expression.
+type ExprGetElementPtr struct {
 	Typ      *types.PointerType
 	InBounds bool
 	ElemType types.Type
@@ -661,17 +660,17 @@ type GetElementPtrExpr struct {
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *GetElementPtrExpr) String() string {
+func (c *ExprGetElementPtr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *GetElementPtrExpr) Type() types.Type {
+func (c *ExprGetElementPtr) Type() types.Type {
 	return c.Typ
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *GetElementPtrExpr) Ident() string {
+func (c *ExprGetElementPtr) Ident() string {
 	// "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
 	buf := &strings.Builder{}
 	buf.WriteString("getelementptr")
@@ -705,325 +704,325 @@ func (index *Index) String() string {
 
 // ~~~ [ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// TruncExpr is an LLVM IR trunc expression.
-type TruncExpr struct {
+// ExprTrunc is an LLVM IR trunc expression.
+type ExprTrunc struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *TruncExpr) String() string {
+func (c *ExprTrunc) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *TruncExpr) Type() types.Type {
+func (c *ExprTrunc) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *TruncExpr) Ident() string {
+func (c *ExprTrunc) Ident() string {
 	// "trunc" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("trunc (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ZExtExpr is an LLVM IR zext expression.
-type ZExtExpr struct {
+// ExprZExt is an LLVM IR zext expression.
+type ExprZExt struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ZExtExpr) String() string {
+func (c *ExprZExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ZExtExpr) Type() types.Type {
+func (c *ExprZExt) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ZExtExpr) Ident() string {
+func (c *ExprZExt) Ident() string {
 	// "zext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("zext (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SExtExpr is an LLVM IR sext expression.
-type SExtExpr struct {
+// ExprSExt is an LLVM IR sext expression.
+type ExprSExt struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SExtExpr) String() string {
+func (c *ExprSExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SExtExpr) Type() types.Type {
+func (c *ExprSExt) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SExtExpr) Ident() string {
+func (c *ExprSExt) Ident() string {
 	// "sext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("sext (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPTruncExpr is an LLVM IR fptrunc expression.
-type FPTruncExpr struct {
+// ExprFPTrunc is an LLVM IR fptrunc expression.
+type ExprFPTrunc struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FPTruncExpr) String() string {
+func (c *ExprFPTrunc) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FPTruncExpr) Type() types.Type {
+func (c *ExprFPTrunc) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FPTruncExpr) Ident() string {
+func (c *ExprFPTrunc) Ident() string {
 	// "fptrunc" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptrunc (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPExtExpr is an LLVM IR fpext expression.
-type FPExtExpr struct {
+// ExprFPExt is an LLVM IR fpext expression.
+type ExprFPExt struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FPExtExpr) String() string {
+func (c *ExprFPExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FPExtExpr) Type() types.Type {
+func (c *ExprFPExt) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FPExtExpr) Ident() string {
+func (c *ExprFPExt) Ident() string {
 	// "fpext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fpext (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPToUIExpr is an LLVM IR fptoui expression.
-type FPToUIExpr struct {
+// ExprFPToUI is an LLVM IR fptoui expression.
+type ExprFPToUI struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FPToUIExpr) String() string {
+func (c *ExprFPToUI) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FPToUIExpr) Type() types.Type {
+func (c *ExprFPToUI) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FPToUIExpr) Ident() string {
+func (c *ExprFPToUI) Ident() string {
 	// "fptoui" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptoui (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FPToSIExpr is an LLVM IR fptosi expression.
-type FPToSIExpr struct {
+// ExprFPToSI is an LLVM IR fptosi expression.
+type ExprFPToSI struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FPToSIExpr) String() string {
+func (c *ExprFPToSI) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FPToSIExpr) Type() types.Type {
+func (c *ExprFPToSI) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FPToSIExpr) Ident() string {
+func (c *ExprFPToSI) Ident() string {
 	// "fptosi" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptosi (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// UIToFPExpr is an LLVM IR uitofp expression.
-type UIToFPExpr struct {
+// ExprUIToFP is an LLVM IR uitofp expression.
+type ExprUIToFP struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *UIToFPExpr) String() string {
+func (c *ExprUIToFP) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *UIToFPExpr) Type() types.Type {
+func (c *ExprUIToFP) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *UIToFPExpr) Ident() string {
+func (c *ExprUIToFP) Ident() string {
 	// "uitofp" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("uitofp (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SIToFPExpr is an LLVM IR sitofp expression.
-type SIToFPExpr struct {
+// ExprSIToFP is an LLVM IR sitofp expression.
+type ExprSIToFP struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SIToFPExpr) String() string {
+func (c *ExprSIToFP) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SIToFPExpr) Type() types.Type {
+func (c *ExprSIToFP) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SIToFPExpr) Ident() string {
+func (c *ExprSIToFP) Ident() string {
 	// "sitofp" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("sitofp (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// PtrToIntExpr is an LLVM IR ptrtoint expression.
-type PtrToIntExpr struct {
+// ExprPtrToInt is an LLVM IR ptrtoint expression.
+type ExprPtrToInt struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *PtrToIntExpr) String() string {
+func (c *ExprPtrToInt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *PtrToIntExpr) Type() types.Type {
+func (c *ExprPtrToInt) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *PtrToIntExpr) Ident() string {
+func (c *ExprPtrToInt) Ident() string {
 	// "ptrtoint" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("ptrtoint (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// IntToPtrExpr is an LLVM IR inttoptr expression.
-type IntToPtrExpr struct {
+// ExprIntToPtr is an LLVM IR inttoptr expression.
+type ExprIntToPtr struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *IntToPtrExpr) String() string {
+func (c *ExprIntToPtr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *IntToPtrExpr) Type() types.Type {
+func (c *ExprIntToPtr) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *IntToPtrExpr) Ident() string {
+func (c *ExprIntToPtr) Ident() string {
 	// "inttoptr" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("inttoptr (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// BitCastExpr is an LLVM IR bitcast expression.
-type BitCastExpr struct {
+// ExprBitCast is an LLVM IR bitcast expression.
+type ExprBitCast struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *BitCastExpr) String() string {
+func (c *ExprBitCast) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *BitCastExpr) Type() types.Type {
+func (c *ExprBitCast) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *BitCastExpr) Ident() string {
+func (c *ExprBitCast) Ident() string {
 	// "bitcast" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("bitcast (%v to %v)", c.From, c.To)
 }
 
 // ~~~ [ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// AddrSpaceCastExpr is an LLVM IR addrspacecast expression.
-type AddrSpaceCastExpr struct {
+// ExprAddrSpaceCast is an LLVM IR addrspacecast expression.
+type ExprAddrSpaceCast struct {
 	From ir.Constant
 	To   types.Type
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *AddrSpaceCastExpr) String() string {
+func (c *ExprAddrSpaceCast) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *AddrSpaceCastExpr) Type() types.Type {
+func (c *ExprAddrSpaceCast) Type() types.Type {
 	return c.To
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *AddrSpaceCastExpr) Ident() string {
+func (c *ExprAddrSpaceCast) Ident() string {
 	// "addrspacecast" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("addrspacecast (%v to %v)", c.From, c.To)
 }
@@ -1032,75 +1031,75 @@ func (c *AddrSpaceCastExpr) Ident() string {
 
 // ~~~ [ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// ICmpExpr is an LLVM IR icmp expression.
-type ICmpExpr struct {
-	Pred ll.IPred
+// ExprICmp is an LLVM IR icmp expression.
+type ExprICmp struct {
+	Pred ir.IPred
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *ICmpExpr) String() string {
+func (c *ExprICmp) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *ICmpExpr) Type() types.Type {
+func (c *ExprICmp) Type() types.Type {
 	panic("constant.ICmpExpr.Type: not yet implemented")
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *ICmpExpr) Ident() string {
+func (c *ExprICmp) Ident() string {
 	// "icmp" IPred "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("icmp %v (%v, %v)", c.Pred, c.X, c.Y)
 }
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// FCmpExpr is an LLVM IR fcmp expression.
-type FCmpExpr struct {
-	Pred ll.FPred
+// ExprFCmp is an LLVM IR fcmp expression.
+type ExprFCmp struct {
+	Pred ir.FPred
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *FCmpExpr) String() string {
+func (c *ExprFCmp) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *FCmpExpr) Type() types.Type {
+func (c *ExprFCmp) Type() types.Type {
 	panic("constant.FCmpExpr.Type: not yet implemented")
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *FCmpExpr) Ident() string {
+func (c *ExprFCmp) Ident() string {
 	// "fcmp" FPred "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fcmp %v (%v, %v)", c.Pred, c.X, c.Y)
 }
 
 // ~~~ [ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// SelectExpr is an LLVM IR select expression.
-type SelectExpr struct {
+// ExprSelect is an LLVM IR select expression.
+type ExprSelect struct {
 	Cond ir.Constant
 	X, Y ir.Constant
 }
 
 // String returns the string representation of the constant expression as a
 // type-value pair.
-func (c *SelectExpr) String() string {
+func (c *ExprSelect) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
 // Type returns the type of the bitcast expression.
-func (c *SelectExpr) Type() types.Type {
+func (c *ExprSelect) Type() types.Type {
 	return c.X.Type()
 }
 
 // Ident returns the identifier associated with the bitcast expression.
-func (c *SelectExpr) Ident() string {
+func (c *ExprSelect) Ident() string {
 	// "select" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("select (%v, %v, %v)", c.Cond, c.X, c.Y)
 }

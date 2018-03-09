@@ -8,6 +8,6 @@
 
 AttrGroupDef
 	: "attributes" AttrGroupID "=" "{" FuncAttrs "}"
-	<< &ir.AttrGroupDef{ID: $1.(*ast.AttrGroupID).ID, FuncAttrs: $4.([]ll.FuncAttribute)}, nil >>
+	<< &ir.AttrGroupDef{ID: $1.(*ast.AttrGroupID).ID, FuncAttrs: $4.([]ir.FuncAttribute)}, nil >>
 ;
 

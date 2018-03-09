@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ll"
 )
 
 // NewDICompileUnit returns a new DICompileUnit specialized metadata node.
@@ -12,7 +11,7 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*metadata.DICompileUnit, er
 	m := getMDFieldMap(fields)
 	node := &metadata.DICompileUnit{}
 	if v, ok := m["language:"]; ok {
-		node.Language = v.(ll.DwarfLang)
+		node.Language = v.(metadata.DwarfLang)
 	}
 	if v, ok := m["file:"]; ok {
 		node.File = v.(metadata.MDField)
@@ -33,7 +32,7 @@ func NewDICompileUnit(fields []*SpecializedMDField) (*metadata.DICompileUnit, er
 		node.SplitDebugFilename = v.(string)
 	}
 	if v, ok := m["emissionKind:"]; ok {
-		node.EmissionKind = v.(ll.EmissionKind)
+		node.EmissionKind = v.(metadata.EmissionKind)
 	}
 	if v, ok := m["enums:"]; ok {
 		node.Enums = v.(metadata.MDField)
@@ -76,7 +75,7 @@ func NewDIFile(fields []*SpecializedMDField) (*metadata.DIFile, error) {
 		node.Directory = v.(string)
 	}
 	if v, ok := m["checksumkind:"]; ok {
-		node.Checksumkind = v.(ll.ChecksumKind)
+		node.Checksumkind = v.(metadata.ChecksumKind)
 	}
 	if v, ok := m["checksum:"]; ok {
 		node.Checksum = v.(string)
@@ -89,7 +88,7 @@ func NewDIBasicType(fields []*SpecializedMDField) (*metadata.DIBasicType, error)
 	m := getMDFieldMap(fields)
 	node := &metadata.DIBasicType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -101,7 +100,7 @@ func NewDIBasicType(fields []*SpecializedMDField) (*metadata.DIBasicType, error)
 		node.Align = v.(int64)
 	}
 	if v, ok := m["encoding:"]; ok {
-		node.Encoding = v.(ll.DwarfAttEncoding)
+		node.Encoding = v.(metadata.DwarfAttEncoding)
 	}
 	return node, nil
 }
@@ -111,10 +110,10 @@ func NewDISubroutineType(fields []*SpecializedMDField) (*metadata.DISubroutineTy
 	m := getMDFieldMap(fields)
 	node := &metadata.DISubroutineType{}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ll.DIFlag)
+		node.Flags = v.([]metadata.DIFlag)
 	}
 	if v, ok := m["cc:"]; ok {
-		node.CC = v.(ll.DwarfCC)
+		node.CC = v.(metadata.DwarfCC)
 	}
 	if v, ok := m["types:"]; ok {
 		node.Types = v.(metadata.MDField)
@@ -127,7 +126,7 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*metadata.DIDerivedType, er
 	m := getMDFieldMap(fields)
 	node := &metadata.DIDerivedType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -154,7 +153,7 @@ func NewDIDerivedType(fields []*SpecializedMDField) (*metadata.DIDerivedType, er
 		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ll.DIFlag)
+		node.Flags = v.([]metadata.DIFlag)
 	}
 	if v, ok := m["extraData:"]; ok {
 		node.ExtraData = v.(metadata.MDField)
@@ -170,7 +169,7 @@ func NewDICompositeType(fields []*SpecializedMDField) (*metadata.DICompositeType
 	m := getMDFieldMap(fields)
 	node := &metadata.DICompositeType{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -197,13 +196,13 @@ func NewDICompositeType(fields []*SpecializedMDField) (*metadata.DICompositeType
 		node.Offset = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ll.DIFlag)
+		node.Flags = v.([]metadata.DIFlag)
 	}
 	if v, ok := m["elements:"]; ok {
 		node.Elements = v.(metadata.MDField)
 	}
 	if v, ok := m["runtimeLang:"]; ok {
-		node.RuntimeLang = v.(ll.DwarfLang)
+		node.RuntimeLang = v.(metadata.DwarfLang)
 	}
 	if v, ok := m["vtableHolder:"]; ok {
 		node.VtableHolder = v.(metadata.MDField)
@@ -269,7 +268,7 @@ func NewDITemplateValueParameter(fields []*SpecializedMDField) (*metadata.DITemp
 	m := getMDFieldMap(fields)
 	node := &metadata.DITemplateValueParameter{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["name:"]; ok {
 		node.Name = v.(string)
@@ -393,7 +392,7 @@ func NewDISubprogram(fields []*SpecializedMDField) (*metadata.DISubprogram, erro
 		node.ContainingType = v.(metadata.MDField)
 	}
 	if v, ok := m["virtuality:"]; ok {
-		node.Virtuality = v.(ll.DwarfVirtuality)
+		node.Virtuality = v.(metadata.DwarfVirtuality)
 	}
 	if v, ok := m["virtualIndex:"]; ok {
 		node.VirtualIndex = v.(int64)
@@ -402,7 +401,7 @@ func NewDISubprogram(fields []*SpecializedMDField) (*metadata.DISubprogram, erro
 		node.ThisAdjustment = v.(int64)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ll.DIFlag)
+		node.Flags = v.([]metadata.DIFlag)
 	}
 	if v, ok := m["isOptimized:"]; ok {
 		node.IsOptimized = v.(bool)
@@ -503,7 +502,7 @@ func NewDILocalVariable(fields []*SpecializedMDField) (*metadata.DILocalVariable
 		node.Type = v.(metadata.MDField)
 	}
 	if v, ok := m["flags:"]; ok {
-		node.Flags = v.([]ll.DIFlag)
+		node.Flags = v.([]metadata.DIFlag)
 	}
 	if v, ok := m["align:"]; ok {
 		node.Align = v.(int64)
@@ -558,7 +557,7 @@ func NewDIImportedEntity(fields []*SpecializedMDField) (*metadata.DIImportedEnti
 	m := getMDFieldMap(fields)
 	node := &metadata.DIImportedEntity{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["scope:"]; ok {
 		node.Scope = v.(metadata.MDField)
@@ -583,7 +582,7 @@ func NewDIMacro(fields []*SpecializedMDField) (*metadata.DIMacro, error) {
 	m := getMDFieldMap(fields)
 	node := &metadata.DIMacro{}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ll.DwarfMacinfo)
+		node.Type = v.(metadata.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -602,7 +601,7 @@ func NewDIMacroFile(fields []*SpecializedMDField) (*metadata.DIMacroFile, error)
 	m := getMDFieldMap(fields)
 	node := &metadata.DIMacroFile{}
 	if v, ok := m["type:"]; ok {
-		node.Type = v.(ll.DwarfMacinfo)
+		node.Type = v.(metadata.DwarfMacinfo)
 	}
 	if v, ok := m["line:"]; ok {
 		node.Line = v.(int64)
@@ -621,7 +620,7 @@ func NewGenericDINode(fields []*SpecializedMDField) (*metadata.GenericDINode, er
 	m := getMDFieldMap(fields)
 	node := &metadata.GenericDINode{}
 	if v, ok := m["tag:"]; ok {
-		node.Tag = v.(ll.DwarfTag)
+		node.Tag = v.(metadata.DwarfTag)
 	}
 	if v, ok := m["header:"]; ok {
 		node.Header = v.(string)

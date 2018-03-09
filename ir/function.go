@@ -6,15 +6,14 @@ import (
 
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // A Function is an LLVM IR function.
 type Function struct {
-	Linkage ll.Linkage
+	Linkage Linkage
 	*FunctionHeader
 	*FunctionBody // nil if declaration
 	Metadata      []*metadata.MetadataAttachment
@@ -52,7 +51,7 @@ func (f *Function) Def() string {
 		for _, md := range f.Metadata {
 			fmt.Fprintf(buf, " %v", md)
 		}
-		if f.Linkage != ll.LinkageNone {
+		if f.Linkage != LinkageNone {
 			fmt.Fprintf(buf, " %v", f.Linkage)
 		}
 		buf.WriteString(f.FunctionHeader.String())
@@ -62,7 +61,7 @@ func (f *Function) Def() string {
 	//
 	//    "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 	buf.WriteString("define")
-	if f.Linkage != ll.LinkageNone {
+	if f.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", f.Linkage)
 	}
 	buf.WriteString(f.FunctionHeader.String())
@@ -75,23 +74,23 @@ func (f *Function) Def() string {
 
 // FunctionHeader is the header of an LLVM IR function.
 type FunctionHeader struct {
-	Preemption      ll.Preemption      // zero value if not present
-	Visibility      ll.Visibility      // zero value if not present
-	DLLStorageClass ll.DLLStorageClass // zero value if not present
-	CallingConv     ll.CallingConv     // zero value if not present
-	ReturnAttrs     []ll.ReturnAttribute
+	Preemption      Preemption      // zero value if not present
+	Visibility      Visibility      // zero value if not present
+	DLLStorageClass DLLStorageClass // zero value if not present
+	CallingConv     CallingConv     // zero value if not present
+	ReturnAttrs     []ReturnAttribute
 	RetType         types.Type
 	Name            string // *GlobalIdent
-	Params          []*ll.Param
+	Params          []*Param
 	Variadic        bool
-	UnnamedAddr     ll.UnnamedAddr
-	FuncAttrs       []ll.FuncAttribute
-	Section         *ll.Section // nil if not present
-	Comdat          *ll.Comdat  // nil if not present
-	GC              string      // empty if not present
-	Prefix          Constant    // *TypeConst; nil if not present
-	Prologue        Constant    // *TypeConst; nil if not present
-	Personality     Constant    // *TypeConst; nil if not present
+	UnnamedAddr     UnnamedAddr
+	FuncAttrs       []FuncAttribute
+	Section         *Section // nil if not present
+	Comdat          *Comdat  // nil if not present
+	GC              string   // empty if not present
+	Prefix          Constant // *TypeConst; nil if not present
+	Prologue        Constant // *TypeConst; nil if not present
+	Personality     Constant // *TypeConst; nil if not present
 }
 
 // String returns the string representation of the function header.
@@ -100,16 +99,16 @@ func (hdr *FunctionHeader) String() string {
 	// ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs
 	// OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
 	buf := &strings.Builder{}
-	if hdr.Preemption != ll.PreemptionNone {
+	if hdr.Preemption != PreemptionNone {
 		fmt.Fprintf(buf, " %v", hdr.Preemption)
 	}
-	if hdr.Visibility != ll.VisibilityNone {
+	if hdr.Visibility != VisibilityNone {
 		fmt.Fprintf(buf, " %v", hdr.Visibility)
 	}
-	if hdr.DLLStorageClass != ll.DLLStorageClassNone {
+	if hdr.DLLStorageClass != DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", hdr.DLLStorageClass)
 	}
-	if hdr.CallingConv != ll.CallingConvNone {
+	if hdr.CallingConv != CallingConvNone {
 		fmt.Fprintf(buf, " %v", hdr.CallingConv)
 	}
 	for _, attr := range hdr.ReturnAttrs {
@@ -130,7 +129,7 @@ func (hdr *FunctionHeader) String() string {
 		buf.WriteString("...")
 	}
 	buf.WriteString(")")
-	if hdr.UnnamedAddr != ll.UnnamedAddrNone {
+	if hdr.UnnamedAddr != UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", hdr.UnnamedAddr)
 	}
 	for _, attr := range hdr.FuncAttrs {
@@ -159,8 +158,7 @@ func (hdr *FunctionHeader) String() string {
 
 // FunctionBody is the body of an LLVM IR function.
 type FunctionBody struct {
-	Blocks []*BasicBlock
-	// TODO: refine UseListOrders to include *ir.UseListOrderBB using sumtype.
+	Blocks        []*BasicBlock
 	UseListOrders []*UseListOrder
 }
 

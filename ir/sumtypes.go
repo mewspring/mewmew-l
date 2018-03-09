@@ -6,17 +6,28 @@ import (
 	"github.com/mewmew/l/ir/value"
 )
 
+// --- [ ast.TopLevelEntity ] --------------------------------------------------
+
 // IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
 func (*SourceFilename) IsTopLevelEntity() {}
 func (*TargetTriple) IsTopLevelEntity()   {}
 func (*DataLayout) IsTopLevelEntity()     {}
+func (*ModuleAsm) IsTopLevelEntity()      {}
+
+//func (*types.NamedType) IsTopLevelEntity() {}
+func (*ComdatDef) IsTopLevelEntity()      {}
 func (*Global) IsTopLevelEntity()         {}
 func (*IndirectSymbol) IsTopLevelEntity() {}
 func (*Function) IsTopLevelEntity()       {}
 func (*AttrGroupDef) IsTopLevelEntity()   {}
+
+//func (*metadata.NamedMetadataDef) IsTopLevelEntity() {}
+//func (*metadata.MetadataDef) IsTopLevelEntity()      {}
 func (*UseListOrder) IsTopLevelEntity()   {}
 func (*UseListOrderBB) IsTopLevelEntity() {}
+
+// --- [ ir.Constant ] ---------------------------------------------------------
 
 // A Constant is an LLVM IR constant.
 type Constant interface {
@@ -28,12 +39,68 @@ type Constant interface {
 
 // IsConstant ensures that only constants can be assigned to the
 // ir.Constant interface.
-func (*Global) IsConstant()   {}
+func (*Global) IsConstant() {}
+
+//func (*IndirectSymbol) IsConstant() {}?
 func (*Function) IsConstant() {}
+
+// --- [ ir.ReturnAttribute ] --------------------------------------------------
+
+// ReturnAttribute is a return argument attribute.
+type ReturnAttribute interface {
+	fmt.Stringer
+	// isReturnAttribute ensures that only return argument attributes can be
+	// assigned to the ast.ReturnAttribute interface.
+	isReturnAttribute()
+}
+
+// isReturnAttribute ensures that only return argument attributes can be
+// assigned to the ast.ReturnAttribute interface.
+func (*Alignment) isReturnAttribute()        {}
+func (*Dereferenceable) isReturnAttribute()  {}
+func (*ReturnAttrString) isReturnAttribute() {}
+func (ReturnAttr) isReturnAttribute()        {}
+
+// --- [ ir.FuncAttribute ] ----------------------------------------------------
+
+// FuncAttribute is a function attribute.
+type FuncAttribute interface {
+	fmt.Stringer
+	// IsFuncAttribute ensures that only function attributes can be assigned to
+	// the ast.FuncAttribute interface.
+	IsFuncAttribute()
+}
 
 // IsFuncAttribute ensures that only function attributes can be assigned to the
 // ast.FuncAttribute interface.
 func (*AttrGroupDef) IsFuncAttribute() {}
+
+//func (*AttrGroupID) IsFuncAttribute() {}
+func (*Alignment) IsFuncAttribute()      {}
+func (*AllocSize) IsFuncAttribute()      {}
+func (*StackAlignment) IsFuncAttribute() {}
+func (*FuncAttrString) IsFuncAttribute() {}
+func (*FuncAttrPair) IsFuncAttribute()   {}
+func (FuncAttr) IsFuncAttribute()        {}
+
+// --- [ ir.ParamAttribute ] ---------------------------------------------------
+
+// ParamAttribute is a parameter attribute.
+type ParamAttribute interface {
+	fmt.Stringer
+	// isParamAttribute ensures that only parameter attributes can be assigned to
+	// the ast.ParamAttribute interface.
+	isParamAttribute()
+}
+
+// isParamAttribute ensures that only parameter attributes can be assigned to
+// the ast.ParamAttribute interface.
+func (*Alignment) isParamAttribute()       {}
+func (*Dereferenceable) isParamAttribute() {}
+func (*ParamAttrString) isParamAttribute() {}
+func (ParamAttr) isParamAttribute()        {}
+
+// --- [ ir.Instruction ] ------------------------------------------------------
 
 // An Instruction is an LLVM IR instruction.
 type Instruction interface {
@@ -45,11 +112,13 @@ type Instruction interface {
 
 // IsInstruction ensures that only instructions can be assigned to the
 // ast.Instruction interface.
-func (*StoreInst) IsInstruction()     {}
-func (*FenceInst) IsInstruction()     {}
-func (*CmpXchgInst) IsInstruction()   {}
-func (*AtomicRMWInst) IsInstruction() {}
+func (*InstStore) IsInstruction()     {}
+func (*InstFence) IsInstruction()     {}
+func (*InstCmpXchg) IsInstruction()   {}
+func (*InstAtomicRMW) IsInstruction() {}
 func (*LocalDef) IsInstruction()      {}
+
+// --- [ ir.ValueInstruction ] -------------------------------------------------
 
 // A ValueInstruction is an instruction which produces a value.
 type ValueInstruction interface {
@@ -62,54 +131,76 @@ type ValueInstruction interface {
 
 // IsValueInstruction ensures that only value instructions can be assigned to
 // the ir.ValueInstruction interface.
-func (*AddInst) IsValueInstruction()            {}
-func (*FAddInst) IsValueInstruction()           {}
-func (*SubInst) IsValueInstruction()            {}
-func (*FSubInst) IsValueInstruction()           {}
-func (*MulInst) IsValueInstruction()            {}
-func (*FMulInst) IsValueInstruction()           {}
-func (*UDivInst) IsValueInstruction()           {}
-func (*SDivInst) IsValueInstruction()           {}
-func (*FDivInst) IsValueInstruction()           {}
-func (*URemInst) IsValueInstruction()           {}
-func (*SRemInst) IsValueInstruction()           {}
-func (*FRemInst) IsValueInstruction()           {}
-func (*ShlInst) IsValueInstruction()            {}
-func (*LShrInst) IsValueInstruction()           {}
-func (*AShrInst) IsValueInstruction()           {}
-func (*AndInst) IsValueInstruction()            {}
-func (*OrInst) IsValueInstruction()             {}
-func (*XorInst) IsValueInstruction()            {}
-func (*ExtractElementInst) IsValueInstruction() {}
-func (*InsertElementInst) IsValueInstruction()  {}
-func (*ShuffleVectorInst) IsValueInstruction()  {}
-func (*ExtractValueInst) IsValueInstruction()   {}
-func (*InsertValueInst) IsValueInstruction()    {}
-func (*AllocaInst) IsValueInstruction()         {}
-func (*LoadInst) IsValueInstruction()           {}
-func (*GetElementPtrInst) IsValueInstruction()  {}
-func (*TruncInst) IsValueInstruction()          {}
-func (*ZExtInst) IsValueInstruction()           {}
-func (*SExtInst) IsValueInstruction()           {}
-func (*FPTruncInst) IsValueInstruction()        {}
-func (*FPExtInst) IsValueInstruction()          {}
-func (*FPToUIInst) IsValueInstruction()         {}
-func (*FPToSIInst) IsValueInstruction()         {}
-func (*UIToFPInst) IsValueInstruction()         {}
-func (*SIToFPInst) IsValueInstruction()         {}
-func (*PtrToIntInst) IsValueInstruction()       {}
-func (*IntToPtrInst) IsValueInstruction()       {}
-func (*BitCastInst) IsValueInstruction()        {}
-func (*AddrSpaceCastInst) IsValueInstruction()  {}
-func (*ICmpInst) IsValueInstruction()           {}
-func (*FCmpInst) IsValueInstruction()           {}
-func (*PhiInst) IsValueInstruction()            {}
-func (*SelectInst) IsValueInstruction()         {}
-func (*CallInst) IsValueInstruction()           {}
-func (*VAArgInst) IsValueInstruction()          {}
-func (*LandingPadInst) IsValueInstruction()     {}
-func (*CatchPadInst) IsValueInstruction()       {}
-func (*CleanupPadInst) IsValueInstruction()     {}
+func (*InstAdd) IsValueInstruction()            {}
+func (*InstFAdd) IsValueInstruction()           {}
+func (*InstSub) IsValueInstruction()            {}
+func (*InstFSub) IsValueInstruction()           {}
+func (*InstMul) IsValueInstruction()            {}
+func (*InstFMul) IsValueInstruction()           {}
+func (*InstUDiv) IsValueInstruction()           {}
+func (*InstSDiv) IsValueInstruction()           {}
+func (*InstFDiv) IsValueInstruction()           {}
+func (*InstURem) IsValueInstruction()           {}
+func (*InstSRem) IsValueInstruction()           {}
+func (*InstFRem) IsValueInstruction()           {}
+func (*InstShl) IsValueInstruction()            {}
+func (*InstLShr) IsValueInstruction()           {}
+func (*InstAShr) IsValueInstruction()           {}
+func (*InstAnd) IsValueInstruction()            {}
+func (*InstOr) IsValueInstruction()             {}
+func (*InstXor) IsValueInstruction()            {}
+func (*InstExtractElement) IsValueInstruction() {}
+func (*InstInsertElement) IsValueInstruction()  {}
+func (*InstShuffleVector) IsValueInstruction()  {}
+func (*InstExtractValue) IsValueInstruction()   {}
+func (*InstInsertValue) IsValueInstruction()    {}
+func (*InstAlloca) IsValueInstruction()         {}
+func (*InstLoad) IsValueInstruction()           {}
+func (*InstGetElementPtr) IsValueInstruction()  {}
+func (*InstTrunc) IsValueInstruction()          {}
+func (*InstZExt) IsValueInstruction()           {}
+func (*InstSExt) IsValueInstruction()           {}
+func (*InstFPTrunc) IsValueInstruction()        {}
+func (*InstFPExt) IsValueInstruction()          {}
+func (*InstFPToUI) IsValueInstruction()         {}
+func (*InstFPToSI) IsValueInstruction()         {}
+func (*InstUIToFP) IsValueInstruction()         {}
+func (*InstSIToFP) IsValueInstruction()         {}
+func (*InstPtrToInt) IsValueInstruction()       {}
+func (*InstIntToPtr) IsValueInstruction()       {}
+func (*InstBitCast) IsValueInstruction()        {}
+func (*InstAddrSpaceCast) IsValueInstruction()  {}
+func (*InstICmp) IsValueInstruction()           {}
+func (*InstFCmp) IsValueInstruction()           {}
+func (*InstPhi) IsValueInstruction()            {}
+func (*InstSelect) IsValueInstruction()         {}
+func (*InstCall) IsValueInstruction()           {}
+func (*InstVAArg) IsValueInstruction()          {}
+func (*InstLandingPad) IsValueInstruction()     {}
+func (*InstCatchPad) IsValueInstruction()       {}
+func (*InstCleanupPad) IsValueInstruction()     {}
+
+// --- [ ir.Argument ] ---------------------------------------------------------
+
+// Argument is a function call argument.
+type Argument interface {
+	fmt.Stringer
+	// IsArgument ensures that only function call arguments can be assigned to
+	// the ast.Argument interface.
+	IsArgument()
+}
+
+// IsArgument ensures that only function call arguments can be assigned to the
+// ast.Argument interface.
+func (*Arg) IsArgument() {} // used as function argument
+
+// TODO: Figure out how to handle *ast.TypeValue as an argument after conversion
+// to IR.
+
+// TODO: Figure out how to handle *ast.MetadataValue as an argument after
+// conversion.
+
+// --- [ ir.Terminator ] -------------------------------------------------------
 
 // A Terminator is an LLVM IR terminator.
 type Terminator interface {
@@ -121,18 +212,53 @@ type Terminator interface {
 
 // IsTerminator ensures that only terminators can be assigned to the
 // ast.Terminator interface.
-func (*RetTerm) IsTerminator()         {}
-func (*BrTerm) IsTerminator()          {}
-func (*CondBrTerm) IsTerminator()      {}
-func (*SwitchTerm) IsTerminator()      {}
-func (*IndirectBrTerm) IsTerminator()  {}
-func (*InvokeTerm) IsTerminator()      {}
-func (*ResumeTerm) IsTerminator()      {}
-func (*CatchSwitchTerm) IsTerminator() {}
-func (*CatchRetTerm) IsTerminator()    {}
-func (*CleanupRetTerm) IsTerminator()  {}
-func (*UnreachableTerm) IsTerminator() {}
+func (*TermRet) IsTerminator()         {}
+func (*TermBr) IsTerminator()          {}
+func (*TermCondBr) IsTerminator()      {}
+func (*TermSwitch) IsTerminator()      {}
+func (*TermIndirectBr) IsTerminator()  {}
+func (*TermInvoke) IsTerminator()      {}
+func (*TermResume) IsTerminator()      {}
+func (*TermCatchSwitch) IsTerminator() {}
+func (*TermCatchRet) IsTerminator()    {}
+func (*TermCleanupRet) IsTerminator()  {}
+func (*TermUnreachable) IsTerminator() {}
+
+// --- [ ir.UnwindTarget ] -----------------------------------------------------
+
+// UnwindTarget is an unwind target of a catchswitch or cleanupret terminator.
+type UnwindTarget interface {
+	fmt.Stringer
+	// IsUnwindTarget ensures that only unwind targets can be assigned to the
+	// ast.UnwindTarget interface.
+	IsUnwindTarget()
+}
 
 // IsUnwindTarget ensures that only unwind targets can be assigned to the
-// ast.UnwindTarget interface.
-func (*BasicBlock) IsUnwindTarget() {}
+// ir.UnwindTarget interface.
+func (*UnwindToCaller) IsUnwindTarget() {}
+func (*BasicBlock) IsUnwindTarget()     {}
+
+// --- [ ir.ExceptionScope ] ---------------------------------------------------
+
+// ExceptionScope is an exception scope.
+type ExceptionScope interface {
+	fmt.Stringer
+	// IsExceptionScope ensures that only exception scopes can be assigned to the
+	// ast.ExceptionScope interface.
+	IsExceptionScope()
+}
+
+// IsExceptionScope ensures that only exception scopes can be assigned to the
+// ast.ExceptionScope interface.
+func (*BasicBlock) IsExceptionScope() {}
+
+// --- [ astx.GlobalAttribute ] ------------------------------------------------
+
+// IsGlobalAttribute ensures that only global attributes can be assigned to the
+// astx.GlobalAttribute interface.
+func (*Section) IsGlobalAttribute()   {}
+func (*Comdat) IsGlobalAttribute()    {}
+func (*Alignment) IsGlobalAttribute() {}
+
+//func (*metadata.MetadataAttachment) IsGlobalAttribute() {}

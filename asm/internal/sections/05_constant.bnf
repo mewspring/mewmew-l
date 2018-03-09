@@ -31,7 +31,7 @@ Constant
 
 BoolConst
 	: BoolLit
-	<< &constant.BoolConst{X: $0.(bool)}, nil >>
+	<< &constant.Bool{X: $0.(bool)}, nil >>
 ;
 
 BoolLit
@@ -74,7 +74,7 @@ FloatConst
 
 NullConst
 	: "null"
-	<< &constant.NullConst{}, nil >>
+	<< &constant.Null{}, nil >>
 ;
 
 // --- [ Token Constants ] -----------------------------------------------------
@@ -85,7 +85,7 @@ NullConst
 
 NoneConst
 	: "none"
-	<< &constant.NoneConst{}, nil >>
+	<< &constant.None{}, nil >>
 ;
 
 // --- [ Structure Constants ] -------------------------------------------------
@@ -106,13 +106,13 @@ NoneConst
 
 StructConst
 	: "{" "}"
-	<< &constant.StructConst{}, nil >>
+	<< &constant.Struct{}, nil >>
 	| "{" TypeConstList "}"
-	<< &constant.StructConst{Fields: $1.([]ir.Constant)}, nil >>
+	<< &constant.Struct{Fields: $1.([]ir.Constant)}, nil >>
 	| "<" "{" "}" ">"
-	<< &constant.StructConst{Packed: true}, nil >>
+	<< &constant.Struct{Packed: true}, nil >>
 	| "<" "{" TypeConstList "}" ">"
-	<< &constant.StructConst{Packed: true, Fields: $2.([]ir.Constant)}, nil >>
+	<< &constant.Struct{Packed: true, Fields: $2.([]ir.Constant)}, nil >>
 ;
 
 // --- [ Array Constants ] -----------------------------------------------------
@@ -125,12 +125,12 @@ StructConst
 
 ArrayConst
 	: "[" TypeConsts "]"
-	<< &constant.ArrayConst{Elems: $1.([]ir.Constant)}, nil >>
+	<< &constant.Array{Elems: $1.([]ir.Constant)}, nil >>
 ;
 
 CharArrayConst
 	: "c" StringLit
-	<< &constant.CharArrayConst{Value: $1.(string)}, nil >>
+	<< &constant.CharArray{Value: $1.(string)}, nil >>
 ;
 
 StringLit
@@ -148,7 +148,7 @@ StringLit
 
 VectorConst
 	: "<" TypeConsts ">"
-	<< &constant.VectorConst{Elems: $1.([]ir.Constant)}, nil >>
+	<< &constant.Vector{Elems: $1.([]ir.Constant)}, nil >>
 ;
 
 // --- [ Zero Initialization Constants ] ---------------------------------------
@@ -159,7 +159,7 @@ VectorConst
 
 ZeroInitializerConst
 	: "zeroinitializer"
-	<< &constant.ZeroInitializerConst{}, nil >>
+	<< &constant.ZeroInitializer{}, nil >>
 ;
 
 // --- [ Undefined Values ] ----------------------------------------------------
@@ -170,7 +170,7 @@ ZeroInitializerConst
 
 UndefConst
 	: "undef"
-	<< &constant.UndefConst{}, nil >>
+	<< &constant.Undef{}, nil >>
 ;
 
 // --- [ Addresses of Basic Blocks ] -------------------------------------------
@@ -183,6 +183,6 @@ UndefConst
 
 BlockAddressConst
 	: "blockaddress" "(" GlobalIdent "," LocalIdent ")"
-	<< &constant.BlockAddressConst{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: $2.(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: $4.(*ast.LocalIdent).Name}}, nil >>
+	<< &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: $2.(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: $4.(*ast.LocalIdent).Name}}, nil >>
 ;
 

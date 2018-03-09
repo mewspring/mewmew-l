@@ -3,7 +3,7 @@ package irx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 	"github.com/rickypai/natsort"
 )
 

@@ -21,7 +21,7 @@ Value
 
 InlineAsm
 	: "asm" OptSideEffect OptAlignStack OptIntelDialect StringLit "," StringLit
-	<< &ll.InlineAsm{SideEffect: $1.(bool), AlignStack: $2.(bool), IntelDialect: $3.(bool), Asm: $4.(string), Constraint: $6.(string)}, nil >>
+	<< &ir.InlineAsm{SideEffect: $1.(bool), AlignStack: $2.(bool), IntelDialect: $3.(bool), Asm: $4.(string), Constraint: $6.(string)}, nil >>
 ;
 
 OptSideEffect

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/metadata"
+	"github.com/mewmew/l/ir/types"
 )
 
 // ~~~ [ Global Variable Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,20 +14,23 @@ import (
 type Global struct {
 	// Global variable name (*GlobalIdent).
 	Name                  string
-	Linkage               ll.Linkage         // zero value if not present
-	Preemption            ll.Preemption      // zero value if not present
-	Visibility            ll.Visibility      // zero value if not present
-	DLLStorageClass       ll.DLLStorageClass // zero value if not present
-	ThreadLocal           *ll.ThreadLocal    // nil if not present
-	UnnamedAddr           ll.UnnamedAddr     // zero value if not present
-	AddrSpace             types.AddrSpace    // zero value if not present
+	Linkage               Linkage         // zero value if not present
+	Preemption            Preemption      // zero value if not present
+	Visibility            Visibility      // zero value if not present
+	DLLStorageClass       DLLStorageClass // zero value if not present
+	ThreadLocal           *ThreadLocal    // nil if not present
+	UnnamedAddr           UnnamedAddr     // zero value if not present
+	AddrSpace             types.AddrSpace // zero value if not present
 	ExternallyInitialized bool
 	Immutable             bool
 	Typ                   *types.PointerType // pointer to ContentType.
 	ContentType           types.Type
-	Init                  Constant             // nil if declaration
-	GlobalAttrs           []ll.GlobalAttribute // global attributes, including metadata.
-	FuncAttrs             []ll.FuncAttribute
+	Init                  Constant   // nil if declaration
+	Section               *Section   // nil if not present
+	Comdat                *Comdat    // nil if not present
+	Align                 *Alignment // nil if not present
+	Metadata              []*metadata.MetadataAttachment
+	FuncAttrs             []FuncAttribute
 }
 
 // String returns the string representation of the global variable as a type-
@@ -53,22 +56,22 @@ func (g *Global) Def() string {
 	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v =", g.Name)
-	if g.Linkage != ll.LinkageNone {
+	if g.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", g.Linkage)
 	}
-	if g.Preemption != ll.PreemptionNone {
+	if g.Preemption != PreemptionNone {
 		fmt.Fprintf(buf, " %v", g.Preemption)
 	}
-	if g.Visibility != ll.VisibilityNone {
+	if g.Visibility != VisibilityNone {
 		fmt.Fprintf(buf, " %v", g.Visibility)
 	}
-	if g.DLLStorageClass != ll.DLLStorageClassNone {
+	if g.DLLStorageClass != DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", g.DLLStorageClass)
 	}
 	if g.ThreadLocal != nil {
 		fmt.Fprintf(buf, " %v", g.ThreadLocal)
 	}
-	if g.UnnamedAddr != ll.UnnamedAddrNone {
+	if g.UnnamedAddr != UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", g.UnnamedAddr)
 	}
 	if g.AddrSpace != 0 {
@@ -86,8 +89,17 @@ func (g *Global) Def() string {
 	if g.Init != nil {
 		fmt.Fprintf(buf, " %v", g.Init.Ident())
 	}
-	for _, attr := range g.GlobalAttrs {
-		fmt.Fprintf(buf, ", %v", attr)
+	if g.Section != nil {
+		fmt.Fprintf(buf, ", %v", g.Section)
+	}
+	if g.Comdat != nil {
+		fmt.Fprintf(buf, ", %v", g.Comdat)
+	}
+	if g.Align != nil {
+		fmt.Fprintf(buf, ", %v", g.Align)
+	}
+	for _, md := range g.Metadata {
+		fmt.Fprintf(buf, ", %v", md)
 	}
 	for _, attr := range g.FuncAttrs {
 		fmt.Fprintf(buf, " %v", attr)

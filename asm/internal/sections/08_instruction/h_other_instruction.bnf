@@ -10,7 +10,7 @@
 
 ICmpInst
 	: "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ir.ICmpInst{Pred: $1.(ll.IPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstICmp{Pred: $1.(ir.IPred), X: astx.TypeValue($2, $3), Y: astx.TypeValue($2, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ ICmpInst
 
 FCmpInst
 	: "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
-	<< &ir.FCmpInst{FastMathFlags: X[1].([]ll.FastMathFlag), Pred: $2.(ll.FPred), X: astx.TypeValue($3, $4), Y: astx.TypeValue($3, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstFCmp{FastMathFlags: X[1].([]ir.FastMathFlag), Pred: $2.(ir.FPred), X: astx.TypeValue($3, $4), Y: astx.TypeValue($3, $6), Metadata: $7.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ FCmpInst
 
 PhiInst
 	: "phi" Type IncList OptCommaSepMetadataAttachmentList
-	<< &ir.PhiInst{Type: $1.(types.Type), Incs: $2.([]*ir.Incoming), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstPhi{Type: $1.(types.Type), Incs: $2.([]*ir.Incoming), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 IncList
@@ -61,7 +61,7 @@ Inc
 
 SelectInst
 	: "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ir.SelectInst{Cond: astx.TypeValue($1, $2), X: astx.TypeValue($4, $5), Y: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstSelect{Cond: astx.TypeValue($1, $2), X: astx.TypeValue($4, $5), Y: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,14 +81,14 @@ SelectInst
 
 CallInst
 	: OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
-	<< &ir.CallInst{Tail: $0.(ll.Tail), FastMathFlags: $2.([]ll.FastMathFlag), CallingConv: $3.(ll.CallingConv), ReturnAttrs: $4.([]ll.ReturnAttribute), RetType: $5.(types.Type), Callee: $6.(value.Value), Args: $8.([]ll.Argument), FuncAttrs: $10.([]ll.FuncAttribute), OperandBundles: $11.([]*ll.OperandBundle), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstCall{Tail: $0.(ir.Tail), FastMathFlags: $2.([]ir.FastMathFlag), CallingConv: $3.(ir.CallingConv), ReturnAttrs: $4.([]ir.ReturnAttribute), RetType: $5.(types.Type), Callee: $6.(value.Value), Args: $8.([]ir.Argument), FuncAttrs: $10.([]ir.FuncAttribute), OperandBundles: $11.([]*ir.OperandBundle), Metadata: $12.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptTail
-	: empty        << ll.TailNone, nil >>
-	| "musttail"   << ll.TailMustTail, nil >>
-	| "notail"     << ll.TailNoTail, nil >>
-	| "tail"       << ll.TailTail, nil >>
+	: empty        << ir.TailNone, nil >>
+	| "musttail"   << ir.TailMustTail, nil >>
+	| "notail"     << ir.TailNoTail, nil >>
+	| "tail"       << ir.TailTail, nil >>
 ;
 
 // ~~~ [ va_arg ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,7 +101,7 @@ OptTail
 
 VAArgInst
 	: "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
-	<< &ir.VAArgInst{ArgList: astx.TypeValue($1, $2), ArgType: $4.(types.Type), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstVAArg{ArgList: astx.TypeValue($1, $2), ArgType: $4.(types.Type), Metadata: $5.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,7 +118,7 @@ VAArgInst
 
 LandingPadInst
 	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
-	<< &ir.LandingPadInst{Type: $1.(types.Type), Cleanup: $2.(bool), Clauses: $3.([]*ir.Clause), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstLandingPad{Type: $1.(types.Type), Cleanup: $2.(bool), Clauses: $3.([]*ir.Clause), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptCleanup
@@ -154,7 +154,7 @@ Clause
 
 CatchPadInst
 	: "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
-	<< &ir.CatchPadInst{Scope: $2.(*ast.LocalIdent), Args: $4.([]ll.Argument), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstCatchPad{Scope: $2.(*ast.LocalIdent), Args: $4.([]ir.Argument), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // --- [ cleanuppad ] ----------------------------------------------------------
@@ -165,6 +165,6 @@ CatchPadInst
 
 CleanupPadInst
 	: "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
-	<< &ir.CleanupPadInst{Scope: $2.(ll.ExceptionScope), Args: $4.([]ll.Argument), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstCleanupPad{Scope: $2.(ir.ExceptionScope), Args: $4.([]ir.Argument), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

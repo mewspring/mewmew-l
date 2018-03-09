@@ -33,45 +33,14 @@
 
 GlobalDecl
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
-	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), GlobalAttrs: $12.([]ll.GlobalAttribute), FuncAttrs: $13.([]ll.FuncAttribute)}, nil >>
+	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Section: astx.OptSectionFromGlobalAttrs($12.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($12.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($12.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($12.([]astx.GlobalAttribute)), FuncAttrs: $13.([]ir.FuncAttribute)}, nil >>
 ;
 
 // ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 GlobalDef
 	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ll.Linkage), Preemption: $3.(ll.Preemption), Visibility: $4.(ll.Visibility), DLLStorageClass: $5.(ll.DLLStorageClass), ThreadLocal: $6.(*ll.ThreadLocal), UnnamedAddr: $7.(ll.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Init: astx.TypeConst($11, $12), GlobalAttrs: $13.([]ll.GlobalAttribute), FuncAttrs: $14.([]ll.FuncAttribute)}, nil >>
-;
-
-// ref: ParseOptionalThreadLocal
-//
-//   := empty
-//   := 'thread_local'
-//   := 'thread_local' '(' tlsmodel ')'
-
-OptThreadLocal
-	: empty
-	<< (*ll.ThreadLocal)(nil), nil >>
-	| ThreadLocal
-;
-
-ThreadLocal
-	: "thread_local"
-	<< &ll.ThreadLocal{}, nil >>
-	| "thread_local" "(" TLSModel ")"
-	<< &ll.ThreadLocal{Model: $2.(ll.TLSModel)}, nil >>
-;
-
-// ref: ParseTLSModel
-//
-//   := 'localdynamic'
-//   := 'initialexec'
-//   := 'localexec'
-
-TLSModel
-	: "initialexec"    << ll.TLSModelInitialExec, nil >>
-	| "localdynamic"   << ll.TLSModelLocalDynamic, nil >>
-	| "localexec"      << ll.TLSModelLocalExec, nil >>
+	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Init: astx.TypeConst($11, $12), Section: astx.OptSectionFromGlobalAttrs($13.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($13.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($13.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($13.([]astx.GlobalAttribute)), FuncAttrs: $14.([]ir.FuncAttribute)}, nil >>
 ;
 
 OptExternallyInitialized
@@ -91,16 +60,16 @@ Immutable
 
 GlobalAttrs
 	: empty
-	<< ([]ll.GlobalAttribute)(nil), nil >>
+	<< ([]astx.GlobalAttribute)(nil), nil >>
 	| "," GlobalAttrList
 	<< $1, nil >>
 ;
 
 GlobalAttrList
 	: GlobalAttr
-	<< []ll.GlobalAttribute{$0.(ll.GlobalAttribute)}, nil >>
+	<< []astx.GlobalAttribute{$0.(astx.GlobalAttribute)}, nil >>
 	| GlobalAttrList "," GlobalAttr
-	<< append($0.([]ll.GlobalAttribute), $2.(ll.GlobalAttribute)), nil >>
+	<< append($0.([]astx.GlobalAttribute), $2.(astx.GlobalAttribute)), nil >>
 ;
 
 GlobalAttr

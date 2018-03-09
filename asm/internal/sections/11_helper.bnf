@@ -1,513 +1,5 @@
 // ### [ Helper productions ] ##################################################
 
-// ___ [ Function Attribute ] __________________________________________________
-
-// ref: ParseFnAttributeValuePairs
-//
-//   ::= <attr> | <attr> '=' <value>
-
-FuncAttrs
-	: empty
-	<< ([]ll.FuncAttribute)(nil), nil >>
-	| FuncAttrList
-;
-
-FuncAttrList
-	: FuncAttr
-	<< []ll.FuncAttribute{$0.(ll.FuncAttribute)}, nil >>
-	| FuncAttrList FuncAttr
-	<< append($0.([]ll.FuncAttribute), $1.(ll.FuncAttribute)), nil >>
-;
-
-FuncAttr
-	// not used in attribute groups.
-	: AttrGroupID
-	// used in attribute groups.
-	| "align" "=" int_lit               << &ll.Alignment{Align: astx.Int($2)}, nil >>
-	| "alignstack" "=" int_lit          << &ll.StackAlignment{Align: astx.Int($2)}, nil >>
-	// used in functions.
-	| Alignment
-	| AllocSize
-	| StackAlignment
-	| StringLit                         << &ll.FuncAttrString{Value: $0.(string)}, nil >>
-	| StringLit "=" StringLit           << &ll.FuncAttrPair{Key: $0.(string), Value: $2.(string)}, nil >>
-	| "alwaysinline"                    << ll.FuncAttrAlwaysInline, nil >>
-	| "argmemonly"                      << ll.FuncAttrArgMemOnly, nil >>
-	| "builtin"                         << ll.FuncAttrBuiltin, nil >>
-	| "cold"                            << ll.FuncAttrCold, nil >>
-	| "convergent"                      << ll.FuncAttrConvergent, nil >>
-	| "inaccessiblemem_or_argmemonly"   << ll.FuncAttrInaccessibleMemOrArgMemOnly, nil >>
-	| "inaccessiblememonly"             << ll.FuncAttrInaccessibleMemOnly, nil >>
-	| "inlinehint"                      << ll.FuncAttrInlineHint, nil >>
-	| "jumptable"                       << ll.FuncAttrJumpTable, nil >>
-	| "minsize"                         << ll.FuncAttrMinSize, nil >>
-	| "naked"                           << ll.FuncAttrNaked, nil >>
-	| "nobuiltin"                       << ll.FuncAttrNoBuiltin, nil >>
-	| "noduplicate"                     << ll.FuncAttrNoDuplicate, nil >>
-	| "noimplicitfloat"                 << ll.FuncAttrNoImplicitFloat, nil >>
-	| "noinline"                        << ll.FuncAttrNoInline, nil >>
-	| "nonlazybind"                     << ll.FuncAttrNonLazyBind, nil >>
-	| "norecurse"                       << ll.FuncAttrNoRecurse, nil >>
-	| "noredzone"                       << ll.FuncAttrNoRedZone, nil >>
-	| "noreturn"                        << ll.FuncAttrNoReturn, nil >>
-	| "nounwind"                        << ll.FuncAttrNoUnwind, nil >>
-	| "optnone"                         << ll.FuncAttrOptNone, nil >>
-	| "optsize"                         << ll.FuncAttrOptSize, nil >>
-	| "readnone"                        << ll.FuncAttrReadNone, nil >>
-	| "readonly"                        << ll.FuncAttrReadOnly, nil >>
-	| "returns_twice"                   << ll.FuncAttrReturnsTwice, nil >>
-	| "safestack"                       << ll.FuncAttrSafeStack, nil >>
-	| "sanitize_address"                << ll.FuncAttrSanitizeAddress, nil >>
-	| "sanitize_hwaddress"              << ll.FuncAttrSanitizeHWAddress, nil >>
-	| "sanitize_memory"                 << ll.FuncAttrSanitizeMemory, nil >>
-	| "sanitize_thread"                 << ll.FuncAttrSanitizeThread, nil >>
-	| "speculatable"                    << ll.FuncAttrSpeculatable, nil >>
-	| "ssp"                             << ll.FuncAttrSSP, nil >>
-	| "sspreq"                          << ll.FuncAttrSSPReq, nil >>
-	| "sspstrong"                       << ll.FuncAttrSSPStrong, nil >>
-	| "strictfp"                        << ll.FuncAttrStrictFP, nil >>
-	| "uwtable"                         << ll.FuncAttrUwtable, nil >>
-	| "writeonly"                       << ll.FuncAttrWriteOnly, nil >>
-;
-
-// ___ [ Return Attribute ] __________________________________________________
-
-// ref: ParseOptionalReturnAttrs
-
-ReturnAttrs
-	: empty
-	<< ([]ll.ReturnAttribute)(nil), nil >>
-	| ReturnAttrList
-;
-
-ReturnAttrList
-	: ReturnAttr
-	<< []ll.ReturnAttribute{$0.(ll.ReturnAttribute)}, nil >>
-	| ReturnAttrList ReturnAttr
-	<< append($0.([]ll.ReturnAttribute), $1.(ll.ReturnAttribute)), nil >>
-;
-
-ReturnAttr
-	: Alignment
-	| Dereferenceable
-	| StringLit         << &ll.ReturnAttrString{Value: $0.(string)}, nil >>
-	| "inreg"           << ll.ReturnAttrInReg, nil >>
-	| "noalias"         << ll.ReturnAttrNoAlias, nil >>
-	| "nonnull"         << ll.ReturnAttrNonNull, nil >>
-	| "signext"         << ll.ReturnAttrSignExt, nil >>
-	| "zeroext"         << ll.ReturnAttrZeroExt, nil >>
-;
-
-// ___ [ Parameter Attribute ] _________________________________________________
-
-// ref: ParseOptionalParamAttrs
-
-ParamAttrs
-	: empty
-	<< ([]ll.ParamAttribute)(nil), nil >>
-	| ParamAttrList
-;
-
-ParamAttrList
-	: ParamAttr
-	<< []ll.ParamAttribute{$0.(ll.ParamAttribute)}, nil >>
-	| ParamAttrList ParamAttr
-	<< append($0.([]ll.ParamAttribute), $1.(ll.ParamAttribute)), nil >>
-;
-
-// ref: ParseOptionalDerefAttrBytes
-//
-//   ::= empty
-//   ::= AttrKind '(' 4 ')'
-
-ParamAttr
-	: Alignment
-	| Dereferenceable
-	| StringLit         << &ll.ParamAttrString{Value: $0.(string)}, nil >>
-	| "byval"           << ll.ParamAttrByval, nil >>
-	| "inalloca"        << ll.ParamAttrInAlloca, nil >>
-	| "inreg"           << ll.ParamAttrInReg, nil >>
-	| "nest"            << ll.ParamAttrNest, nil >>
-	| "noalias"         << ll.ParamAttrNoAlias, nil >>
-	| "nocapture"       << ll.ParamAttrNoCapture, nil >>
-	| "nonnull"         << ll.ParamAttrNonNull, nil >>
-	| "readnone"        << ll.ParamAttrReadNone, nil >>
-	| "readonly"        << ll.ParamAttrReadOnly, nil >>
-	| "returned"        << ll.ParamAttrReturned, nil >>
-	| "signext"         << ll.ParamAttrSignExt, nil >>
-	| "sret"            << ll.ParamAttrSRet, nil >>
-	| "swifterror"      << ll.ParamAttrSwiftError, nil >>
-	| "swiftself"       << ll.ParamAttrSwiftSelf, nil >>
-	| "writeonly"       << ll.ParamAttrWriteOnly, nil >>
-	| "zeroext"         << ll.ParamAttrZeroExt, nil >>
-;
-
-// ___ [ Attributes ] __________________________________________________________
-
-// ref: ParseOptionalAddrSpace
-//
-//   := empty
-//   := 'addrspace' '(' uint32 ')'
-
-OptAddrSpace
-	: empty
-	<< types.AddrSpace(0), nil >>
-	| AddrSpace
-;
-
-AddrSpace
-	: "addrspace" "(" int_lit ")"
-	<< types.AddrSpace(astx.Int($2)), nil >>
-;
-
-// ref: ParseOptionalAlignment
-//
-//   ::= empty
-//   ::= 'align' 4
-
-Alignment
-	: "align" int_lit
-	<< &ll.Alignment{Align: astx.Int($1)}, nil >>
-;
-
-// ref: parseAllocSizeArguments
-
-AllocSize
-	: "allocsize" "(" int_lit ")"
-	<< &ll.AllocSize{BaseSize: astx.Int($2)}, nil >>
-	| "allocsize" "(" int_lit "," int_lit ")"
-	<< &ll.AllocSize{BaseSize: astx.Int($2), N: astx.Int($4)}, nil >>
-;
-
-// ref: parseOptionalComdat
-
-OptComdat
-	: empty
-	<< (*ll.Comdat)(nil), nil >>
-	| Comdat
-;
-
-Comdat
-	: "comdat"
-	<< &ll.Comdat{}, nil >>
-	| "comdat" "(" ComdatName ")"
-	<< &ll.Comdat{Name: $2.(*ast.ComdatName).Name}, nil >>
-;
-
-Dereferenceable
-	: "dereferenceable" "(" int_lit ")"
-	<< &ll.Dereferenceable{N: astx.Int($2)}, nil >>
-	| "dereferenceable_or_null" "(" int_lit ")"
-	<< &ll.Dereferenceable{N: astx.Int($2), Null: true}, nil >>
-;
-
-// https://llvm.org/docs/LangRef.html#dll-storage-classes
-
-// ref: ParseOptionalDLLStorageClass
-//
-//   ::= empty
-//   ::= 'dllimport'
-//   ::= 'dllexport'
-
-OptDLLStorageClass
-	: empty             << ll.DLLStorageClassNone, nil >>
-	| DLLStorageClass
-;
-
-DLLStorageClass
-	: "dllexport"   << ll.DLLStorageClassDLLExport, nil >>
-	| "dllimport"   << ll.DLLStorageClassDLLImport, nil >>
-;
-
-// https://llvm.org/docs/LangRef.html#linkage-types
-
-// ref: ParseOptionalLinkage
-//
-//   ::= empty
-//   ::= 'private'
-//   ::= 'internal'
-//   ::= 'weak'
-//   ::= 'weak_odr'
-//   ::= 'linkonce'
-//   ::= 'linkonce_odr'
-//   ::= 'available_externally'
-//   ::= 'appending'
-//   ::= 'common'
-//   ::= 'extern_weak'
-//   ::= 'external'
-
-OptLinkage
-	: empty     << ll.LinkageNone, nil >>
-	| Linkage
-;
-
-Linkage
-	: "appending"              << ll.LinkageAppending, nil >>
-	| "available_externally"   << ll.LinkageAvailableExternally, nil >>
-	| "common"                 << ll.LinkageCommon, nil >>
-	| "internal"               << ll.LinkageInternal, nil >>
-	| "linkonce"               << ll.LinkageLinkOnce, nil >>
-	| "linkonce_odr"           << ll.LinkageLinkOnceODR, nil >>
-	| "private"                << ll.LinkagePrivate, nil >>
-	| "weak"                   << ll.LinkageWeak, nil >>
-	| "weak_odr"               << ll.LinkageWeakODR, nil >>
-;
-
-OptExternLinkage
-	: empty           << ll.LinkageNone, nil >>
-	| ExternLinkage
-;
-
-ExternLinkage
-	: "extern_weak"   << ll.LinkageExternWeak, nil >>
-	| "external"      << ll.LinkageExternal, nil >>
-;
-
-// https://llvm.org/docs/LangRef.html#runtime-preemption-model
-
-// ref: ParseOptionalDSOLocal
-
-OptPreemptionSpecifier
-	: empty                 << ll.PreemptionNone, nil >>
-	| PreemptionSpecifier
-;
-
-PreemptionSpecifier
-	: "dso_local"         << ll.PreemptionDSOLocal, nil >>
-	| "dso_preemptable"   << ll.PreemptionDSOPreemptable, nil >>
-;
-
-OptSection
-	: empty
-	<< (*ll.Section)(nil), nil >>
-	| Section
-;
-
-Section
-	: "section" StringLit
-	<< &ll.Section{Name: $1.(string)}, nil >>
-;
-
-// ref: ParseOptionalStackAlignment
-//
-//   ::= empty
-//   ::= 'alignstack' '(' 4 ')'
-StackAlignment
-	: "alignstack" "(" int_lit ")"
-	<< &ll.StackAlignment{Align: astx.Int($2)}, nil >>
-;
-
-// ref: ParseOptionalUnnamedAddr
-
-OptUnnamedAddr
-	: empty         << ll.UnnamedAddrNone, nil >>
-	| UnnamedAddr
-;
-
-UnnamedAddr
-	: "local_unnamed_addr"   << ll.UnnamedAddrLocalUnnamedAddr, nil >>
-	| "unnamed_addr"         << ll.UnnamedAddrUnnamedAddr, nil >>
-;
-
-// https://llvm.org/docs/LangRef.html#visibility-styles
-
-// ref: ParseOptionalVisibility
-//
-//   ::= empty
-//   ::= 'default'
-//   ::= 'hidden'
-//   ::= 'protected'
-
-OptVisibility
-	: empty        << ll.VisibilityNone, nil >>
-	| Visibility
-;
-
-Visibility
-	: "default"     << ll.VisibilityDefault, nil >>
-	| "hidden"      << ll.VisibilityHidden, nil >>
-	| "protected"   << ll.VisibilityProtected, nil >>
-;
-
-// ___ [ Instruction Operands ] ________________________________________________
-
-// ref: ParseCmpPredicate
-
-IPred
-	: "eq"    << ll.IPredEQ, nil >>
-	| "ne"    << ll.IPredNE, nil >>
-	| "sge"   << ll.IPredSGE, nil >>
-	| "sgt"   << ll.IPredSGT, nil >>
-	| "sle"   << ll.IPredSLE, nil >>
-	| "slt"   << ll.IPredSLT, nil >>
-	| "uge"   << ll.IPredUGE, nil >>
-	| "ugt"   << ll.IPredUGT, nil >>
-	| "ule"   << ll.IPredULE, nil >>
-	| "ult"   << ll.IPredULT, nil >>
-;
-
-// ref: ParseCmpPredicate
-
-FPred
-	: "false"   << ll.FPredFalse, nil >>
-	| "oeq"     << ll.FPredOEQ, nil >>
-	| "oge"     << ll.FPredOGE, nil >>
-	| "ogt"     << ll.FPredOGT, nil >>
-	| "ole"     << ll.FPredOLE, nil >>
-	| "olt"     << ll.FPredOLT, nil >>
-	| "one"     << ll.FPredONE, nil >>
-	| "ord"     << ll.FPredORD, nil >>
-	| "true"    << ll.FPredTrue, nil >>
-	| "ueq"     << ll.FPredUEQ, nil >>
-	| "uge"     << ll.FPredUGE, nil >>
-	| "ugt"     << ll.FPredUGT, nil >>
-	| "ule"     << ll.FPredULE, nil >>
-	| "ult"     << ll.FPredULT, nil >>
-	| "une"     << ll.FPredUNE, nil >>
-	| "uno"     << ll.FPredUNO, nil >>
-;
-
-OverflowFlags
-	: empty
-	<< ([]ll.OverflowFlag)(nil), nil >>
-	| OverflowFlagList
-;
-
-OverflowFlagList
-	: OverflowFlag
-	<< []ll.OverflowFlag{$0.(ll.OverflowFlag)}, nil >>
-	| OverflowFlagList OverflowFlag
-	<< append($0.([]ll.OverflowFlag), $1.(ll.OverflowFlag)), nil >>
-;
-
-OverflowFlag
-	: "nsw"   << ll.OverflowFlagNSW, nil >>
-	| "nuw"   << ll.OverflowFlagNUW, nil >>
-;
-
-OptExact
-	: empty     << false, nil >>
-	| "exact"   << true, nil >>
-;
-
-// ref: EatFastMathFlagsIfPresent
-
-FastMathFlags
-	: empty
-	<< ([]ll.FastMathFlag)(nil), nil >>
-	| FastMathFlagList
-;
-
-FastMathFlagList
-	: FastMathFlag
-	<< []ll.FastMathFlag{$0.(ll.FastMathFlag)}, nil >>
-	| FastMathFlagList FastMathFlag
-	<< append($0.([]ll.FastMathFlag), $1.(ll.FastMathFlag)), nil >>
-;
-
-FastMathFlag
-	: "afn"        << ll.FastMathFlagAFn, nil >>
-	| "arcp"       << ll.FastMathFlagARcp, nil >>
-	| "contract"   << ll.FastMathFlagContract, nil >>
-	| "fast"       << ll.FastMathFlagFast, nil >>
-	| "ninf"       << ll.FastMathFlagNInf, nil >>
-	| "nnan"       << ll.FastMathFlagNNaN, nil >>
-	| "nsz"        << ll.FastMathFlagNSZ, nil >>
-	| "reassoc"    << ll.FastMathFlagReassoc, nil >>
-;
-
-OptInBounds
-	: empty        << false, nil >>
-	| "inbounds"   << true, nil >>
-;
-
-// ref: ParseOptionalOperandBundles
-//
-//    ::= empty
-//    ::= '[' OperandBundle [, OperandBundle ]* ']'
-//
-//  OperandBundle
-//    ::= bundle-tag '(' ')'
-//    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
-//
-//  bundle-tag ::= String Constant
-
-OperandBundles
-	: empty
-	<< ([]*ll.OperandBundle)(nil), nil >>
-	| "[" OperandBundleList "]"
-	<< $1, nil >>
-;
-
-OperandBundleList
-	: OperandBundle
-	<< []*ll.OperandBundle{$0.(*ll.OperandBundle)}, nil >>
-	| OperandBundleList OperandBundle
-	<< append($0.([]*ll.OperandBundle), $1.(*ll.OperandBundle)), nil >>
-;
-
-OperandBundle
-	: StringLit "(" TypeValues ")"
-	<< &ll.OperandBundle{Tag: $0.(string), Inputs: $2.([]value.Value)}, nil >>
-;
-
-OptVolatile
-	: empty        << false, nil >>
-	| "volatile"   << true, nil >>
-;
-
-// ref: ParseScope
-//
-//   ::= syncscope("singlethread" | "<target scope>")?
-
-OptSyncScope
-	: empty
-	<< (*ll.SyncScope)(nil), nil >>
-	| "syncscope" "(" StringLit ")"
-	<< &ll.SyncScope{Scope: $2.(string)}, nil >>
-;
-
-// ref: ParseOrdering
-//
-//   ::= AtomicOrdering
-
-AtomicOrdering
-	: "acq_rel"     << ll.AtomicOrderingAcqRel, nil >>
-	| "acquire"     << ll.AtomicOrderingAcquire, nil >>
-	| "monotonic"   << ll.AtomicOrderingMonotonic, nil >>
-	| "release"     << ll.AtomicOrderingRelease, nil >>
-	| "seq_cst"     << ll.AtomicOrderingSeqCst, nil >>
-	| "unordered"   << ll.AtomicOrderingUnordered, nil >>
-;
-
-ExceptionScope
-	: NoneConst
-	| LocalIdent
-;
-
-// ref: ParseIndexList
-//
-//    ::=  (',' uint32)+
-
-Indices
-	: empty
-	<< ([]int64)(nil), nil >>
-	| "," IndexList
-	<< $1, nil >>
-;
-
-IndexList
-	: Index
-	<< []int64{$0.(int64)}, nil >>
-	| IndexList "," Index
-	<< append($0.([]int64), $2.(int64)), nil >>
-;
-
-Index
-	: int_lit
-	<< astx.Int($0), nil >>
-;
-
 TypeValues
 	: empty
 	<< ([]value.Value)(nil), nil >>
@@ -551,6 +43,25 @@ TypeConst
 	<< &ast.TypeConst{Typ: $0.(types.Type), Const: $1.(ir.Constant)}, nil >>
 ;
 
+// ref: ParseOptionalAlignment
+//
+//   ::= empty
+//   ::= 'align' 4
+
+Alignment
+	: "align" int_lit
+	<< &ir.Alignment{Align: astx.Int($1)}, nil >>
+;
+
+// ref: parseAllocSizeArguments
+
+AllocSize
+	: "allocsize" "(" int_lit ")"
+	<< &ir.AllocSize{BaseSize: astx.Int($2)}, nil >>
+	| "allocsize" "(" int_lit "," int_lit ")"
+	<< &ir.AllocSize{BaseSize: astx.Int($2), N: astx.Int($4)}, nil >>
+;
+
 // ref: ParseParameterList
 //
 //    ::= '(' ')'
@@ -560,9 +71,9 @@ TypeConst
 
 Args
 	: empty
-	<< ([]ll.Argument)(nil), nil >>
+	<< ([]ir.Argument)(nil), nil >>
 	| "..."
-	<< ([]ll.Argument)(nil), nil >>
+	<< ([]ir.Argument)(nil), nil >>
 	| ArgList
 	<< $0, nil >>
 	| ArgList "," "..."
@@ -571,9 +82,9 @@ Args
 
 ArgList
 	: Arg
-	<< []ll.Argument{$0.(ll.Argument)}, nil >>
+	<< []ir.Argument{$0.(ir.Argument)}, nil >>
 	| ArgList "," Arg
-	<< append($0.([]ll.Argument), $2.(ll.Argument)), nil >>
+	<< append($0.([]ir.Argument), $2.(ir.Argument)), nil >>
 ;
 
 // ref: ParseMetadataAsValue
@@ -587,24 +98,173 @@ ArgList
 
 Arg
 	: ConcreteType ParamAttrs Value
-	<< &ll.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ir.Arg{X: astx.TypeValue($0, $2), ParamAttrs: $1.([]ir.ParamAttribute)}, nil >>
 	| MetadataType Metadata
 	<< &ast.MetadataValue{Metadata: $1.(metadata.Metadata)}, nil >>
+;
+
+// ref: ParseOrdering
+//
+//   ::= AtomicOrdering
+
+AtomicOrdering
+	: "acq_rel"     << ir.AtomicOrderingAcqRel, nil >>
+	| "acquire"     << ir.AtomicOrderingAcquire, nil >>
+	| "monotonic"   << ir.AtomicOrderingMonotonic, nil >>
+	| "release"     << ir.AtomicOrderingRelease, nil >>
+	| "seq_cst"     << ir.AtomicOrderingSeqCst, nil >>
+	| "unordered"   << ir.AtomicOrderingUnordered, nil >>
+;
+
+// ref: ParseOptionalCallingConv
+//
+//   ::= empty
+//   ::= 'ccc'
+//   ::= 'fastcc'
+//   ::= 'intel_ocl_bicc'
+//   ::= 'coldcc'
+//   ::= 'x86_stdcallcc'
+//   ::= 'x86_fastcallcc'
+//   ::= 'x86_thiscallcc'
+//   ::= 'x86_vectorcallcc'
+//   ::= 'arm_apcscc'
+//   ::= 'arm_aapcscc'
+//   ::= 'arm_aapcs_vfpcc'
+//   ::= 'msp430_intrcc'
+//   ::= 'avr_intrcc'
+//   ::= 'avr_signalcc'
+//   ::= 'ptx_kernel'
+//   ::= 'ptx_device'
+//   ::= 'spir_func'
+//   ::= 'spir_kernel'
+//   ::= 'x86_64_sysvcc'
+//   ::= 'win64cc'
+//   ::= 'webkit_jscc'
+//   ::= 'anyregcc'
+//   ::= 'preserve_mostcc'
+//   ::= 'preserve_allcc'
+//   ::= 'ghccc'
+//   ::= 'swiftcc'
+//   ::= 'x86_intrcc'
+//   ::= 'hhvmcc'
+//   ::= 'hhvm_ccc'
+//   ::= 'cxx_fast_tlscc'
+//   ::= 'amdgpu_vs'
+//   ::= 'amdgpu_ls'
+//   ::= 'amdgpu_hs'
+//   ::= 'amdgpu_es'
+//   ::= 'amdgpu_gs'
+//   ::= 'amdgpu_ps'
+//   ::= 'amdgpu_cs'
+//   ::= 'amdgpu_kernel'
+//   ::= 'cc' UINT
+
+OptCallingConv
+	: empty         << ir.CallingConvNone, nil >>
+	| CallingConv
+;
+
+CallingConv
+	: "amdgpu_cs"          << ir.CallingConvAmdGPUCS, nil >>
+	| "amdgpu_es"          << ir.CallingConvAmdGPUES, nil >>
+	| "amdgpu_gs"          << ir.CallingConvAmdGPUGS, nil >>
+	| "amdgpu_hs"          << ir.CallingConvAmdGPUHS, nil >>
+	| "amdgpu_kernel"      << ir.CallingConvAmdGPUKernel, nil >>
+	| "amdgpu_ls"          << ir.CallingConvAmdGPULS, nil >>
+	| "amdgpu_ps"          << ir.CallingConvAmdGPUPS, nil >>
+	| "amdgpu_vs"          << ir.CallingConvAmdGPUVS, nil >>
+	| "anyregcc"           << ir.CallingConvAnyReg, nil >>
+	| "arm_aapcs_vfpcc"    << ir.CallingConvARMAAPCSVFP, nil >>
+	| "arm_aapcscc"        << ir.CallingConvARMAAPCS, nil >>
+	| "arm_apcscc"         << ir.CallingConvARMAPCS, nil >>
+	| "avr_intrcc"         << ir.CallingConvAVRIntr, nil >>
+	| "avr_signalcc"       << ir.CallingConvAVRSignal, nil >>
+	| "ccc"                << ir.CallingConvC, nil >>
+	| "coldcc"             << ir.CallingConvCold, nil >>
+	| "cxx_fast_tlscc"     << ir.CallingConvCXXFastTLS, nil >>
+	| "fastcc"             << ir.CallingConvFast, nil >>
+	| "ghccc"              << ir.CallingConvGHC, nil >>
+	| "hhvm_ccc"           << ir.CallingConvHHVMC, nil >>
+	| "hhvmcc"             << ir.CallingConvHHVM, nil >>
+	| "intel_ocl_bicc"     << ir.CallingConvIntelOCLBI, nil >>
+	| "msp430_intrcc"      << ir.CallingConvMSP430Intr, nil >>
+	| "preserve_allcc"     << ir.CallingConvPreserveAll, nil >>
+	| "preserve_mostcc"    << ir.CallingConvPreserveMost, nil >>
+	| "ptx_device"         << ir.CallingConvPTXDevice, nil >>
+	| "ptx_kernel"         << ir.CallingConvPTXKernel, nil >>
+	| "spir_func"          << ir.CallingConvSPIRFunc, nil >>
+	| "spir_kernel"        << ir.CallingConvSPIRKernel, nil >>
+	| "swiftcc"            << ir.CallingConvSwift, nil >>
+	| "webkit_jscc"        << ir.CallingConvWebKitJS, nil >>
+	| "win64cc"            << ir.CallingConvWin64, nil >>
+	| "x86_64_sysvcc"      << ir.CallingConvX86_64SysV, nil >>
+	| "x86_fastcallcc"     << ir.CallingConvX86FastCall, nil >>
+	| "x86_intrcc"         << ir.CallingConvX86Intr, nil >>
+	| "x86_regcallcc"      << ir.CallingConvX86RegCall, nil >>
+	| "x86_stdcallcc"      << ir.CallingConvX86StdCall, nil >>
+	| "x86_thiscallcc"     << ir.CallingConvX86ThisCall, nil >>
+	| "x86_vectorcallcc"   << ir.CallingConvX86VectorCall, nil >>
+	| "cc" int_lit         << astx.NewCallingConv($1) >>
+;
+
+// ref: parseOptionalComdat
+
+OptComdat
+	: empty
+	<< (*ir.Comdat)(nil), nil >>
+	| Comdat
+;
+
+Comdat
+	: "comdat"
+	<< &ir.Comdat{}, nil >>
+	| "comdat" "(" ComdatName ")"
+	<< &ir.Comdat{Name: $2.(*ast.ComdatName).Name}, nil >>
+;
+
+Dereferenceable
+	: "dereferenceable" "(" int_lit ")"
+	<< &ir.Dereferenceable{N: astx.Int($2)}, nil >>
+	| "dereferenceable_or_null" "(" int_lit ")"
+	<< &ir.Dereferenceable{N: astx.Int($2), Null: true}, nil >>
+;
+
+// https://llvm.org/docs/LangRef.html#dll-storage-classes
+
+// ref: ParseOptionalDLLStorageClass
+//
+//   ::= empty
+//   ::= 'dllimport'
+//   ::= 'dllexport'
+
+OptDLLStorageClass
+	: empty             << ir.DLLStorageClassNone, nil >>
+	| DLLStorageClass
+;
+
+DLLStorageClass
+	: "dllexport"   << ir.DLLStorageClassDLLExport, nil >>
+	| "dllimport"   << ir.DLLStorageClassDLLImport, nil >>
+;
+
+OptExact
+	: empty     << false, nil >>
+	| "exact"   << true, nil >>
 ;
 
 // ref: ParseExceptionArgs
 
 ExceptionArgs
 	: empty
-	<< ([]ll.Argument)(nil), nil >>
+	<< ([]ir.Argument)(nil), nil >>
 	| ExceptionArgList
 ;
 
 ExceptionArgList
 	: ExceptionArg
-	<< []ll.Argument{$0.(ll.Argument)}, nil >>
+	<< []ir.Argument{$0.(ir.Argument)}, nil >>
 	| ExceptionArgList "," ExceptionArg
-	<< append($0.([]ll.Argument), $2.(ll.Argument)), nil >>
+	<< append($0.([]ir.Argument), $2.(ir.Argument)), nil >>
 ;
 
 ExceptionArg
@@ -612,6 +272,307 @@ ExceptionArg
 	<< astx.TypeValue($0, $1), nil >>
 	| MetadataType Metadata
 	<< &ast.MetadataValue{Metadata: $1.(metadata.Metadata)}, nil >>
+;
+
+ExceptionScope
+	: NoneConst
+	| LocalIdent
+;
+
+// ref: EatFastMathFlagsIfPresent
+
+FastMathFlags
+	: empty
+	<< ([]ir.FastMathFlag)(nil), nil >>
+	| FastMathFlagList
+;
+
+FastMathFlagList
+	: FastMathFlag
+	<< []ir.FastMathFlag{$0.(ir.FastMathFlag)}, nil >>
+	| FastMathFlagList FastMathFlag
+	<< append($0.([]ir.FastMathFlag), $1.(ir.FastMathFlag)), nil >>
+;
+
+FastMathFlag
+	: "afn"        << ir.FastMathFlagAFn, nil >>
+	| "arcp"       << ir.FastMathFlagARcp, nil >>
+	| "contract"   << ir.FastMathFlagContract, nil >>
+	| "fast"       << ir.FastMathFlagFast, nil >>
+	| "ninf"       << ir.FastMathFlagNInf, nil >>
+	| "nnan"       << ir.FastMathFlagNNaN, nil >>
+	| "nsz"        << ir.FastMathFlagNSZ, nil >>
+	| "reassoc"    << ir.FastMathFlagReassoc, nil >>
+;
+
+// ref: ParseCmpPredicate
+
+FPred
+	: "false"   << ir.FPredFalse, nil >>
+	| "oeq"     << ir.FPredOEQ, nil >>
+	| "oge"     << ir.FPredOGE, nil >>
+	| "ogt"     << ir.FPredOGT, nil >>
+	| "ole"     << ir.FPredOLE, nil >>
+	| "olt"     << ir.FPredOLT, nil >>
+	| "one"     << ir.FPredONE, nil >>
+	| "ord"     << ir.FPredORD, nil >>
+	| "true"    << ir.FPredTrue, nil >>
+	| "ueq"     << ir.FPredUEQ, nil >>
+	| "uge"     << ir.FPredUGE, nil >>
+	| "ugt"     << ir.FPredUGT, nil >>
+	| "ule"     << ir.FPredULE, nil >>
+	| "ult"     << ir.FPredULT, nil >>
+	| "une"     << ir.FPredUNE, nil >>
+	| "uno"     << ir.FPredUNO, nil >>
+;
+
+// ___ [ Function Attribute ] __________________________________________________
+
+// ref: ParseFnAttributeValuePairs
+//
+//   ::= <attr> | <attr> '=' <value>
+
+FuncAttrs
+	: empty
+	<< ([]ir.FuncAttribute)(nil), nil >>
+	| FuncAttrList
+;
+
+FuncAttrList
+	: FuncAttr
+	<< []ir.FuncAttribute{$0.(ir.FuncAttribute)}, nil >>
+	| FuncAttrList FuncAttr
+	<< append($0.([]ir.FuncAttribute), $1.(ir.FuncAttribute)), nil >>
+;
+
+FuncAttr
+	// not used in attribute groups.
+	: AttrGroupID
+	// used in attribute groups.
+	| "align" "=" int_lit               << &ir.Alignment{Align: astx.Int($2)}, nil >>
+	| "alignstack" "=" int_lit          << &ir.StackAlignment{Align: astx.Int($2)}, nil >>
+	// used in functions.
+	| Alignment
+	| AllocSize
+	| StackAlignment
+	| StringLit                         << &ir.FuncAttrString{Value: $0.(string)}, nil >>
+	| StringLit "=" StringLit           << &ir.FuncAttrPair{Key: $0.(string), Value: $2.(string)}, nil >>
+	| "alwaysinline"                    << ir.FuncAttrAlwaysInline, nil >>
+	| "argmemonly"                      << ir.FuncAttrArgMemOnly, nil >>
+	| "builtin"                         << ir.FuncAttrBuiltin, nil >>
+	| "cold"                            << ir.FuncAttrCold, nil >>
+	| "convergent"                      << ir.FuncAttrConvergent, nil >>
+	| "inaccessiblemem_or_argmemonly"   << ir.FuncAttrInaccessibleMemOrArgMemOnly, nil >>
+	| "inaccessiblememonly"             << ir.FuncAttrInaccessibleMemOnly, nil >>
+	| "inlinehint"                      << ir.FuncAttrInlineHint, nil >>
+	| "jumptable"                       << ir.FuncAttrJumpTable, nil >>
+	| "minsize"                         << ir.FuncAttrMinSize, nil >>
+	| "naked"                           << ir.FuncAttrNaked, nil >>
+	| "nobuiltin"                       << ir.FuncAttrNoBuiltin, nil >>
+	| "noduplicate"                     << ir.FuncAttrNoDuplicate, nil >>
+	| "noimplicitfloat"                 << ir.FuncAttrNoImplicitFloat, nil >>
+	| "noinline"                        << ir.FuncAttrNoInline, nil >>
+	| "nonlazybind"                     << ir.FuncAttrNonLazyBind, nil >>
+	| "norecurse"                       << ir.FuncAttrNoRecurse, nil >>
+	| "noredzone"                       << ir.FuncAttrNoRedZone, nil >>
+	| "noreturn"                        << ir.FuncAttrNoReturn, nil >>
+	| "nounwind"                        << ir.FuncAttrNoUnwind, nil >>
+	| "optnone"                         << ir.FuncAttrOptNone, nil >>
+	| "optsize"                         << ir.FuncAttrOptSize, nil >>
+	| "readnone"                        << ir.FuncAttrReadNone, nil >>
+	| "readonly"                        << ir.FuncAttrReadOnly, nil >>
+	| "returns_twice"                   << ir.FuncAttrReturnsTwice, nil >>
+	| "safestack"                       << ir.FuncAttrSafeStack, nil >>
+	| "sanitize_address"                << ir.FuncAttrSanitizeAddress, nil >>
+	| "sanitize_hwaddress"              << ir.FuncAttrSanitizeHWAddress, nil >>
+	| "sanitize_memory"                 << ir.FuncAttrSanitizeMemory, nil >>
+	| "sanitize_thread"                 << ir.FuncAttrSanitizeThread, nil >>
+	| "speculatable"                    << ir.FuncAttrSpeculatable, nil >>
+	| "ssp"                             << ir.FuncAttrSSP, nil >>
+	| "sspreq"                          << ir.FuncAttrSSPReq, nil >>
+	| "sspstrong"                       << ir.FuncAttrSSPStrong, nil >>
+	| "strictfp"                        << ir.FuncAttrStrictFP, nil >>
+	| "uwtable"                         << ir.FuncAttrUwtable, nil >>
+	| "writeonly"                       << ir.FuncAttrWriteOnly, nil >>
+;
+
+OptInBounds
+	: empty        << false, nil >>
+	| "inbounds"   << true, nil >>
+;
+
+// ref: ParseIndexList
+//
+//    ::=  (',' uint32)+
+
+Indices
+	: empty
+	<< ([]int64)(nil), nil >>
+	| "," IndexList
+	<< $1, nil >>
+;
+
+IndexList
+	: Index
+	<< []int64{$0.(int64)}, nil >>
+	| IndexList "," Index
+	<< append($0.([]int64), $2.(int64)), nil >>
+;
+
+Index
+	: int_lit
+	<< astx.Int($0), nil >>
+;
+
+// ref: ParseCmpPredicate
+
+IPred
+	: "eq"    << ir.IPredEQ, nil >>
+	| "ne"    << ir.IPredNE, nil >>
+	| "sge"   << ir.IPredSGE, nil >>
+	| "sgt"   << ir.IPredSGT, nil >>
+	| "sle"   << ir.IPredSLE, nil >>
+	| "slt"   << ir.IPredSLT, nil >>
+	| "uge"   << ir.IPredUGE, nil >>
+	| "ugt"   << ir.IPredUGT, nil >>
+	| "ule"   << ir.IPredULE, nil >>
+	| "ult"   << ir.IPredULT, nil >>
+;
+
+// https://llvm.org/docs/LangRef.html#linkage-types
+
+// ref: ParseOptionalLinkage
+//
+//   ::= empty
+//   ::= 'private'
+//   ::= 'internal'
+//   ::= 'weak'
+//   ::= 'weak_odr'
+//   ::= 'linkonce'
+//   ::= 'linkonce_odr'
+//   ::= 'available_externally'
+//   ::= 'appending'
+//   ::= 'common'
+//   ::= 'extern_weak'
+//   ::= 'external'
+
+OptLinkage
+	: empty     << ir.LinkageNone, nil >>
+	| Linkage
+;
+
+Linkage
+	: "appending"              << ir.LinkageAppending, nil >>
+	| "available_externally"   << ir.LinkageAvailableExternally, nil >>
+	| "common"                 << ir.LinkageCommon, nil >>
+	| "internal"               << ir.LinkageInternal, nil >>
+	| "linkonce"               << ir.LinkageLinkOnce, nil >>
+	| "linkonce_odr"           << ir.LinkageLinkOnceODR, nil >>
+	| "private"                << ir.LinkagePrivate, nil >>
+	| "weak"                   << ir.LinkageWeak, nil >>
+	| "weak_odr"               << ir.LinkageWeakODR, nil >>
+;
+
+OptExternLinkage
+	: empty           << ir.LinkageNone, nil >>
+	| ExternLinkage
+;
+
+ExternLinkage
+	: "extern_weak"   << ir.LinkageExternWeak, nil >>
+	| "external"      << ir.LinkageExternal, nil >>
+;
+
+// ref: ParseOptionalOperandBundles
+//
+//    ::= empty
+//    ::= '[' OperandBundle [, OperandBundle ]* ']'
+//
+//  OperandBundle
+//    ::= bundle-tag '(' ')'
+//    ::= bundle-tag '(' Type Value [, Type Value ]* ')'
+//
+//  bundle-tag ::= String Constant
+
+OperandBundles
+	: empty
+	<< ([]*ir.OperandBundle)(nil), nil >>
+	| "[" OperandBundleList "]"
+	<< $1, nil >>
+;
+
+OperandBundleList
+	: OperandBundle
+	<< []*ir.OperandBundle{$0.(*ir.OperandBundle)}, nil >>
+	| OperandBundleList OperandBundle
+	<< append($0.([]*ir.OperandBundle), $1.(*ir.OperandBundle)), nil >>
+;
+
+OperandBundle
+	: StringLit "(" TypeValues ")"
+	<< &ir.OperandBundle{Tag: $0.(string), Inputs: $2.([]value.Value)}, nil >>
+;
+
+OverflowFlags
+	: empty
+	<< ([]ir.OverflowFlag)(nil), nil >>
+	| OverflowFlagList
+;
+
+OverflowFlagList
+	: OverflowFlag
+	<< []ir.OverflowFlag{$0.(ir.OverflowFlag)}, nil >>
+	| OverflowFlagList OverflowFlag
+	<< append($0.([]ir.OverflowFlag), $1.(ir.OverflowFlag)), nil >>
+;
+
+OverflowFlag
+	: "nsw"   << ir.OverflowFlagNSW, nil >>
+	| "nuw"   << ir.OverflowFlagNUW, nil >>
+;
+
+// ___ [ Parameter Attribute ] _________________________________________________
+
+// ref: ParseOptionalParamAttrs
+
+ParamAttrs
+	: empty
+	<< ([]ir.ParamAttribute)(nil), nil >>
+	| ParamAttrList
+;
+
+ParamAttrList
+	: ParamAttr
+	<< []ir.ParamAttribute{$0.(ir.ParamAttribute)}, nil >>
+	| ParamAttrList ParamAttr
+	<< append($0.([]ir.ParamAttribute), $1.(ir.ParamAttribute)), nil >>
+;
+
+// ref: ParseOptionalDerefAttrBytes
+//
+//   ::= empty
+//   ::= AttrKind '(' 4 ')'
+
+ParamAttr
+	: Alignment
+	| Dereferenceable
+	| StringLit         << &ir.ParamAttrString{Value: $0.(string)}, nil >>
+	| "byval"           << ir.ParamAttrByval, nil >>
+	| "inalloca"        << ir.ParamAttrInAlloca, nil >>
+	| "inreg"           << ir.ParamAttrInReg, nil >>
+	| "nest"            << ir.ParamAttrNest, nil >>
+	| "noalias"         << ir.ParamAttrNoAlias, nil >>
+	| "nocapture"       << ir.ParamAttrNoCapture, nil >>
+	| "nonnull"         << ir.ParamAttrNonNull, nil >>
+	| "readnone"        << ir.ParamAttrReadNone, nil >>
+	| "readonly"        << ir.ParamAttrReadOnly, nil >>
+	| "returned"        << ir.ParamAttrReturned, nil >>
+	| "signext"         << ir.ParamAttrSignExt, nil >>
+	| "sret"            << ir.ParamAttrSRet, nil >>
+	| "swifterror"      << ir.ParamAttrSwiftError, nil >>
+	| "swiftself"       << ir.ParamAttrSwiftSelf, nil >>
+	| "writeonly"       << ir.ParamAttrWriteOnly, nil >>
+	| "zeroext"         << ir.ParamAttrZeroExt, nil >>
 ;
 
 // ref: ParseArgumentList
@@ -629,22 +590,163 @@ Params
 	| "..."
 	<< &astx.Params{Variadic: true}, nil >>
 	| ParamList
-	<< &astx.Params{Params: $0.([]*ll.Param)}, nil >>
+	<< &astx.Params{Params: $0.([]*ir.Param)}, nil >>
 	| ParamList "," "..."
-	<< &astx.Params{Params: $0.([]*ll.Param), Variadic: true}, nil >>
+	<< &astx.Params{Params: $0.([]*ir.Param), Variadic: true}, nil >>
 ;
 
 ParamList
 	: Param
-	<< []*ll.Param{$0.(*ll.Param)}, nil >>
+	<< []*ir.Param{$0.(*ir.Param)}, nil >>
 	| ParamList "," Param
-	<< append($0.([]*ll.Param), $2.(*ll.Param)), nil >>
+	<< append($0.([]*ir.Param), $2.(*ir.Param)), nil >>
 ;
 
 Param
 	: Type ParamAttrs
-	<< &ll.Param{Typ: $0.(types.Type), Attrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ir.Param{Typ: $0.(types.Type), Attrs: $1.([]ir.ParamAttribute)}, nil >>
 	| Type ParamAttrs LocalIdent
-	<< &ll.Param{Typ: $0.(types.Type), Name: astx.LocalIdent($2), Attrs: $1.([]ll.ParamAttribute)}, nil >>
+	<< &ir.Param{Typ: $0.(types.Type), Name: astx.LocalIdent($2), Attrs: $1.([]ir.ParamAttribute)}, nil >>
+;
+
+// https://llvm.org/docs/LangRef.html#runtime-preemption-model
+
+// ref: ParseOptionalDSOLocal
+
+OptPreemptionSpecifier
+	: empty                 << ir.PreemptionNone, nil >>
+	| PreemptionSpecifier
+;
+
+PreemptionSpecifier
+	: "dso_local"         << ir.PreemptionDSOLocal, nil >>
+	| "dso_preemptable"   << ir.PreemptionDSOPreemptable, nil >>
+;
+
+// ___ [ Return Attribute ] __________________________________________________
+
+// ref: ParseOptionalReturnAttrs
+
+ReturnAttrs
+	: empty
+	<< ([]ir.ReturnAttribute)(nil), nil >>
+	| ReturnAttrList
+;
+
+ReturnAttrList
+	: ReturnAttr
+	<< []ir.ReturnAttribute{$0.(ir.ReturnAttribute)}, nil >>
+	| ReturnAttrList ReturnAttr
+	<< append($0.([]ir.ReturnAttribute), $1.(ir.ReturnAttribute)), nil >>
+;
+
+ReturnAttr
+	: Alignment
+	| Dereferenceable
+	| StringLit         << &ir.ReturnAttrString{Value: $0.(string)}, nil >>
+	| "inreg"           << ir.ReturnAttrInReg, nil >>
+	| "noalias"         << ir.ReturnAttrNoAlias, nil >>
+	| "nonnull"         << ir.ReturnAttrNonNull, nil >>
+	| "signext"         << ir.ReturnAttrSignExt, nil >>
+	| "zeroext"         << ir.ReturnAttrZeroExt, nil >>
+;
+
+OptSection
+	: empty
+	<< (*ir.Section)(nil), nil >>
+	| Section
+;
+
+Section
+	: "section" StringLit
+	<< &ir.Section{Name: $1.(string)}, nil >>
+;
+
+// ref: ParseOptionalStackAlignment
+//
+//   ::= empty
+//   ::= 'alignstack' '(' 4 ')'
+StackAlignment
+	: "alignstack" "(" int_lit ")"
+	<< &ir.StackAlignment{Align: astx.Int($2)}, nil >>
+;
+
+// ref: ParseScope
+//
+//   ::= syncscope("singlethread" | "<target scope>")?
+
+OptSyncScope
+	: empty
+	<< (*ir.SyncScope)(nil), nil >>
+	| "syncscope" "(" StringLit ")"
+	<< &ir.SyncScope{Scope: $2.(string)}, nil >>
+;
+
+// ref: ParseOptionalThreadLocal
+//
+//   := empty
+//   := 'thread_local'
+//   := 'thread_local' '(' tlsmodel ')'
+
+OptThreadLocal
+	: empty
+	<< (*ir.ThreadLocal)(nil), nil >>
+	| ThreadLocal
+;
+
+ThreadLocal
+	: "thread_local"
+	<< &ir.ThreadLocal{}, nil >>
+	| "thread_local" "(" TLSModel ")"
+	<< &ir.ThreadLocal{Model: $2.(ir.TLSModel)}, nil >>
+;
+
+// ref: ParseTLSModel
+//
+//   := 'localdynamic'
+//   := 'initialexec'
+//   := 'localexec'
+
+TLSModel
+	: "initialexec"    << ir.TLSModelInitialExec, nil >>
+	| "localdynamic"   << ir.TLSModelLocalDynamic, nil >>
+	| "localexec"      << ir.TLSModelLocalExec, nil >>
+;
+
+// ref: ParseOptionalUnnamedAddr
+
+OptUnnamedAddr
+	: empty         << ir.UnnamedAddrNone, nil >>
+	| UnnamedAddr
+;
+
+UnnamedAddr
+	: "local_unnamed_addr"   << ir.UnnamedAddrLocalUnnamedAddr, nil >>
+	| "unnamed_addr"         << ir.UnnamedAddrUnnamedAddr, nil >>
+;
+
+// https://llvm.org/docs/LangRef.html#visibility-styles
+
+// ref: ParseOptionalVisibility
+//
+//   ::= empty
+//   ::= 'default'
+//   ::= 'hidden'
+//   ::= 'protected'
+
+OptVisibility
+	: empty        << ir.VisibilityNone, nil >>
+	| Visibility
+;
+
+Visibility
+	: "default"     << ir.VisibilityDefault, nil >>
+	| "hidden"      << ir.VisibilityHidden, nil >>
+	| "protected"   << ir.VisibilityProtected, nil >>
+;
+
+OptVolatile
+	: empty        << false, nil >>
+	| "volatile"   << true, nil >>
 ;
 

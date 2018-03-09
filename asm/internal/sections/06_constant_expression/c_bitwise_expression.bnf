@@ -8,7 +8,7 @@
 
 ShlExpr
 	: "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
-	<< &constant.ShlExpr{OverflowFlags: $1.([]ll.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &constant.ExprShl{OverflowFlags: $1.([]ir.OverflowFlag), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,7 +17,7 @@ ShlExpr
 
 LShrExpr
 	: "lshr" OptExact "(" Type Constant "," Type Constant ")"
-	<< &constant.LShrExpr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &constant.ExprLShr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +26,7 @@ LShrExpr
 
 AShrExpr
 	: "ashr" OptExact "(" Type Constant "," Type Constant ")"
-	<< &constant.AShrExpr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
+	<< &constant.ExprAShr{Exact: $1.(bool), X: astx.TypeConst($3, $4), Y: astx.TypeConst($6, $7)}, nil >>
 ;
 
 // ~~~ [ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +35,7 @@ AShrExpr
 
 AndExpr
 	: "and" "(" Type Constant "," Type Constant ")"
-	<< &constant.AndExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
+	<< &constant.ExprAnd{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@ AndExpr
 
 OrExpr
 	: "or" "(" Type Constant "," Type Constant ")"
-	<< &constant.OrExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
+	<< &constant.ExprOr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 
 // ~~~ [ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,6 +53,6 @@ OrExpr
 
 XorExpr
 	: "xor" "(" Type Constant "," Type Constant ")"
-	<< &constant.XorExpr{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
+	<< &constant.ExprXor{X: astx.TypeConst($2, $3), Y: astx.TypeConst($5, $6)}, nil >>
 ;
 

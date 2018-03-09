@@ -10,7 +10,7 @@
 
 ExtractElementInst
 	: "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ir.ExtractElementInst{X: astx.TypeValue($1, $2), Index: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstExtractElement{X: astx.TypeValue($1, $2), Index: astx.TypeValue($4, $5), Metadata: $6.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ ExtractElementInst
 
 InsertElementInst
 	: "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ir.InsertElementInst{X: astx.TypeValue($1, $2), Elem: astx.TypeValue($4, $5), Index: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstInsertElement{X: astx.TypeValue($1, $2), Elem: astx.TypeValue($4, $5), Index: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 // ~~~ [ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,6 +36,6 @@ InsertElementInst
 
 ShuffleVectorInst
 	: "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
-	<< &ir.ShuffleVectorInst{X: astx.TypeValue($1, $2), Y: astx.TypeValue($4, $5), Mask: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstShuffleVector{X: astx.TypeValue($1, $2), Y: astx.TypeValue($4, $5), Mask: astx.TypeValue($7, $8), Metadata: $9.([]*metadata.MetadataAttachment)}, nil >>
 ;
 

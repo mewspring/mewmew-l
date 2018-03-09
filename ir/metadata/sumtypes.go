@@ -2,6 +2,11 @@ package metadata
 
 import "fmt"
 
+// IsTopLevelEntity ensures that only top-level entities can be assigned to the
+// ast.TopLevelEntity interface.
+func (*NamedMetadataDef) IsTopLevelEntity() {}
+func (*MetadataDef) IsTopLevelEntity()      {}
+
 // MetadataNode is a metadata node.
 type MetadataNode interface {
 	fmt.Stringer
@@ -186,15 +191,15 @@ func (*GenericDINode) isSpecializedMDNode()              {}
 // DIExpressionField is a DIExpression field.
 type DIExpressionField interface {
 	fmt.Stringer
-	// IsDIExpressionField ensures that only DIExpression fields can be assigned
+	// isDIExpressionField ensures that only DIExpression fields can be assigned
 	// to the metadata.DIExpressionField interface.
-	IsDIExpressionField()
+	isDIExpressionField()
 }
 
-// IsDIExpressionField ensures that only DIExpression fields can be assigned to
+// isDIExpressionField ensures that only DIExpression fields can be assigned to
 // the metadata.DIExpressionField interface.
-//
-func (*MDInt) IsDIExpressionField() {}
+func (*MDInt) isDIExpressionField()  {}
+func (DwarfOp) isDIExpressionField() {}
 
 // IntOrMDField is an integer or metadata field.
 type IntOrMDField interface {
@@ -245,10 +250,5 @@ func (*DIMacroFile) IsIntOrMDField()                {}
 func (*GenericDINode) IsIntOrMDField()              {}
 
 // IsGlobalAttribute ensures that only global attributes can be assigned to the
-// ll.GlobalAttribute interface.
+// astx.GlobalAttribute interface.
 func (*MetadataAttachment) IsGlobalAttribute() {}
-
-// IsTopLevelEntity ensures that only top-level entities can be assigned to the
-// ast.TopLevelEntity interface.
-func (*NamedMetadataDef) IsTopLevelEntity() {}
-func (*MetadataDef) IsTopLevelEntity()      {}

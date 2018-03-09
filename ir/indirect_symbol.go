@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mewmew/l/ll"
-	"github.com/mewmew/l/ll/types"
+	"github.com/mewmew/l/ir/types"
 )
 
 // ~~~ [ Indirect Symbol Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,12 +13,12 @@ import (
 type IndirectSymbol struct {
 	// Alias or IFunc name (*GlobalIdent).
 	Name            string
-	Linkage         ll.Linkage
-	Preemption      ll.Preemption
-	Visibility      ll.Visibility
-	DLLStorageClass ll.DLLStorageClass
-	ThreadLocal     *ll.ThreadLocal
-	UnnamedAddr     ll.UnnamedAddr
+	Linkage         Linkage
+	Preemption      Preemption
+	Visibility      Visibility
+	DLLStorageClass DLLStorageClass
+	ThreadLocal     *ThreadLocal
+	UnnamedAddr     UnnamedAddr
 	Alias           bool // alias if true, ifunc otherwise.
 	Typ             types.Type
 	Const           Constant // aliasee or resolver
@@ -46,22 +45,22 @@ func (s *IndirectSymbol) Def() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v =", s.Name)
-	if s.Linkage != ll.LinkageNone {
+	if s.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", s.Linkage)
 	}
-	if s.Preemption != ll.PreemptionNone {
+	if s.Preemption != PreemptionNone {
 		fmt.Fprintf(buf, " %v", s.Preemption)
 	}
-	if s.Visibility != ll.VisibilityNone {
+	if s.Visibility != VisibilityNone {
 		fmt.Fprintf(buf, " %v", s.Visibility)
 	}
-	if s.DLLStorageClass != ll.DLLStorageClassNone {
+	if s.DLLStorageClass != DLLStorageClassNone {
 		fmt.Fprintf(buf, " %v", s.DLLStorageClass)
 	}
 	if s.ThreadLocal != nil {
 		fmt.Fprintf(buf, " %v", s.ThreadLocal)
 	}
-	if s.UnnamedAddr != ll.UnnamedAddrNone {
+	if s.UnnamedAddr != UnnamedAddrNone {
 		fmt.Fprintf(buf, " %v", s.UnnamedAddr)
 	}
 	if s.Alias {
