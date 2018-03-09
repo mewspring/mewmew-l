@@ -16,10 +16,10 @@ type Function struct {
 	Linkage Linkage
 	*FunctionHeader
 	*FunctionBody // nil if declaration
-	Metadata      []*metadata.MetadataAttachment
 	// Function signature.
-	Sig *types.FuncType
-	Typ *types.PointerType // pointer to Sig.
+	Sig      *types.FuncType
+	Typ      *types.PointerType // pointer to Sig.
+	Metadata []*metadata.MetadataAttachment
 }
 
 // String returns the string representation of the function as a type-value

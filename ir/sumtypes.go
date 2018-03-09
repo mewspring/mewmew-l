@@ -255,6 +255,9 @@ func (*BasicBlock) IsExceptionScope() {}
 
 // --- [ astx.GlobalAttribute ] ------------------------------------------------
 
+// Note, GlobalAttribute is only used at the AST level and the distinction is
+// removed when translating the global variable into IR.
+
 // IsGlobalAttribute ensures that only global attributes can be assigned to the
 // astx.GlobalAttribute interface.
 func (*Section) IsGlobalAttribute()   {}
