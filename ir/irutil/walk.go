@@ -79,7 +79,7 @@ type walker struct {
 // traversal.
 func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{})) {
 	switch x.(type) {
-	case []*constant.Index, []*ir.AttrGroupDef, []*ir.BasicBlock, []*ir.Case, []*ir.Clause, []*ir.ComdatDef, []*ir.Function, []*ir.Global, []*ir.Incoming, []*ir.IndirectSymbol, []*ir.ModuleAsm, []*ir.OperandBundle, []*ir.Param, []*ir.UseListOrder, []*ir.UseListOrderBB, []*metadata.MetadataAttachment, []*metadata.MetadataDef, []*metadata.NamedMetadataDef, []*types.NamedType, []ir.Argument, []ir.Constant, []ir.FuncAttribute, []ir.Instruction, []metadata.MDField, []metadata.MetadataNode, []types.Type, []value.Value:
+	case []*constant.Index, []*ir.AttrGroupDef, []*ir.BasicBlock, []*ir.Case, []*ir.Clause, []*ir.ComdatDef, []*ir.Function, []*ir.Global, []*ir.Incoming, []*ir.IndirectSymbol, []*ir.ModuleAsm, []*ir.OperandBundle, []*ir.Param, []*ir.UseListOrder, []*ir.UseListOrderBB, []*metadata.MetadataAttachment, []*metadata.MetadataDef, []*metadata.NamedMetadataDef, []ir.Argument, []ir.Constant, []ir.FuncAttribute, []ir.Instruction, []metadata.MDField, []metadata.MetadataNode, []types.Type, []value.Value, []*ast.NamedType:
 		// unhashable type.
 	case *ir.Function:
 		if w.funcScope {
@@ -182,8 +182,6 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case **types.ArrayType:
 		w.walkBeforeAfter(*n, before, after)
 	case **types.StructType:
-		w.walkBeforeAfter(*n, before, after)
-	case **types.NamedType:
 		w.walkBeforeAfter(*n, before, after)
 	// Values
 	case **ir.InlineAsm:
@@ -525,6 +523,8 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(*n, before, after)
 	case **ast.MetadataID:
 		w.walkBeforeAfter(*n, before, after)
+	case **ast.NamedType:
+		w.walkBeforeAfter(*n, before, after)
 	case **ast.FloatConst:
 		w.walkBeforeAfter(*n, before, after)
 	case **ast.TypeValue:
@@ -571,8 +571,6 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(*n, before, after)
 	case *[]*metadata.NamedMetadataDef:
 		w.walkBeforeAfter(*n, before, after)
-	case *[]*types.NamedType:
-		w.walkBeforeAfter(*n, before, after)
 	case *[]ir.Argument:
 		w.walkBeforeAfter(*n, before, after)
 	case *[]ir.Constant:
@@ -588,6 +586,9 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *[]types.Type:
 		w.walkBeforeAfter(*n, before, after)
 	case *[]value.Value:
+		w.walkBeforeAfter(*n, before, after)
+	// From AST.
+	case *[]*ast.NamedType:
 		w.walkBeforeAfter(*n, before, after)
 
 	// pointers to structs
@@ -703,11 +704,6 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.ElemType, before, after)
 	case *types.StructType:
 		w.walkBeforeAfter(&n.Fields, before, after)
-	case *types.NamedType:
-		// Note, Type is nil before type resolution has completed.
-		if n.Type != nil {
-			w.walkBeforeAfter(&n.Type, before, after)
-		}
 	// Values
 	case *ir.InlineAsm:
 		// nothing to do.
@@ -1407,6 +1403,12 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		// nothing to do.
 	case *ast.MetadataID:
 		// nothing to do.
+	case *ast.NamedType:
+		// Note, Type is nil for type identifiers until type resoltion has
+		// completed.
+		if n.Type != nil {
+			w.walkBeforeAfter(&n.Type, before, after)
+		}
 	case *ast.FloatConst:
 		// nothing to do.
 	case *ast.TypeValue:
@@ -1491,10 +1493,6 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		for i := range n {
 			w.walkBeforeAfter(&n[i], before, after)
 		}
-	case []*types.NamedType:
-		for i := range n {
-			w.walkBeforeAfter(&n[i], before, after)
-		}
 	case []ir.Argument:
 		for i := range n {
 			w.walkBeforeAfter(&n[i], before, after)
@@ -1524,6 +1522,11 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 			w.walkBeforeAfter(&n[i], before, after)
 		}
 	case []value.Value:
+		for i := range n {
+			w.walkBeforeAfter(&n[i], before, after)
+		}
+	// From AST.
+	case []*ast.NamedType:
 		for i := range n {
 			w.walkBeforeAfter(&n[i], before, after)
 		}

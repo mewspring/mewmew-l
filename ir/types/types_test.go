@@ -18,5 +18,6 @@ var (
 	_ types.Type = (*types.MetadataType)(nil)
 	_ types.Type = (*types.ArrayType)(nil)
 	_ types.Type = (*types.StructType)(nil)
-	_ types.Type = (*types.NamedType)(nil)
+	// TODO: introduce *ast.TypeIdent
+	//_ types.Type = (**ast.TypeIdent)(nil)
 )

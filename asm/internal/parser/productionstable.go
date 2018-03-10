@@ -279,23 +279,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" OpaqueType	<< &ast.NamedType{Name: astx.LocalIdent(X[0]), Type: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      25,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil
+			return &ast.NamedType{Name: astx.LocalIdent(X[0]), Type: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TypeDef : LocalIdent "=" "type" Type	<< &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil >>`,
+		String: `TypeDef : LocalIdent "=" "type" Type	<< &ast.NamedType{Name: astx.LocalIdent(X[0]), Type: X[3].(types.Type)}, nil >>`,
 		Id:         "TypeDef",
 		NTType:     8,
 		Index:      26,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.NamedType{Name: X[0].(*ast.LocalIdent).Name, Type: X[3].(types.Type)}, nil
+			return &ast.NamedType{Name: astx.LocalIdent(X[0]), Type: X[3].(types.Type)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1329,13 +1329,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NamedType : LocalIdent	<< &types.NamedType{Name: astx.LocalIdent(X[0])}, nil >>`,
+		String: `NamedType : LocalIdent	<< &ast.NamedType{Name: astx.LocalIdent(X[0])}, nil >>`,
 		Id:         "NamedType",
 		NTType:     66,
 		Index:      130,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &types.NamedType{Name: astx.LocalIdent(X[0])}, nil
+			return &ast.NamedType{Name: astx.LocalIdent(X[0])}, nil
 		},
 	},
 	ProdTabEntry{

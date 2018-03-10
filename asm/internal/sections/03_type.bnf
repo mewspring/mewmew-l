@@ -205,6 +205,6 @@ OpaqueType
 
 NamedType
 	: LocalIdent
-	<< &types.NamedType{Name: astx.LocalIdent($0)}, nil >>
+	<< &ast.NamedType{Name: astx.LocalIdent($0)}, nil >>
 ;
 

@@ -14,8 +14,10 @@ type Module struct {
 
 	// Per module.
 
+	// tracks the order of type definitions.
+	typeDefNames []string
 	// maps from local identifier to type definition.
-	typeDefs map[string]*types.NamedType
+	typeDefs map[string]types.Type
 	// maps from comdat name to comdat definition.
 	comdatDefs map[string]*ir.ComdatDef
 	// maps from global identifier to global declaration or definition.
@@ -46,7 +48,7 @@ type Module struct {
 func NewModule() *Module {
 	return &Module{
 		Module:            &ir.Module{},
-		typeDefs:          make(map[string]*types.NamedType),
+		typeDefs:          make(map[string]types.Type),
 		comdatDefs:        make(map[string]*ir.ComdatDef),
 		globals:           make(map[string]*ir.Global),
 		indirectSymbols:   make(map[string]*ir.IndirectSymbol),

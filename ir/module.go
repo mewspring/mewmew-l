@@ -24,7 +24,7 @@ type Module struct {
 	// Module-level inline assembly.
 	ModuleAsms []*ModuleAsm
 	// Type definitions.
-	TypeDefs []*types.NamedType
+	TypeDefs []types.Type
 	// Comdat definitions.
 	ComdatDefs []*ComdatDef
 	// Global declarations and definitions.
@@ -66,7 +66,9 @@ func (m *Module) String() string {
 	}
 	// Type definitions.
 	for _, t := range m.TypeDefs {
-		fmt.Fprintln(buf, t.Def())
+		// LocalIdent "=" "type" OpaqueType
+		// LocalIdent "=" "type" Type
+		fmt.Fprintf(buf, "%v = type %v\n", t.String(), t.Def())
 	}
 	// Global declarations and definitions.
 	for _, c := range m.ComdatDefs {

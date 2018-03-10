@@ -28,12 +28,36 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	// === [ Per module resolution ] ===
 
 	// Resolve type definitions.
+	for _, name := range m.typeDefNames {
+		t := m.typeDefs[name]
+		tname := make(map[string]bool)
+	loop:
+		for {
+			if t, ok := t.(*ast.NamedType); ok {
+				tname[t.Name] = true
+				switch u := t.Type.(type) {
+				case *ast.NamedType:
+					if tname[u.Name] {
+						panic(fmt.Errorf("cycle detected in definition of type %q; referring to %q with definition %v", name, u.Name, u.Type))
+					}
+					t = u
+				default:
+					fmt.Printf("%T\n", u)
+					u.SetName(name)
+					m.typeDefs[name] = u
+					m.TypeDefs = append(m.TypeDefs, u)
+					break loop
+				}
+			} else {
+				break
+			}
+		}
+	}
+
 	resolveNamedType := func(n interface{}) {
 		if t, ok := n.(*types.Type); ok {
-			if u, ok := (*t).(*types.NamedType); ok {
-				if u.Type == nil {
-					*t = m.typeDefs[u.Name]
-				}
+			if u, ok := (*t).(*ast.NamedType); ok {
+				*t = m.typeDefs[u.Name]
 			}
 		}
 	}
@@ -201,6 +225,7 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 				if (*n).Term == nil {
 					fmt.Println("bb name:", (*n).Name)
 				}
+				// TODO: Resolve basic block.
 			}
 		}
 		irutil.WalkFunc(f, resolveBasicBlock)
@@ -228,9 +253,9 @@ func (m *Module) indexIdents(entities []ast.TopLevelEntity) {
 		case *ir.ModuleAsm:
 			// Module-level inline assembly.
 			m.ModuleAsms = append(m.ModuleAsms, entity)
-		case *types.NamedType:
+		case *ast.NamedType:
 			// Type definitions.
-			m.TypeDefs = append(m.TypeDefs, entity)
+			m.typeDefNames = append(m.typeDefNames, entity.Name)
 			ident := entity.Name
 			if prev, ok := m.typeDefs[ident]; ok {
 				panic(fmt.Errorf("type identifier %q already present; prev `%v`, new `%v`", ident, prev, entity))

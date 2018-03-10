@@ -15,7 +15,7 @@ func (*DataLayout) IsTopLevelEntity()     {}
 func (*TargetTriple) IsTopLevelEntity()   {}
 func (*ModuleAsm) IsTopLevelEntity()      {}
 
-//func (*types.NamedType) IsTopLevelEntity() {}
+//func (*ast.TypeDef) IsTopLevelEntity() {}
 func (*ComdatDef) IsTopLevelEntity()      {}
 func (*Global) IsTopLevelEntity()         {}
 func (*IndirectSymbol) IsTopLevelEntity() {}

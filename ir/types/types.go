@@ -40,36 +40,55 @@ var (
 // Type is an LLVM IR type.
 type Type interface {
 	fmt.Stringer
+	// Def returns the LLVM syntax representation of the definition of the type.
+	Def() string
 	// Equal reports whether t and u are of equal type.
 	Equal(u Type) bool
+	// SetName sets the name of the type.
+	SetName(name string)
 }
 
 // --- [ Void Types ] ----------------------------------------------------------
 
 // VoidType is an LLVM IR void type.
-type VoidType struct{}
+type VoidType struct {
+	// Type alias; or empty if not present.
+	Name string
+}
 
 // Equal reports whether t and u are of equal type.
 func (t *VoidType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *VoidType:
+	if _, ok := u.(*VoidType); ok {
 		return true
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the void type.
-func (*VoidType) String() string {
+func (t *VoidType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *VoidType) Def() string {
 	// "void"
 	return "void"
+}
+
+// SetName sets the name of the type.
+func (t *VoidType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Function Types ] ------------------------------------------------------
 
 // FuncType is an LLVM IR function type.
 type FuncType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Return type.
 	RetType Type
 	// Function parameters.
@@ -88,8 +107,7 @@ func NewFunc(retType Type, params ...Type) *FuncType {
 
 // Equal reports whether t and u are of equal type.
 func (t *FuncType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *FuncType:
+	if u, ok := u.(*FuncType); ok {
 		if !t.RetType.Equal(u.RetType) {
 			return false
 		}
@@ -102,14 +120,20 @@ func (t *FuncType) Equal(u Type) bool {
 			}
 		}
 		return t.Variadic == u.Variadic
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the function type.
 func (t *FuncType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *FuncType) Def() string {
 	// Type "(" Params ")"
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "%v (", t.RetType)
@@ -129,10 +153,17 @@ func (t *FuncType) String() string {
 	return buf.String()
 }
 
+// SetName sets the name of the type.
+func (t *FuncType) SetName(name string) {
+	t.Name = name
+}
+
 // --- [ Integer Types ] -------------------------------------------------------
 
 // IntType is an LLVM IR integer type.
 type IntType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Integer size in number of bits.
 	BitSize int64
 }
@@ -146,43 +177,65 @@ func NewInt(bitSize int64) *IntType {
 
 // Equal reports whether t and u are of equal type.
 func (t *IntType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *IntType:
+	if u, ok := u.(*IntType); ok {
 		return t.BitSize == u.BitSize
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the integer type.
 func (t *IntType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *IntType) Def() string {
 	// int_type
 	return fmt.Sprintf("i%d", t.BitSize)
+}
+
+// SetName sets the name of the type.
+func (t *IntType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Floating-point Types ] ------------------------------------------------
 
 // FloatType is an LLVM IR floating-point type.
 type FloatType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Floating-point kind.
 	Kind FloatKind
 }
 
 // Equal reports whether t and u are of equal type.
 func (t *FloatType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *FloatType:
+	if u, ok := u.(*FloatType); ok {
 		return t.Kind == u.Kind
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the floating-point type.
 func (t *FloatType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *FloatType) Def() string {
 	return t.Kind.String()
+}
+
+// SetName sets the name of the type.
+func (t *FloatType) SetName(name string) {
+	t.Name = name
 }
 
 //go:generate stringer -linecomment -type FloatKind
@@ -203,29 +256,44 @@ const (
 // --- [ MMX Types ] -----------------------------------------------------------
 
 // MMXType is an LLVM IR MMX type.
-type MMXType struct{}
+type MMXType struct {
+	// Type alias; or empty if not present.
+	Name string
+}
 
 // Equal reports whether t and u are of equal type.
 func (t *MMXType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *MMXType:
+	if _, ok := u.(*MMXType); ok {
 		return true
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the MMX type.
 func (t *MMXType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *MMXType) Def() string {
 	// "x86_mmx"
 	return "x86_mmx"
+}
+
+// SetName sets the name of the type.
+func (t *MMXType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Pointer Types ] -------------------------------------------------------
 
 // PointerType is an LLVM IR pointer type.
 type PointerType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Element type.
 	ElemType Type
 	// Address space; or zero value for default address space.
@@ -241,20 +309,25 @@ func NewPointer(elemType Type) *PointerType {
 
 // Equal reports whether t and u are of equal type.
 func (t *PointerType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *PointerType:
+	if u, ok := u.(*PointerType); ok {
 		if !t.ElemType.Equal(u.ElemType) {
 			return false
 		}
 		return t.AddrSpace == u.AddrSpace
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the pointer type.
 func (t *PointerType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *PointerType) Def() string {
 	// Type OptAddrSpace "*"
 	buf := &strings.Builder{}
 	buf.WriteString(t.ElemType.String())
@@ -263,6 +336,11 @@ func (t *PointerType) String() string {
 	}
 	buf.WriteString("*")
 	return buf.String()
+}
+
+// SetName sets the name of the type.
+func (t *PointerType) SetName(name string) {
+	t.Name = name
 }
 
 // AddrSpace is an LLVM IR pointer type address space.
@@ -278,6 +356,8 @@ func (a AddrSpace) String() string {
 
 // VectorType is an LLVM IR vector type.
 type VectorType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Vector length.
 	Len int64
 	// Element type.
@@ -294,94 +374,145 @@ func NewVector(len int64, elemType Type) *VectorType {
 
 // Equal reports whether t and u are of equal type.
 func (t *VectorType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *VectorType:
+	if u, ok := u.(*VectorType); ok {
 		if t.Len != u.Len {
 			return false
 		}
 		return t.ElemType.Equal(u.ElemType)
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the vector type.
 func (t *VectorType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *VectorType) Def() string {
 	// "<" int_lit "x" Type ">"
 	return fmt.Sprintf("<%d x %v>", t.Len, t.ElemType)
+}
+
+// SetName sets the name of the type.
+func (t *VectorType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Label Types ] ---------------------------------------------------------
 
 // LabelType is an LLVM IR label type.
-type LabelType struct{}
+type LabelType struct {
+	// Type alias; or empty if not present.
+	Name string
+}
 
 // Equal reports whether t and u are of equal type.
 func (t *LabelType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *LabelType:
+	if _, ok := u.(*LabelType); ok {
 		return true
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the label type.
 func (t *LabelType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *LabelType) Def() string {
 	// "label"
 	return "label"
+}
+
+// SetName sets the name of the type.
+func (t *LabelType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Token Types ] ---------------------------------------------------------
 
 // TokenType is an LLVM IR token type.
-type TokenType struct{}
+type TokenType struct {
+	// Type alias; or empty if not present.
+	Name string
+}
 
 // Equal reports whether t and u are of equal type.
 func (t *TokenType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *TokenType:
+	if _, ok := u.(*TokenType); ok {
 		return true
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the token type.
 func (t *TokenType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *TokenType) Def() string {
 	// "token"
 	return "token"
+}
+
+// SetName sets the name of the type.
+func (t *TokenType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Metadata Types ] ------------------------------------------------------
 
 // MetadataType is an LLVM IR metadata type.
-type MetadataType struct{}
+type MetadataType struct {
+	// Type alias; or empty if not present.
+	Name string
+}
 
 // Equal reports whether t and u are of equal type.
 func (t *MetadataType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *MetadataType:
+	if _, ok := u.(*MetadataType); ok {
 		return true
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the metadata type.
 func (t *MetadataType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *MetadataType) Def() string {
 	// "metadata"
 	return "metadata"
+}
+
+// SetName sets the name of the type.
+func (t *MetadataType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Array Types ] ---------------------------------------------------------
 
 // ArrayType is an LLVM IR array type.
 type ArrayType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Array length.
 	Len int64
 	// Element type.
@@ -398,28 +529,40 @@ func NewArray(len int64, elemType Type) *ArrayType {
 
 // Equal reports whether t and u are of equal type.
 func (t *ArrayType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *ArrayType:
+	if u, ok := u.(*ArrayType); ok {
 		if t.Len != u.Len {
 			return false
 		}
 		return t.ElemType.Equal(u.ElemType)
-	case *NamedType:
-		return t.Equal(u.Type)
 	}
 	return false
 }
 
 // String returns the string representation of the array type.
 func (t *ArrayType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *ArrayType) Def() string {
 	// "[" int_lit "x" Type "]"
 	return fmt.Sprintf("[%d x %v]", t.Len, t.ElemType)
+}
+
+// SetName sets the name of the type.
+func (t *ArrayType) SetName(name string) {
+	t.Name = name
 }
 
 // --- [ Structure Types ] -----------------------------------------------------
 
 // StructType is an LLVM IR structure type.
 type StructType struct {
+	// Type alias; or empty if not present.
+	Name string
 	// Packed memory layout.
 	Packed bool
 	// Struct fields.
@@ -437,8 +580,14 @@ func NewStruct(fields ...Type) *StructType {
 
 // Equal reports whether t and u are of equal type.
 func (t *StructType) Equal(u Type) bool {
-	switch u := u.(type) {
-	case *StructType:
+	if u, ok := u.(*StructType); ok {
+		if len(t.Name) > 0 || len(u.Name) > 0 {
+			// Identified struct types are uniqued by type names, not by structural
+			// identity.
+			//
+			// t or u is an identified struct type.
+			return t.Name == u.Name
+		}
 		// Literal struct types are uniqued by structural identity.
 		if t.Packed != u.Packed {
 			return false
@@ -452,18 +601,20 @@ func (t *StructType) Equal(u Type) bool {
 			}
 		}
 		return true
-	case *NamedType:
-		// Identified struct types are uniqued by type names, not by structural
-		// identity.
-		//
-		// t is literal struct type, u is identified struct type.
-		return false
 	}
 	return false
 }
 
 // String returns the string representation of the structure type.
 func (t *StructType) String() string {
+	if len(t.Name) > 0 {
+		return t.Name
+	}
+	return t.Def()
+}
+
+// Def returns the LLVM syntax representation of the definition of the type.
+func (t *StructType) Def() string {
 	// "opaque"
 	// "{" Types "}"
 	// "<" "{" Types "}" ">"
@@ -488,95 +639,15 @@ func (t *StructType) String() string {
 	return buf.String()
 }
 
-// --- [ Named Types ] ---------------------------------------------------------
-
-// Note, Type is nil when NamedType is in AST form; irx.Translate performs type
-// resolution to translate the AST form into IR form.
-
-// NamedType is an LLVM IR named type.
-type NamedType struct {
-	// Type name (LocalIdent).
-	Name string
-	// Type definition.
-	Type Type
-}
-
-// Equal reports whether t and u are of equal type.
-func (t *NamedType) Equal(u Type) bool {
-	tname := make(map[string]bool)
-	for {
-		switch tdef := t.Type.(type) {
-		case *StructType:
-			uname := make(map[string]bool)
-			if u, ok := u.(*NamedType); ok {
-				for {
-					switch udef := u.Type.(type) {
-					case *StructType:
-						// Identified struct types are uniqued by type names, not by
-						// structural identity.
-						//
-						// t and u are both identified struct types.
-						return t.Name == u.Name
-					case *NamedType:
-						if uname[u.Name] {
-							panic(fmt.Errorf("cycle detected in named type %q", u.Name))
-						}
-						uname[u.Name] = true
-						u = udef
-					default:
-						// t is identified struct type, u is not.
-						return false
-					}
-				}
-			}
-			// Identified struct types are uniqued by type names, not by structural
-			// identity.
-			//
-			// t is identified struct type, u is not.
-			return false
-		case *NamedType:
-			if tname[t.Name] {
-				panic(fmt.Errorf("cycle detected in named type %q", t.Name))
-			}
-			tname[t.Name] = true
-			t = tdef
-		default:
-			// t is alias for non-struct type.
-			return t.Type.Equal(u)
-		}
-	}
-}
-
-// String returns the string representation of the named type.
-func (t *NamedType) String() string {
-	// LocalIdent
-	return t.Name
-}
-
-// Def returns the LLVM syntax representation of the type definition.
-func (t *NamedType) Def() string {
-	// LocalIdent "=" "type" OpaqueType
-	// LocalIdent "=" "type" Type
-	return fmt.Sprintf("%v = type %v", t.Name, t.Type)
+// SetName sets the name of the type.
+func (t *StructType) SetName(name string) {
+	t.Name = name
 }
 
 // ### [ Helper functions ] ####################################################
 
 // IsPointer reports whether the given type is a pointer type.
 func IsPointer(t Type) bool {
-	tname := make(map[string]bool)
-	for {
-		switch u := t.(type) {
-		case *PointerType:
-			return true
-		case *NamedType:
-			if tname[u.Name] {
-				panic(fmt.Errorf("cycle detected in named type %q", u.Name))
-			}
-			tname[u.Name] = true
-			t = u.Type
-		default:
-			return false
-		}
-	}
+	_, ok := t.(*PointerType)
+	return ok
 }

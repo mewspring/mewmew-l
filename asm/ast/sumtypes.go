@@ -79,7 +79,8 @@ type TopLevelEntity interface {
 //func (*TargetTriple) IsTopLevelEntity()   {}
 
 //func (*ModuleAsm) IsTopLevelEntity()    {}
-//func (*TypeDef) IsTopLevelEntity()      {}
+func (*NamedType) IsTopLevelEntity() {}
+
 //func (*ComdatDef) IsTopLevelEntity()    {}
 //func (*Global) IsTopLevelEntity()       {}
 //func (*IndirectSymbol) IsTopLevelEntity() {}
