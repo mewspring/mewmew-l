@@ -14,38 +14,19 @@ type Module struct {
 
 	// Per module.
 
-	// maps from identifier to AST definition.
-
-	// maps from local identifier to type definition.
-	localIdent map[string]*types.NamedType
-	// maps from comdat name to comdat definition.
-	comdatName map[string]*ir.ComdatDef
-	// maps from global identifier to global variable, indirect symbol, or
-	// function.
-	//
-	//    *ir.Global
-	//    *ast.IndirectSymbol
-	//    *ir.Function
-	globalIdent map[string]interface{}
-	// maps from attribute group ID to attribute group definition.
-	attrGroupID map[string]*ir.AttrGroupDef
-	// maps from metadata name to named metadata definition.
-	metadataName map[string]*metadata.NamedMetadataDef
-	// maps from metadata ID to metadata definition.
-	metadataID map[string]*metadata.MetadataDef
-
-	// maps from identifier to IR definition.
-
 	// maps from local identifier to type definition.
 	typeDefs map[string]*types.NamedType
+	// maps from comdat name to comdat definition.
+	comdatDefs map[string]*ir.ComdatDef
 	// maps from global identifier to global declaration or definition.
 	globals map[string]*ir.Global
-	//aliases  map[string]*ir.Alias
-	//ifuncs  map[string]*ir.IFunc
-	// maps from attribute group ID to attribute group definition.
-	attrGroupDefs map[string]*ir.AttrGroupDef
+	// maps from global identifier to indirect symbol definitions (aliases and
+	// IFuncs).
+	indirectSymbols map[string]*ir.IndirectSymbol
 	// maps from global identifier to function declaration or definition.
 	funcs map[string]*ir.Function
+	// maps from attribute group ID to attribute group definition.
+	attrGroupDefs map[string]*ir.AttrGroupDef
 	// maps from metadata name to named metadata definition.
 	namedMetadataDefs map[string]*metadata.NamedMetadataDef
 	// maps from metadata ID to metadata definition.
@@ -64,17 +45,11 @@ type Module struct {
 // NewModule returns a new module generator.
 func NewModule() *Module {
 	return &Module{
-		Module: &ir.Module{},
-
-		localIdent:   make(map[string]*types.NamedType),
-		comdatName:   make(map[string]*ir.ComdatDef),
-		globalIdent:  make(map[string]interface{}),
-		attrGroupID:  make(map[string]*ir.AttrGroupDef),
-		metadataName: make(map[string]*metadata.NamedMetadataDef),
-		metadataID:   make(map[string]*metadata.MetadataDef),
-
+		Module:            &ir.Module{},
 		typeDefs:          make(map[string]*types.NamedType),
+		comdatDefs:        make(map[string]*ir.ComdatDef),
 		globals:           make(map[string]*ir.Global),
+		indirectSymbols:   make(map[string]*ir.IndirectSymbol),
 		funcs:             make(map[string]*ir.Function),
 		attrGroupDefs:     make(map[string]*ir.AttrGroupDef),
 		namedMetadataDefs: make(map[string]*metadata.NamedMetadataDef),

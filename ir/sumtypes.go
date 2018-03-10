@@ -11,8 +11,8 @@ import (
 // IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
 func (*SourceFilename) IsTopLevelEntity() {}
-func (*TargetTriple) IsTopLevelEntity()   {}
 func (*DataLayout) IsTopLevelEntity()     {}
+func (*TargetTriple) IsTopLevelEntity()   {}
 func (*ModuleAsm) IsTopLevelEntity()      {}
 
 //func (*types.NamedType) IsTopLevelEntity() {}
@@ -39,10 +39,9 @@ type Constant interface {
 
 // IsConstant ensures that only constants can be assigned to the
 // ir.Constant interface.
-func (*Global) IsConstant() {}
-
-//func (*IndirectSymbol) IsConstant() {}?
-func (*Function) IsConstant() {}
+func (*Global) IsConstant()         {}
+func (*IndirectSymbol) IsConstant() {}
+func (*Function) IsConstant()       {}
 
 // --- [ ir.ReturnAttribute ] --------------------------------------------------
 

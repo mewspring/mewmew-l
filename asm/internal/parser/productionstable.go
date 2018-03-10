@@ -249,23 +249,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TargetDefinition : "target" "triple" "=" StringLit	<< &ir.TargetTriple{TargetTriple: X[3].(string)}, nil >>`,
+		String: `TargetDefinition : "target" "datalayout" "=" StringLit	<< &ir.DataLayout{DataLayout: X[3].(string)}, nil >>`,
 		Id:         "TargetDefinition",
 		NTType:     6,
 		Index:      22,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.TargetTriple{TargetTriple: X[3].(string)}, nil
+			return &ir.DataLayout{DataLayout: X[3].(string)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `TargetDefinition : "target" "datalayout" "=" StringLit	<< &ir.DataLayout{DataLayout: X[3].(string)}, nil >>`,
+		String: `TargetDefinition : "target" "triple" "=" StringLit	<< &ir.TargetTriple{TargetTriple: X[3].(string)}, nil >>`,
 		Id:         "TargetDefinition",
 		NTType:     6,
 		Index:      23,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.DataLayout{DataLayout: X[3].(string)}, nil
+			return &ir.TargetTriple{TargetTriple: X[3].(string)}, nil
 		},
 	},
 	ProdTabEntry{

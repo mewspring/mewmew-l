@@ -17,10 +17,10 @@ import (
 type Module struct {
 	// Source filename; or nil if not present.
 	SourceFilename *SourceFilename
-	// Target triple; or nil if not present.
-	TargetTriple *TargetTriple
 	// Data layout; or nil if not present.
 	DataLayout *DataLayout
+	// Target triple; or nil if not present.
+	TargetTriple *TargetTriple
 	// Module-level inline assembly.
 	ModuleAsms []*ModuleAsm
 	// Type definitions.
@@ -52,13 +52,13 @@ func (m *Module) String() string {
 	if m.SourceFilename != nil {
 		fmt.Fprintln(buf, m.SourceFilename.Def())
 	}
-	// Target triple.
-	if m.TargetTriple != nil {
-		fmt.Fprintln(buf, m.TargetTriple.Def())
-	}
 	// Data layout.
 	if m.DataLayout != nil {
 		fmt.Fprintln(buf, m.DataLayout.Def())
+	}
+	// Target triple.
+	if m.TargetTriple != nil {
+		fmt.Fprintln(buf, m.TargetTriple.Def())
 	}
 	// Module-level inline assembly.
 	for _, asm := range m.ModuleAsms {

@@ -10,13 +10,13 @@ import (
 // resolveTypeDefs resolves type definitions.
 func (m *Module) resolveTypeDefs() {
 	// Index type definitions.
-	for name := range m.localIdent {
+	for name := range m.typeDefs {
 		m.typeDefs[name] = &types.NamedType{
 			Name: name,
 		}
 	}
 	// Resolve type definitions.
-	for name, old := range m.localIdent {
+	for name, old := range m.typeDefs {
 		t := m.typeDefs[name]
 		t.Type = m.irType(old.Type)
 	}

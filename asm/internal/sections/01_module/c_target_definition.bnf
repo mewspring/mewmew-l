@@ -9,9 +9,9 @@
 //   ::= 'target' 'datalayout' '=' STRINGCONSTANT
 
 TargetDefinition
-	: "target" "triple" "=" StringLit
-	<< &ir.TargetTriple{TargetTriple: $3.(string)}, nil >>
-	| "target" "datalayout" "=" StringLit
+	: "target" "datalayout" "=" StringLit
 	<< &ir.DataLayout{DataLayout: $3.(string)}, nil >>
+	| "target" "triple" "=" StringLit
+	<< &ir.TargetTriple{TargetTriple: $3.(string)}, nil >>
 ;
 

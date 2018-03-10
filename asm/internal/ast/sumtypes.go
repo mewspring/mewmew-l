@@ -75,8 +75,8 @@ type TopLevelEntity interface {
 // IsTopLevelEntity ensures that only top-level entities can be assigned to the
 // ast.TopLevelEntity interface.
 //func (*SourceFilename) IsTopLevelEntity() {}
-//func (*TargetTriple) IsTopLevelEntity()   {}
 //func (*DataLayout) IsTopLevelEntity()     {}
+//func (*TargetTriple) IsTopLevelEntity()   {}
 
 //func (*ModuleAsm) IsTopLevelEntity()    {}
 //func (*TypeDef) IsTopLevelEntity()      {}
@@ -87,18 +87,3 @@ type TopLevelEntity interface {
 //func (*Function) IsTopLevelEntity()       {}
 //func (*UseListOrder) IsTopLevelEntity()   {}
 //func (*UseListOrderBB) IsTopLevelEntity() {}
-
-// --- [ ast.TargetDefinition ] ------------------------------------------------
-
-// TargetDefinition is a target definition top-level entity.
-//type TargetDefinition interface {
-//	fmt.Stringer
-//	// isTargetDefinition ensures that only target definitions can be assigned to
-//	// the ast.TargetDefinition interface.
-//	isTargetDefinition()
-//}
-
-// isTargetDefinition ensures that only target definitions can be assigned to
-// the ast.TargetDefinition interface.
-//func (*TargetTriple) isTargetDefinition() {}
-//func (*DataLayout) isTargetDefinition()   {}

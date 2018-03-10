@@ -11,13 +11,13 @@ import (
 // indexMetadataDefs indexes metadata definitions.
 func (m *Module) indexMetadataDefs() {
 	// Index named metadata definitions.
-	for name := range m.metadataName {
+	for name := range m.namedMetadataDefs {
 		m.namedMetadataDefs[name] = &metadata.NamedMetadataDef{
 			Name: name,
 		}
 	}
 	// Index metadata definitions.
-	for id := range m.metadataID {
+	for id := range m.metadataDefs {
 		m.metadataDefs[id] = &metadata.MetadataDef{
 			ID: id,
 		}
@@ -27,7 +27,7 @@ func (m *Module) indexMetadataDefs() {
 // resolveMetadataDefs resolves metadata definitions.
 func (m *Module) resolveMetadataDefs() {
 	// Resolve named metadata definitions.
-	for name, old := range m.metadataName {
+	for name, old := range m.namedMetadataDefs {
 		md := m.namedMetadataDefs[name]
 		for i := range old.Nodes {
 			node := m.irMetadataNode(old.Nodes[i])
@@ -35,7 +35,7 @@ func (m *Module) resolveMetadataDefs() {
 		}
 	}
 	// Resolve named metadata definitions.
-	for id, old := range m.metadataID {
+	for id, old := range m.metadataDefs {
 		md := m.metadataDefs[id]
 		md.Distinct = old.Distinct
 		md.Node = m.irMDNode(old.Node)
