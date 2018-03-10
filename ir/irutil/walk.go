@@ -626,7 +626,10 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *ir.ComdatDef:
 		// nothing to do.
 	case *ir.Global:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until global variable type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.ContentType, before, after)
 		if n.Init != nil {
 			w.walkBeforeAfter(&n.Init, before, after)
@@ -698,28 +701,55 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *constant.Bool:
 		// nothing to do.
 	case *constant.Int:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.Float:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.Null:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.None:
 		// nothing to do.
 	case *constant.Struct:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.Fields, before, after)
 	case *constant.Array:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.Elems, before, after)
 	case *constant.CharArray:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.Vector:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.Elems, before, after)
 	case *constant.ZeroInitializer:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.Undef:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 	case *constant.BlockAddress:
 		w.walkBeforeAfter(&n.Func, before, after)
 		w.walkBeforeAfter(&n.Block, before, after)
@@ -1283,8 +1313,17 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *metadata.DIExpression:
 		// nothing to do.
 	case *metadata.DIGlobalVariableExpression:
-		w.walkBeforeAfter(&n.Var, before, after)  // required
-		w.walkBeforeAfter(&n.Expr, before, after) // required
+		w.walkBeforeAfter(&n.Var, before, after) // required
+
+		// Note, the C++ source code of LLVM states that "expr:" is a required
+		// field, however, Clang is known to output DIGlobalVariableExpression
+		// specialized metadata nodes only containing "var:"; e.g. from `cat.ll`:
+		//
+		//    !0 = !DIGlobalVariableExpression(var: !1)
+
+		if n.Expr != nil {
+			w.walkBeforeAfter(&n.Expr, before, after) // required
+		}
 	case *metadata.DIObjCProperty:
 		if n.File != nil {
 			w.walkBeforeAfter(&n.File, before, after) // optional

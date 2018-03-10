@@ -78,6 +78,14 @@ type FuncType struct {
 	Variadic bool
 }
 
+// NewFunc returns a new function type.
+func NewFunc(retType Type, params ...Type) *FuncType {
+	return &FuncType{
+		RetType: retType,
+		Params:  params,
+	}
+}
+
 // Equal reports whether t and u are of equal type.
 func (t *FuncType) Equal(u Type) bool {
 	switch u := u.(type) {
@@ -127,6 +135,13 @@ func (t *FuncType) String() string {
 type IntType struct {
 	// Integer size in number of bits.
 	BitSize int64
+}
+
+// NewInt returns a new integer type.
+func NewInt(bitSize int64) *IntType {
+	return &IntType{
+		BitSize: bitSize,
+	}
 }
 
 // Equal reports whether t and u are of equal type.
@@ -217,6 +232,13 @@ type PointerType struct {
 	AddrSpace AddrSpace
 }
 
+// NewPointer returns a new pointer type.
+func NewPointer(elemType Type) *PointerType {
+	return &PointerType{
+		ElemType: elemType,
+	}
+}
+
 // Equal reports whether t and u are of equal type.
 func (t *PointerType) Equal(u Type) bool {
 	switch u := u.(type) {
@@ -260,6 +282,14 @@ type VectorType struct {
 	Len int64
 	// Element type.
 	ElemType Type
+}
+
+// NewVector returns a new vector type.
+func NewVector(len int64, elemType Type) *VectorType {
+	return &VectorType{
+		Len:      len,
+		ElemType: elemType,
+	}
 }
 
 // Equal reports whether t and u are of equal type.
@@ -358,6 +388,14 @@ type ArrayType struct {
 	ElemType Type
 }
 
+// NewArray returns a new array type.
+func NewArray(len int64, elemType Type) *ArrayType {
+	return &ArrayType{
+		Len:      len,
+		ElemType: elemType,
+	}
+}
+
 // Equal reports whether t and u are of equal type.
 func (t *ArrayType) Equal(u Type) bool {
 	switch u := u.(type) {
@@ -388,6 +426,13 @@ type StructType struct {
 	Fields []Type
 	// Opaque struct type.
 	Opaque bool
+}
+
+// NewStruct returns a new struct type.
+func NewStruct(fields ...Type) *StructType {
+	return &StructType{
+		Fields: fields,
+	}
 }
 
 // Equal reports whether t and u are of equal type.
@@ -445,8 +490,8 @@ func (t *StructType) String() string {
 
 // --- [ Named Types ] ---------------------------------------------------------
 
-// Note, the Type field is nil in AST form, and assigned the correct type after
-// type resoltion during the translation from AST to IR form.
+// Note, Type is nil when NamedType is in AST form; irx.Translate performs type
+// resolution to translate the AST form into IR form.
 
 // NamedType is an LLVM IR named type.
 type NamedType struct {

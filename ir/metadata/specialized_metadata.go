@@ -852,7 +852,14 @@ func (md *DIExpression) String() string {
 
 // DIGlobalVariableExpression is a specialized metadata node.
 type DIGlobalVariableExpression struct {
-	Var  MDField // required
+	Var MDField // required
+
+	// Note, the C++ source code of LLVM states that "expr:" is a required field,
+	// however, Clang is known to output DIGlobalVariableExpression specialized
+	// metadata nodes only containing "var:"; e.g. from `cat.ll`:
+	//
+	//    !0 = !DIGlobalVariableExpression(var: !1)
+
 	Expr MDField // required
 }
 

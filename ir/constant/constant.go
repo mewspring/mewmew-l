@@ -43,6 +43,9 @@ func (c *Bool) Ident() string {
 
 // --- [ Integer Constants ] ---------------------------------------------------
 
+// Note, Typ is nil when Int is in AST form; irx.Translate propagates the type
+// from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
+
 // An Int is an LLVM IR integer constant.
 type Int struct {
 	Typ *types.IntType
@@ -84,7 +87,15 @@ func (c *Int) Ident() string {
 	return c.X.String()
 }
 
+// SetType sets the type of the constant to t.
+func (c *Int) SetType(t types.Type) {
+	c.Typ = t.(*types.IntType)
+}
+
 // --- [ Floating-point Constants ] --------------------------------------------
+
+// Note, Typ is nil when Float is in AST form; irx.Translate propagates the type
+// from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // A Float is an LLVM IR floating-point constant.
 type Float struct {
@@ -133,7 +144,15 @@ func (c *Float) Ident() string {
 	return c.X.String()
 }
 
+// SetType sets the type of the constant to t.
+func (c *Float) SetType(t types.Type) {
+	c.Typ = t.(*types.FloatType)
+}
+
 // --- [ Null Pointer Constants ] ----------------------------------------------
+
+// Note, Typ is nil when Null is in AST form; irx.Translate propagates the type
+// from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // A Null is an LLVM IR NULL-pointer constant.
 type Null struct {
@@ -155,6 +174,11 @@ func (c *Null) Type() types.Type {
 func (*Null) Ident() string {
 	// "null"
 	return "null"
+}
+
+// SetType sets the type of the constant to t.
+func (c *Null) SetType(t types.Type) {
+	c.Typ = t.(*types.PointerType)
 }
 
 // --- [ Token Constants ] -----------------------------------------------------
@@ -180,6 +204,9 @@ func (*None) Ident() string {
 }
 
 // --- [ Structure Constants ] -------------------------------------------------
+
+// Note, Typ is nil when Struct is in AST form; irx.Translate propagates the
+// type from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // A Struct is an LLVM IR structure constant.
 type Struct struct {
@@ -221,7 +248,15 @@ func (c *Struct) Ident() string {
 	return buf.String()
 }
 
+// SetType sets the type of the constant to t.
+func (c *Struct) SetType(t types.Type) {
+	c.Typ = t.(*types.StructType)
+}
+
 // --- [ Array Constants ] -----------------------------------------------------
+
+// Note, Typ is nil when Array is in AST form; irx.Translate propagates the type
+// from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // An Array is an LLVM IR array constant.
 type Array struct {
@@ -255,6 +290,14 @@ func (c *Array) Ident() string {
 	return buf.String()
 }
 
+// SetType sets the type of the constant to t.
+func (c *Array) SetType(t types.Type) {
+	c.Typ = t.(*types.ArrayType)
+}
+
+// Note, Typ is nil when CharArray is in AST form; irx.Translate propagates the
+// type from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
+
 // A CharArray is an LLVM IR character array constant.
 type CharArray struct {
 	Typ   *types.ArrayType
@@ -278,7 +321,15 @@ func (c *CharArray) Ident() string {
 	return fmt.Sprintf("c%v", enc.Quote(c.Value))
 }
 
+// SetType sets the type of the constant to t.
+func (c *CharArray) SetType(t types.Type) {
+	c.Typ = t.(*types.ArrayType)
+}
+
 // --- [ Vector Constants ] ----------------------------------------------------
+
+// Note, Typ is nil when Vector is in AST form; irx.Translate propagates the
+// type from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // A Vector is an LLVM IR vector constant.
 type Vector struct {
@@ -312,7 +363,16 @@ func (c *Vector) Ident() string {
 	return buf.String()
 }
 
+// SetType sets the type of the constant to t.
+func (c *Vector) SetType(t types.Type) {
+	c.Typ = t.(*types.VectorType)
+}
+
 // --- [ Zero Initialization Constants ] ---------------------------------------
+
+// Note, Typ is nil when ZeroInitializer is in AST form; irx.Translate
+// propagates the type from tc.Typ to tc.Const.Typ, where tc is a
+// *ast.TypeConst.
 
 // A ZeroInitializer is an LLVM IR zeroinitializer constant.
 type ZeroInitializer struct {
@@ -336,7 +396,15 @@ func (*ZeroInitializer) Ident() string {
 	return "zeroinitializer"
 }
 
+// SetType sets the type of the constant to t.
+func (c *ZeroInitializer) SetType(t types.Type) {
+	c.Typ = t
+}
+
 // --- [ Undefined Values ] ----------------------------------------------------
+
+// Note, Typ is nil when Undef is in AST form; irx.Translate propagates the type
+// from tc.Typ to tc.Const.Typ, where tc is a *ast.TypeConst.
 
 // An Undef is an LLVM IR undefined constant.
 type Undef struct {
@@ -358,6 +426,11 @@ func (c *Undef) Type() types.Type {
 func (*Undef) Ident() string {
 	// "undef"
 	return "undef"
+}
+
+// SetType sets the type of the constant to t.
+func (c *Undef) SetType(t types.Type) {
+	c.Typ = t
 }
 
 // --- [ Addresses of Basic Blocks ] -------------------------------------------

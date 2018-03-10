@@ -28,11 +28,14 @@ func TestParse(t *testing.T) {
 	golden := []struct {
 		path string
 	}{
-		// Type defs.
+		// Type definitions.
 		{path: "testdata/a.ll"},
-		// Metadata defs.
+		// Metadata definitions.
 		{path: "testdata/b.ll"},
+		// Global definitions.
 		{path: "testdata/c.ll"},
+		{path: "testdata/d.ll"},
+		{path: "testdata/e.ll"},
 		// Coreutils (metadata defs).
 		{path: "testdata/coreutils/[.ll"},
 		{path: "testdata/coreutils/b2sum.ll"},

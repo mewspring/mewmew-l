@@ -10,6 +10,9 @@ import (
 
 // ~~~ [ Global Variable Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Typ is nil when Global is in AST form; irx.Translate instantiates Typ
+// to a pointer to ContentType.
+
 // Global is a global variable declaration or a global variable definition.
 type Global struct {
 	// Global variable name (*GlobalIdent).

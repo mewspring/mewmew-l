@@ -8,7 +8,15 @@ import (
 	"github.com/mewmew/l/ir/irutil"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ir/value"
 )
+
+// TypeSetter is used during translation to set types of the underlying values
+// and constants of *ast.TypeValue and *ast.TypeConst, respectively.
+type TypeSetter interface {
+	// SetType sets the type of the value to t.
+	SetType(t types.Type)
+}
 
 // Translate translates the AST of the given module to an equivalent LLVM IR
 // module.
@@ -20,7 +28,7 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	// === [ Per module resolution ] ===
 
 	// Resolve type definitions.
-	resolveType := func(n interface{}) {
+	resolveNamedType := func(n interface{}) {
 		if t, ok := n.(*types.Type); ok {
 			if u, ok := (*t).(*types.NamedType); ok {
 				if u.Type == nil {
@@ -29,7 +37,7 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			}
 		}
 	}
-	irutil.Walk(m.Module, resolveType)
+	irutil.Walk(m.Module, resolveNamedType)
 
 	// Resolve comdat definitions.
 	//
@@ -37,9 +45,31 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 
 	// TODO: resolve comdats.
 
+	// Resolve global variable types.
+	resolveGlobalType := func(n interface{}) {
+		switch n := n.(type) {
+		case *ir.Global:
+			n.Typ = types.NewPointer(n.ContentType)
+		}
+	}
+	irutil.Walk(m.Module, resolveGlobalType)
+
 	// Resolve global variables, indirect symbols and functions.
 	//
 	//    *ast.GlobalIdent -> loop up in map. (*ir.Global, *ir.IndirectSymbol, *ir.Function)
+	resolveGlobalIdent := func(n interface{}) {
+		switch n := n.(type) {
+		case *value.Value:
+			if i, ok := (*n).(*ast.GlobalIdent); ok {
+				*n = m.irGlobal(i)
+			}
+		case *ir.Constant:
+			if i, ok := (*n).(*ast.GlobalIdent); ok {
+				*n = m.irGlobal(i)
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveGlobalIdent)
 
 	// TODO: resolve global variables.
 
@@ -52,7 +82,7 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	// Resolve metadata definitions.
 	//
 	//    *ast.MetadataID  -> *ir.MetadataDef
-	resolveMetadata := func(n interface{}) {
+	resolveMetadataID := func(n interface{}) {
 		switch n := n.(type) {
 		case *metadata.MetadataNode:
 			if i, ok := (*n).(*ast.MetadataID); ok {
@@ -76,11 +106,33 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			}
 		}
 	}
-	irutil.Walk(m.Module, resolveMetadata)
+	irutil.Walk(m.Module, resolveMetadataID)
 
 	// Resolve constants.
 	//
 	//    *ast.TypeConst
+	resolveTypeConst := func(n interface{}) {
+		switch n := n.(type) {
+		case *ir.Constant:
+			if tc, ok := (*n).(*ast.TypeConst); ok {
+				// Resolve tc.Const type.
+				if c, ok := tc.Const.(TypeSetter); ok {
+					// Propagate the type from tc.Typ to tc.Const.Typ.
+					c.SetType(tc.Typ)
+				} else {
+					// Validate tc.Const.Type() against tc.Typ.
+					got := tc.Const.Type()
+					want := tc.Typ
+					if !want.Equal(got) {
+						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
+					}
+					//panic(fmt.Sprintf("constant %T does not implement SetType", tc.Const))
+				}
+				*n = tc.Const
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveTypeConst)
 
 	// === [ Per function resolution ] ===
 
