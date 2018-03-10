@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/asm/internal/token"
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir"

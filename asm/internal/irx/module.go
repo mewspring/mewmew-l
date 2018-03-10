@@ -3,8 +3,9 @@ package irx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/irutil"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
 )
@@ -17,15 +18,47 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	m.indexIdents(module.Entities)
 
 	// Resolve type definitions.
-	//m.resolveTypeDefs()
+	resolveType := func(n interface{}) {
+		if t, ok := n.(*types.Type); ok {
+			if u, ok := (*t).(*types.NamedType); ok {
+				if u.Type == nil {
+					*t = m.typeDefs[u.Name]
+				}
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveType)
 
 	// Resolve global variables, indirect symbols and functions.
 	//m.indexGlobals()
 	//m.resolveGlobals()
 
 	// Resolve metadata definitions.
-	//m.indexMetadataDefs()
-	//m.resolveMetadataDefs()
+	resolveMetadata := func(n interface{}) {
+		switch n := n.(type) {
+		case *metadata.MetadataNode:
+			if i, ok := (*n).(*ast.MetadataID); ok {
+				*n = m.metadataDefs[i.ID]
+			}
+		case *metadata.MDField:
+			if i, ok := (*n).(*ast.MetadataID); ok {
+				*n = m.metadataDefs[i.ID]
+			}
+		case *metadata.Metadata:
+			if i, ok := (*n).(*ast.MetadataID); ok {
+				*n = m.metadataDefs[i.ID]
+			}
+		case *metadata.MDNode:
+			if i, ok := (*n).(*ast.MetadataID); ok {
+				*n = m.metadataDefs[i.ID]
+			}
+		case *metadata.IntOrMDField:
+			if i, ok := (*n).(*ast.MetadataID); ok {
+				*n = m.metadataDefs[i.ID]
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveMetadata)
 
 	return m.Module, nil
 }

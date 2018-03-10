@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/mewkiz/pkg/osutil"
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/asm/internal/lexer"
 	"github.com/mewmew/l/asm/internal/parser"
 	"github.com/mewmew/l/ir"

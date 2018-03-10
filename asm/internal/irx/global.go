@@ -3,7 +3,7 @@ package irx
 import (
 	"fmt"
 
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/ir"
 )
 

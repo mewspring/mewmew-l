@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/kr/pretty"
-	"github.com/mewmew/l/asm/internal/ast"
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/types"

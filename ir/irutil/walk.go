@@ -7,6 +7,7 @@ package irutil
 import (
 	"fmt"
 
+	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
@@ -510,19 +511,28 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case **ir.OperandBundle:
 		w.walkBeforeAfter(*n, before, after)
 	// From AST.
-	// TODO: Move ast package to l/ast to make it importable?
-	//case **ast.GlobalIdent:
-	//	w.walkBeforeAfter(*n, before, after)
-	//case **ast.LocalIdent:
-	//	w.walkBeforeAfter(*n, before, after)
-	//case **ast.MetadataValue:
-	//	w.walkBeforeAfter(*n, before, after)
-	//case **ast.TypeValue:
-	//	w.walkBeforeAfter(*n, before, after)
-	//case **ast.TypeConst:
-	//	w.walkBeforeAfter(*n, before, after)
-	//case **ast.AttrGroupID:
-	//	w.walkBeforeAfter(*n, before, after)
+	case **ast.GlobalIdent:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.LocalIdent:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.LabelIdent:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.AttrGroupID:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.ComdatName:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.MetadataName:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.MetadataID:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.FloatConst:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.TypeValue:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.TypeConst:
+		w.walkBeforeAfter(*n, before, after)
+	case **ast.MetadataValue:
+		w.walkBeforeAfter(*n, before, after)
 
 	// pointers to slices
 	case *[]*constant.Index:
@@ -677,7 +687,10 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *types.StructType:
 		w.walkBeforeAfter(&n.Fields, before, after)
 	case *types.NamedType:
-		w.walkBeforeAfter(&n.Type, before, after)
+		// Note, Type is nil before type resolution has completed.
+		if n.Type != nil {
+			w.walkBeforeAfter(&n.Type, before, after)
+		}
 	// Values
 	case *ir.InlineAsm:
 		// nothing to do.
@@ -1310,19 +1323,31 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case *ir.OperandBundle:
 		w.walkBeforeAfter(&n.Inputs, before, after)
 	// From AST.
-	// TODO: Move ast package to l/ast to make it importable?
-	//case *ast.GlobalIdent:
-	//	panic("walk of *ast.GlobalIdent not yet implemented")
-	//case *ast.LocalIdent:
-	//	panic("walk of *ast.LocalIdent not yet implemented")
-	//case *ast.MetadataValue:
-	//	panic("walk of *ast.MetadataValue not yet implemented")
-	//case *ast.TypeValue:
-	//	panic("walk of *ast.TypeValue not yet implemented")
-	//case *ast.TypeConst:
-	//	panic("walk of *ast.TypeConst not yet implemented")
-	//case *ast.AttrGroupID:
-	//	panic("walk of *ast.AttrGroupID not yet implemented")
+
+	case *ast.GlobalIdent:
+		// nothing to do.
+	case *ast.LocalIdent:
+		// nothing to do.
+	case *ast.LabelIdent:
+		// nothing to do.
+	case *ast.AttrGroupID:
+		// nothing to do.
+	case *ast.ComdatName:
+		// nothing to do.
+	case *ast.MetadataName:
+		// nothing to do.
+	case *ast.MetadataID:
+		// nothing to do.
+	case *ast.FloatConst:
+		// nothing to do.
+	case *ast.TypeValue:
+		w.walkBeforeAfter(&n.Typ, before, after)
+		w.walkBeforeAfter(&n.Value, before, after)
+	case *ast.TypeConst:
+		w.walkBeforeAfter(&n.Typ, before, after)
+		w.walkBeforeAfter(&n.Const, before, after)
+	case *ast.MetadataValue:
+		w.walkBeforeAfter(&n.Metadata, before, after)
 
 	// slices
 	case []*constant.Index:
