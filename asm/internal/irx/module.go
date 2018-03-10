@@ -17,6 +17,8 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	m := NewModule()
 	m.indexIdents(module.Entities)
 
+	// === [ Per module resolution ] ===
+
 	// Resolve type definitions.
 	resolveType := func(n interface{}) {
 		if t, ok := n.(*types.Type); ok {
@@ -29,11 +31,27 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	}
 	irutil.Walk(m.Module, resolveType)
 
+	// Resolve comdat definitions.
+	//
+	//    *ast.ComdatName  -> *ir.ComdatDef
+
+	// TODO: resolve comdats.
+
 	// Resolve global variables, indirect symbols and functions.
-	//m.indexGlobals()
-	//m.resolveGlobals()
+	//
+	//    *ast.GlobalIdent -> loop up in map. (*ir.Global, *ir.IndirectSymbol, *ir.Function)
+
+	// TODO: resolve global variables.
+
+	// Resolve attribute group definitions.
+	//
+	//    *ast.AttrGroupID -> *ir.AttrGroupDef
+
+	// TODO: resolve attribute group definitions.
 
 	// Resolve metadata definitions.
+	//
+	//    *ast.MetadataID  -> *ir.MetadataDef
 	resolveMetadata := func(n interface{}) {
 		switch n := n.(type) {
 		case *metadata.MetadataNode:
@@ -59,6 +77,21 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		}
 	}
 	irutil.Walk(m.Module, resolveMetadata)
+
+	// Resolve constants.
+	//
+	//    *ast.TypeConst
+
+	// === [ Per function resolution ] ===
+
+	// Resolve local variables (per function).
+	//
+	//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
+	//    *ast.TypeValue
+	for _, f := range m.Funcs {
+		_ = f
+		// TODO: resolve local variables.
+	}
 
 	return m.Module, nil
 }
