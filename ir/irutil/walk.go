@@ -642,17 +642,31 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.Const, before, after)
 	case *ir.Function:
 		w.walkBeforeAfter(&n.FunctionHeader, before, after)
-		w.walkBeforeAfter(&n.FunctionBody, before, after)
-		w.walkBeforeAfter(&n.Sig, before, after)
-		w.walkBeforeAfter(&n.Typ, before, after)
+		if n.FunctionBody != nil {
+			w.walkBeforeAfter(&n.FunctionBody, before, after)
+		}
+		// Note, Sig is nil until function type resoltion has completed.
+		if n.Sig != nil {
+			w.walkBeforeAfter(&n.Sig, before, after)
+		}
+		// Note, Typ is nil until function type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.FunctionHeader:
 		w.walkBeforeAfter(&n.RetType, before, after)
 		w.walkBeforeAfter(&n.Params, before, after)
 		w.walkBeforeAfter(&n.FuncAttrs, before, after)
-		w.walkBeforeAfter(&n.Prefix, before, after)
-		w.walkBeforeAfter(&n.Prologue, before, after)
-		w.walkBeforeAfter(&n.Personality, before, after)
+		if n.Prefix != nil {
+			w.walkBeforeAfter(&n.Prefix, before, after)
+		}
+		if n.Prologue != nil {
+			w.walkBeforeAfter(&n.Prologue, before, after)
+		}
+		if n.Personality != nil {
+			w.walkBeforeAfter(&n.Personality, before, after)
+		}
 	case *ir.FunctionBody:
 		w.walkBeforeAfter(&n.Blocks, before, after)
 		w.walkBeforeAfter(&n.UseListOrders, before, after)
@@ -825,7 +839,10 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.X, before, after)
 		w.walkBeforeAfter(&n.Elem, before, after)
 	case *constant.ExprGetElementPtr:
-		w.walkBeforeAfter(&n.Typ, before, after)
+		// Note, Typ is nil until *ast.TypeConst type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
 		w.walkBeforeAfter(&n.ElemType, before, after)
 		w.walkBeforeAfter(&n.Src, before, after)
 		w.walkBeforeAfter(&n.Indices, before, after)
@@ -883,7 +900,11 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	// Basic blocks.
 	case *ir.BasicBlock:
 		w.walkBeforeAfter(&n.Insts, before, after)
-		w.walkBeforeAfter(&n.Term, before, after)
+		// Note, Term is nil until *ir.BasicBlock AST form has been translated to
+		// IR form.
+		if n.Term != nil {
+			w.walkBeforeAfter(&n.Term, before, after)
+		}
 	// Instructions
 	case *ir.LocalDef:
 		w.walkBeforeAfter(&n.Inst, before, after)
@@ -1314,13 +1335,11 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		// nothing to do.
 	case *metadata.DIGlobalVariableExpression:
 		w.walkBeforeAfter(&n.Var, before, after) // required
-
 		// Note, the C++ source code of LLVM states that "expr:" is a required
 		// field, however, Clang is known to output DIGlobalVariableExpression
 		// specialized metadata nodes only containing "var:"; e.g. from `cat.ll`:
 		//
 		//    !0 = !DIGlobalVariableExpression(var: !1)
-
 		if n.Expr != nil {
 			w.walkBeforeAfter(&n.Expr, before, after) // required
 		}
@@ -1361,8 +1380,19 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.Typ, before, after)
 	case *ir.OperandBundle:
 		w.walkBeforeAfter(&n.Inputs, before, after)
+	case ir.FuncAttr:
+		// nothing to do.
+	case *ir.Alignment:
+		// nothing to do.
+	case *ir.AllocSize:
+		// nothing to do.
+	case *ir.StackAlignment:
+		// nothing to do.
+	case *ir.FuncAttrString:
+		// nothing to do.
+	case *ir.FuncAttrPair:
+		// nothing to do.
 	// From AST.
-
 	case *ast.GlobalIdent:
 		// nothing to do.
 	case *ast.LocalIdent:

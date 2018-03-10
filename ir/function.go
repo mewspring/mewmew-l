@@ -11,6 +11,12 @@ import (
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Sig is nil when Function is in AST form; irx.Translate instantiates Sig
+// based on the RetType, Params and Variadic fields of the function header.
+
+// Note, Typ is nil when Function is in AST form; irx.Translate instantiates Typ
+// to a pointer to Sig.
+
 // A Function is an LLVM IR function.
 type Function struct {
 	Linkage Linkage

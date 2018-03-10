@@ -649,6 +649,10 @@ func (c *ExprInsertValue) Ident() string {
 
 // ~~~ [ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Typ is nil when ExprGetElementPtr is in AST form; irx.Translate
+// propagates the type from tc.Typ to tc.Const.Typ, where tc is a
+// *ast.TypeConst.
+
 // ExprGetElementPtr is an LLVM IR getelementptr expression.
 type ExprGetElementPtr struct {
 	Typ      *types.PointerType
@@ -683,6 +687,11 @@ func (c *ExprGetElementPtr) Ident() string {
 	}
 	buf.WriteString(")")
 	return buf.String()
+}
+
+// SetType sets the type of the constant to t.
+func (c *ExprGetElementPtr) SetType(t types.Type) {
+	c.Typ = t.(*types.PointerType)
 }
 
 // Index is the index of a getelementptr expression.

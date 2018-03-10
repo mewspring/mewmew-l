@@ -12,6 +12,10 @@ import (
 // TODO: Handle block.Name when stored as LabelIdent, should print as LocalIdent
 // when used as value.
 
+// Note, Term is nil when BasicBlock is in AST form; irx.Translate looks up the
+// defintion of the basic block based on its name to translate the AST form into
+// IR form.
+
 // A BasicBlock is a sequence of non-branching instructions terminated by a
 // branching instruction.
 type BasicBlock struct {

@@ -45,15 +45,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 
 	// TODO: resolve comdats.
 
-	// Resolve global variable types.
-	resolveGlobalType := func(n interface{}) {
-		switch n := n.(type) {
-		case *ir.Global:
-			n.Typ = types.NewPointer(n.ContentType)
-		}
-	}
-	irutil.Walk(m.Module, resolveGlobalType)
-
 	// Resolve global variables, indirect symbols and functions.
 	//
 	//    *ast.GlobalIdent -> loop up in map. (*ir.Global, *ir.IndirectSymbol, *ir.Function)
@@ -71,7 +62,27 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	}
 	irutil.Walk(m.Module, resolveGlobalIdent)
 
-	// TODO: resolve global variables.
+	// Resolve global variable and function types.
+	resolveGlobalAndFuncType := func(n interface{}) {
+		switch n := n.(type) {
+		case *ir.Global:
+			if n.Typ == nil {
+				n.Typ = types.NewPointer(n.ContentType)
+			}
+		case *ir.Function:
+			if n.Typ == nil {
+				var params []types.Type
+				for i := range n.Params {
+					param := n.Params[i].Typ
+					params = append(params, param)
+				}
+				n.Sig = types.NewFunc(n.RetType, params...)
+				n.Sig.Variadic = n.Variadic
+				n.Typ = types.NewPointer(n.Sig)
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveGlobalAndFuncType)
 
 	// Resolve attribute group definitions.
 	//
@@ -110,9 +121,25 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 
 	// Resolve constants.
 	//
-	//    *ast.TypeConst
+	//    *ast.TypeConst -> value.Value or ir.Constant
 	resolveTypeConst := func(n interface{}) {
 		switch n := n.(type) {
+		case *value.Value:
+			if tc, ok := (*n).(*ast.TypeConst); ok {
+				// Resolve tc.Const type.
+				if c, ok := tc.Const.(TypeSetter); ok {
+					// Propagate the type from tc.Typ to tc.Const.Typ.
+					c.SetType(tc.Typ)
+				} else {
+					// Validate tc.Const.Type() against tc.Typ.
+					got := tc.Const.Type()
+					want := tc.Typ
+					if !want.Equal(got) {
+						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
+					}
+				}
+				*n = tc.Const
+			}
 		case *ir.Constant:
 			if tc, ok := (*n).(*ast.TypeConst); ok {
 				// Resolve tc.Const type.
@@ -126,13 +153,37 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 					if !want.Equal(got) {
 						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
 					}
-					//panic(fmt.Sprintf("constant %T does not implement SetType", tc.Const))
 				}
 				*n = tc.Const
 			}
 		}
 	}
 	irutil.Walk(m.Module, resolveTypeConst)
+
+	// Resolve values.
+	//
+	//    *ast.TypeValue -> value.Value
+	resolveTypeValue := func(n interface{}) {
+		switch n := n.(type) {
+		case *value.Value:
+			if tc, ok := (*n).(*ast.TypeValue); ok {
+				// Resolve tc.Const type.
+				if c, ok := tc.Value.(TypeSetter); ok {
+					// Propagate the type from tc.Typ to tc.Value.Typ.
+					c.SetType(tc.Typ)
+				} else {
+					// Validate tc.Value.Type() against tc.Typ.
+					got := tc.Value.Type()
+					want := tc.Typ
+					if !want.Equal(got) {
+						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
+					}
+				}
+				*n = tc.Value
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveTypeValue)
 
 	// === [ Per function resolution ] ===
 
@@ -141,7 +192,19 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
 	//    *ast.TypeValue
 	for _, f := range m.Funcs {
-		_ = f
+		// Resolve basic blocks.
+		//
+		//    *ir.BasicBlock
+		resolveBasicBlock := func(n interface{}) {
+			switch n := n.(type) {
+			case **ir.BasicBlock:
+				if (*n).Term == nil {
+					fmt.Println("bb name:", (*n).Name)
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveBasicBlock)
+
 		// TODO: resolve local variables.
 	}
 
