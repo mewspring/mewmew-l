@@ -363,6 +363,12 @@ type Param struct {
 	Name string
 }
 
+// String returns the string representation of the function parameter as a type-
+// value pair.
+func (p *Param) String() string {
+	return fmt.Sprintf("%v %v", p.Type(), p.Ident())
+}
+
 // Type returns the type of the function parameter.
 func (p *Param) Type() types.Type {
 	return p.Typ
@@ -373,28 +379,28 @@ func (p *Param) Ident() string {
 	return enc.Local(p.Name)
 }
 
-// String returns the string representation of the function parameter.
-func (param *Param) String() string {
+// Def returns the LLVM syntax representation of the function parameter.
+func (p *Param) Def() string {
 	// Type ParamAttrs OptLocalIdent
 	buf := &strings.Builder{}
-	buf.WriteString(param.Typ.String())
-	for _, attr := range param.Attrs {
+	buf.WriteString(p.Typ.String())
+	for _, attr := range p.Attrs {
 		fmt.Fprintf(buf, " %v", attr)
 	}
-	if len(param.Name) > 0 {
-		fmt.Fprintf(buf, " %v", enc.Local(param.Name))
+	if !isUnnamed(p.Name) && !isLocalID(p.Name) {
+		fmt.Fprintf(buf, " %v", enc.Local(p.Name))
 	}
 	return buf.String()
 }
 
 // Name returns the name of the function parameter.
-func (param *Param) GetName() string {
-	return param.Name
+func (p *Param) GetName() string {
+	return p.Name
 }
 
 // SetName sets the name of the function parameter.
-func (param *Param) SetName(name string) {
-	param.Name = name
+func (p *Param) SetName(name string) {
+	p.Name = name
 }
 
 //go:generate stringer -linecomment -type ParamAttr

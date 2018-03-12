@@ -82,6 +82,9 @@ func (f *Function) Def() string {
 
 // AssignLocalIDs assigns IDs to unnamed local variables.
 func (f *Function) AssignLocalIDs() {
+	if f.FunctionBody == nil {
+		return
+	}
 	id := 0
 	names := make(map[string]value.Value)
 	setName := func(n value.Named) {
@@ -101,9 +104,6 @@ func (f *Function) AssignLocalIDs() {
 		default:
 			// Valid is named; nothing to do.
 		}
-	}
-	if f.FunctionBody == nil {
-		return
 	}
 	for _, param := range f.Params {
 		// Assign local IDs to unnamed parameters of function definitions.
@@ -189,7 +189,7 @@ func (hdr *FunctionHeader) String() string {
 		if i != 0 {
 			buf.WriteString(", ")
 		}
-		buf.WriteString(param.String())
+		buf.WriteString(param.Def())
 	}
 	if hdr.Variadic {
 		if len(hdr.Params) > 0 {

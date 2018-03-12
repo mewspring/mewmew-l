@@ -1,3 +1,4123 @@
+source_filename = "llvm-link"
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+%struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, i8*, i8*, i8*, i8*, i64, i32, [20 x i8] }
+%struct._IO_marker = type { %struct._IO_marker*, %struct._IO_FILE*, i32 }
+%struct.option = type { i8*, i32, i32*, i32 }
+%struct.quoting_options = type { i32, i32, [8 x i32], i8*, i8* }
+%struct.slotvec = type { i64, i8* }
+%struct.passwd = type { i8*, i8*, i32, i32, i8*, i8*, i8* }
+%struct.group = type { i8*, i8*, i32, i8** }
+%struct.__mbstate_t = type { i32, %union.anon }
+%union.anon = type { i32 }
+%struct.__va_list_tag = type { i32, i32, i8*, i8* }
+@stderr = external local_unnamed_addr global %struct._IO_FILE*, align 8
+@.str = private unnamed_addr constant [39 x i8] c"Try '%s --help' for more information.\0A\00", align 1
+@.str.1 = private unnamed_addr constant [37 x i8] c"Usage: %s [OPTION]... [USERNAME]...\0A\00", align 1
+@.str.2 = private unnamed_addr constant [155 x i8] c"Print group memberships for each USERNAME or, if no USERNAME is specified, for\0Athe current process (which may differ if the groups database has changed).\0A\00", align 1
+@stdout = external local_unnamed_addr global %struct._IO_FILE*, align 8
+@.str.3 = private unnamed_addr constant [45 x i8] c"      --help     display this help and exit\0A\00", align 1
+@.str.4 = private unnamed_addr constant [54 x i8] c"      --version  output version information and exit\0A\00", align 1
+@.str.5 = private unnamed_addr constant [7 x i8] c"groups\00", align 1
+@.str.25 = private unnamed_addr constant [23 x i8] c"\0A%s online help: <%s>\0A\00", align 1
+@.str.9 = private unnamed_addr constant [14 x i8] c"GNU coreutils\00", align 1
+@.str.26 = private unnamed_addr constant [39 x i8] c"http://www.gnu.org/software/coreutils/\00", align 1
+@.str.27 = private unnamed_addr constant [4 x i8] c"en_\00", align 1
+@.str.28 = private unnamed_addr constant [69 x i8] c"Report %s translation bugs to <http://translationproject.org/team/>\0A\00", align 1
+@.str.29 = private unnamed_addr constant [31 x i8] c"Full documentation at: <%s%s>\0A\00", align 1
+@.str.30 = private unnamed_addr constant [51 x i8] c"or available locally via: info '(coreutils) %s%s'\0A\00", align 1
+@.str.31 = private unnamed_addr constant [12 x i8] c" invocation\00", align 1
+@.str.6 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.7 = private unnamed_addr constant [10 x i8] c"coreutils\00", align 1
+@.str.8 = private unnamed_addr constant [24 x i8] c"/usr/local/share/locale\00", align 1
+@longopts = internal constant [3 x %struct.option] [%struct.option { i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.32, i32 0, i32 0), i32 0, i32* null, i32 -130 }, %struct.option { i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.33, i32 0, i32 0), i32 0, i32* null, i32 -131 }, %struct.option zeroinitializer], align 16, !dbg !0
+@.str.10 = private unnamed_addr constant [16 x i8] c"David MacKenzie\00", align 1
+@.str.11 = private unnamed_addr constant [15 x i8] c"James Youngman\00", align 1
+@optind = external local_unnamed_addr global i32, align 4
+@.str.12 = private unnamed_addr constant [20 x i8] c"cannot get real UID\00", align 1
+@.str.13 = private unnamed_addr constant [25 x i8] c"cannot get effective GID\00", align 1
+@.str.14 = private unnamed_addr constant [20 x i8] c"cannot get real GID\00", align 1
+@.str.15 = private unnamed_addr constant [17 x i8] c"%s: no such user\00", align 1
+@.str.16 = private unnamed_addr constant [6 x i8] c"%s : \00", align 1
+@.str.32 = private unnamed_addr constant [5 x i8] c"help\00", align 1
+@.str.33 = private unnamed_addr constant [8 x i8] c"version\00", align 1
+@gidtostr_ptr.buf = internal global [21 x i8] zeroinitializer, align 16, !dbg !63
+@.str.2.3 = private unnamed_addr constant [34 x i8] c"cannot find name for group ID %lu\00", align 1
+@.str.17 = private unnamed_addr constant [33 x i8] c"failed to get groups for user %s\00", align 1
+@.str.1.18 = private unnamed_addr constant [45 x i8] c"failed to get groups for the current process\00", align 1
+@Version = local_unnamed_addr global i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.21, i64 0, i64 0), align 8, !dbg !84
+@.str.21 = private unnamed_addr constant [5 x i8] c"8.27\00", align 1
+@file_name = internal unnamed_addr global i8* null, align 8, !dbg !89
+@ignore_EPIPE = internal unnamed_addr global i8 0, align 1, !dbg !94
+@.str.24 = private unnamed_addr constant [12 x i8] c"write error\00", align 1
+@.str.1.25 = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.2.26 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@exit_failure = global i32 1, align 4, !dbg !98
+@program_name = local_unnamed_addr global i8* null, align 8, !dbg !105
+@.str.35 = private unnamed_addr constant [56 x i8] c"A NULL argv[0] was passed through an exec system call.\0A\00", align 1
+@.str.1.36 = private unnamed_addr constant [8 x i8] c"/.libs/\00", align 1
+@.str.2.37 = private unnamed_addr constant [4 x i8] c"lt-\00", align 1
+@program_invocation_short_name = external local_unnamed_addr global i8*, align 8
+@program_invocation_name = external local_unnamed_addr global i8*, align 8
+@quoting_style_args = local_unnamed_addr constant [11 x i8*] [i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.38, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.1.39, i32 0, i32 0), i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.2.40, i32 0, i32 0), i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.3.41, i32 0, i32 0), i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.4.42, i32 0, i32 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.5.43, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.6.44, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.7.45, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.8.46, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.9.47, i32 0, i32 0), i8* null], align 16, !dbg !112
+@.str.38 = private unnamed_addr constant [8 x i8] c"literal\00", align 1
+@.str.1.39 = private unnamed_addr constant [6 x i8] c"shell\00", align 1
+@.str.2.40 = private unnamed_addr constant [13 x i8] c"shell-always\00", align 1
+@.str.3.41 = private unnamed_addr constant [13 x i8] c"shell-escape\00", align 1
+@.str.4.42 = private unnamed_addr constant [20 x i8] c"shell-escape-always\00", align 1
+@.str.5.43 = private unnamed_addr constant [2 x i8] c"c\00", align 1
+@.str.6.44 = private unnamed_addr constant [8 x i8] c"c-maybe\00", align 1
+@.str.7.45 = private unnamed_addr constant [7 x i8] c"escape\00", align 1
+@.str.8.46 = private unnamed_addr constant [7 x i8] c"locale\00", align 1
+@.str.9.47 = private unnamed_addr constant [8 x i8] c"clocale\00", align 1
+@quoting_style_vals = local_unnamed_addr constant [10 x i32] [i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 8, i32 9], align 16, !dbg !154
+@quote_quoting_options = global %struct.quoting_options { i32 8, i32 0, [8 x i32] zeroinitializer, i8* null, i8* null }, align 8, !dbg !161
+@default_quoting_options = internal global %struct.quoting_options zeroinitializer, align 8, !dbg !173
+@.str.11.48 = private unnamed_addr constant [2 x i8] c"`\00", align 1
+@.str.12.49 = private unnamed_addr constant [2 x i8] c"'\00", align 1
+@.str.10.50 = private unnamed_addr constant [2 x i8] c"\22\00", align 1
+@.str.14.51 = private unnamed_addr constant [4 x i8] c"\E2\80\98\00", align 1
+@.str.15.52 = private unnamed_addr constant [4 x i8] c"\E2\80\99\00", align 1
+@.str.17.53 = private unnamed_addr constant [4 x i8] c"\A1\07e\00", align 1
+@.str.18 = private unnamed_addr constant [3 x i8] c"\A1\AF\00", align 1
+@slotvec = internal unnamed_addr global %struct.slotvec* @slotvec0, align 8, !dbg !180
+@nslots = internal unnamed_addr global i32 1, align 4, !dbg !187
+@slot0 = internal global [256 x i8] zeroinitializer, align 16, !dbg !175
+@slotvec0 = internal global %struct.slotvec { i64 256, i8* getelementptr inbounds ([256 x i8], [256 x i8]* @slot0, i32 0, i32 0) }, align 8, !dbg !189
+@.str.58 = private unnamed_addr constant [12 x i8] c"%s (%s) %s\0A\00", align 1
+@.str.1.59 = private unnamed_addr constant [7 x i8] c"%s %s\0A\00", align 1
+@.str.2.60 = private unnamed_addr constant [4 x i8] c"(C)\00", align 1
+@.str.3.61 = private unnamed_addr constant [203 x i8] c"\0ALicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\0AThis is free software: you are free to change and redistribute it.\0AThere is NO WARRANTY, to the extent permitted by law.\0A\0A\00", align 1
+@.str.4.62 = private unnamed_addr constant [16 x i8] c"Written by %s.\0A\00", align 1
+@.str.5.63 = private unnamed_addr constant [23 x i8] c"Written by %s and %s.\0A\00", align 1
+@.str.6.64 = private unnamed_addr constant [28 x i8] c"Written by %s, %s, and %s.\0A\00", align 1
+@.str.7.65 = private unnamed_addr constant [32 x i8] c"Written by %s, %s, %s,\0Aand %s.\0A\00", align 1
+@.str.8.66 = private unnamed_addr constant [36 x i8] c"Written by %s, %s, %s,\0A%s, and %s.\0A\00", align 1
+@.str.9.67 = private unnamed_addr constant [40 x i8] c"Written by %s, %s, %s,\0A%s, %s, and %s.\0A\00", align 1
+@.str.10.68 = private unnamed_addr constant [44 x i8] c"Written by %s, %s, %s,\0A%s, %s, %s, and %s.\0A\00", align 1
+@.str.11.69 = private unnamed_addr constant [48 x i8] c"Written by %s, %s, %s,\0A%s, %s, %s, %s,\0Aand %s.\0A\00", align 1
+@.str.12.70 = private unnamed_addr constant [52 x i8] c"Written by %s, %s, %s,\0A%s, %s, %s, %s,\0A%s, and %s.\0A\00", align 1
+@.str.13.71 = private unnamed_addr constant [60 x i8] c"Written by %s, %s, %s,\0A%s, %s, %s, %s,\0A%s, %s, and others.\0A\00", align 1
+@.str.14.74 = private unnamed_addr constant [21 x i8] c"\0AReport bugs to: %s\0A\00", align 1
+@.str.15.75 = private unnamed_addr constant [22 x i8] c"bug-coreutils@gnu.org\00", align 1
+@.str.16.76 = private unnamed_addr constant [20 x i8] c"%s home page: <%s>\0A\00", align 1
+@.str.17.77 = private unnamed_addr constant [14 x i8] c"GNU coreutils\00", align 1
+@.str.18.78 = private unnamed_addr constant [39 x i8] c"http://www.gnu.org/software/coreutils/\00", align 1
+@.str.19 = private unnamed_addr constant [64 x i8] c"General help using GNU software: <http://www.gnu.org/gethelp/>\0A\00", align 1
+@version_etc_copyright = constant [47 x i8] c"Copyright %s %d Free Software Foundation, Inc.\00", align 16, !dbg !195
+@.str.1.89 = private unnamed_addr constant [17 x i8] c"memory exhausted\00", align 1
+@.str.90 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@.str.1.101 = private unnamed_addr constant [6 x i8] c"POSIX\00", align 1
+@.str.104 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@charset_aliases = internal global i8* null, align 8, !dbg !204
+@.str.3.105 = private unnamed_addr constant [16 x i8] c"CHARSETALIASDIR\00", align 1
+@.str.4.106 = private unnamed_addr constant [15 x i8] c"/usr/local/lib\00", align 1
+@.str.2.107 = private unnamed_addr constant [14 x i8] c"charset.alias\00", align 1
+@.str.5.108 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.6.109 = private unnamed_addr constant [10 x i8] c"%50s %50s\00", align 1
+@.str.1.110 = private unnamed_addr constant [6 x i8] c"ASCII\00", align 1
+define void @usage(i32) local_unnamed_addr #0 !dbg !644 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !648, metadata !649), !dbg !650
+	%2 = icmp eq i32 %0, 0, !dbg !651
+	br i1 %2, label %8, label %3, !dbg !653
+	%4 = load %struct._IO_FILE*, %struct._IO_FILE** @stderr, align 8, !dbg !654, !tbaa !657
+	%5 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str, i64 0, i64 0), i32 5) #10, !dbg !654
+	%6 = load i8*, i8** @program_name, align 8, !dbg !654, !tbaa !657
+	%7 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %4, i32 1, i8* %5, i8* %6) #10, !dbg !661
+	br label %36, !dbg !663
+	%9 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.1, i64 0, i64 0), i32 5) #10, !dbg !665
+	%10 = load i8*, i8** @program_name, align 8, !dbg !665, !tbaa !657
+	%11 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %9, i8* %10) #10, !dbg !667
+	%12 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([155 x i8], [155 x i8]* @.str.2, i64 0, i64 0), i32 5) #10, !dbg !669
+	%13 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !669, !tbaa !657
+	%14 = tail call i32 @fputs_unlocked(i8* %12, %struct._IO_FILE* %13) #10, !dbg !670
+	%15 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.3, i64 0, i64 0), i32 5) #10, !dbg !671
+	%16 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !671, !tbaa !657
+	%17 = tail call i32 @fputs_unlocked(i8* %15, %struct._IO_FILE* %16) #10, !dbg !672
+	%18 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.4, i64 0, i64 0), i32 5) #10, !dbg !673
+	%19 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !673, !tbaa !657
+	%20 = tail call i32 @fputs_unlocked(i8* %18, %struct._IO_FILE* %19) #10, !dbg !674
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !28, metadata !649) #10, !dbg !675
+	tail call void @llvm.dbg.value(metadata i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0), i64 0, metadata !28, metadata !649) #10, !dbg !675
+	%21 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.25, i64 0, i64 0), i32 5) #10, !dbg !677
+	%22 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %21, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.9, i64 0, i64 0), i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.26, i64 0, i64 0)) #10, !dbg !678
+	%23 = tail call i8* @setlocale(i32 5, i8* null) #10, !dbg !680
+	tail call void @llvm.dbg.value(metadata i8* %23, i64 0, metadata !39, metadata !649) #10, !dbg !681
+	%24 = icmp eq i8* %23, null, !dbg !682
+	br i1 %24, label %31, label %25, !dbg !683
+	%26 = tail call i32 @strncmp(i8* nonnull %23, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.27, i64 0, i64 0), i64 3) #13, !dbg !684
+	%27 = icmp eq i32 %26, 0, !dbg !684
+	br i1 %27, label %31, label %28, !dbg !686
+	%29 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.28, i64 0, i64 0), i32 5) #10, !dbg !688
+	%30 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %29, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0)) #10, !dbg !690
+	br label %31, !dbg !692
+	%32 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.29, i64 0, i64 0), i32 5) #10, !dbg !693
+	%33 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %32, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.26, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0)) #10, !dbg !694
+	%34 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([51 x i8], [51 x i8]* @.str.30, i64 0, i64 0), i32 5) #10, !dbg !695
+	%35 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %34, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0), i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.31, i64 0, i64 0)) #10, !dbg !696
+	br label %36
+	tail call void @exit(i32 %0) #14, !dbg !697
+	unreachable, !dbg !697
+}
+declare void @llvm.dbg.value(metadata, i64, metadata, metadata) #1
+declare i8* @dcgettext(i8*, i8*, i32) local_unnamed_addr #2
+declare i32 @__fprintf_chk(%struct._IO_FILE*, i32, i8*, ...) local_unnamed_addr #3
+declare i32 @__printf_chk(i32, i8*, ...) local_unnamed_addr #3
+declare i32 @fputs_unlocked(i8*, %struct._IO_FILE*) local_unnamed_addr #3
+declare i8* @setlocale(i32, i8*) local_unnamed_addr #2
+declare i32 @strncmp(i8* nocapture, i8* nocapture, i64) local_unnamed_addr #4
+declare void @exit(i32) local_unnamed_addr #5
+define i32 @main(i32, i8**) local_unnamed_addr #6 !dbg !698 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !703, metadata !649), !dbg !730
+	tail call void @llvm.dbg.value(metadata i8** %1, i64 0, metadata !704, metadata !649), !dbg !731
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !706, metadata !649), !dbg !732
+	%3 = load i8*, i8** %1, align 8, !dbg !733, !tbaa !657
+	tail call void @set_program_name(i8* %3) #10, !dbg !734
+	%4 = tail call i8* @setlocale(i32 6, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.6, i64 0, i64 0)) #10, !dbg !735
+	%5 = tail call i8* @bindtextdomain(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.7, i64 0, i64 0), i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.8, i64 0, i64 0)) #10, !dbg !736
+	%6 = tail call i8* @textdomain(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.7, i64 0, i64 0)) #10, !dbg !737
+	%7 = tail call i32 @atexit(void ()* nonnull @close_stdout) #10, !dbg !738
+	%8 = tail call i32 @getopt_long(i32 %0, i8** %1, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.6, i64 0, i64 0), %struct.option* getelementptr inbounds ([3 x %struct.option], [3 x %struct.option]* @longopts, i64 0, i64 0), i32* null) #10, !dbg !739
+	tail call void @llvm.dbg.value(metadata i32 %8, i64 0, metadata !705, metadata !649), !dbg !741
+	switch i32 %8, label %13 [
+		i32 -1, label %14
+		i32 -130, label %9
+		i32 -131, label %10
+	], !dbg !742
+	tail call void @usage(i32 0) #15, !dbg !743
+	unreachable, !dbg !743
+	%11 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !746, !tbaa !657
+	%12 = load i8*, i8** @Version, align 8, !dbg !746, !tbaa !657
+	tail call void (%struct._IO_FILE*, i8*, i8*, i8*, ...) @version_etc(%struct._IO_FILE* %11, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.9, i64 0, i64 0), i8* %12, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.10, i64 0, i64 0), i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.11, i64 0, i64 0), i8* null) #10, !dbg !746
+	tail call void @exit(i32 0) #14, !dbg !747
+	unreachable, !dbg !746
+	tail call void @usage(i32 1) #15, !dbg !749
+	unreachable, !dbg !749
+	%15 = load i32, i32* @optind, align 4, !dbg !750, !tbaa !751
+	%16 = icmp eq i32 %15, %0, !dbg !753
+	br i1 %16, label %20, label %17, !dbg !754
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !706, metadata !649), !dbg !732
+	%18 = icmp slt i32 %15, %0, !dbg !755
+	br i1 %18, label %19, label %104, !dbg !757
+	br label %58, !dbg !758
+	tail call void @llvm.dbg.value(metadata i32 -1, i64 0, metadata !712, metadata !649), !dbg !759
+	tail call void @llvm.dbg.value(metadata i32 -1, i64 0, metadata !715, metadata !649), !dbg !760
+	%21 = tail call i32* @__errno_location() #1, !dbg !761
+	store i32 0, i32* %21, align 4, !dbg !762, !tbaa !751
+	%22 = tail call i32 @getuid() #10, !dbg !763
+	tail call void @llvm.dbg.value(metadata i32 %22, i64 0, metadata !709, metadata !649), !dbg !764
+	%23 = icmp eq i32 %22, -1, !dbg !765
+	br i1 %23, label %24, label %29, !dbg !767
+	%25 = load i32, i32* %21, align 4, !dbg !768, !tbaa !751
+	%26 = icmp eq i32 %25, 0, !dbg !768
+	br i1 %26, label %29, label %27, !dbg !770
+	%28 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.12, i64 0, i64 0), i32 5) #10, !dbg !772
+	tail call void (i32, i32, i8*, ...) @error(i32 1, i32 %25, i8* %28) #10, !dbg !773
+	unreachable, !dbg !775
+	store i32 0, i32* %21, align 4, !dbg !776, !tbaa !751
+	%30 = tail call i32 @getegid() #10, !dbg !777
+	tail call void @llvm.dbg.value(metadata i32 %30, i64 0, metadata !708, metadata !649), !dbg !778
+	%31 = icmp eq i32 %30, -1, !dbg !779
+	br i1 %31, label %32, label %37, !dbg !781
+	%33 = load i32, i32* %21, align 4, !dbg !782, !tbaa !751
+	%34 = icmp eq i32 %33, 0, !dbg !782
+	br i1 %34, label %37, label %35, !dbg !784
+	%36 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.13, i64 0, i64 0), i32 5) #10, !dbg !785
+	tail call void (i32, i32, i8*, ...) @error(i32 1, i32 %33, i8* %36) #10, !dbg !786
+	unreachable, !dbg !788
+	store i32 0, i32* %21, align 4, !dbg !789, !tbaa !751
+	%38 = tail call i32 @getgid() #10, !dbg !790
+	tail call void @llvm.dbg.value(metadata i32 %38, i64 0, metadata !707, metadata !649), !dbg !791
+	%39 = icmp eq i32 %38, -1, !dbg !792
+	br i1 %39, label %40, label %45, !dbg !794
+	%41 = load i32, i32* %21, align 4, !dbg !795, !tbaa !751
+	%42 = icmp eq i32 %41, 0, !dbg !795
+	br i1 %42, label %45, label %43, !dbg !797
+	%44 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.14, i64 0, i64 0), i32 5) #10, !dbg !798
+	tail call void (i32, i32, i8*, ...) @error(i32 1, i32 %41, i8* %44) #10, !dbg !799
+	unreachable, !dbg !801
+	%46 = tail call zeroext i1 @print_group_list(i8* null, i32 %22, i32 %38, i32 %30, i1 zeroext true, i8 signext 32) #10, !dbg !802
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !706, metadata !649), !dbg !732
+	%47 = zext i1 %46 to i8, !dbg !804
+	tail call void @llvm.dbg.value(metadata i8 %47, i64 0, metadata !706, metadata !649), !dbg !732
+	tail call void @llvm.dbg.value(metadata i32 10, i64 0, metadata !805, metadata !649) #10, !dbg !811
+	%48 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !813, !tbaa !657
+	%49 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %48, i64 0, i32 5, !dbg !813
+	%50 = load i8*, i8** %49, align 8, !dbg !813, !tbaa !814
+	%51 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %48, i64 0, i32 6, !dbg !813
+	%52 = load i8*, i8** %51, align 8, !dbg !813, !tbaa !818
+	%53 = icmp ult i8* %50, %52, !dbg !813
+	br i1 %53, label %56, label %54, !dbg !813, !prof !819
+	%55 = tail call i32 @__overflow(%struct._IO_FILE* %48, i32 10) #10, !dbg !820
+	br label %104, !dbg !820
+	%57 = getelementptr inbounds i8, i8* %50, i64 1, !dbg !822
+	store i8* %57, i8** %49, align 8, !dbg !822, !tbaa !814
+	store i8 10, i8* %50, align 1, !dbg !822, !tbaa !824
+	br label %104, !dbg !822
+	%59 = phi i32 [ %99, %98 ], [ %15, %19 ]
+	%60 = phi i8 [ %89, %98 ], [ 1, %19 ]
+	%61 = sext i32 %59 to i64, !dbg !758
+	%62 = getelementptr inbounds i8*, i8** %1, i64 %61, !dbg !758
+	%63 = load i8*, i8** %62, align 8, !dbg !758, !tbaa !657
+	%64 = tail call %struct.passwd* @getpwnam(i8* %63), !dbg !825
+	tail call void @llvm.dbg.value(metadata %struct.passwd* %64, i64 0, metadata !716, metadata !649), !dbg !826
+	%65 = icmp eq %struct.passwd* %64, null, !dbg !827
+	br i1 %65, label %66, label %73, !dbg !829
+	%67 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.15, i64 0, i64 0), i32 5) #10, !dbg !830
+	%68 = load i32, i32* @optind, align 4, !dbg !830, !tbaa !751
+	%69 = sext i32 %68 to i64, !dbg !830
+	%70 = getelementptr inbounds i8*, i8** %1, i64 %69, !dbg !830
+	%71 = load i8*, i8** %70, align 8, !dbg !830, !tbaa !657
+	%72 = tail call i8* @quote(i8* %71) #10, !dbg !831
+	tail call void (i32, i32, i8*, ...) @error(i32 1, i32 0, i8* %67, i8* %72) #10, !dbg !833
+	unreachable, !dbg !830
+	%74 = getelementptr inbounds %struct.passwd, %struct.passwd* %64, i64 0, i32 2, !dbg !835
+	%75 = load i32, i32* %74, align 8, !dbg !835, !tbaa !836
+	tail call void @llvm.dbg.value(metadata i32 %75, i64 0, metadata !709, metadata !649), !dbg !764
+	%76 = getelementptr inbounds %struct.passwd, %struct.passwd* %64, i64 0, i32 3, !dbg !838
+	%77 = load i32, i32* %76, align 4, !dbg !838, !tbaa !839
+	tail call void @llvm.dbg.value(metadata i32 %77, i64 0, metadata !708, metadata !649), !dbg !778
+	tail call void @llvm.dbg.value(metadata i32 %77, i64 0, metadata !707, metadata !649), !dbg !791
+	%78 = load i32, i32* @optind, align 4, !dbg !840, !tbaa !751
+	%79 = sext i32 %78 to i64, !dbg !840
+	%80 = getelementptr inbounds i8*, i8** %1, i64 %79, !dbg !840
+	%81 = load i8*, i8** %80, align 8, !dbg !840, !tbaa !657
+	%82 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.16, i64 0, i64 0), i8* %81) #10, !dbg !840
+	%83 = load i32, i32* @optind, align 4, !dbg !841, !tbaa !751
+	%84 = add nsw i32 %83, 1, !dbg !841
+	store i32 %84, i32* @optind, align 4, !dbg !841, !tbaa !751
+	%85 = sext i32 %83 to i64, !dbg !843
+	%86 = getelementptr inbounds i8*, i8** %1, i64 %85, !dbg !843
+	%87 = load i8*, i8** %86, align 8, !dbg !843, !tbaa !657
+	%88 = tail call zeroext i1 @print_group_list(i8* %87, i32 %75, i32 %77, i32 %77, i1 zeroext true, i8 signext 32) #10, !dbg !844
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !706, metadata !649), !dbg !732
+	%89 = select i1 %88, i8 %60, i8 0, !dbg !845
+	tail call void @llvm.dbg.value(metadata i8 %89, i64 0, metadata !706, metadata !649), !dbg !732
+	tail call void @llvm.dbg.value(metadata i32 10, i64 0, metadata !805, metadata !649) #10, !dbg !846
+	%90 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !848, !tbaa !657
+	%91 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %90, i64 0, i32 5, !dbg !848
+	%92 = load i8*, i8** %91, align 8, !dbg !848, !tbaa !814
+	%93 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %90, i64 0, i32 6, !dbg !848
+	%94 = load i8*, i8** %93, align 8, !dbg !848, !tbaa !818
+	%95 = icmp ult i8* %92, %94, !dbg !848
+	br i1 %95, label %101, label %96, !dbg !848, !prof !819
+	%97 = tail call i32 @__overflow(%struct._IO_FILE* %90, i32 10) #10, !dbg !849
+	br label %98, !dbg !849
+	tail call void @llvm.dbg.value(metadata i8 %89, i64 0, metadata !706, metadata !649), !dbg !732
+	%99 = load i32, i32* @optind, align 4, !dbg !850, !tbaa !751
+	%100 = icmp slt i32 %99, %0, !dbg !755
+	br i1 %100, label %58, label %103, !dbg !757, !llvm.loop !851
+	%102 = getelementptr inbounds i8, i8* %92, i64 1, !dbg !854
+	store i8* %102, i8** %91, align 8, !dbg !854, !tbaa !814
+	store i8 10, i8* %92, align 1, !dbg !854, !tbaa !824
+	br label %98, !dbg !854
+	br label %104, !dbg !732
+	%105 = phi i8 [ %47, %54 ], [ %47, %56 ], [ 1, %17 ], [ %89, %103 ]
+	tail call void @llvm.dbg.value(metadata i8 %105, i64 0, metadata !706, metadata !649), !dbg !732
+	%106 = and i8 %105, 1, !dbg !855
+	%107 = xor i8 %106, 1, !dbg !855
+	%108 = zext i8 %107 to i32, !dbg !855
+	ret i32 %108, !dbg !856
+}
+declare i8* @bindtextdomain(i8*, i8*) local_unnamed_addr #2
+declare i8* @textdomain(i8*) local_unnamed_addr #2
+declare i32 @atexit(void ()*) local_unnamed_addr #2
+declare i32 @getopt_long(i32, i8**, i8*, %struct.option*, i32*) local_unnamed_addr #2
+declare i32* @__errno_location() local_unnamed_addr #7
+declare i32 @getuid() local_unnamed_addr #2
+declare void @error(i32, i32, i8*, ...) local_unnamed_addr #3
+declare i32 @getegid() local_unnamed_addr #2
+declare i32 @getgid() local_unnamed_addr #2
+declare i32 @__overflow(%struct._IO_FILE*, i32) local_unnamed_addr #3
+declare %struct.passwd* @getpwnam(i8* nocapture readonly) local_unnamed_addr #2
+define zeroext i1 @print_group_list(i8*, i32, i32, i32, i1 zeroext, i8 signext) local_unnamed_addr #6 !dbg !857 {
+	%7 = alloca i32*, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !861, metadata !649), !dbg !883
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !862, metadata !649), !dbg !884
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !863, metadata !649), !dbg !885
+	tail call void @llvm.dbg.value(metadata i32 %3, i64 0, metadata !864, metadata !649), !dbg !886
+	tail call void @llvm.dbg.value(metadata i1 %4, i64 0, metadata !865, metadata !887), !dbg !888
+	tail call void @llvm.dbg.value(metadata i8 %5, i64 0, metadata !866, metadata !649), !dbg !889
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !867, metadata !649), !dbg !890
+	tail call void @llvm.dbg.value(metadata %struct.passwd* null, i64 0, metadata !868, metadata !649), !dbg !891
+	%8 = icmp ne i8* %0, null, !dbg !892
+	br i1 %8, label %9, label %13, !dbg !894
+	%10 = tail call %struct.passwd* @getpwuid(i32 %1) #10, !dbg !895
+	tail call void @llvm.dbg.value(metadata %struct.passwd* %10, i64 0, metadata !868, metadata !649), !dbg !891
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	%11 = icmp ne %struct.passwd* %10, null, !dbg !897
+	%12 = zext i1 %11 to i8, !dbg !897
+	br label %13, !dbg !897
+	%14 = phi i8 [ 1, %6 ], [ %12, %9 ]
+	%15 = phi %struct.passwd* [ null, %6 ], [ %10, %9 ]
+	tail call void @llvm.dbg.value(metadata %struct.passwd* %15, i64 0, metadata !868, metadata !649), !dbg !891
+	tail call void @llvm.dbg.value(metadata i8 %14, i64 0, metadata !867, metadata !649), !dbg !890
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !898, metadata !649) #10, !dbg !915
+	tail call void @llvm.dbg.value(metadata i1 %4, i64 0, metadata !903, metadata !887) #10, !dbg !918
+	tail call void @llvm.dbg.value(metadata %struct.group* null, i64 0, metadata !904, metadata !649) #10, !dbg !919
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !913, metadata !649) #10, !dbg !920
+	br i1 %4, label %21, label %16, !dbg !921
+	%17 = zext i32 %2 to i64, !dbg !922
+	%18 = tail call i8* @umaxtostr(i64 %17, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !925
+	tail call void @llvm.dbg.value(metadata i8* %27, i64 0, metadata !914, metadata !649) #10, !dbg !926
+	%19 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !927, !tbaa !657
+	%20 = tail call i32 @fputs_unlocked(i8* %18, %struct._IO_FILE* %19) #10, !dbg !927
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %35
+	%22 = tail call %struct.group* @getgrgid(i32 %2) #10, !dbg !928
+	tail call void @llvm.dbg.value(metadata %struct.group* %22, i64 0, metadata !904, metadata !649) #10, !dbg !919
+	%23 = icmp eq %struct.group* %22, null, !dbg !931
+	br i1 %23, label %24, label %30, !dbg !933
+	%25 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.2.3, i64 0, i64 0), i32 5) #10, !dbg !934
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !898, metadata !649) #10, !dbg !915
+	%26 = zext i32 %2 to i64, !dbg !936
+	tail call void (i32, i32, i8*, ...) @error(i32 0, i32 0, i8* %25, i64 %26) #10, !dbg !937
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !913, metadata !649) #10, !dbg !920
+	%27 = tail call i8* @umaxtostr(i64 %26, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !925
+	tail call void @llvm.dbg.value(metadata i8* %27, i64 0, metadata !914, metadata !649) #10, !dbg !926
+	%28 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !927, !tbaa !657
+	%29 = tail call i32 @fputs_unlocked(i8* %27, %struct._IO_FILE* %28) #10, !dbg !927
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %35, !dbg !939
+	tail call void @llvm.dbg.value(metadata %struct.group* %22, i64 0, metadata !904, metadata !649) #10, !dbg !919
+	%31 = getelementptr inbounds %struct.group, %struct.group* %22, i64 0, i32 0, !dbg !940
+	%32 = load i8*, i8** %31, align 8, !dbg !940, !tbaa !942
+	tail call void @llvm.dbg.value(metadata i8* %27, i64 0, metadata !914, metadata !649) #10, !dbg !926
+	%33 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !927, !tbaa !657
+	%34 = tail call i32 @fputs_unlocked(i8* %32, %struct._IO_FILE* %33) #10, !dbg !927
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %35, !dbg !939
+	%36 = phi i8 [ 0, %24 ], [ %14, %16 ], [ %14, %30 ]
+	tail call void @llvm.dbg.value(metadata i8 %36, i64 0, metadata !867, metadata !649), !dbg !890
+	%37 = icmp eq i32 %3, %2, !dbg !944
+	br i1 %37, label %70, label %38, !dbg !946
+	%39 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !947, !tbaa !657
+	%40 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %39, i64 0, i32 5, !dbg !947
+	%41 = load i8*, i8** %40, align 8, !dbg !947, !tbaa !814
+	%42 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %39, i64 0, i32 6, !dbg !947
+	%43 = load i8*, i8** %42, align 8, !dbg !947, !tbaa !818
+	%44 = icmp ult i8* %41, %43, !dbg !947
+	br i1 %44, label %48, label %45, !dbg !947, !prof !819
+	%46 = zext i8 %5 to i32, !dbg !953
+	%47 = tail call i32 @__overflow(%struct._IO_FILE* %39, i32 %46) #10, !dbg !954
+	br label %50, !dbg !954
+	%49 = getelementptr inbounds i8, i8* %41, i64 1, !dbg !956
+	store i8* %49, i8** %40, align 8, !dbg !956, !tbaa !814
+	store i8 %5, i8* %41, align 1, !dbg !956, !tbaa !824
+	br label %50, !dbg !956
+	tail call void @llvm.dbg.value(metadata i32 %3, i64 0, metadata !898, metadata !649) #10, !dbg !958
+	tail call void @llvm.dbg.value(metadata i1 %4, i64 0, metadata !903, metadata !887) #10, !dbg !961
+	tail call void @llvm.dbg.value(metadata %struct.group* null, i64 0, metadata !904, metadata !649) #10, !dbg !962
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !913, metadata !649) #10, !dbg !963
+	br i1 %4, label %56, label %51, !dbg !964
+	%52 = zext i32 %3 to i64, !dbg !965
+	%53 = tail call i8* @umaxtostr(i64 %52, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !967
+	tail call void @llvm.dbg.value(metadata i8* %62, i64 0, metadata !914, metadata !649) #10, !dbg !968
+	%54 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !969, !tbaa !657
+	%55 = tail call i32 @fputs_unlocked(i8* %53, %struct._IO_FILE* %54) #10, !dbg !969
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %70
+	%57 = tail call %struct.group* @getgrgid(i32 %3) #10, !dbg !970
+	tail call void @llvm.dbg.value(metadata %struct.group* %57, i64 0, metadata !904, metadata !649) #10, !dbg !962
+	%58 = icmp eq %struct.group* %57, null, !dbg !971
+	br i1 %58, label %59, label %65, !dbg !972
+	%60 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.2.3, i64 0, i64 0), i32 5) #10, !dbg !973
+	tail call void @llvm.dbg.value(metadata i32 %3, i64 0, metadata !898, metadata !649) #10, !dbg !958
+	%61 = zext i32 %3 to i64, !dbg !974
+	tail call void (i32, i32, i8*, ...) @error(i32 0, i32 0, i8* %60, i64 %61) #10, !dbg !975
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !913, metadata !649) #10, !dbg !963
+	%62 = tail call i8* @umaxtostr(i64 %61, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !967
+	tail call void @llvm.dbg.value(metadata i8* %62, i64 0, metadata !914, metadata !649) #10, !dbg !968
+	%63 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !969, !tbaa !657
+	%64 = tail call i32 @fputs_unlocked(i8* %62, %struct._IO_FILE* %63) #10, !dbg !969
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %70, !dbg !976
+	tail call void @llvm.dbg.value(metadata %struct.group* %57, i64 0, metadata !904, metadata !649) #10, !dbg !962
+	%66 = getelementptr inbounds %struct.group, %struct.group* %57, i64 0, i32 0, !dbg !977
+	%67 = load i8*, i8** %66, align 8, !dbg !977, !tbaa !942
+	tail call void @llvm.dbg.value(metadata i8* %62, i64 0, metadata !914, metadata !649) #10, !dbg !968
+	%68 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !969, !tbaa !657
+	%69 = tail call i32 @fputs_unlocked(i8* %67, %struct._IO_FILE* %68) #10, !dbg !969
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %70, !dbg !976
+	%71 = phi i8 [ %36, %35 ], [ 0, %59 ], [ %36, %51 ], [ %36, %65 ]
+	tail call void @llvm.dbg.value(metadata i8 %71, i64 0, metadata !867, metadata !649), !dbg !890
+	%72 = bitcast i32** %7 to i8*, !dbg !978
+	call void @llvm.lifetime.start(i64 8, i8* nonnull %72) #10, !dbg !978
+	%73 = icmp eq %struct.passwd* %15, null, !dbg !979
+	br i1 %73, label %77, label %74, !dbg !979
+	%75 = getelementptr inbounds %struct.passwd, %struct.passwd* %15, i64 0, i32 3, !dbg !980
+	%76 = load i32, i32* %75, align 4, !dbg !980, !tbaa !839
+	br label %77, !dbg !982
+	%78 = phi i32 [ %76, %74 ], [ %3, %70 ], !dbg !983
+	tail call void @llvm.dbg.value(metadata i32** %7, i64 0, metadata !879, metadata !985), !dbg !986
+	%79 = call i32 @xgetgroups(i8* %0, i32 %78, i32** nonnull %7) #10, !dbg !987
+	call void @llvm.dbg.value(metadata i32 %79, i64 0, metadata !882, metadata !649), !dbg !988
+	%80 = icmp slt i32 %79, 0, !dbg !989
+	br i1 %80, label %87, label %81, !dbg !991
+	call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !881, metadata !649), !dbg !992
+	call void @llvm.dbg.value(metadata i8 %71, i64 0, metadata !867, metadata !649), !dbg !890
+	%82 = icmp eq i32 %79, 0, !dbg !993
+	%83 = load i32*, i32** %7, align 8, !tbaa !657
+	call void @llvm.dbg.value(metadata i32* %83, i64 0, metadata !879, metadata !649), !dbg !986
+	br i1 %82, label %145, label %84, !dbg !997
+	%85 = zext i8 %5 to i32
+	%86 = sext i32 %79 to i64, !dbg !997
+	br label %95, !dbg !997
+	%88 = tail call i32* @__errno_location() #1, !dbg !999
+	%89 = load i32, i32* %88, align 4, !tbaa !751
+	br i1 %8, label %90, label %93, !dbg !1003
+	%91 = call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.17, i64 0, i64 0), i32 5) #10, !dbg !1004
+	%92 = call i8* @quote(i8* nonnull %0) #10, !dbg !1006
+	call void (i32, i32, i8*, ...) @error(i32 0, i32 %89, i8* %91, i8* %92) #10, !dbg !1007
+	br label %143, !dbg !1009
+	%94 = call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.1.18, i64 0, i64 0), i32 5) #10, !dbg !1010
+	call void (i32, i32, i8*, ...) @error(i32 0, i32 %89, i8* %94) #10, !dbg !1013
+	br label %143
+	%96 = phi i64 [ 0, %84 ], [ %140, %138 ]
+	%97 = phi i32* [ %83, %84 ], [ %142, %138 ]
+	%98 = phi i8 [ %71, %84 ], [ %139, %138 ]
+	%99 = getelementptr inbounds i32, i32* %97, i64 %96, !dbg !1015
+	%100 = load i32, i32* %99, align 4, !dbg !1015, !tbaa !751
+	%101 = icmp eq i32 %100, %2, !dbg !1017
+	%102 = icmp eq i32 %100, %3, !dbg !1018
+	%103 = or i1 %101, %102, !dbg !1020
+	br i1 %103, label %138, label %104, !dbg !1020
+	%105 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1021, !tbaa !657
+	%106 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %105, i64 0, i32 5, !dbg !1021
+	%107 = load i8*, i8** %106, align 8, !dbg !1021, !tbaa !814
+	%108 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %105, i64 0, i32 6, !dbg !1021
+	%109 = load i8*, i8** %108, align 8, !dbg !1021, !tbaa !818
+	%110 = icmp ult i8* %107, %109, !dbg !1021
+	br i1 %110, label %113, label %111, !dbg !1021, !prof !819
+	%112 = call i32 @__overflow(%struct._IO_FILE* %105, i32 %85) #10, !dbg !1024
+	br label %115, !dbg !1024
+	%114 = getelementptr inbounds i8, i8* %107, i64 1, !dbg !1025
+	store i8* %114, i8** %106, align 8, !dbg !1025, !tbaa !814
+	store i8 %5, i8* %107, align 1, !dbg !1025, !tbaa !824
+	br label %115, !dbg !1025
+	%116 = load i32*, i32** %7, align 8, !dbg !1026, !tbaa !657
+	call void @llvm.dbg.value(metadata i32* %116, i64 0, metadata !879, metadata !649), !dbg !986
+	%117 = getelementptr inbounds i32, i32* %116, i64 %96, !dbg !1026
+	%118 = load i32, i32* %117, align 4, !dbg !1026, !tbaa !751
+	call void @llvm.dbg.value(metadata i32 %118, i64 0, metadata !898, metadata !649) #10, !dbg !1028
+	call void @llvm.dbg.value(metadata i1 %4, i64 0, metadata !903, metadata !887) #10, !dbg !1030
+	call void @llvm.dbg.value(metadata %struct.group* null, i64 0, metadata !904, metadata !649) #10, !dbg !1031
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !913, metadata !649) #10, !dbg !1032
+	br i1 %4, label %124, label %119, !dbg !1033
+	%120 = zext i32 %118 to i64, !dbg !1034
+	%121 = call i8* @umaxtostr(i64 %120, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !1036
+	call void @llvm.dbg.value(metadata i8* %130, i64 0, metadata !914, metadata !649) #10, !dbg !1037
+	%122 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1038, !tbaa !657
+	%123 = call i32 @fputs_unlocked(i8* %121, %struct._IO_FILE* %122) #10, !dbg !1038
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %138
+	%125 = call %struct.group* @getgrgid(i32 %118) #10, !dbg !1039
+	call void @llvm.dbg.value(metadata %struct.group* %125, i64 0, metadata !904, metadata !649) #10, !dbg !1031
+	%126 = icmp eq %struct.group* %125, null, !dbg !1040
+	br i1 %126, label %127, label %133, !dbg !1041
+	%128 = call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.2.3, i64 0, i64 0), i32 5) #10, !dbg !1042
+	call void @llvm.dbg.value(metadata i32 %118, i64 0, metadata !898, metadata !649) #10, !dbg !1028
+	%129 = zext i32 %118 to i64, !dbg !1043
+	call void (i32, i32, i8*, ...) @error(i32 0, i32 0, i8* %128, i64 %129) #10, !dbg !1044
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !913, metadata !649) #10, !dbg !1032
+	%130 = call i8* @umaxtostr(i64 %129, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !1036
+	call void @llvm.dbg.value(metadata i8* %130, i64 0, metadata !914, metadata !649) #10, !dbg !1037
+	%131 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1038, !tbaa !657
+	%132 = call i32 @fputs_unlocked(i8* %130, %struct._IO_FILE* %131) #10, !dbg !1038
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %138, !dbg !1045
+	call void @llvm.dbg.value(metadata %struct.group* %125, i64 0, metadata !904, metadata !649) #10, !dbg !1031
+	%134 = getelementptr inbounds %struct.group, %struct.group* %125, i64 0, i32 0, !dbg !1046
+	%135 = load i8*, i8** %134, align 8, !dbg !1046, !tbaa !942
+	call void @llvm.dbg.value(metadata i8* %130, i64 0, metadata !914, metadata !649) #10, !dbg !1037
+	%136 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1038, !tbaa !657
+	%137 = call i32 @fputs_unlocked(i8* %135, %struct._IO_FILE* %136) #10, !dbg !1038
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !867, metadata !649), !dbg !890
+	br label %138, !dbg !1045
+	%139 = phi i8 [ %98, %95 ], [ 0, %127 ], [ %98, %119 ], [ %98, %133 ]
+	call void @llvm.dbg.value(metadata i8 %139, i64 0, metadata !867, metadata !649), !dbg !890
+	%140 = add nuw nsw i64 %96, 1, !dbg !1047
+	call void @llvm.dbg.value(metadata i8 %139, i64 0, metadata !867, metadata !649), !dbg !890
+	%141 = icmp slt i64 %140, %86, !dbg !993
+	%142 = load i32*, i32** %7, align 8, !tbaa !657
+	call void @llvm.dbg.value(metadata i32* %142, i64 0, metadata !879, metadata !649), !dbg !986
+	br i1 %141, label %95, label %144, !dbg !997, !llvm.loop !1049
+	call void @llvm.dbg.value(metadata i8 undef, i64 0, metadata !867, metadata !649), !dbg !890
+	call void @llvm.lifetime.end(i64 8, i8* nonnull %72) #10, !dbg !1052
+	br label %151
+	br label %145, !dbg !1053
+	%146 = phi i8 [ %71, %81 ], [ %139, %144 ]
+	%147 = phi i32* [ %83, %81 ], [ %142, %144 ]
+	%148 = bitcast i32* %147 to i8*, !dbg !1053
+	call void @free(i8* %148) #10, !dbg !1054
+	call void @llvm.dbg.value(metadata i8 undef, i64 0, metadata !867, metadata !649), !dbg !890
+	call void @llvm.lifetime.end(i64 8, i8* nonnull %72) #10, !dbg !1052
+	%149 = and i8 %146, 1, !dbg !1055
+	%150 = icmp ne i8 %149, 0, !dbg !1055
+	br label %151
+	%152 = phi i1 [ %150, %145 ], [ false, %143 ]
+	ret i1 %152, !dbg !1056
+}
+declare %struct.passwd* @getpwuid(i32) local_unnamed_addr #3
+declare %struct.group* @getgrgid(i32) local_unnamed_addr #3
+declare void @llvm.lifetime.start(i64, i8* nocapture) #8
+declare void @llvm.lifetime.end(i64, i8* nocapture) #8
+declare void @free(i8* nocapture) local_unnamed_addr #2
+define zeroext i1 @print_group(i32, i1 zeroext) local_unnamed_addr #6 !dbg !899 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !898, metadata !649), !dbg !1057
+	tail call void @llvm.dbg.value(metadata i1 %1, i64 0, metadata !903, metadata !887), !dbg !1058
+	tail call void @llvm.dbg.value(metadata %struct.group* null, i64 0, metadata !904, metadata !649), !dbg !1059
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !913, metadata !649), !dbg !1060
+	br i1 %1, label %5, label %3, !dbg !1061
+	%4 = zext i32 %0 to i64, !dbg !1062
+	br label %14, !dbg !1061
+	%6 = tail call %struct.group* @getgrgid(i32 %0) #10, !dbg !1064
+	tail call void @llvm.dbg.value(metadata %struct.group* %6, i64 0, metadata !904, metadata !649), !dbg !1059
+	%7 = icmp eq %struct.group* %6, null, !dbg !1065
+	br i1 %7, label %8, label %11, !dbg !1066
+	%9 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.2.3, i64 0, i64 0), i32 5) #10, !dbg !1067
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !898, metadata !649), !dbg !1057
+	%10 = zext i32 %0 to i64, !dbg !1068
+	tail call void (i32, i32, i8*, ...) @error(i32 0, i32 0, i8* %9, i64 %10) #10, !dbg !1069
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !913, metadata !649), !dbg !1060
+	br label %14, !dbg !1070
+	tail call void @llvm.dbg.value(metadata %struct.group* %6, i64 0, metadata !904, metadata !649), !dbg !1059
+	%12 = getelementptr inbounds %struct.group, %struct.group* %6, i64 0, i32 0, !dbg !1071
+	%13 = load i8*, i8** %12, align 8, !dbg !1071, !tbaa !942
+	br label %18, !dbg !1072
+	%15 = phi i64 [ %4, %3 ], [ %10, %8 ], !dbg !1062
+	%16 = phi i1 [ true, %3 ], [ false, %8 ]
+	tail call void @llvm.dbg.value(metadata %struct.group* %6, i64 0, metadata !904, metadata !649), !dbg !1059
+	%17 = tail call i8* @umaxtostr(i64 %15, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @gidtostr_ptr.buf, i64 0, i64 0)) #10, !dbg !1073
+	br label %18, !dbg !1074
+	%19 = phi i1 [ true, %11 ], [ %16, %14 ]
+	%20 = phi i8* [ %13, %11 ], [ %17, %14 ], !dbg !1075
+	tail call void @llvm.dbg.value(metadata i8* %20, i64 0, metadata !914, metadata !649), !dbg !1077
+	%21 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1078, !tbaa !657
+	%22 = tail call i32 @fputs_unlocked(i8* %20, %struct._IO_FILE* %21) #10, !dbg !1078
+	ret i1 %19, !dbg !1079
+}
+define void @close_stdout_set_file_name(i8*) local_unnamed_addr #6 !dbg !1080 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1082, metadata !649), !dbg !1083
+	store i8* %0, i8** @file_name, align 8, !dbg !1084, !tbaa !657
+	ret void, !dbg !1085
+}
+define void @close_stdout_set_ignore_EPIPE(i1 zeroext) local_unnamed_addr #6 !dbg !1086 {
+	%2 = zext i1 %0 to i8
+	tail call void @llvm.dbg.value(metadata i1 %0, i64 0, metadata !1090, metadata !887), !dbg !1091
+	store i8 %2, i8* @ignore_EPIPE, align 1, !dbg !1092, !tbaa !1093
+	ret void, !dbg !1095
+}
+define void @close_stdout() #6 !dbg !1096 {
+	%1 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !1103, !tbaa !657
+	%2 = tail call i32 @close_stream(%struct._IO_FILE* %1) #10, !dbg !1104
+	%3 = icmp eq i32 %2, 0, !dbg !1105
+	br i1 %3, label %21, label %4, !dbg !1106
+	%5 = load i8, i8* @ignore_EPIPE, align 1, !dbg !1107, !tbaa !1093, !range !1109
+	%6 = icmp eq i8 %5, 0, !dbg !1107
+	%7 = tail call i32* @__errno_location() #1, !dbg !1110
+	br i1 %6, label %11, label %8, !dbg !1112
+	%9 = load i32, i32* %7, align 4, !dbg !1113, !tbaa !751
+	%10 = icmp eq i32 %9, 32, !dbg !1115
+	br i1 %10, label %21, label %11, !dbg !1116
+	%12 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.24, i64 0, i64 0), i32 5) #10, !dbg !1118
+	tail call void @llvm.dbg.value(metadata i8* %12, i64 0, metadata !1100, metadata !649), !dbg !1119
+	%13 = load i8*, i8** @file_name, align 8, !dbg !1120, !tbaa !657
+	%14 = icmp eq i8* %13, null, !dbg !1120
+	%15 = load i32, i32* %7, align 4, !tbaa !751
+	br i1 %14, label %18, label %16, !dbg !1121
+	%17 = tail call i8* @quotearg_colon(i8* nonnull %13) #10, !dbg !1122
+	tail call void (i32, i32, i8*, ...) @error(i32 0, i32 %15, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1.25, i64 0, i64 0), i8* %17, i8* %12) #10, !dbg !1124
+	br label %19, !dbg !1126
+	tail call void (i32, i32, i8*, ...) @error(i32 0, i32 %15, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.2.26, i64 0, i64 0), i8* %12) #10, !dbg !1127
+	br label %19
+	%20 = load volatile i32, i32* @exit_failure, align 4, !dbg !1128, !tbaa !751
+	tail call void @_exit(i32 %20) #14, !dbg !1129
+	unreachable, !dbg !1129
+	%22 = load %struct._IO_FILE*, %struct._IO_FILE** @stderr, align 8, !dbg !1130, !tbaa !657
+	%23 = tail call i32 @close_stream(%struct._IO_FILE* %22) #10, !dbg !1132
+	%24 = icmp eq i32 %23, 0, !dbg !1133
+	br i1 %24, label %27, label %25, !dbg !1134
+	%26 = load volatile i32, i32* @exit_failure, align 4, !dbg !1135, !tbaa !751
+	tail call void @_exit(i32 %26) #14, !dbg !1136
+	unreachable, !dbg !1136
+	ret void, !dbg !1137
+}
+declare void @_exit(i32) local_unnamed_addr #9
+define i8* @umaxtostr(i64, i8*) local_unnamed_addr #6 !dbg !1138 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !1143, metadata !649), !dbg !1146
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1144, metadata !649), !dbg !1147
+	%3 = getelementptr inbounds i8, i8* %1, i64 20, !dbg !1148
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !1145, metadata !649), !dbg !1149
+	store i8 0, i8* %3, align 1, !dbg !1150, !tbaa !824
+	br label %4, !dbg !1151
+	%5 = phi i64 [ %0, %2 ], [ %11, %4 ]
+	%6 = phi i8* [ %3, %2 ], [ %10, %4 ]
+	tail call void @llvm.dbg.value(metadata i8* %6, i64 0, metadata !1145, metadata !649), !dbg !1149
+	tail call void @llvm.dbg.value(metadata i64 %5, i64 0, metadata !1143, metadata !649), !dbg !1146
+	%7 = urem i64 %5, 10, !dbg !1152
+	%8 = trunc i64 %7 to i8, !dbg !1155
+	%9 = or i8 %8, 48, !dbg !1155
+	%10 = getelementptr inbounds i8, i8* %6, i64 -1, !dbg !1156
+	tail call void @llvm.dbg.value(metadata i8* %10, i64 0, metadata !1145, metadata !649), !dbg !1149
+	store i8 %9, i8* %10, align 1, !dbg !1157, !tbaa !824
+	%11 = udiv i64 %5, 10, !dbg !1158
+	tail call void @llvm.dbg.value(metadata i64 %11, i64 0, metadata !1143, metadata !649), !dbg !1146
+	%12 = icmp ugt i64 %5, 9, !dbg !1159
+	br i1 %12, label %4, label %13, !dbg !1160, !llvm.loop !1162
+	tail call void @llvm.dbg.value(metadata i8* %10, i64 0, metadata !1145, metadata !649), !dbg !1149
+	ret i8* %10, !dbg !1165
+}
+define void @set_program_name(i8*) local_unnamed_addr #6 !dbg !1166 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1168, metadata !649), !dbg !1171
+	%2 = icmp eq i8* %0, null, !dbg !1172
+	br i1 %2, label %3, label %6, !dbg !1174
+	%4 = load %struct._IO_FILE*, %struct._IO_FILE** @stderr, align 8, !dbg !1175, !tbaa !657
+	%5 = tail call i64 @fwrite(i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.35, i64 0, i64 0), i64 55, i64 1, %struct._IO_FILE* %4) #16, !dbg !1177
+	tail call void @abort() #14, !dbg !1178
+	unreachable, !dbg !1178
+	%7 = tail call i8* @strrchr(i8* nonnull %0, i32 47) #13, !dbg !1179
+	tail call void @llvm.dbg.value(metadata i8* %7, i64 0, metadata !1169, metadata !649), !dbg !1180
+	%8 = icmp ne i8* %7, null, !dbg !1181
+	%9 = getelementptr inbounds i8, i8* %7, i64 1, !dbg !1182
+	%10 = select i1 %8, i8* %9, i8* %0, !dbg !1184
+	tail call void @llvm.dbg.value(metadata i8* %10, i64 0, metadata !1170, metadata !649), !dbg !1185
+	%11 = ptrtoint i8* %10 to i64, !dbg !1186
+	%12 = ptrtoint i8* %0 to i64, !dbg !1186
+	%13 = sub i64 %11, %12, !dbg !1186
+	%14 = icmp sgt i64 %13, 6, !dbg !1188
+	br i1 %14, label %15, label %24, !dbg !1189
+	%16 = getelementptr inbounds i8, i8* %10, i64 -7, !dbg !1190
+	%17 = tail call i32 @strncmp(i8* %16, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.1.36, i64 0, i64 0), i64 7) #13, !dbg !1190
+	%18 = icmp eq i32 %17, 0, !dbg !1192
+	br i1 %18, label %19, label %24, !dbg !1193
+	tail call void @llvm.dbg.value(metadata i8* %10, i64 0, metadata !1168, metadata !649), !dbg !1171
+	%20 = tail call i32 @strncmp(i8* %10, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2.37, i64 0, i64 0), i64 3) #13, !dbg !1194
+	%21 = icmp eq i32 %20, 0, !dbg !1197
+	br i1 %21, label %22, label %24, !dbg !1198
+	%23 = getelementptr inbounds i8, i8* %10, i64 3, !dbg !1199
+	tail call void @llvm.dbg.value(metadata i8* %23, i64 0, metadata !1168, metadata !649), !dbg !1171
+	store i8* %23, i8** @program_invocation_short_name, align 8, !dbg !1201, !tbaa !657
+	br label %24, !dbg !1202
+	%25 = phi i8* [ %23, %22 ], [ %10, %19 ], [ %0, %15 ], [ %0, %6 ]
+	tail call void @llvm.dbg.value(metadata i8* %25, i64 0, metadata !1168, metadata !649), !dbg !1171
+	store i8* %25, i8** @program_name, align 8, !dbg !1203, !tbaa !657
+	store i8* %25, i8** @program_invocation_name, align 8, !dbg !1204, !tbaa !657
+	ret void, !dbg !1205
+}
+declare i64 @fwrite(i8* nocapture, i64, i64, %struct._IO_FILE* nocapture) #10
+declare void @abort() local_unnamed_addr #5
+declare i8* @strrchr(i8*, i32) local_unnamed_addr #4
+define %struct.quoting_options* @clone_quoting_options(%struct.quoting_options*) local_unnamed_addr #6 !dbg !1206 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1211, metadata !649), !dbg !1214
+	%2 = tail call i32* @__errno_location() #1, !dbg !1215
+	%3 = load i32, i32* %2, align 4, !dbg !1215, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %3, i64 0, metadata !1212, metadata !649), !dbg !1216
+	%4 = icmp ne %struct.quoting_options* %0, null, !dbg !1217
+	%5 = bitcast %struct.quoting_options* %0 to i8*, !dbg !1218
+	%6 = select i1 %4, i8* %5, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), !dbg !1218
+	%7 = tail call i8* @xmemdup(i8* %6, i64 56) #10, !dbg !1220
+	%8 = bitcast i8* %7 to %struct.quoting_options*, !dbg !1220
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %8, i64 0, metadata !1213, metadata !649), !dbg !1221
+	store i32 %3, i32* %2, align 4, !dbg !1222, !tbaa !751
+	ret %struct.quoting_options* %8, !dbg !1223
+}
+define i32 @get_quoting_style(%struct.quoting_options* readonly) local_unnamed_addr #11 !dbg !1224 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1230, metadata !649), !dbg !1231
+	%2 = icmp ne %struct.quoting_options* %0, null, !dbg !1232
+	%3 = select i1 %2, %struct.quoting_options* %0, %struct.quoting_options* @default_quoting_options, !dbg !1232
+	%4 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 0, !dbg !1233
+	%5 = load i32, i32* %4, align 8, !dbg !1233, !tbaa !1235
+	ret i32 %5, !dbg !1237
+}
+define void @set_quoting_style(%struct.quoting_options*, i32) local_unnamed_addr #6 !dbg !1238 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1242, metadata !649), !dbg !1244
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !1243, metadata !649), !dbg !1245
+	%3 = icmp ne %struct.quoting_options* %0, null, !dbg !1246
+	%4 = select i1 %3, %struct.quoting_options* %0, %struct.quoting_options* @default_quoting_options, !dbg !1246
+	%5 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 0, !dbg !1247
+	store i32 %1, i32* %5, align 8, !dbg !1249, !tbaa !1235
+	ret void, !dbg !1250
+}
+define i32 @set_char_quoting(%struct.quoting_options*, i8 signext, i32) local_unnamed_addr #6 !dbg !1251 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1255, metadata !649), !dbg !1263
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !1256, metadata !649), !dbg !1264
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !1257, metadata !649), !dbg !1265
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !1258, metadata !649), !dbg !1266
+	%4 = icmp ne %struct.quoting_options* %0, null, !dbg !1267
+	%5 = select i1 %4, %struct.quoting_options* %0, %struct.quoting_options* @default_quoting_options, !dbg !1267
+	%6 = lshr i8 %1, 5, !dbg !1268
+	%7 = zext i8 %6 to i64, !dbg !1268
+	%8 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 2, i64 %7, !dbg !1270
+	tail call void @llvm.dbg.value(metadata i32* %8, i64 0, metadata !1259, metadata !649), !dbg !1271
+	%9 = and i8 %1, 31, !dbg !1272
+	%10 = zext i8 %9 to i32, !dbg !1273
+	tail call void @llvm.dbg.value(metadata i32 %10, i64 0, metadata !1261, metadata !649), !dbg !1274
+	%11 = load i32, i32* %8, align 4, !dbg !1275, !tbaa !751
+	%12 = lshr i32 %11, %10, !dbg !1276
+	%13 = and i32 %12, 1, !dbg !1277
+	tail call void @llvm.dbg.value(metadata i32 %13, i64 0, metadata !1262, metadata !649), !dbg !1278
+	%14 = and i32 %2, 1, !dbg !1279
+	%15 = xor i32 %13, %14, !dbg !1280
+	%16 = shl i32 %15, %10, !dbg !1281
+	%17 = xor i32 %16, %11, !dbg !1282
+	store i32 %17, i32* %8, align 4, !dbg !1282, !tbaa !751
+	ret i32 %13, !dbg !1283
+}
+define i32 @set_quoting_flags(%struct.quoting_options*, i32) local_unnamed_addr #6 !dbg !1284 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1288, metadata !649), !dbg !1291
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !1289, metadata !649), !dbg !1292
+	%3 = icmp eq %struct.quoting_options* %0, null, !dbg !1293
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1288, metadata !649), !dbg !1291
+	%4 = select i1 %3, %struct.quoting_options* @default_quoting_options, %struct.quoting_options* %0, !dbg !1295
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !1288, metadata !649), !dbg !1291
+	%5 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 1, !dbg !1296
+	%6 = load i32, i32* %5, align 4, !dbg !1296, !tbaa !1297
+	tail call void @llvm.dbg.value(metadata i32 %6, i64 0, metadata !1290, metadata !649), !dbg !1298
+	store i32 %1, i32* %5, align 4, !dbg !1299, !tbaa !1297
+	ret i32 %6, !dbg !1300
+}
+define void @set_custom_quoting(%struct.quoting_options*, i8*, i8*) local_unnamed_addr #6 !dbg !1301 {
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %0, i64 0, metadata !1305, metadata !649), !dbg !1308
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1306, metadata !649), !dbg !1309
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !1307, metadata !649), !dbg !1310
+	%4 = icmp eq %struct.quoting_options* %0, null, !dbg !1311
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1305, metadata !649), !dbg !1308
+	%5 = select i1 %4, %struct.quoting_options* @default_quoting_options, %struct.quoting_options* %0, !dbg !1313
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1305, metadata !649), !dbg !1308
+	%6 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !1314
+	store i32 10, i32* %6, align 8, !dbg !1315, !tbaa !1235
+	%7 = icmp ne i8* %1, null, !dbg !1316
+	%8 = icmp ne i8* %2, null, !dbg !1318
+	%9 = and i1 %7, %8, !dbg !1320
+	br i1 %9, label %11, label %10, !dbg !1320
+	tail call void @abort() #14, !dbg !1321
+	unreachable, !dbg !1321
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 3, !dbg !1322
+	store i8* %1, i8** %12, align 8, !dbg !1323, !tbaa !1324
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 4, !dbg !1325
+	store i8* %2, i8** %13, align 8, !dbg !1326, !tbaa !1327
+	ret void, !dbg !1328
+}
+define i64 @quotearg_buffer(i8*, i64, i8*, i64, %struct.quoting_options* readonly) local_unnamed_addr #6 !dbg !1329 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1333, metadata !649), !dbg !1341
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !1334, metadata !649), !dbg !1342
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !1335, metadata !649), !dbg !1343
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !1336, metadata !649), !dbg !1344
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !1337, metadata !649), !dbg !1345
+	%6 = icmp ne %struct.quoting_options* %4, null, !dbg !1346
+	%7 = select i1 %6, %struct.quoting_options* %4, %struct.quoting_options* @default_quoting_options, !dbg !1346
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %7, i64 0, metadata !1338, metadata !649), !dbg !1347
+	%8 = tail call i32* @__errno_location() #1, !dbg !1348
+	%9 = load i32, i32* %8, align 4, !dbg !1348, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %9, i64 0, metadata !1339, metadata !649), !dbg !1349
+	%10 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %7, i64 0, i32 0, !dbg !1350
+	%11 = load i32, i32* %10, align 8, !dbg !1350, !tbaa !1235
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %7, i64 0, i32 1, !dbg !1351
+	%13 = load i32, i32* %12, align 4, !dbg !1351, !tbaa !1297
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %7, i64 0, i32 2, i64 0, !dbg !1352
+	%15 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %7, i64 0, i32 3, !dbg !1353
+	%16 = load i8*, i8** %15, align 8, !dbg !1353, !tbaa !1324
+	%17 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %7, i64 0, i32 4, !dbg !1354
+	%18 = load i8*, i8** %17, align 8, !dbg !1354, !tbaa !1327
+	%19 = tail call fastcc i64 @quotearg_buffer_restyled(i8* %0, i64 %1, i8* %2, i64 %3, i32 %11, i32 %13, i32* %14, i8* %16, i8* %18), !dbg !1355
+	tail call void @llvm.dbg.value(metadata i64 %19, i64 0, metadata !1340, metadata !649), !dbg !1356
+	store i32 %9, i32* %8, align 4, !dbg !1357, !tbaa !751
+	ret i64 %19, !dbg !1358
+}
+define internal fastcc i64 @quotearg_buffer_restyled(i8*, i64, i8*, i64, i32, i32, i32* readonly, i8* readonly, i8* readonly) unnamed_addr #6 !dbg !1359 {
+	%10 = alloca i64, align 8
+	%11 = bitcast i64* %10 to %struct.__mbstate_t*
+	%12 = alloca i32, align 4
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1365, metadata !649), !dbg !1428
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !1366, metadata !649), !dbg !1429
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !1367, metadata !649), !dbg !1430
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !1368, metadata !649), !dbg !1431
+	tail call void @llvm.dbg.value(metadata i32 %4, i64 0, metadata !1369, metadata !649), !dbg !1432
+	tail call void @llvm.dbg.value(metadata i32 %5, i64 0, metadata !1370, metadata !649), !dbg !1433
+	tail call void @llvm.dbg.value(metadata i32* %6, i64 0, metadata !1371, metadata !649), !dbg !1434
+	tail call void @llvm.dbg.value(metadata i8* %7, i64 0, metadata !1372, metadata !649), !dbg !1435
+	tail call void @llvm.dbg.value(metadata i8* %8, i64 0, metadata !1373, metadata !649), !dbg !1436
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1375, metadata !649), !dbg !1437
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1376, metadata !649), !dbg !1438
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !1377, metadata !649), !dbg !1439
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1378, metadata !649), !dbg !1440
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1379, metadata !649), !dbg !1441
+	%13 = tail call i64 @__ctype_get_mb_cur_max() #10, !dbg !1442
+	%14 = icmp eq i64 %13, 1, !dbg !1443
+	%15 = lshr i32 %5, 1, !dbg !1444
+	%16 = trunc i32 %15 to i8, !dbg !1444
+	%17 = and i8 %16, 1, !dbg !1444
+	tail call void @llvm.dbg.value(metadata i8 %17, i64 0, metadata !1381, metadata !649), !dbg !1444
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1382, metadata !649), !dbg !1445
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1383, metadata !649), !dbg !1446
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1384, metadata !649), !dbg !1447
+	%18 = bitcast i64* %10 to i8*
+	%19 = bitcast i32* %12 to i8*
+	%20 = icmp eq i32* %6, null
+	%21 = icmp ne i32* %6, null
+	%22 = and i32 %5, 1
+	%23 = icmp eq i32 %22, 0
+	%24 = and i32 %5, 4
+	%25 = icmp eq i32 %24, 0
+	%26 = getelementptr inbounds i8, i8* %2, i64 1
+	br label %27, !dbg !1448
+	%28 = phi i32 [ %4, %9 ], [ %96, %614 ]
+	%29 = phi i8* [ %7, %9 ], [ %97, %614 ]
+	%30 = phi i8* [ %8, %9 ], [ %98, %614 ]
+	%31 = phi i64 [ 0, %9 ], [ %126, %614 ]
+	%32 = phi i8* [ null, %9 ], [ %100, %614 ]
+	%33 = phi i64 [ 0, %9 ], [ %101, %614 ]
+	%34 = phi i8 [ 0, %9 ], [ %102, %614 ]
+	%35 = phi i64 [ %3, %9 ], [ %598, %614 ]
+	%36 = phi i8 [ %17, %9 ], [ %103, %614 ]
+	%37 = phi i8 [ 0, %9 ], [ %128, %614 ]
+	%38 = phi i8 [ 0, %9 ], [ %129, %614 ]
+	%39 = phi i8 [ 1, %9 ], [ %130, %614 ]
+	%40 = phi i64 [ %1, %9 ], [ %126, %614 ]
+	call void @llvm.dbg.value(metadata i64 %40, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %39, i64 0, metadata !1384, metadata !649), !dbg !1447
+	call void @llvm.dbg.value(metadata i8 %38, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %37, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i8 %36, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i64 %35, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i8 %34, i64 0, metadata !1379, metadata !649), !dbg !1441
+	call void @llvm.dbg.value(metadata i64 %33, i64 0, metadata !1378, metadata !649), !dbg !1440
+	call void @llvm.dbg.value(metadata i8* %32, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 %31, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8* %30, i64 0, metadata !1373, metadata !649), !dbg !1436
+	call void @llvm.dbg.value(metadata i8* %29, i64 0, metadata !1372, metadata !649), !dbg !1435
+	call void @llvm.dbg.value(metadata i32 %28, i64 0, metadata !1369, metadata !649), !dbg !1432
+	switch i32 %28, label %94 [
+		i32 6, label %41
+		i32 5, label %42
+		i32 7, label %95
+		i32 0, label %93
+		i32 2, label %85
+		i32 4, label %79
+		i32 3, label %76
+		i32 1, label %77
+		i32 10, label %51
+		i32 8, label %48
+		i32 9, label %48
+	], !dbg !1449
+	call void @llvm.dbg.value(metadata i32 5, i64 0, metadata !1369, metadata !649), !dbg !1432
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i8 %36, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i32 5, i64 0, metadata !1369, metadata !649), !dbg !1432
+	br label %95, !dbg !1450
+	call void @llvm.dbg.value(metadata i8 %36, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i32 5, i64 0, metadata !1369, metadata !649), !dbg !1432
+	%43 = and i8 %36, 1, !dbg !1452
+	%44 = icmp eq i8 %43, 0, !dbg !1452
+	br i1 %44, label %45, label %95, !dbg !1450
+	%46 = icmp eq i64 %40, 0, !dbg !1454
+	br i1 %46, label %95, label %47, !dbg !1458
+	store i8 34, i8* %0, align 1, !dbg !1460, !tbaa !824
+	br label %95, !dbg !1460
+	%49 = call fastcc i8* @gettext_quote(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.11.48, i64 0, i64 0), i32 %28), !dbg !1462
+	call void @llvm.dbg.value(metadata i8* %49, i64 0, metadata !1372, metadata !649), !dbg !1435
+	%50 = call fastcc i8* @gettext_quote(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12.49, i64 0, i64 0), i32 %28), !dbg !1466
+	call void @llvm.dbg.value(metadata i8* %50, i64 0, metadata !1373, metadata !649), !dbg !1436
+	br label %51, !dbg !1467
+	%52 = phi i8* [ %49, %48 ], [ %29, %27 ]
+	%53 = phi i8* [ %50, %48 ], [ %30, %27 ]
+	call void @llvm.dbg.value(metadata i8* %53, i64 0, metadata !1373, metadata !649), !dbg !1436
+	call void @llvm.dbg.value(metadata i8* %52, i64 0, metadata !1372, metadata !649), !dbg !1435
+	%54 = and i8 %36, 1, !dbg !1468
+	%55 = icmp eq i8 %54, 0, !dbg !1468
+	br i1 %55, label %56, label %73, !dbg !1470
+	call void @llvm.dbg.value(metadata i8* %52, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%57 = load i8, i8* %52, align 1, !dbg !1471, !tbaa !824
+	%58 = icmp eq i8 %57, 0, !dbg !1475
+	br i1 %58, label %73, label %59, !dbg !1475
+	br label %60, !dbg !1477
+	%61 = phi i8 [ %70, %67 ], [ %57, %59 ]
+	%62 = phi i8* [ %69, %67 ], [ %52, %59 ]
+	%63 = phi i64 [ %68, %67 ], [ 0, %59 ]
+	%64 = icmp ult i64 %63, %40, !dbg !1477
+	br i1 %64, label %65, label %67, !dbg !1481
+	%66 = getelementptr inbounds i8, i8* %0, i64 %63, !dbg !1483
+	store i8 %61, i8* %66, align 1, !dbg !1483, !tbaa !824
+	br label %67, !dbg !1483
+	%68 = add i64 %63, 1, !dbg !1485
+	call void @llvm.dbg.value(metadata i64 %68, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%69 = getelementptr inbounds i8, i8* %62, i64 1, !dbg !1487
+	call void @llvm.dbg.value(metadata i8* %69, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i8* %69, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 %68, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%70 = load i8, i8* %69, align 1, !dbg !1471, !tbaa !824
+	%71 = icmp eq i8 %70, 0, !dbg !1475
+	br i1 %71, label %72, label %60, !dbg !1475, !llvm.loop !1489
+	br label %73, !dbg !1437
+	%74 = phi i64 [ 0, %51 ], [ 0, %56 ], [ %68, %72 ]
+	call void @llvm.dbg.value(metadata i64 %74, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1379, metadata !649), !dbg !1441
+	call void @llvm.dbg.value(metadata i8* %53, i64 0, metadata !1377, metadata !649), !dbg !1439
+	%75 = call i64 @strlen(i8* %53) #13, !dbg !1492
+	call void @llvm.dbg.value(metadata i64 %75, i64 0, metadata !1378, metadata !649), !dbg !1440
+	br label %95, !dbg !1493
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1379, metadata !649), !dbg !1441
+	br label %77, !dbg !1494
+	%78 = phi i8 [ %34, %27 ], [ 1, %76 ]
+	call void @llvm.dbg.value(metadata i8 %78, i64 0, metadata !1379, metadata !649), !dbg !1441
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1381, metadata !649), !dbg !1444
+	br label %79, !dbg !1495
+	%80 = phi i8 [ %34, %27 ], [ %78, %77 ]
+	%81 = phi i8 [ %36, %27 ], [ 1, %77 ]
+	call void @llvm.dbg.value(metadata i8 %81, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i8 %80, i64 0, metadata !1379, metadata !649), !dbg !1441
+	%82 = and i8 %81, 1, !dbg !1496
+	%83 = icmp eq i8 %82, 0, !dbg !1496
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1379, metadata !649), !dbg !1441
+	%84 = select i1 %83, i8 1, i8 %80, !dbg !1498
+	br label %85, !dbg !1498
+	%86 = phi i8 [ %34, %27 ], [ %84, %79 ]
+	%87 = phi i8 [ %36, %27 ], [ %81, %79 ]
+	call void @llvm.dbg.value(metadata i8 %87, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i8 %86, i64 0, metadata !1379, metadata !649), !dbg !1441
+	call void @llvm.dbg.value(metadata i32 2, i64 0, metadata !1369, metadata !649), !dbg !1432
+	%88 = and i8 %87, 1, !dbg !1499
+	%89 = icmp eq i8 %88, 0, !dbg !1499
+	br i1 %89, label %90, label %95, !dbg !1501
+	%91 = icmp eq i64 %40, 0, !dbg !1502
+	br i1 %91, label %95, label %92, !dbg !1506
+	store i8 39, i8* %0, align 1, !dbg !1508, !tbaa !824
+	br label %95, !dbg !1508
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1381, metadata !649), !dbg !1444
+	br label %95, !dbg !1510
+	call void @abort() #14, !dbg !1511
+	unreachable, !dbg !1511
+	%96 = phi i32 [ 0, %93 ], [ %28, %73 ], [ 5, %47 ], [ 5, %45 ], [ 5, %42 ], [ 7, %27 ], [ 2, %92 ], [ 2, %90 ], [ 2, %85 ], [ 5, %41 ]
+	%97 = phi i8* [ %29, %93 ], [ %52, %73 ], [ %29, %47 ], [ %29, %45 ], [ %29, %42 ], [ %29, %27 ], [ %29, %92 ], [ %29, %90 ], [ %29, %85 ], [ %29, %41 ]
+	%98 = phi i8* [ %30, %93 ], [ %53, %73 ], [ %30, %47 ], [ %30, %45 ], [ %30, %42 ], [ %30, %27 ], [ %30, %92 ], [ %30, %90 ], [ %30, %85 ], [ %30, %41 ]
+	%99 = phi i64 [ 0, %93 ], [ %74, %73 ], [ 1, %47 ], [ 1, %45 ], [ 0, %42 ], [ 0, %27 ], [ 1, %92 ], [ 1, %90 ], [ 0, %85 ], [ 0, %41 ]
+	%100 = phi i8* [ %32, %93 ], [ %53, %73 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.10.50, i64 0, i64 0), %47 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.10.50, i64 0, i64 0), %45 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.10.50, i64 0, i64 0), %42 ], [ %32, %27 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12.49, i64 0, i64 0), %92 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12.49, i64 0, i64 0), %90 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12.49, i64 0, i64 0), %85 ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.10.50, i64 0, i64 0), %41 ]
+	%101 = phi i64 [ %33, %93 ], [ %75, %73 ], [ 1, %47 ], [ 1, %45 ], [ 1, %42 ], [ %33, %27 ], [ 1, %92 ], [ 1, %90 ], [ 1, %85 ], [ 1, %41 ]
+	%102 = phi i8 [ %34, %93 ], [ 1, %73 ], [ 1, %47 ], [ 1, %45 ], [ 1, %42 ], [ 1, %27 ], [ %86, %92 ], [ %86, %90 ], [ %86, %85 ], [ 1, %41 ]
+	%103 = phi i8 [ 0, %93 ], [ %36, %73 ], [ %36, %47 ], [ %36, %45 ], [ %36, %42 ], [ 0, %27 ], [ %87, %92 ], [ %87, %90 ], [ %87, %85 ], [ 1, %41 ]
+	call void @llvm.dbg.value(metadata i8 %103, i64 0, metadata !1381, metadata !649), !dbg !1444
+	call void @llvm.dbg.value(metadata i8 %102, i64 0, metadata !1379, metadata !649), !dbg !1441
+	call void @llvm.dbg.value(metadata i64 %101, i64 0, metadata !1378, metadata !649), !dbg !1440
+	call void @llvm.dbg.value(metadata i8* %100, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 %99, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8* %98, i64 0, metadata !1373, metadata !649), !dbg !1436
+	call void @llvm.dbg.value(metadata i8* %97, i64 0, metadata !1372, metadata !649), !dbg !1435
+	call void @llvm.dbg.value(metadata i32 %96, i64 0, metadata !1369, metadata !649), !dbg !1432
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1374, metadata !649), !dbg !1512
+	%104 = and i8 %102, 1
+	%105 = icmp ne i8 %104, 0
+	%106 = icmp ne i32 %96, 2
+	%107 = and i1 %106, %105
+	%108 = icmp ne i64 %101, 0
+	%109 = and i1 %108, %107
+	%110 = icmp ugt i64 %101, 1
+	%111 = and i8 %103, 1
+	%112 = icmp eq i8 %111, 0
+	%113 = xor i1 %105, true
+	%114 = icmp eq i32 %96, 2
+	%115 = icmp ne i8 %111, 0
+	%116 = and i1 %114, %115
+	%117 = and i1 %21, %115
+	%118 = or i1 %106, %112
+	%119 = and i8 %102, %103
+	%120 = and i8 %119, 1
+	%121 = icmp ne i8 %120, 0
+	%122 = and i1 %121, %108
+	br label %123, !dbg !1513
+	%124 = phi i64 [ 0, %95 ], [ %596, %587 ]
+	%125 = phi i64 [ %99, %95 ], [ %589, %587 ]
+	%126 = phi i64 [ %31, %95 ], [ %590, %587 ]
+	%127 = phi i64 [ %35, %95 ], [ %591, %587 ]
+	%128 = phi i8 [ %37, %95 ], [ %592, %587 ]
+	%129 = phi i8 [ %38, %95 ], [ %593, %587 ]
+	%130 = phi i8 [ %39, %95 ], [ %594, %587 ]
+	%131 = phi i64 [ %40, %95 ], [ %595, %587 ]
+	call void @llvm.dbg.value(metadata i64 %131, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %130, i64 0, metadata !1384, metadata !649), !dbg !1447
+	call void @llvm.dbg.value(metadata i8 %129, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %128, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %127, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i64 %126, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 %125, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %124, i64 0, metadata !1374, metadata !649), !dbg !1512
+	%132 = icmp eq i64 %127, -1, !dbg !1514
+	br i1 %132, label %135, label %133, !dbg !1516
+	%134 = icmp eq i64 %124, %127, !dbg !1517
+	br i1 %134, label %597, label %139, !dbg !1519
+	%136 = getelementptr inbounds i8, i8* %2, i64 %124, !dbg !1521
+	%137 = load i8, i8* %136, align 1, !dbg !1521, !tbaa !824
+	%138 = icmp eq i8 %137, 0, !dbg !1523
+	br i1 %138, label %597, label %139, !dbg !1519
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1390, metadata !649), !dbg !1524
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1392, metadata !649), !dbg !1526
+	br i1 %109, label %140, label %155, !dbg !1527
+	%141 = add i64 %124, %101, !dbg !1529
+	%142 = and i1 %110, %132, !dbg !1531
+	br i1 %142, label %143, label %145, !dbg !1531
+	%144 = call i64 @strlen(i8* %2) #13, !dbg !1532
+	call void @llvm.dbg.value(metadata i64 %144, i64 0, metadata !1368, metadata !649), !dbg !1431
+	br label %145, !dbg !1533
+	%146 = phi i64 [ %144, %143 ], [ %127, %140 ]
+	call void @llvm.dbg.value(metadata i64 %146, i64 0, metadata !1368, metadata !649), !dbg !1431
+	%147 = icmp ugt i64 %141, %146, !dbg !1535
+	br i1 %147, label %155, label %148, !dbg !1537
+	%149 = getelementptr inbounds i8, i8* %2, i64 %124, !dbg !1538
+	%150 = call i32 @memcmp(i8* %149, i8* %100, i64 %101) #13, !dbg !1539
+	%151 = icmp ne i32 %150, 0, !dbg !1540
+	%152 = or i1 %151, %112, !dbg !1540
+	%153 = xor i1 %151, true, !dbg !1540
+	%154 = zext i1 %153 to i8, !dbg !1540
+	br i1 %152, label %155, label %644, !dbg !1540
+	%156 = phi i64 [ %146, %148 ], [ %146, %145 ], [ %127, %139 ]
+	%157 = phi i8 [ %154, %148 ], [ 0, %145 ], [ 0, %139 ]
+	call void @llvm.dbg.value(metadata i8 %157, i64 0, metadata !1390, metadata !649), !dbg !1524
+	call void @llvm.dbg.value(metadata i64 %156, i64 0, metadata !1368, metadata !649), !dbg !1431
+	%158 = getelementptr inbounds i8, i8* %2, i64 %124, !dbg !1542
+	%159 = load i8, i8* %158, align 1, !dbg !1542, !tbaa !824
+	call void @llvm.dbg.value(metadata i8 %159, i64 0, metadata !1385, metadata !649), !dbg !1543
+	switch i8 %159, label %298 [
+		i8 0, label %160
+		i8 63, label %210
+		i8 7, label %257
+		i8 8, label %247
+		i8 12, label %248
+		i8 10, label %255
+		i8 13, label %249
+		i8 9, label %250
+		i8 11, label %251
+		i8 92, label %252
+		i8 123, label %259
+		i8 125, label %259
+		i8 35, label %270
+		i8 126, label %270
+		i8 32, label %272
+		i8 33, label %273
+		i8 34, label %273
+		i8 36, label %273
+		i8 38, label %273
+		i8 40, label %273
+		i8 41, label %273
+		i8 42, label %273
+		i8 59, label %273
+		i8 60, label %273
+		i8 61, label %273
+		i8 62, label %273
+		i8 91, label %273
+		i8 94, label %273
+		i8 96, label %273
+		i8 124, label %273
+		i8 39, label %275
+		i8 37, label %476
+		i8 43, label %476
+		i8 44, label %476
+		i8 45, label %476
+		i8 46, label %476
+		i8 47, label %476
+		i8 48, label %476
+		i8 49, label %476
+		i8 50, label %476
+		i8 51, label %476
+		i8 52, label %476
+		i8 53, label %476
+		i8 54, label %476
+		i8 55, label %476
+		i8 56, label %476
+		i8 57, label %476
+		i8 58, label %476
+		i8 65, label %476
+		i8 66, label %476
+		i8 67, label %476
+		i8 68, label %476
+		i8 69, label %476
+		i8 70, label %476
+		i8 71, label %476
+		i8 72, label %476
+		i8 73, label %476
+		i8 74, label %476
+		i8 75, label %476
+		i8 76, label %476
+		i8 77, label %476
+		i8 78, label %476
+		i8 79, label %476
+		i8 80, label %476
+		i8 81, label %476
+		i8 82, label %476
+		i8 83, label %476
+		i8 84, label %476
+		i8 85, label %476
+		i8 86, label %476
+		i8 87, label %476
+		i8 88, label %476
+		i8 89, label %476
+		i8 90, label %476
+		i8 93, label %476
+		i8 95, label %476
+		i8 97, label %476
+		i8 98, label %476
+		i8 99, label %476
+		i8 100, label %476
+		i8 101, label %476
+		i8 102, label %476
+		i8 103, label %476
+		i8 104, label %476
+		i8 105, label %476
+		i8 106, label %476
+		i8 107, label %476
+		i8 108, label %476
+		i8 109, label %476
+		i8 110, label %476
+		i8 111, label %476
+		i8 112, label %476
+		i8 113, label %476
+		i8 114, label %476
+		i8 115, label %476
+		i8 116, label %476
+		i8 117, label %476
+		i8 118, label %476
+		i8 119, label %476
+		i8 120, label %476
+		i8 121, label %476
+		i8 122, label %476
+	], !dbg !1544
+	br i1 %105, label %161, label %209, !dbg !1545
+	br i1 %112, label %162, label %644, !dbg !1546
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1391, metadata !649), !dbg !1525
+	%163 = and i8 %128, 1, !dbg !1551
+	%164 = icmp eq i8 %163, 0, !dbg !1551
+	%165 = and i1 %114, %164, !dbg !1554
+	br i1 %165, label %166, label %182, !dbg !1554
+	%167 = icmp ult i64 %125, %131, !dbg !1556
+	br i1 %167, label %168, label %170, !dbg !1561
+	%169 = getelementptr inbounds i8, i8* %0, i64 %125, !dbg !1563
+	store i8 39, i8* %169, align 1, !dbg !1563, !tbaa !824
+	br label %170, !dbg !1563
+	%171 = add i64 %125, 1, !dbg !1565
+	call void @llvm.dbg.value(metadata i64 %171, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%172 = icmp ult i64 %171, %131, !dbg !1567
+	br i1 %172, label %173, label %175, !dbg !1571
+	%174 = getelementptr inbounds i8, i8* %0, i64 %171, !dbg !1573
+	store i8 36, i8* %174, align 1, !dbg !1573, !tbaa !824
+	br label %175, !dbg !1573
+	%176 = add i64 %125, 2, !dbg !1575
+	call void @llvm.dbg.value(metadata i64 %176, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%177 = icmp ult i64 %176, %131, !dbg !1577
+	br i1 %177, label %178, label %180, !dbg !1581
+	%179 = getelementptr inbounds i8, i8* %0, i64 %176, !dbg !1583
+	store i8 39, i8* %179, align 1, !dbg !1583, !tbaa !824
+	br label %180, !dbg !1583
+	%181 = add i64 %125, 3, !dbg !1585
+	call void @llvm.dbg.value(metadata i64 %181, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %182, !dbg !1587
+	%183 = phi i64 [ %181, %180 ], [ %125, %162 ]
+	%184 = phi i8 [ 1, %180 ], [ %128, %162 ]
+	call void @llvm.dbg.value(metadata i8 %184, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %183, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%185 = icmp ult i64 %183, %131, !dbg !1589
+	br i1 %185, label %186, label %188, !dbg !1593
+	%187 = getelementptr inbounds i8, i8* %0, i64 %183, !dbg !1595
+	store i8 92, i8* %187, align 1, !dbg !1595, !tbaa !824
+	br label %188, !dbg !1595
+	%189 = add i64 %183, 1, !dbg !1597
+	call void @llvm.dbg.value(metadata i64 %189, i64 0, metadata !1375, metadata !649), !dbg !1437
+	br i1 %106, label %190, label %476, !dbg !1599
+	%191 = add i64 %124, 1, !dbg !1601
+	%192 = icmp ult i64 %191, %156, !dbg !1603
+	br i1 %192, label %193, label %476, !dbg !1604
+	%194 = getelementptr inbounds i8, i8* %2, i64 %191, !dbg !1605
+	%195 = load i8, i8* %194, align 1, !dbg !1605, !tbaa !824
+	%196 = add i8 %195, -48, !dbg !1607
+	%197 = icmp ult i8 %196, 10, !dbg !1607
+	br i1 %197, label %198, label %476, !dbg !1607
+	%199 = icmp ult i64 %189, %131, !dbg !1608
+	br i1 %199, label %200, label %202, !dbg !1613
+	%201 = getelementptr inbounds i8, i8* %0, i64 %189, !dbg !1615
+	store i8 48, i8* %201, align 1, !dbg !1615, !tbaa !824
+	br label %202, !dbg !1615
+	%203 = add i64 %183, 2, !dbg !1617
+	call void @llvm.dbg.value(metadata i64 %203, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%204 = icmp ult i64 %203, %131, !dbg !1619
+	br i1 %204, label %205, label %207, !dbg !1623
+	%206 = getelementptr inbounds i8, i8* %0, i64 %203, !dbg !1625
+	store i8 48, i8* %206, align 1, !dbg !1625, !tbaa !824
+	br label %207, !dbg !1625
+	%208 = add i64 %183, 3, !dbg !1627
+	call void @llvm.dbg.value(metadata i64 %208, i64 0, metadata !1375, metadata !649), !dbg !1437
+	br label %476, !dbg !1629
+	br i1 %23, label %476, label %587, !dbg !1630
+	switch i32 %96, label %476 [
+		i32 2, label %211
+		i32 5, label %212
+	], !dbg !1631
+	br i1 %112, label %476, label %644, !dbg !1632
+	br i1 %25, label %476, label %213, !dbg !1634
+	%214 = add i64 %124, 2, !dbg !1636
+	%215 = icmp ult i64 %214, %156, !dbg !1638
+	br i1 %215, label %216, label %476, !dbg !1639
+	%217 = add i64 %124, 1, !dbg !1640
+	%218 = getelementptr inbounds i8, i8* %2, i64 %217, !dbg !1642
+	%219 = load i8, i8* %218, align 1, !dbg !1642, !tbaa !824
+	%220 = icmp eq i8 %219, 63, !dbg !1643
+	br i1 %220, label %221, label %476, !dbg !1644
+	%222 = getelementptr inbounds i8, i8* %2, i64 %214, !dbg !1646
+	%223 = load i8, i8* %222, align 1, !dbg !1646, !tbaa !824
+	%224 = sext i8 %223 to i32, !dbg !1646
+	switch i32 %224, label %476 [
+		i32 33, label %225
+		i32 39, label %225
+		i32 40, label %225
+		i32 41, label %225
+		i32 45, label %225
+		i32 47, label %225
+		i32 60, label %225
+		i32 61, label %225
+		i32 62, label %225
+	], !dbg !1647
+	br i1 %112, label %226, label %644, !dbg !1648
+	call void @llvm.dbg.value(metadata i8 %223, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i64 %214, i64 0, metadata !1374, metadata !649), !dbg !1512
+	%227 = icmp ult i64 %125, %131, !dbg !1650
+	br i1 %227, label %228, label %230, !dbg !1654
+	%229 = getelementptr inbounds i8, i8* %0, i64 %125, !dbg !1656
+	store i8 63, i8* %229, align 1, !dbg !1656, !tbaa !824
+	br label %230, !dbg !1656
+	%231 = add i64 %125, 1, !dbg !1658
+	call void @llvm.dbg.value(metadata i64 %231, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%232 = icmp ult i64 %231, %131, !dbg !1660
+	br i1 %232, label %233, label %235, !dbg !1664
+	%234 = getelementptr inbounds i8, i8* %0, i64 %231, !dbg !1666
+	store i8 34, i8* %234, align 1, !dbg !1666, !tbaa !824
+	br label %235, !dbg !1666
+	%236 = add i64 %125, 2, !dbg !1668
+	call void @llvm.dbg.value(metadata i64 %236, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%237 = icmp ult i64 %236, %131, !dbg !1670
+	br i1 %237, label %238, label %240, !dbg !1674
+	%239 = getelementptr inbounds i8, i8* %0, i64 %236, !dbg !1676
+	store i8 34, i8* %239, align 1, !dbg !1676, !tbaa !824
+	br label %240, !dbg !1676
+	%241 = add i64 %125, 3, !dbg !1678
+	call void @llvm.dbg.value(metadata i64 %241, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%242 = icmp ult i64 %241, %131, !dbg !1680
+	br i1 %242, label %243, label %245, !dbg !1684
+	%244 = getelementptr inbounds i8, i8* %0, i64 %241, !dbg !1686
+	store i8 63, i8* %244, align 1, !dbg !1686, !tbaa !824
+	br label %245, !dbg !1686
+	%246 = add i64 %125, 4, !dbg !1688
+	call void @llvm.dbg.value(metadata i64 %246, i64 0, metadata !1375, metadata !649), !dbg !1437
+	br label %476, !dbg !1690
+	call void @llvm.dbg.value(metadata i8 98, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br label %257, !dbg !1692
+	call void @llvm.dbg.value(metadata i8 102, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br label %257, !dbg !1693
+	call void @llvm.dbg.value(metadata i8 114, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br label %255, !dbg !1694
+	call void @llvm.dbg.value(metadata i8 116, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br label %255, !dbg !1695
+	call void @llvm.dbg.value(metadata i8 118, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br label %257, !dbg !1696
+	call void @llvm.dbg.value(metadata i8 %159, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br i1 %114, label %253, label %254, !dbg !1697
+	br i1 %112, label %542, label %644, !dbg !1698
+	br i1 %122, label %542, label %255, !dbg !1701
+	%256 = phi i8 [ 92, %254 ], [ 116, %250 ], [ 114, %249 ], [ 110, %155 ]
+	call void @llvm.dbg.value(metadata i8 %256, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br i1 %118, label %257, label %644, !dbg !1703
+	%258 = phi i8 [ %256, %255 ], [ 118, %251 ], [ 102, %248 ], [ 98, %247 ], [ 97, %155 ]
+	call void @llvm.dbg.value(metadata i8 %258, i64 0, metadata !1389, metadata !649), !dbg !1691
+	br i1 %105, label %503, label %476, !dbg !1705
+	%260 = icmp eq i64 %156, -1, !dbg !1706
+	br i1 %260, label %261, label %266, !dbg !1708
+	%262 = load i8, i8* %26, align 1, !dbg !1709, !tbaa !824
+	%263 = icmp ne i8 %262, 0, !dbg !1711
+	%264 = icmp ne i64 %124, 0, !dbg !1712
+	%265 = or i1 %264, %263, !dbg !1714
+	br i1 %265, label %476, label %272, !dbg !1714
+	%267 = icmp ne i64 %156, 1, !dbg !1715
+	%268 = icmp ne i64 %124, 0, !dbg !1712
+	%269 = or i1 %268, %267, !dbg !1717
+	br i1 %269, label %476, label %272, !dbg !1717
+	%271 = icmp eq i64 %124, 0, !dbg !1712
+	br i1 %271, label %272, label %476, !dbg !1719
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1392, metadata !649), !dbg !1526
+	br label %273, !dbg !1720
+	%274 = phi i8 [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 1, %272 ]
+	call void @llvm.dbg.value(metadata i8 %274, i64 0, metadata !1392, metadata !649), !dbg !1526
+	br i1 %118, label %476, label %644, !dbg !1721
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1392, metadata !649), !dbg !1526
+	br i1 %114, label %276, label %476, !dbg !1723
+	br i1 %112, label %277, label %644, !dbg !1724
+	%278 = icmp eq i64 %131, 0, !dbg !1727
+	%279 = icmp ne i64 %126, 0, !dbg !1729
+	%280 = or i1 %279, %278, !dbg !1731
+	call void @llvm.dbg.value(metadata i64 %131, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1366, metadata !649), !dbg !1429
+	%281 = select i1 %280, i64 %126, i64 %131, !dbg !1731
+	%282 = select i1 %280, i64 %131, i64 0, !dbg !1731
+	call void @llvm.dbg.value(metadata i64 %282, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i64 %281, i64 0, metadata !1376, metadata !649), !dbg !1438
+	%283 = icmp ult i64 %125, %282, !dbg !1732
+	br i1 %283, label %284, label %286, !dbg !1736
+	%285 = getelementptr inbounds i8, i8* %0, i64 %125, !dbg !1738
+	store i8 39, i8* %285, align 1, !dbg !1738, !tbaa !824
+	br label %286, !dbg !1738
+	%287 = add i64 %125, 1, !dbg !1740
+	call void @llvm.dbg.value(metadata i64 %287, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%288 = icmp ult i64 %287, %282, !dbg !1742
+	br i1 %288, label %289, label %291, !dbg !1746
+	%290 = getelementptr inbounds i8, i8* %0, i64 %287, !dbg !1748
+	store i8 92, i8* %290, align 1, !dbg !1748, !tbaa !824
+	br label %291, !dbg !1748
+	%292 = add i64 %125, 2, !dbg !1750
+	call void @llvm.dbg.value(metadata i64 %292, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%293 = icmp ult i64 %292, %282, !dbg !1752
+	br i1 %293, label %294, label %296, !dbg !1756
+	%295 = getelementptr inbounds i8, i8* %0, i64 %292, !dbg !1758
+	store i8 39, i8* %295, align 1, !dbg !1758, !tbaa !824
+	br label %296, !dbg !1758
+	%297 = add i64 %125, 3, !dbg !1760
+	call void @llvm.dbg.value(metadata i64 %297, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %476, !dbg !1762
+	br i1 %14, label %299, label %308, !dbg !1763
+	call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !1393, metadata !649), !dbg !1764
+	%300 = tail call i16** @__ctype_b_loc() #1, !dbg !1765
+	%301 = load i16*, i16** %300, align 8, !dbg !1765, !tbaa !657
+	%302 = zext i8 %159 to i64, !dbg !1765
+	%303 = getelementptr inbounds i16, i16* %301, i64 %302, !dbg !1765
+	%304 = load i16, i16* %303, align 2, !dbg !1765, !tbaa !1767
+	%305 = lshr i16 %304, 14, !dbg !1768
+	%306 = trunc i16 %305 to i8, !dbg !1768
+	%307 = and i8 %306, 1, !dbg !1768
+	call void @llvm.dbg.value(metadata i8 %307, i64 0, metadata !1396, metadata !649), !dbg !1769
+	br label %368, !dbg !1770
+	call void @llvm.lifetime.start(i64 8, i8* nonnull %18) #10, !dbg !1771
+	store i64 0, i64* %10, align 8, !dbg !1772
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1396, metadata !649), !dbg !1769
+	%309 = icmp eq i64 %156, -1, !dbg !1773
+	br i1 %309, label %310, label %312, !dbg !1775, !llvm.loop !1776
+	%311 = call i64 @strlen(i8* nonnull %2) #13, !dbg !1779
+	call void @llvm.dbg.value(metadata i64 %311, i64 0, metadata !1368, metadata !649), !dbg !1431
+	br label %312, !dbg !1780, !llvm.loop !1776
+	%313 = phi i64 [ %156, %308 ], [ %311, %310 ]
+	br label %314, !dbg !1769
+	%315 = phi i64 [ %360, %355 ], [ 0, %312 ]
+	%316 = phi i8 [ %359, %355 ], [ 1, %312 ]
+	call void @llvm.dbg.value(metadata i8 %316, i64 0, metadata !1396, metadata !649), !dbg !1769
+	call void @llvm.dbg.value(metadata i64 %315, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.dbg.value(metadata i64 %313, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.lifetime.start(i64 4, i8* nonnull %19) #10, !dbg !1781
+	%317 = add i64 %315, %124, !dbg !1782
+	%318 = getelementptr inbounds i8, i8* %2, i64 %317, !dbg !1783
+	%319 = sub i64 %313, %317, !dbg !1784
+	call void @llvm.dbg.value(metadata %struct.__mbstate_t* %11, i64 0, metadata !1397, metadata !985), !dbg !1785
+	call void @llvm.dbg.value(metadata i32* %12, i64 0, metadata !1414, metadata !985), !dbg !1786
+	%320 = call i64 @rpl_mbrtowc(i32* nonnull %12, i8* %318, i64 %319, %struct.__mbstate_t* nonnull %11) #10, !dbg !1787
+	call void @llvm.dbg.value(metadata i64 %320, i64 0, metadata !1417, metadata !649), !dbg !1788
+	switch i64 %320, label %334 [
+		i64 0, label %350
+		i64 -1, label %347
+		i64 -2, label %321
+	], !dbg !1789
+	call void @llvm.dbg.value(metadata i64 %315, i64 0, metadata !1393, metadata !649), !dbg !1764
+	%322 = icmp ugt i64 %313, %317, !dbg !1790
+	br i1 %322, label %323, label %351, !dbg !1793
+	br label %324, !dbg !1794
+	%325 = phi i64 [ %332, %330 ], [ %317, %323 ]
+	%326 = phi i64 [ %331, %330 ], [ %315, %323 ]
+	%327 = getelementptr inbounds i8, i8* %2, i64 %325, !dbg !1794
+	%328 = load i8, i8* %327, align 1, !dbg !1794, !tbaa !824
+	%329 = icmp eq i8 %328, 0, !dbg !1796
+	br i1 %329, label %348, label %330, !dbg !1797
+	%331 = add i64 %326, 1, !dbg !1799
+	call void @llvm.dbg.value(metadata i64 %331, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.dbg.value(metadata i64 %331, i64 0, metadata !1393, metadata !649), !dbg !1764
+	%332 = add i64 %331, %124, !dbg !1800
+	%333 = icmp ult i64 %332, %313, !dbg !1790
+	br i1 %333, label %324, label %348, !dbg !1793, !llvm.loop !1801
+	%335 = icmp ugt i64 %320, 1, !dbg !1803
+	%336 = and i1 %116, %335, !dbg !1807
+	call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !1418, metadata !649), !dbg !1808
+	br i1 %336, label %337, label %355, !dbg !1807
+	br label %338, !dbg !1809
+	%339 = phi i64 [ %345, %344 ], [ 1, %337 ]
+	%340 = add i64 %339, %317, !dbg !1809
+	%341 = getelementptr inbounds i8, i8* %2, i64 %340, !dbg !1810
+	%342 = load i8, i8* %341, align 1, !dbg !1810, !tbaa !824
+	%343 = sext i8 %342 to i32, !dbg !1810
+	switch i32 %343, label %344 [
+		i32 91, label %367
+		i32 92, label %367
+		i32 94, label %367
+		i32 96, label %367
+		i32 124, label %367
+	], !dbg !1811
+	%345 = add nuw i64 %339, 1, !dbg !1812
+	call void @llvm.dbg.value(metadata i64 %345, i64 0, metadata !1418, metadata !649), !dbg !1808
+	call void @llvm.dbg.value(metadata i64 %345, i64 0, metadata !1418, metadata !649), !dbg !1808
+	%346 = icmp ult i64 %345, %320, !dbg !1803
+	br i1 %346, label %338, label %354, !dbg !1814, !llvm.loop !1816
+	br label %351, !dbg !1769
+	%349 = phi i64 [ %331, %330 ], [ %326, %324 ]
+	br label %351, !dbg !1769
+	br label %351, !dbg !1769
+	%352 = phi i64 [ %315, %321 ], [ %315, %347 ], [ %349, %348 ], [ %315, %350 ]
+	%353 = phi i8 [ 0, %321 ], [ 0, %347 ], [ 0, %348 ], [ %316, %350 ]
+	call void @llvm.dbg.value(metadata i8 %359, i64 0, metadata !1396, metadata !649), !dbg !1769
+	call void @llvm.dbg.value(metadata i64 %360, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.lifetime.end(i64 4, i8* nonnull %19) #10, !dbg !1819
+	br label %364
+	br label %355, !dbg !1820
+	%356 = load i32, i32* %12, align 4, !dbg !1820, !tbaa !751
+	call void @llvm.dbg.value(metadata i32 %356, i64 0, metadata !1414, metadata !649), !dbg !1786
+	%357 = call i32 @iswprint(i32 %356) #10, !dbg !1822
+	%358 = icmp eq i32 %357, 0, !dbg !1822
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1396, metadata !649), !dbg !1769
+	%359 = select i1 %358, i8 0, i8 %316, !dbg !1823
+	call void @llvm.dbg.value(metadata i8 %359, i64 0, metadata !1396, metadata !649), !dbg !1769
+	%360 = add i64 %320, %315, !dbg !1824
+	call void @llvm.dbg.value(metadata i64 %360, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.dbg.value(metadata i8 %359, i64 0, metadata !1396, metadata !649), !dbg !1769
+	call void @llvm.dbg.value(metadata i64 %360, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.lifetime.end(i64 4, i8* nonnull %19) #10, !dbg !1819
+	call void @llvm.dbg.value(metadata %struct.__mbstate_t* %11, i64 0, metadata !1397, metadata !985), !dbg !1785
+	%361 = call i32 @mbsinit(%struct.__mbstate_t* nonnull %11) #13, !dbg !1825
+	%362 = icmp eq i32 %361, 0, !dbg !1826
+	br i1 %362, label %314, label %363, !dbg !1827, !llvm.loop !1776
+	br label %364, !dbg !1829
+	%365 = phi i8 [ %353, %351 ], [ %359, %363 ]
+	%366 = phi i64 [ %352, %351 ], [ %360, %363 ]
+	call void @llvm.lifetime.end(i64 8, i8* nonnull %18) #10, !dbg !1829
+	br label %368
+	call void @llvm.dbg.value(metadata i8 %359, i64 0, metadata !1396, metadata !649), !dbg !1769
+	call void @llvm.dbg.value(metadata i64 %360, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.lifetime.end(i64 4, i8* nonnull %19) #10, !dbg !1819
+	call void @llvm.lifetime.end(i64 8, i8* nonnull %18) #10, !dbg !1829
+	br label %649
+	%369 = phi i64 [ %156, %299 ], [ %313, %364 ]
+	%370 = phi i64 [ 1, %299 ], [ %366, %364 ]
+	%371 = phi i8 [ %307, %299 ], [ %365, %364 ]
+	call void @llvm.dbg.value(metadata i8 %371, i64 0, metadata !1396, metadata !649), !dbg !1769
+	call void @llvm.dbg.value(metadata i64 %370, i64 0, metadata !1393, metadata !649), !dbg !1764
+	call void @llvm.dbg.value(metadata i64 %369, i64 0, metadata !1368, metadata !649), !dbg !1431
+	%372 = and i8 %371, 1, !dbg !1830
+	%373 = icmp ne i8 %372, 0, !dbg !1830
+	call void @llvm.dbg.value(metadata i8 %372, i64 0, metadata !1392, metadata !649), !dbg !1526
+	%374 = icmp ult i64 %370, 2, !dbg !1831
+	%375 = or i1 %373, %113, !dbg !1832
+	%376 = and i1 %374, %375, !dbg !1834
+	br i1 %376, label %476, label %377, !dbg !1834
+	%378 = add i64 %370, %124, !dbg !1835
+	call void @llvm.dbg.value(metadata i64 %378, i64 0, metadata !1425, metadata !649), !dbg !1836
+	br label %379, !dbg !1837
+	%380 = phi i64 [ %124, %377 ], [ %447, %472 ]
+	%381 = phi i64 [ %125, %377 ], [ %473, %472 ]
+	%382 = phi i8 [ %128, %377 ], [ %468, %472 ]
+	%383 = phi i8 [ %159, %377 ], [ %475, %472 ]
+	%384 = phi i8 [ %157, %377 ], [ %445, %472 ]
+	%385 = phi i8 [ 0, %377 ], [ %446, %472 ]
+	call void @llvm.dbg.value(metadata i8 %385, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 %384, i64 0, metadata !1390, metadata !649), !dbg !1524
+	call void @llvm.dbg.value(metadata i8 %383, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %382, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %381, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %380, i64 0, metadata !1374, metadata !649), !dbg !1512
+	br i1 %375, label %432, label %386, !dbg !1838
+	br i1 %112, label %387, label %643, !dbg !1843
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1391, metadata !649), !dbg !1525
+	%388 = and i8 %382, 1, !dbg !1847
+	%389 = icmp eq i8 %388, 0, !dbg !1847
+	%390 = and i1 %114, %389, !dbg !1850
+	br i1 %390, label %391, label %407, !dbg !1850
+	%392 = icmp ult i64 %381, %131, !dbg !1852
+	br i1 %392, label %393, label %395, !dbg !1857
+	%394 = getelementptr inbounds i8, i8* %0, i64 %381, !dbg !1859
+	store i8 39, i8* %394, align 1, !dbg !1859, !tbaa !824
+	br label %395, !dbg !1859
+	%396 = add i64 %381, 1, !dbg !1861
+	call void @llvm.dbg.value(metadata i64 %396, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%397 = icmp ult i64 %396, %131, !dbg !1863
+	br i1 %397, label %398, label %400, !dbg !1867
+	%399 = getelementptr inbounds i8, i8* %0, i64 %396, !dbg !1869
+	store i8 36, i8* %399, align 1, !dbg !1869, !tbaa !824
+	br label %400, !dbg !1869
+	%401 = add i64 %381, 2, !dbg !1871
+	call void @llvm.dbg.value(metadata i64 %401, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%402 = icmp ult i64 %401, %131, !dbg !1873
+	br i1 %402, label %403, label %405, !dbg !1877
+	%404 = getelementptr inbounds i8, i8* %0, i64 %401, !dbg !1879
+	store i8 39, i8* %404, align 1, !dbg !1879, !tbaa !824
+	br label %405, !dbg !1879
+	%406 = add i64 %381, 3, !dbg !1881
+	call void @llvm.dbg.value(metadata i64 %406, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %407, !dbg !1883
+	%408 = phi i64 [ %406, %405 ], [ %381, %387 ]
+	%409 = phi i8 [ 1, %405 ], [ %382, %387 ]
+	call void @llvm.dbg.value(metadata i8 %409, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %408, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%410 = icmp ult i64 %408, %131, !dbg !1885
+	br i1 %410, label %411, label %413, !dbg !1889
+	%412 = getelementptr inbounds i8, i8* %0, i64 %408, !dbg !1891
+	store i8 92, i8* %412, align 1, !dbg !1891, !tbaa !824
+	br label %413, !dbg !1891
+	%414 = add i64 %408, 1, !dbg !1893
+	call void @llvm.dbg.value(metadata i64 %414, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%415 = icmp ult i64 %414, %131, !dbg !1895
+	br i1 %415, label %416, label %420, !dbg !1899
+	%417 = lshr i8 %383, 6, !dbg !1901
+	%418 = or i8 %417, 48, !dbg !1901
+	%419 = getelementptr inbounds i8, i8* %0, i64 %414, !dbg !1901
+	store i8 %418, i8* %419, align 1, !dbg !1901, !tbaa !824
+	br label %420, !dbg !1901
+	%421 = add i64 %408, 2, !dbg !1903
+	call void @llvm.dbg.value(metadata i64 %421, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%422 = icmp ult i64 %421, %131, !dbg !1905
+	br i1 %422, label %423, label %428, !dbg !1909
+	%424 = lshr i8 %383, 3, !dbg !1911
+	%425 = and i8 %424, 7, !dbg !1911
+	%426 = or i8 %425, 48, !dbg !1911
+	%427 = getelementptr inbounds i8, i8* %0, i64 %421, !dbg !1911
+	store i8 %426, i8* %427, align 1, !dbg !1911, !tbaa !824
+	br label %428, !dbg !1911
+	%429 = add i64 %408, 3, !dbg !1913
+	call void @llvm.dbg.value(metadata i64 %429, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%430 = and i8 %383, 7, !dbg !1915
+	%431 = or i8 %430, 48, !dbg !1916
+	call void @llvm.dbg.value(metadata i8 %431, i64 0, metadata !1385, metadata !649), !dbg !1543
+	br label %441, !dbg !1917
+	%433 = and i8 %384, 1, !dbg !1918
+	%434 = icmp eq i8 %433, 0, !dbg !1918
+	br i1 %434, label %441, label %435, !dbg !1920
+	%436 = icmp ult i64 %381, %131, !dbg !1921
+	br i1 %436, label %437, label %439, !dbg !1926
+	%438 = getelementptr inbounds i8, i8* %0, i64 %381, !dbg !1928
+	store i8 92, i8* %438, align 1, !dbg !1928, !tbaa !824
+	br label %439, !dbg !1928
+	%440 = add i64 %381, 1, !dbg !1930
+	call void @llvm.dbg.value(metadata i64 %440, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1390, metadata !649), !dbg !1524
+	br label %441, !dbg !1932
+	%442 = phi i64 [ %440, %439 ], [ %381, %432 ], [ %429, %428 ]
+	%443 = phi i8 [ %382, %439 ], [ %382, %432 ], [ %409, %428 ]
+	%444 = phi i8 [ %383, %439 ], [ %383, %432 ], [ %431, %428 ]
+	%445 = phi i8 [ 0, %439 ], [ %384, %432 ], [ %384, %428 ]
+	%446 = phi i8 [ %385, %439 ], [ %385, %432 ], [ 1, %428 ]
+	call void @llvm.dbg.value(metadata i8 %446, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 %445, i64 0, metadata !1390, metadata !649), !dbg !1524
+	call void @llvm.dbg.value(metadata i8 %444, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %443, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %442, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%447 = add i64 %380, 1, !dbg !1933
+	%448 = icmp ugt i64 %378, %447, !dbg !1935
+	br i1 %448, label %449, label %541, !dbg !1936
+	%450 = and i8 %443, 1, !dbg !1937
+	%451 = icmp ne i8 %450, 0, !dbg !1937
+	%452 = and i8 %446, 1, !dbg !1941
+	%453 = icmp eq i8 %452, 0, !dbg !1941
+	%454 = and i1 %451, %453, !dbg !1937
+	br i1 %454, label %455, label %466, !dbg !1937
+	%456 = icmp ult i64 %442, %131, !dbg !1943
+	br i1 %456, label %457, label %459, !dbg !1948
+	%458 = getelementptr inbounds i8, i8* %0, i64 %442, !dbg !1950
+	store i8 39, i8* %458, align 1, !dbg !1950, !tbaa !824
+	br label %459, !dbg !1950
+	%460 = add i64 %442, 1, !dbg !1952
+	call void @llvm.dbg.value(metadata i64 %460, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%461 = icmp ult i64 %460, %131, !dbg !1954
+	br i1 %461, label %462, label %464, !dbg !1958
+	%463 = getelementptr inbounds i8, i8* %0, i64 %460, !dbg !1960
+	store i8 39, i8* %463, align 1, !dbg !1960, !tbaa !824
+	br label %464, !dbg !1960
+	%465 = add i64 %442, 2, !dbg !1962
+	call void @llvm.dbg.value(metadata i64 %465, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %466, !dbg !1964
+	%467 = phi i64 [ %465, %464 ], [ %442, %449 ]
+	%468 = phi i8 [ 0, %464 ], [ %443, %449 ]
+	call void @llvm.dbg.value(metadata i8 %468, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %467, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%469 = icmp ult i64 %467, %131, !dbg !1966
+	br i1 %469, label %470, label %472, !dbg !1970
+	%471 = getelementptr inbounds i8, i8* %0, i64 %467, !dbg !1972
+	store i8 %444, i8* %471, align 1, !dbg !1972, !tbaa !824
+	br label %472, !dbg !1972
+	%473 = add i64 %467, 1, !dbg !1974
+	call void @llvm.dbg.value(metadata i64 %473, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %447, i64 0, metadata !1374, metadata !649), !dbg !1512
+	%474 = getelementptr inbounds i8, i8* %2, i64 %447, !dbg !1976
+	%475 = load i8, i8* %474, align 1, !dbg !1976, !tbaa !824
+	call void @llvm.dbg.value(metadata i8 %475, i64 0, metadata !1385, metadata !649), !dbg !1543
+	br label %379, !dbg !1977, !llvm.loop !1979
+	%477 = phi i64 [ %124, %296 ], [ %124, %275 ], [ %124, %273 ], [ %124, %270 ], [ %124, %261 ], [ %124, %266 ], [ %124, %257 ], [ %124, %210 ], [ %124, %221 ], [ %214, %245 ], [ %124, %216 ], [ %124, %213 ], [ %124, %212 ], [ %124, %211 ], [ %124, %209 ], [ %124, %207 ], [ %124, %193 ], [ %124, %190 ], [ %124, %188 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %155 ], [ %124, %368 ]
+	%478 = phi i64 [ %297, %296 ], [ %125, %275 ], [ %125, %273 ], [ %125, %270 ], [ %125, %261 ], [ %125, %266 ], [ %125, %257 ], [ %125, %210 ], [ %125, %221 ], [ %246, %245 ], [ %125, %216 ], [ %125, %213 ], [ %125, %212 ], [ %125, %211 ], [ %125, %209 ], [ %208, %207 ], [ %189, %193 ], [ %189, %190 ], [ %189, %188 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %155 ], [ %125, %368 ]
+	%479 = phi i64 [ %281, %296 ], [ %126, %275 ], [ %126, %273 ], [ %126, %270 ], [ %126, %261 ], [ %126, %266 ], [ %126, %257 ], [ %126, %210 ], [ %126, %221 ], [ %126, %245 ], [ %126, %216 ], [ %126, %213 ], [ %126, %212 ], [ %126, %211 ], [ %126, %209 ], [ %126, %207 ], [ %126, %193 ], [ %126, %190 ], [ %126, %188 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %155 ], [ %126, %368 ]
+	%480 = phi i64 [ %156, %296 ], [ %156, %275 ], [ %156, %273 ], [ %156, %270 ], [ -1, %261 ], [ %156, %266 ], [ %156, %257 ], [ %156, %210 ], [ %156, %221 ], [ %156, %245 ], [ %156, %216 ], [ %156, %213 ], [ %156, %212 ], [ %156, %211 ], [ %156, %209 ], [ %156, %207 ], [ %156, %193 ], [ %156, %190 ], [ %156, %188 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %156, %155 ], [ %369, %368 ]
+	%481 = phi i8 [ 0, %296 ], [ %128, %275 ], [ %128, %273 ], [ %128, %270 ], [ %128, %261 ], [ %128, %266 ], [ %128, %257 ], [ %128, %210 ], [ %128, %221 ], [ %128, %245 ], [ %128, %216 ], [ %128, %213 ], [ %128, %212 ], [ %128, %211 ], [ %128, %209 ], [ %184, %207 ], [ %184, %193 ], [ %184, %190 ], [ %184, %188 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %155 ], [ %128, %368 ]
+	%482 = phi i8 [ 1, %296 ], [ 1, %275 ], [ %129, %273 ], [ %129, %270 ], [ %129, %261 ], [ %129, %266 ], [ %129, %257 ], [ %129, %210 ], [ %129, %221 ], [ %129, %245 ], [ %129, %216 ], [ %129, %213 ], [ %129, %212 ], [ %129, %211 ], [ %129, %209 ], [ %129, %207 ], [ %129, %193 ], [ %129, %190 ], [ %129, %188 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %155 ], [ %129, %368 ]
+	%483 = phi i8 [ 39, %296 ], [ 39, %275 ], [ %159, %273 ], [ %159, %270 ], [ %159, %261 ], [ %159, %266 ], [ %159, %257 ], [ 63, %210 ], [ 63, %221 ], [ %223, %245 ], [ 63, %216 ], [ 63, %213 ], [ 63, %212 ], [ 63, %211 ], [ 0, %209 ], [ 48, %207 ], [ 48, %193 ], [ 48, %190 ], [ 48, %188 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %155 ], [ %159, %368 ]
+	%484 = phi i8 [ 0, %296 ], [ 0, %275 ], [ 0, %273 ], [ 0, %270 ], [ 0, %261 ], [ 0, %266 ], [ 0, %257 ], [ 0, %210 ], [ 0, %221 ], [ 0, %245 ], [ 0, %216 ], [ 0, %213 ], [ 0, %212 ], [ 0, %211 ], [ 0, %209 ], [ 1, %207 ], [ 1, %193 ], [ 1, %190 ], [ 1, %188 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %155 ], [ 0, %368 ]
+	%485 = phi i8 [ 1, %296 ], [ 1, %275 ], [ %274, %273 ], [ 0, %270 ], [ 0, %261 ], [ 0, %266 ], [ 0, %257 ], [ 0, %210 ], [ 0, %221 ], [ 0, %245 ], [ 0, %216 ], [ 0, %213 ], [ 0, %212 ], [ 0, %211 ], [ 0, %209 ], [ 0, %207 ], [ 0, %193 ], [ 0, %190 ], [ 0, %188 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ 1, %155 ], [ %372, %368 ]
+	%486 = phi i64 [ %282, %296 ], [ %131, %275 ], [ %131, %273 ], [ %131, %270 ], [ %131, %261 ], [ %131, %266 ], [ %131, %257 ], [ %131, %210 ], [ %131, %221 ], [ %131, %245 ], [ %131, %216 ], [ %131, %213 ], [ %131, %212 ], [ %131, %211 ], [ %131, %209 ], [ %131, %207 ], [ %131, %193 ], [ %131, %190 ], [ %131, %188 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %155 ], [ %131, %368 ]
+	call void @llvm.dbg.value(metadata i64 %486, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %485, i64 0, metadata !1392, metadata !649), !dbg !1526
+	call void @llvm.dbg.value(metadata i8 %484, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 %157, i64 0, metadata !1390, metadata !649), !dbg !1524
+	call void @llvm.dbg.value(metadata i8 %483, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %482, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %481, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %480, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i64 %479, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 %478, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %477, i64 0, metadata !1374, metadata !649), !dbg !1512
+	br i1 %107, label %488, label %487, !dbg !1982
+	br i1 %117, label %489, label %501, !dbg !1984
+	br i1 %20, label %501, label %489, !dbg !1985
+	%490 = lshr i8 %483, 5, !dbg !1986
+	%491 = zext i8 %490 to i64, !dbg !1986
+	%492 = getelementptr inbounds i32, i32* %6, i64 %491, !dbg !1988
+	%493 = load i32, i32* %492, align 4, !dbg !1988, !tbaa !751
+	%494 = and i8 %483, 31, !dbg !1989
+	%495 = zext i8 %494 to i32, !dbg !1990
+	%496 = shl i32 1, %495, !dbg !1991
+	%497 = and i32 %493, %496, !dbg !1991
+	%498 = icmp eq i32 %497, 0, !dbg !1991
+	%499 = icmp eq i8 %157, 0, !dbg !1992
+	%500 = and i1 %499, %498, !dbg !1993
+	br i1 %500, label %542, label %503, !dbg !1993
+	%502 = icmp eq i8 %157, 0, !dbg !1992
+	br i1 %502, label %542, label %503, !dbg !1994
+	%504 = phi i64 [ %477, %489 ], [ %477, %501 ], [ %124, %257 ]
+	%505 = phi i64 [ %478, %489 ], [ %478, %501 ], [ %125, %257 ]
+	%506 = phi i64 [ %479, %489 ], [ %479, %501 ], [ %126, %257 ]
+	%507 = phi i64 [ %480, %489 ], [ %480, %501 ], [ %156, %257 ]
+	%508 = phi i8 [ %481, %489 ], [ %481, %501 ], [ %128, %257 ]
+	%509 = phi i8 [ %482, %489 ], [ %482, %501 ], [ %129, %257 ]
+	%510 = phi i8 [ %483, %489 ], [ %483, %501 ], [ %258, %257 ]
+	%511 = phi i8 [ %485, %489 ], [ %485, %501 ], [ 0, %257 ]
+	%512 = phi i64 [ %486, %489 ], [ %486, %501 ], [ %131, %257 ]
+	call void @llvm.dbg.value(metadata i64 %512, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %511, i64 0, metadata !1392, metadata !649), !dbg !1526
+	call void @llvm.dbg.value(metadata i8 %510, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %509, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %508, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %507, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i64 %506, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 %505, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %504, i64 0, metadata !1374, metadata !649), !dbg !1512
+	br i1 %112, label %513, label %644, !dbg !1996
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1391, metadata !649), !dbg !1525
+	%514 = and i8 %508, 1, !dbg !1999
+	%515 = icmp eq i8 %514, 0, !dbg !1999
+	%516 = and i1 %114, %515, !dbg !2002
+	br i1 %516, label %517, label %533, !dbg !2002
+	%518 = icmp ult i64 %505, %512, !dbg !2004
+	br i1 %518, label %519, label %521, !dbg !2009
+	%520 = getelementptr inbounds i8, i8* %0, i64 %505, !dbg !2011
+	store i8 39, i8* %520, align 1, !dbg !2011, !tbaa !824
+	br label %521, !dbg !2011
+	%522 = add i64 %505, 1, !dbg !2013
+	call void @llvm.dbg.value(metadata i64 %522, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%523 = icmp ult i64 %522, %512, !dbg !2015
+	br i1 %523, label %524, label %526, !dbg !2019
+	%525 = getelementptr inbounds i8, i8* %0, i64 %522, !dbg !2021
+	store i8 36, i8* %525, align 1, !dbg !2021, !tbaa !824
+	br label %526, !dbg !2021
+	%527 = add i64 %505, 2, !dbg !2023
+	call void @llvm.dbg.value(metadata i64 %527, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%528 = icmp ult i64 %527, %512, !dbg !2025
+	br i1 %528, label %529, label %531, !dbg !2029
+	%530 = getelementptr inbounds i8, i8* %0, i64 %527, !dbg !2031
+	store i8 39, i8* %530, align 1, !dbg !2031, !tbaa !824
+	br label %531, !dbg !2031
+	%532 = add i64 %505, 3, !dbg !2033
+	call void @llvm.dbg.value(metadata i64 %532, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %533, !dbg !2035
+	%534 = phi i64 [ %532, %531 ], [ %505, %513 ]
+	%535 = phi i8 [ 1, %531 ], [ %508, %513 ]
+	call void @llvm.dbg.value(metadata i8 %535, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %534, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%536 = icmp ult i64 %534, %512, !dbg !2037
+	br i1 %536, label %537, label %539, !dbg !2041
+	%538 = getelementptr inbounds i8, i8* %0, i64 %534, !dbg !2043
+	store i8 92, i8* %538, align 1, !dbg !2043, !tbaa !824
+	br label %539, !dbg !2043
+	%540 = add i64 %534, 1, !dbg !2045
+	call void @llvm.dbg.value(metadata i64 %540, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %552, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %551, i64 0, metadata !1392, metadata !649), !dbg !1526
+	call void @llvm.dbg.value(metadata i8 %550, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 %549, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %548, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %547, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %546, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i64 %545, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 %544, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %543, i64 0, metadata !1374, metadata !649), !dbg !1512
+	br label %569, !dbg !2047
+	br label %542, !dbg !1429
+	%543 = phi i64 [ %477, %501 ], [ %124, %253 ], [ %477, %489 ], [ %124, %254 ], [ %380, %541 ]
+	%544 = phi i64 [ %478, %501 ], [ %125, %253 ], [ %478, %489 ], [ %125, %254 ], [ %442, %541 ]
+	%545 = phi i64 [ %479, %501 ], [ %126, %253 ], [ %479, %489 ], [ %126, %254 ], [ %126, %541 ]
+	%546 = phi i64 [ %480, %501 ], [ %156, %253 ], [ %480, %489 ], [ %156, %254 ], [ %369, %541 ]
+	%547 = phi i8 [ %481, %501 ], [ %128, %253 ], [ %481, %489 ], [ %128, %254 ], [ %443, %541 ]
+	%548 = phi i8 [ %482, %501 ], [ %129, %253 ], [ %482, %489 ], [ %129, %254 ], [ %129, %541 ]
+	%549 = phi i8 [ %483, %501 ], [ 92, %253 ], [ %483, %489 ], [ 92, %254 ], [ %444, %541 ]
+	%550 = phi i8 [ %484, %501 ], [ 0, %253 ], [ %484, %489 ], [ 0, %254 ], [ %446, %541 ]
+	%551 = phi i8 [ %485, %501 ], [ 0, %253 ], [ %485, %489 ], [ 0, %254 ], [ %372, %541 ]
+	%552 = phi i64 [ %486, %501 ], [ %131, %253 ], [ %486, %489 ], [ %131, %254 ], [ %131, %541 ]
+	call void @llvm.dbg.value(metadata i64 %552, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i8 %551, i64 0, metadata !1392, metadata !649), !dbg !1526
+	call void @llvm.dbg.value(metadata i8 %550, i64 0, metadata !1391, metadata !649), !dbg !1525
+	call void @llvm.dbg.value(metadata i8 %549, i64 0, metadata !1385, metadata !649), !dbg !1543
+	call void @llvm.dbg.value(metadata i8 %548, i64 0, metadata !1383, metadata !649), !dbg !1446
+	call void @llvm.dbg.value(metadata i8 %547, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %546, i64 0, metadata !1368, metadata !649), !dbg !1431
+	call void @llvm.dbg.value(metadata i64 %545, i64 0, metadata !1376, metadata !649), !dbg !1438
+	call void @llvm.dbg.value(metadata i64 %544, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i64 %543, i64 0, metadata !1374, metadata !649), !dbg !1512
+	%553 = and i8 %547, 1, !dbg !2047
+	%554 = icmp ne i8 %553, 0, !dbg !2047
+	%555 = and i8 %550, 1, !dbg !2051
+	%556 = icmp eq i8 %555, 0, !dbg !2051
+	%557 = and i1 %554, %556, !dbg !2047
+	br i1 %557, label %558, label %569, !dbg !2047
+	%559 = icmp ult i64 %544, %552, !dbg !2053
+	br i1 %559, label %560, label %562, !dbg !2058
+	%561 = getelementptr inbounds i8, i8* %0, i64 %544, !dbg !2060
+	store i8 39, i8* %561, align 1, !dbg !2060, !tbaa !824
+	br label %562, !dbg !2060
+	%563 = add i64 %544, 1, !dbg !2062
+	call void @llvm.dbg.value(metadata i64 %563, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%564 = icmp ult i64 %563, %552, !dbg !2064
+	br i1 %564, label %565, label %567, !dbg !2068
+	%566 = getelementptr inbounds i8, i8* %0, i64 %563, !dbg !2070
+	store i8 39, i8* %566, align 1, !dbg !2070, !tbaa !824
+	br label %567, !dbg !2070
+	%568 = add i64 %544, 2, !dbg !2072
+	call void @llvm.dbg.value(metadata i64 %568, i64 0, metadata !1375, metadata !649), !dbg !1437
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1382, metadata !649), !dbg !1445
+	br label %569, !dbg !2074
+	%570 = phi i64 [ %552, %567 ], [ %552, %542 ], [ %512, %539 ]
+	%571 = phi i8 [ %551, %567 ], [ %551, %542 ], [ %511, %539 ]
+	%572 = phi i8 [ %549, %567 ], [ %549, %542 ], [ %510, %539 ]
+	%573 = phi i8 [ %548, %567 ], [ %548, %542 ], [ %509, %539 ]
+	%574 = phi i64 [ %546, %567 ], [ %546, %542 ], [ %507, %539 ]
+	%575 = phi i64 [ %545, %567 ], [ %545, %542 ], [ %506, %539 ]
+	%576 = phi i64 [ %543, %567 ], [ %543, %542 ], [ %504, %539 ]
+	%577 = phi i64 [ %568, %567 ], [ %544, %542 ], [ %540, %539 ]
+	%578 = phi i8 [ 0, %567 ], [ %547, %542 ], [ %535, %539 ]
+	call void @llvm.dbg.value(metadata i8 %578, i64 0, metadata !1382, metadata !649), !dbg !1445
+	call void @llvm.dbg.value(metadata i64 %577, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%579 = icmp ult i64 %577, %570, !dbg !2076
+	br i1 %579, label %580, label %582, !dbg !2080
+	%581 = getelementptr inbounds i8, i8* %0, i64 %577, !dbg !2082
+	store i8 %572, i8* %581, align 1, !dbg !2082, !tbaa !824
+	br label %582, !dbg !2082
+	%583 = add i64 %577, 1, !dbg !2084
+	call void @llvm.dbg.value(metadata i64 %583, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%584 = and i8 %571, 1, !dbg !2086
+	%585 = icmp eq i8 %584, 0, !dbg !2086
+	call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !1384, metadata !649), !dbg !1447
+	%586 = select i1 %585, i8 0, i8 %130, !dbg !2088
+	call void @llvm.dbg.value(metadata i8 %586, i64 0, metadata !1384, metadata !649), !dbg !1447
+	br label %587, !dbg !2089
+	%588 = phi i64 [ %124, %209 ], [ %576, %582 ]
+	%589 = phi i64 [ %125, %209 ], [ %583, %582 ]
+	%590 = phi i64 [ %126, %209 ], [ %575, %582 ]
+	%591 = phi i64 [ %156, %209 ], [ %574, %582 ]
+	%592 = phi i8 [ %128, %209 ], [ %578, %582 ]
+	%593 = phi i8 [ %129, %209 ], [ %573, %582 ]
+	%594 = phi i8 [ %130, %209 ], [ %586, %582 ]
+	%595 = phi i64 [ %131, %209 ], [ %570, %582 ]
+	%596 = add i64 %588, 1, !dbg !2090
+	call void @llvm.dbg.value(metadata i64 %596, i64 0, metadata !1374, metadata !649), !dbg !1512
+	br label %123, !dbg !2092, !llvm.loop !2093
+	%598 = phi i64 [ %124, %133 ], [ -1, %135 ]
+	%599 = icmp eq i64 %125, 0, !dbg !2096
+	%600 = and i1 %114, %599, !dbg !2098
+	%601 = xor i1 %600, true, !dbg !2098
+	%602 = or i1 %112, %601, !dbg !2098
+	br i1 %602, label %603, label %648, !dbg !2098
+	%604 = and i1 %114, %112, !dbg !2099
+	%605 = xor i1 %604, true, !dbg !2099
+	%606 = and i8 %129, 1, !dbg !2101
+	%607 = icmp eq i8 %606, 0, !dbg !2101
+	%608 = or i1 %607, %605, !dbg !2099
+	br i1 %608, label %618, label %609, !dbg !2099
+	%610 = and i8 %130, 1, !dbg !2103
+	%611 = icmp eq i8 %610, 0, !dbg !2103
+	br i1 %611, label %614, label %612, !dbg !2106
+	%613 = call fastcc i64 @quotearg_buffer_restyled(i8* %0, i64 %126, i8* %2, i64 %598, i32 5, i32 %5, i32* %6, i8* %97, i8* %98), !dbg !2107
+	br label %659, !dbg !2108
+	%615 = icmp eq i64 %131, 0, !dbg !2109
+	%616 = icmp ne i64 %126, 0, !dbg !2111
+	%617 = and i1 %616, %615, !dbg !2113
+	br i1 %617, label %27, label %618, !dbg !2113
+	%619 = icmp ne i8* %100, null, !dbg !2114
+	%620 = and i1 %619, %112, !dbg !2116
+	br i1 %620, label %621, label %638, !dbg !2116
+	call void @llvm.dbg.value(metadata i8* %100, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 %125, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%622 = load i8, i8* %100, align 1, !dbg !2117, !tbaa !824
+	%623 = icmp eq i8 %622, 0, !dbg !2121
+	br i1 %623, label %638, label %624, !dbg !2121
+	br label %625, !dbg !2123
+	%626 = phi i8 [ %635, %632 ], [ %622, %624 ]
+	%627 = phi i8* [ %634, %632 ], [ %100, %624 ]
+	%628 = phi i64 [ %633, %632 ], [ %125, %624 ]
+	%629 = icmp ult i64 %628, %131, !dbg !2123
+	br i1 %629, label %630, label %632, !dbg !2127
+	%631 = getelementptr inbounds i8, i8* %0, i64 %628, !dbg !2129
+	store i8 %626, i8* %631, align 1, !dbg !2129, !tbaa !824
+	br label %632, !dbg !2129
+	%633 = add i64 %628, 1, !dbg !2131
+	call void @llvm.dbg.value(metadata i64 %633, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%634 = getelementptr inbounds i8, i8* %627, i64 1, !dbg !2133
+	call void @llvm.dbg.value(metadata i8* %634, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i8* %634, i64 0, metadata !1377, metadata !649), !dbg !1439
+	call void @llvm.dbg.value(metadata i64 %633, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%635 = load i8, i8* %634, align 1, !dbg !2117, !tbaa !824
+	%636 = icmp eq i8 %635, 0, !dbg !2121
+	br i1 %636, label %637, label %625, !dbg !2121, !llvm.loop !2135
+	br label %638, !dbg !1437
+	%639 = phi i64 [ %125, %618 ], [ %125, %621 ], [ %633, %637 ]
+	call void @llvm.dbg.value(metadata i64 %639, i64 0, metadata !1375, metadata !649), !dbg !1437
+	%640 = icmp ult i64 %639, %131, !dbg !2138
+	br i1 %640, label %641, label %659, !dbg !2140
+	%642 = getelementptr inbounds i8, i8* %0, i64 %639, !dbg !2141
+	store i8 0, i8* %642, align 1, !dbg !2142, !tbaa !824
+	br label %659, !dbg !2141
+	br label %649, !dbg !1429
+	%645 = phi i32 [ %96, %148 ], [ %96, %161 ], [ 2, %211 ], [ 5, %225 ], [ 2, %253 ], [ 2, %255 ], [ 2, %273 ], [ 2, %276 ], [ %96, %503 ]
+	%646 = phi i64 [ %146, %148 ], [ %156, %161 ], [ %156, %211 ], [ %156, %225 ], [ %156, %253 ], [ %156, %255 ], [ %156, %273 ], [ %156, %276 ], [ %507, %503 ]
+	%647 = phi i64 [ %131, %148 ], [ %131, %161 ], [ %131, %211 ], [ %131, %225 ], [ %131, %253 ], [ %131, %255 ], [ %131, %273 ], [ %131, %276 ], [ %512, %503 ]
+	br label %649, !dbg !1429
+	br label %649, !dbg !1429
+	%650 = phi i32 [ 2, %367 ], [ %96, %643 ], [ %645, %644 ], [ %96, %648 ]
+	%651 = phi i64 [ %313, %367 ], [ %369, %643 ], [ %646, %644 ], [ %598, %648 ]
+	%652 = phi i64 [ %131, %367 ], [ %131, %643 ], [ %647, %644 ], [ %131, %648 ]
+	call void @llvm.dbg.value(metadata i64 %652, i64 0, metadata !1366, metadata !649), !dbg !1429
+	call void @llvm.dbg.value(metadata i64 %651, i64 0, metadata !1368, metadata !649), !dbg !1431
+	%653 = icmp ne i32 %650, 2, !dbg !2143
+	%654 = icmp eq i8 %104, 0, !dbg !2145
+	%655 = or i1 %653, %654, !dbg !2147
+	call void @llvm.dbg.value(metadata i32 4, i64 0, metadata !1369, metadata !649), !dbg !1432
+	%656 = select i1 %655, i32 %650, i32 4, !dbg !2147
+	call void @llvm.dbg.value(metadata i32 %656, i64 0, metadata !1369, metadata !649), !dbg !1432
+	%657 = and i32 %5, -3, !dbg !2148
+	%658 = call fastcc i64 @quotearg_buffer_restyled(i8* %0, i64 %652, i8* %2, i64 %651, i32 %656, i32 %657, i32* null, i8* %97, i8* %98), !dbg !2149
+	br label %659, !dbg !2150
+	%660 = phi i64 [ %658, %649 ], [ %613, %612 ], [ %639, %641 ], [ %639, %638 ]
+	ret i64 %660, !dbg !2151
+}
+declare i64 @__ctype_get_mb_cur_max() local_unnamed_addr #2
+define internal fastcc i8* @gettext_quote(i8*, i32) unnamed_addr #6 !dbg !2152 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2156, metadata !649), !dbg !2160
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2157, metadata !649), !dbg !2161
+	%3 = tail call i8* @dcgettext(i8* null, i8* %0, i32 5) #10, !dbg !2162
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !2158, metadata !649), !dbg !2163
+	%4 = icmp eq i8* %3, %0, !dbg !2164
+	br i1 %4, label %5, label %75, !dbg !2166
+	%6 = tail call i8* @locale_charset() #10, !dbg !2167
+	tail call void @llvm.dbg.value(metadata i8* %6, i64 0, metadata !2159, metadata !649), !dbg !2168
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2169, metadata !649), !dbg !2185
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2183, metadata !649), !dbg !2188
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2184, metadata !649), !dbg !2189
+	%7 = load i8, i8* %6, align 1, !tbaa !824
+	%8 = sext i8 %7 to i32
+	%9 = and i32 %8, -33, !dbg !2190
+	switch i32 %9, label %72 [
+		i32 85, label %10
+		i32 71, label %38
+	], !dbg !2190
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2193, metadata !649), !dbg !2207
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2205, metadata !649), !dbg !2211
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2206, metadata !649), !dbg !2212
+	%11 = getelementptr inbounds i8, i8* %6, i64 1
+	%12 = load i8, i8* %11, align 1, !tbaa !824
+	%13 = sext i8 %12 to i32
+	%14 = and i32 %13, -33, !dbg !2213
+	%15 = icmp eq i32 %14, 84, !dbg !2213
+	br i1 %15, label %16, label %72, !dbg !2213
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2216, metadata !649), !dbg !2229
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2227, metadata !649), !dbg !2233
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2228, metadata !649), !dbg !2234
+	%17 = getelementptr inbounds i8, i8* %6, i64 2
+	%18 = load i8, i8* %17, align 1, !tbaa !824
+	%19 = sext i8 %18 to i32
+	%20 = and i32 %19, -33, !dbg !2235
+	%21 = icmp eq i32 %20, 70, !dbg !2235
+	br i1 %21, label %22, label %72, !dbg !2235
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2238, metadata !649), !dbg !2250
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2248, metadata !649), !dbg !2254
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2249, metadata !649), !dbg !2255
+	%23 = getelementptr inbounds i8, i8* %6, i64 3
+	%24 = load i8, i8* %23, align 1, !tbaa !824
+	%25 = icmp eq i8 %24, 45, !dbg !2256
+	br i1 %25, label %26, label %72, !dbg !2259
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2261, metadata !649), !dbg !2272
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2270, metadata !649), !dbg !2276
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2271, metadata !649), !dbg !2277
+	%27 = getelementptr inbounds i8, i8* %6, i64 4
+	%28 = load i8, i8* %27, align 1, !tbaa !824
+	%29 = icmp eq i8 %28, 56, !dbg !2278
+	br i1 %29, label %30, label %72, !dbg !2281
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2283, metadata !649), !dbg !2293
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2291, metadata !649), !dbg !2297
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2292, metadata !649), !dbg !2298
+	%31 = getelementptr inbounds i8, i8* %6, i64 5
+	%32 = load i8, i8* %31, align 1, !tbaa !824
+	%33 = icmp eq i8 %32, 0, !dbg !2299
+	br i1 %33, label %34, label %72, !dbg !2302
+	%35 = load i8, i8* %0, align 1, !dbg !2304, !tbaa !824
+	%36 = icmp eq i8 %35, 96, !dbg !2305
+	%37 = select i1 %36, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.14.51, i64 0, i64 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.15.52, i64 0, i64 0), !dbg !2304
+	br label %75, !dbg !2306
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2193, metadata !649), !dbg !2307
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2205, metadata !649), !dbg !2311
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2206, metadata !649), !dbg !2312
+	%39 = getelementptr inbounds i8, i8* %6, i64 1
+	%40 = load i8, i8* %39, align 1, !tbaa !824
+	%41 = sext i8 %40 to i32
+	%42 = and i32 %41, -33, !dbg !2313
+	%43 = icmp eq i32 %42, 66, !dbg !2313
+	br i1 %43, label %44, label %72, !dbg !2313
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2216, metadata !649), !dbg !2314
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2227, metadata !649), !dbg !2316
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2228, metadata !649), !dbg !2317
+	%45 = getelementptr inbounds i8, i8* %6, i64 2
+	%46 = load i8, i8* %45, align 1, !tbaa !824
+	%47 = icmp eq i8 %46, 49, !dbg !2318
+	br i1 %47, label %48, label %72, !dbg !2320
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2238, metadata !649), !dbg !2322
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2248, metadata !649), !dbg !2324
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2249, metadata !649), !dbg !2325
+	%49 = getelementptr inbounds i8, i8* %6, i64 3
+	%50 = load i8, i8* %49, align 1, !tbaa !824
+	%51 = icmp eq i8 %50, 56, !dbg !2326
+	br i1 %51, label %52, label %72, !dbg !2327
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2261, metadata !649), !dbg !2328
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2270, metadata !649), !dbg !2330
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2271, metadata !649), !dbg !2331
+	%53 = getelementptr inbounds i8, i8* %6, i64 4
+	%54 = load i8, i8* %53, align 1, !tbaa !824
+	%55 = icmp eq i8 %54, 48, !dbg !2332
+	br i1 %55, label %56, label %72, !dbg !2333
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2283, metadata !649), !dbg !2334
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2291, metadata !649), !dbg !2336
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2292, metadata !649), !dbg !2337
+	%57 = getelementptr inbounds i8, i8* %6, i64 5
+	%58 = load i8, i8* %57, align 1, !tbaa !824
+	%59 = icmp eq i8 %58, 51, !dbg !2338
+	br i1 %59, label %60, label %72, !dbg !2339
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2340, metadata !649), !dbg !2349
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2347, metadata !649), !dbg !2353
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2348, metadata !649), !dbg !2354
+	%61 = getelementptr inbounds i8, i8* %6, i64 6
+	%62 = load i8, i8* %61, align 1, !tbaa !824
+	%63 = icmp eq i8 %62, 48, !dbg !2355
+	br i1 %63, label %64, label %72, !dbg !2358
+	tail call void @llvm.dbg.value(metadata i8* null, i64 0, metadata !2360, metadata !649), !dbg !2368
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2366, metadata !649), !dbg !2372
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !2367, metadata !649), !dbg !2373
+	%65 = getelementptr inbounds i8, i8* %6, i64 7
+	%66 = load i8, i8* %65, align 1, !tbaa !824
+	%67 = icmp eq i8 %66, 0, !dbg !2374
+	br i1 %67, label %68, label %72, !dbg !2377
+	%69 = load i8, i8* %0, align 1, !dbg !2378, !tbaa !824
+	%70 = icmp eq i8 %69, 96, !dbg !2379
+	%71 = select i1 %70, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17.53, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.18, i64 0, i64 0), !dbg !2378
+	br label %75, !dbg !2380
+	%73 = icmp eq i32 %1, 9, !dbg !2381
+	%74 = select i1 %73, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.10.50, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12.49, i64 0, i64 0), !dbg !2382
+	br label %75, !dbg !2383
+	%76 = phi i8* [ %37, %34 ], [ %71, %68 ], [ %74, %72 ], [ %3, %2 ]
+	ret i8* %76, !dbg !2384
+}
+declare i64 @strlen(i8* nocapture) local_unnamed_addr #4
+declare i32 @memcmp(i8* nocapture, i8* nocapture, i64) local_unnamed_addr #4
+declare i16** @__ctype_b_loc() local_unnamed_addr #7
+declare i32 @iswprint(i32) local_unnamed_addr #2
+declare i32 @mbsinit(%struct.__mbstate_t*) local_unnamed_addr #4
+define i8* @quotearg_alloc(i8*, i64, %struct.quoting_options*) local_unnamed_addr #6 !dbg !2385 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2389, metadata !649), !dbg !2392
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2390, metadata !649), !dbg !2393
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %2, i64 0, metadata !2391, metadata !649), !dbg !2394
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2395, metadata !649) #10, !dbg !2408
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2400, metadata !649) #10, !dbg !2410
+	tail call void @llvm.dbg.value(metadata i64* null, i64 0, metadata !2401, metadata !649) #10, !dbg !2411
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %2, i64 0, metadata !2402, metadata !649) #10, !dbg !2412
+	%4 = icmp ne %struct.quoting_options* %2, null, !dbg !2413
+	%5 = select i1 %4, %struct.quoting_options* %2, %struct.quoting_options* @default_quoting_options, !dbg !2413
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2403, metadata !649) #10, !dbg !2414
+	%6 = tail call i32* @__errno_location() #1, !dbg !2415
+	%7 = load i32, i32* %6, align 4, !dbg !2415, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %7, i64 0, metadata !2404, metadata !649) #10, !dbg !2416
+	%8 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 1, !dbg !2417
+	%9 = load i32, i32* %8, align 4, !dbg !2417, !tbaa !1297
+	%10 = or i32 %9, 1, !dbg !2418
+	tail call void @llvm.dbg.value(metadata i32 %10, i64 0, metadata !2405, metadata !649) #10, !dbg !2419
+	%11 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !2420
+	%12 = load i32, i32* %11, align 8, !dbg !2420, !tbaa !1235
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 2, i64 0, !dbg !2421
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 3, !dbg !2422
+	%15 = load i8*, i8** %14, align 8, !dbg !2422, !tbaa !1324
+	%16 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 4, !dbg !2423
+	%17 = load i8*, i8** %16, align 8, !dbg !2423, !tbaa !1327
+	%18 = tail call fastcc i64 @quotearg_buffer_restyled(i8* null, i64 0, i8* %0, i64 %1, i32 %12, i32 %10, i32* %13, i8* %15, i8* %17) #10, !dbg !2424
+	%19 = add i64 %18, 1, !dbg !2425
+	tail call void @llvm.dbg.value(metadata i64 %19, i64 0, metadata !2406, metadata !649) #10, !dbg !2426
+	tail call void @llvm.dbg.value(metadata i64 %19, i64 0, metadata !2427, metadata !649) #10, !dbg !2432
+	%20 = tail call noalias i8* @xmalloc(i64 %19) #10, !dbg !2434
+	tail call void @llvm.dbg.value(metadata i8* %20, i64 0, metadata !2407, metadata !649) #10, !dbg !2435
+	%21 = load i32, i32* %11, align 8, !dbg !2436, !tbaa !1235
+	%22 = load i8*, i8** %14, align 8, !dbg !2437, !tbaa !1324
+	%23 = load i8*, i8** %16, align 8, !dbg !2438, !tbaa !1327
+	%24 = tail call fastcc i64 @quotearg_buffer_restyled(i8* %20, i64 %19, i8* %0, i64 %1, i32 %21, i32 %10, i32* %13, i8* %22, i8* %23) #10, !dbg !2439
+	store i32 %7, i32* %6, align 4, !dbg !2440, !tbaa !751
+	ret i8* %20, !dbg !2441
+}
+define i8* @quotearg_alloc_mem(i8*, i64, i64*, %struct.quoting_options*) local_unnamed_addr #6 !dbg !2396 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2395, metadata !649), !dbg !2442
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2400, metadata !649), !dbg !2443
+	tail call void @llvm.dbg.value(metadata i64* %2, i64 0, metadata !2401, metadata !649), !dbg !2444
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2402, metadata !649), !dbg !2445
+	%5 = icmp ne %struct.quoting_options* %3, null, !dbg !2446
+	%6 = select i1 %5, %struct.quoting_options* %3, %struct.quoting_options* @default_quoting_options, !dbg !2446
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !2403, metadata !649), !dbg !2447
+	%7 = tail call i32* @__errno_location() #1, !dbg !2448
+	%8 = load i32, i32* %7, align 4, !dbg !2448, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %8, i64 0, metadata !2404, metadata !649), !dbg !2449
+	%9 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 1, !dbg !2450
+	%10 = load i32, i32* %9, align 4, !dbg !2450, !tbaa !1297
+	%11 = icmp ne i64* %2, null, !dbg !2451
+	%12 = xor i1 %11, true, !dbg !2451
+	%13 = zext i1 %12 to i32, !dbg !2451
+	%14 = or i32 %10, %13, !dbg !2452
+	tail call void @llvm.dbg.value(metadata i32 %14, i64 0, metadata !2405, metadata !649), !dbg !2453
+	%15 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 0, !dbg !2454
+	%16 = load i32, i32* %15, align 8, !dbg !2454, !tbaa !1235
+	%17 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 2, i64 0, !dbg !2455
+	%18 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 3, !dbg !2456
+	%19 = load i8*, i8** %18, align 8, !dbg !2456, !tbaa !1324
+	%20 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 4, !dbg !2457
+	%21 = load i8*, i8** %20, align 8, !dbg !2457, !tbaa !1327
+	%22 = tail call fastcc i64 @quotearg_buffer_restyled(i8* null, i64 0, i8* %0, i64 %1, i32 %16, i32 %14, i32* %17, i8* %19, i8* %21), !dbg !2458
+	%23 = add i64 %22, 1, !dbg !2459
+	tail call void @llvm.dbg.value(metadata i64 %23, i64 0, metadata !2406, metadata !649), !dbg !2460
+	tail call void @llvm.dbg.value(metadata i64 %23, i64 0, metadata !2427, metadata !649) #10, !dbg !2461
+	%24 = tail call noalias i8* @xmalloc(i64 %23) #10, !dbg !2463
+	tail call void @llvm.dbg.value(metadata i8* %24, i64 0, metadata !2407, metadata !649), !dbg !2464
+	%25 = load i32, i32* %15, align 8, !dbg !2465, !tbaa !1235
+	%26 = load i8*, i8** %18, align 8, !dbg !2466, !tbaa !1324
+	%27 = load i8*, i8** %20, align 8, !dbg !2467, !tbaa !1327
+	%28 = tail call fastcc i64 @quotearg_buffer_restyled(i8* %24, i64 %23, i8* %0, i64 %1, i32 %25, i32 %14, i32* %17, i8* %26, i8* %27), !dbg !2468
+	store i32 %8, i32* %7, align 4, !dbg !2469, !tbaa !751
+	br i1 %11, label %29, label %30, !dbg !2470
+	store i64 %22, i64* %2, align 8, !dbg !2471, !tbaa !2473
+	br label %30, !dbg !2474
+	ret i8* %24, !dbg !2475
+}
+define void @quotearg_free() local_unnamed_addr #6 !dbg !2476 {
+	%1 = load %struct.slotvec*, %struct.slotvec** @slotvec, align 8, !dbg !2480, !tbaa !657
+	tail call void @llvm.dbg.value(metadata %struct.slotvec* %1, i64 0, metadata !2478, metadata !649), !dbg !2481
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !2479, metadata !649), !dbg !2482
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !2479, metadata !649), !dbg !2482
+	%2 = load i32, i32* @nslots, align 4, !dbg !2483, !tbaa !751
+	%3 = icmp sgt i32 %2, 1, !dbg !2487
+	br i1 %3, label %4, label %14, !dbg !2488
+	br label %5, !dbg !2490
+	%6 = phi i64 [ %9, %5 ], [ 1, %4 ]
+	%7 = getelementptr inbounds %struct.slotvec, %struct.slotvec* %1, i64 %6, i32 1, !dbg !2490
+	%8 = load i8*, i8** %7, align 8, !dbg !2490, !tbaa !2491
+	tail call void @free(i8* %8) #10, !dbg !2493
+	%9 = add nuw i64 %6, 1, !dbg !2494
+	%10 = load i32, i32* @nslots, align 4, !dbg !2483, !tbaa !751
+	%11 = sext i32 %10 to i64, !dbg !2487
+	%12 = icmp slt i64 %9, %11, !dbg !2487
+	br i1 %12, label %5, label %13, !dbg !2488, !llvm.loop !2496
+	br label %14, !dbg !2499
+	%15 = getelementptr inbounds %struct.slotvec, %struct.slotvec* %1, i64 0, i32 1, !dbg !2499
+	%16 = load i8*, i8** %15, align 8, !dbg !2499, !tbaa !2491
+	%17 = icmp eq i8* %16, getelementptr inbounds ([256 x i8], [256 x i8]* @slot0, i64 0, i64 0), !dbg !2501
+	br i1 %17, label %19, label %18, !dbg !2502
+	tail call void @free(i8* %16) #10, !dbg !2503
+	store i64 256, i64* getelementptr inbounds (%struct.slotvec, %struct.slotvec* @slotvec0, i64 0, i32 0), align 8, !dbg !2505, !tbaa !2506
+	store i8* getelementptr inbounds ([256 x i8], [256 x i8]* @slot0, i64 0, i64 0), i8** getelementptr inbounds (%struct.slotvec, %struct.slotvec* @slotvec0, i64 0, i32 1), align 8, !dbg !2507, !tbaa !2491
+	br label %19, !dbg !2508
+	%20 = icmp eq %struct.slotvec* %1, @slotvec0, !dbg !2509
+	br i1 %20, label %23, label %21, !dbg !2511
+	%22 = bitcast %struct.slotvec* %1 to i8*, !dbg !2512
+	tail call void @free(i8* %22) #10, !dbg !2514
+	store %struct.slotvec* @slotvec0, %struct.slotvec** @slotvec, align 8, !dbg !2515, !tbaa !657
+	br label %23, !dbg !2516
+	store i32 1, i32* @nslots, align 4, !dbg !2517, !tbaa !751
+	ret void, !dbg !2518
+}
+define i8* @quotearg_n(i32, i8*) local_unnamed_addr #6 !dbg !2519 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2523, metadata !649), !dbg !2525
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2524, metadata !649), !dbg !2526
+	%3 = tail call fastcc i8* @quotearg_n_options(i32 %0, i8* %1, i64 -1, %struct.quoting_options* nonnull @default_quoting_options), !dbg !2527
+	ret i8* %3, !dbg !2528
+}
+define internal fastcc i8* @quotearg_n_options(i32, i8*, i64, %struct.quoting_options*) unnamed_addr #6 !dbg !2529 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2533, metadata !649), !dbg !2547
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2534, metadata !649), !dbg !2548
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !2535, metadata !649), !dbg !2549
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2536, metadata !649), !dbg !2550
+	%5 = tail call i32* @__errno_location() #1, !dbg !2551
+	%6 = load i32, i32* %5, align 4, !dbg !2551, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %6, i64 0, metadata !2537, metadata !649), !dbg !2552
+	%7 = load %struct.slotvec*, %struct.slotvec** @slotvec, align 8, !dbg !2553, !tbaa !657
+	tail call void @llvm.dbg.value(metadata %struct.slotvec* %7, i64 0, metadata !2538, metadata !649), !dbg !2554
+	%8 = icmp slt i32 %0, 0, !dbg !2555
+	br i1 %8, label %9, label %10, !dbg !2557
+	tail call void @abort() #14, !dbg !2558
+	unreachable, !dbg !2558
+	%11 = load i32, i32* @nslots, align 4, !dbg !2559, !tbaa !751
+	%12 = icmp sgt i32 %11, %0, !dbg !2560
+	br i1 %12, label %34, label %13, !dbg !2561
+	%14 = icmp eq %struct.slotvec* %7, @slotvec0, !dbg !2562
+	%15 = icmp ugt i32 %0, 2147483646, !dbg !2563
+	br i1 %15, label %16, label %17, !dbg !2565
+	tail call void @xalloc_die() #14, !dbg !2566
+	unreachable, !dbg !2566
+	%18 = bitcast %struct.slotvec* %7 to i8*, !dbg !2567
+	%19 = select i1 %14, i8* null, i8* %18, !dbg !2567
+	%20 = add nsw i32 %0, 1, !dbg !2569
+	%21 = sext i32 %20 to i64, !dbg !2570
+	%22 = shl nsw i64 %21, 4, !dbg !2571
+	%23 = tail call i8* @xrealloc(i8* %19, i64 %22) #10, !dbg !2572
+	%24 = bitcast i8* %23 to %struct.slotvec*, !dbg !2572
+	tail call void @llvm.dbg.value(metadata %struct.slotvec* %24, i64 0, metadata !2538, metadata !649), !dbg !2554
+	store i8* %23, i8** bitcast (%struct.slotvec** @slotvec to i8**), align 8, !dbg !2573, !tbaa !657
+	br i1 %14, label %25, label %26, !dbg !2574
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* %23, i8* bitcast (%struct.slotvec* @slotvec0 to i8*), i64 16, i32 8, i1 false), !dbg !2575, !tbaa.struct !2577
+	br label %26, !dbg !2578
+	%27 = load i32, i32* @nslots, align 4, !dbg !2579, !tbaa !751
+	%28 = sext i32 %27 to i64, !dbg !2580
+	%29 = getelementptr inbounds %struct.slotvec, %struct.slotvec* %24, i64 %28, !dbg !2580
+	%30 = bitcast %struct.slotvec* %29 to i8*, !dbg !2581
+	%31 = sub nsw i32 %20, %27, !dbg !2582
+	%32 = sext i32 %31 to i64, !dbg !2583
+	%33 = shl nsw i64 %32, 4, !dbg !2584
+	tail call void @llvm.memset.p0i8.i64(i8* %30, i8 0, i64 %33, i32 8, i1 false), !dbg !2581
+	store i32 %20, i32* @nslots, align 4, !dbg !2585, !tbaa !751
+	br label %34, !dbg !2586
+	%35 = phi %struct.slotvec* [ %24, %26 ], [ %7, %10 ]
+	tail call void @llvm.dbg.value(metadata %struct.slotvec* %35, i64 0, metadata !2538, metadata !649), !dbg !2554
+	%36 = sext i32 %0 to i64, !dbg !2587
+	%37 = getelementptr inbounds %struct.slotvec, %struct.slotvec* %35, i64 %36, i32 0, !dbg !2588
+	%38 = load i64, i64* %37, align 8, !dbg !2588, !tbaa !2506
+	tail call void @llvm.dbg.value(metadata i64 %38, i64 0, metadata !2542, metadata !649), !dbg !2589
+	%39 = getelementptr inbounds %struct.slotvec, %struct.slotvec* %35, i64 %36, i32 1, !dbg !2590
+	%40 = load i8*, i8** %39, align 8, !dbg !2590, !tbaa !2491
+	tail call void @llvm.dbg.value(metadata i8* %40, i64 0, metadata !2544, metadata !649), !dbg !2591
+	%41 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 1, !dbg !2592
+	%42 = load i32, i32* %41, align 4, !dbg !2592, !tbaa !1297
+	%43 = or i32 %42, 1, !dbg !2593
+	tail call void @llvm.dbg.value(metadata i32 %43, i64 0, metadata !2545, metadata !649), !dbg !2594
+	%44 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 0, !dbg !2595
+	%45 = load i32, i32* %44, align 8, !dbg !2595, !tbaa !1235
+	%46 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 2, i64 0, !dbg !2596
+	%47 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 3, !dbg !2597
+	%48 = load i8*, i8** %47, align 8, !dbg !2597, !tbaa !1324
+	%49 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 4, !dbg !2598
+	%50 = load i8*, i8** %49, align 8, !dbg !2598, !tbaa !1327
+	%51 = tail call fastcc i64 @quotearg_buffer_restyled(i8* %40, i64 %38, i8* %1, i64 %2, i32 %45, i32 %43, i32* %46, i8* %48, i8* %50), !dbg !2599
+	tail call void @llvm.dbg.value(metadata i64 %51, i64 0, metadata !2546, metadata !649), !dbg !2600
+	%52 = icmp ugt i64 %38, %51, !dbg !2601
+	br i1 %52, label %63, label %53, !dbg !2603
+	%54 = add i64 %51, 1, !dbg !2604
+	tail call void @llvm.dbg.value(metadata i64 %54, i64 0, metadata !2542, metadata !649), !dbg !2589
+	store i64 %54, i64* %37, align 8, !dbg !2606, !tbaa !2506
+	%55 = icmp eq i8* %40, getelementptr inbounds ([256 x i8], [256 x i8]* @slot0, i64 0, i64 0), !dbg !2607
+	br i1 %55, label %57, label %56, !dbg !2609
+	tail call void @free(i8* %40) #10, !dbg !2610
+	br label %57, !dbg !2610
+	tail call void @llvm.dbg.value(metadata i64 %54, i64 0, metadata !2427, metadata !649) #10, !dbg !2611
+	%58 = tail call noalias i8* @xmalloc(i64 %54) #10, !dbg !2613
+	tail call void @llvm.dbg.value(metadata i8* %58, i64 0, metadata !2544, metadata !649), !dbg !2591
+	store i8* %58, i8** %39, align 8, !dbg !2614, !tbaa !2491
+	%59 = load i32, i32* %44, align 8, !dbg !2615, !tbaa !1235
+	%60 = load i8*, i8** %47, align 8, !dbg !2616, !tbaa !1324
+	%61 = load i8*, i8** %49, align 8, !dbg !2617, !tbaa !1327
+	%62 = tail call fastcc i64 @quotearg_buffer_restyled(i8* %58, i64 %54, i8* %1, i64 %2, i32 %59, i32 %43, i32* %46, i8* %60, i8* %61), !dbg !2618
+	br label %63, !dbg !2619
+	%64 = phi i8* [ %58, %57 ], [ %40, %34 ]
+	tail call void @llvm.dbg.value(metadata i8* %64, i64 0, metadata !2544, metadata !649), !dbg !2591
+	store i32 %6, i32* %5, align 4, !dbg !2620, !tbaa !751
+	ret i8* %64, !dbg !2621
+}
+declare void @llvm.memcpy.p0i8.p0i8.i64(i8* nocapture writeonly, i8* nocapture readonly, i64, i32, i1) #8
+declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i32, i1) #8
+define i8* @quotearg_n_mem(i32, i8*, i64) local_unnamed_addr #6 !dbg !2622 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2626, metadata !649), !dbg !2629
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2627, metadata !649), !dbg !2630
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !2628, metadata !649), !dbg !2631
+	%4 = tail call fastcc i8* @quotearg_n_options(i32 %0, i8* %1, i64 %2, %struct.quoting_options* nonnull @default_quoting_options), !dbg !2632
+	ret i8* %4, !dbg !2633
+}
+define i8* @quotearg(i8*) local_unnamed_addr #6 !dbg !2634 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2638, metadata !649), !dbg !2639
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2523, metadata !649) #10, !dbg !2640
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2524, metadata !649) #10, !dbg !2642
+	%2 = tail call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 -1, %struct.quoting_options* nonnull @default_quoting_options) #10, !dbg !2643
+	ret i8* %2, !dbg !2644
+}
+define i8* @quotearg_mem(i8*, i64) local_unnamed_addr #6 !dbg !2645 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2649, metadata !649), !dbg !2651
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2650, metadata !649), !dbg !2652
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2626, metadata !649) #10, !dbg !2653
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2627, metadata !649) #10, !dbg !2655
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2628, metadata !649) #10, !dbg !2656
+	%3 = tail call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 %1, %struct.quoting_options* nonnull @default_quoting_options) #10, !dbg !2657
+	ret i8* %3, !dbg !2658
+}
+define i8* @quotearg_n_style(i32, i32, i8*) local_unnamed_addr #6 !dbg !2659 {
+	%4 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.declare(metadata [52 x i8]* %4, metadata !2667, metadata !2673), !dbg !2674
+	%5 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2663, metadata !649), !dbg !2676
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2664, metadata !649), !dbg !2677
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2665, metadata !649), !dbg !2678
+	%6 = bitcast %struct.quoting_options* %5 to i8*, !dbg !2679
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %6) #10, !dbg !2679
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2666, metadata !985), !dbg !2680
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2672, metadata !649) #10, !dbg !2681
+	%7 = getelementptr inbounds [52 x i8], [52 x i8]* %4, i64 0, i64 0, !dbg !2682
+	call void @llvm.lifetime.start(i64 52, i8* nonnull %7), !dbg !2682
+	tail call void @llvm.dbg.declare(metadata %struct.quoting_options* undef, metadata !2667, metadata !649) #10, !dbg !2674
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2674
+	call void @llvm.memset.p0i8.i64(i8* nonnull %7, i8 0, i64 52, i32 4, i1 false), !dbg !2674
+	%8 = icmp eq i32 %1, 10, !dbg !2684
+	br i1 %8, label %9, label %10, !dbg !2686
+	tail call void @abort() #14, !dbg !2687, !noalias !2688
+	unreachable, !dbg !2687
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2667, metadata !2683) #10, !dbg !2674
+	%11 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !2691
+	store i32 %1, i32* %11, align 8, !dbg !2691, !alias.scope !2688
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 1, !dbg !2691
+	%13 = bitcast i32* %12 to i8*, !dbg !2691
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* %13, i8* nonnull %7, i64 52, i32 4, i1 false) #10, !dbg !2691
+	call void @llvm.lifetime.end(i64 52, i8* nonnull %7), !dbg !2692
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2666, metadata !985), !dbg !2680
+	%14 = call fastcc i8* @quotearg_n_options(i32 %0, i8* %2, i64 -1, %struct.quoting_options* nonnull %5), !dbg !2693
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %6) #10, !dbg !2694
+	ret i8* %14, !dbg !2695
+}
+declare void @llvm.dbg.declare(metadata, metadata, metadata) #1
+define i8* @quotearg_n_style_mem(i32, i32, i8*, i64) local_unnamed_addr #6 !dbg !2696 {
+	%5 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.declare(metadata [52 x i8]* %5, metadata !2667, metadata !2673), !dbg !2705
+	%6 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2700, metadata !649), !dbg !2707
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2701, metadata !649), !dbg !2708
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2702, metadata !649), !dbg !2709
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !2703, metadata !649), !dbg !2710
+	%7 = bitcast %struct.quoting_options* %6 to i8*, !dbg !2711
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %7) #10, !dbg !2711
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !2704, metadata !985), !dbg !2712
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2672, metadata !649) #10, !dbg !2713
+	%8 = getelementptr inbounds [52 x i8], [52 x i8]* %5, i64 0, i64 0, !dbg !2714
+	call void @llvm.lifetime.start(i64 52, i8* nonnull %8), !dbg !2714
+	tail call void @llvm.dbg.declare(metadata %struct.quoting_options* undef, metadata !2667, metadata !649) #10, !dbg !2705
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2705
+	call void @llvm.memset.p0i8.i64(i8* nonnull %8, i8 0, i64 52, i32 4, i1 false), !dbg !2705
+	%9 = icmp eq i32 %1, 10, !dbg !2715
+	br i1 %9, label %10, label %11, !dbg !2716
+	tail call void @abort() #14, !dbg !2717, !noalias !2718
+	unreachable, !dbg !2717
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2667, metadata !2683) #10, !dbg !2705
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 0, !dbg !2721
+	store i32 %1, i32* %12, align 8, !dbg !2721, !alias.scope !2718
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 1, !dbg !2721
+	%14 = bitcast i32* %13 to i8*, !dbg !2721
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* %14, i8* nonnull %8, i64 52, i32 4, i1 false) #10, !dbg !2721
+	call void @llvm.lifetime.end(i64 52, i8* nonnull %8), !dbg !2722
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !2704, metadata !985), !dbg !2712
+	%15 = call fastcc i8* @quotearg_n_options(i32 %0, i8* %2, i64 %3, %struct.quoting_options* nonnull %6), !dbg !2723
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %7) #10, !dbg !2724
+	ret i8* %15, !dbg !2725
+}
+define i8* @quotearg_style(i32, i8*) local_unnamed_addr #6 !dbg !2726 {
+	%3 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.declare(metadata [52 x i8]* %3, metadata !2667, metadata !2673), !dbg !2732
+	%4 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2730, metadata !649), !dbg !2735
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2731, metadata !649), !dbg !2736
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2663, metadata !649) #10, !dbg !2737
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2664, metadata !649) #10, !dbg !2738
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2665, metadata !649) #10, !dbg !2739
+	%5 = bitcast %struct.quoting_options* %4 to i8*, !dbg !2740
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %5) #10, !dbg !2740
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2666, metadata !985) #10, !dbg !2741
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2672, metadata !649) #10, !dbg !2742
+	%6 = getelementptr inbounds [52 x i8], [52 x i8]* %3, i64 0, i64 0, !dbg !2743
+	call void @llvm.lifetime.start(i64 52, i8* nonnull %6), !dbg !2743
+	tail call void @llvm.dbg.declare(metadata %struct.quoting_options* undef, metadata !2667, metadata !649) #10, !dbg !2732
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2732
+	call void @llvm.memset.p0i8.i64(i8* nonnull %6, i8 0, i64 52, i32 4, i1 false), !dbg !2732
+	%7 = icmp eq i32 %0, 10, !dbg !2744
+	br i1 %7, label %8, label %9, !dbg !2745
+	tail call void @abort() #14, !dbg !2746, !noalias !2747
+	unreachable, !dbg !2746
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2732
+	%10 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 0, !dbg !2750
+	store i32 %0, i32* %10, align 8, !dbg !2750, !alias.scope !2747
+	%11 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 1, !dbg !2750
+	%12 = bitcast i32* %11 to i8*, !dbg !2750
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* %12, i8* nonnull %6, i64 52, i32 4, i1 false) #10, !dbg !2750
+	call void @llvm.lifetime.end(i64 52, i8* nonnull %6), !dbg !2751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2666, metadata !985) #10, !dbg !2741
+	%13 = call fastcc i8* @quotearg_n_options(i32 0, i8* %1, i64 -1, %struct.quoting_options* nonnull %4) #10, !dbg !2752
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %5) #10, !dbg !2753
+	ret i8* %13, !dbg !2754
+}
+define i8* @quotearg_style_mem(i32, i8*, i64) local_unnamed_addr #6 !dbg !2755 {
+	%4 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.declare(metadata [52 x i8]* %4, metadata !2667, metadata !2673), !dbg !2762
+	%5 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2759, metadata !649), !dbg !2765
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2760, metadata !649), !dbg !2766
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !2761, metadata !649), !dbg !2767
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2700, metadata !649) #10, !dbg !2768
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2701, metadata !649) #10, !dbg !2769
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2702, metadata !649) #10, !dbg !2770
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !2703, metadata !649) #10, !dbg !2771
+	%6 = bitcast %struct.quoting_options* %5 to i8*, !dbg !2772
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %6) #10, !dbg !2772
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2704, metadata !985) #10, !dbg !2773
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2672, metadata !649) #10, !dbg !2774
+	%7 = getelementptr inbounds [52 x i8], [52 x i8]* %4, i64 0, i64 0, !dbg !2775
+	call void @llvm.lifetime.start(i64 52, i8* nonnull %7), !dbg !2775
+	tail call void @llvm.dbg.declare(metadata %struct.quoting_options* undef, metadata !2667, metadata !649) #10, !dbg !2762
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2762
+	call void @llvm.memset.p0i8.i64(i8* nonnull %7, i8 0, i64 52, i32 4, i1 false), !dbg !2762
+	%8 = icmp eq i32 %0, 10, !dbg !2776
+	br i1 %8, label %9, label %10, !dbg !2777
+	tail call void @abort() #14, !dbg !2778, !noalias !2779
+	unreachable, !dbg !2778
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2762
+	%11 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !2782
+	store i32 %0, i32* %11, align 8, !dbg !2782, !alias.scope !2779
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 1, !dbg !2782
+	%13 = bitcast i32* %12 to i8*, !dbg !2782
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* %13, i8* nonnull %7, i64 52, i32 4, i1 false) #10, !dbg !2782
+	call void @llvm.lifetime.end(i64 52, i8* nonnull %7), !dbg !2783
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2704, metadata !985) #10, !dbg !2773
+	%14 = call fastcc i8* @quotearg_n_options(i32 0, i8* %1, i64 %2, %struct.quoting_options* nonnull %5) #10, !dbg !2784
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %6) #10, !dbg !2785
+	ret i8* %14, !dbg !2786
+}
+define i8* @quotearg_char_mem(i8*, i64, i8 signext) local_unnamed_addr #6 !dbg !2787 {
+	%4 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2791, metadata !649), !dbg !2795
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2792, metadata !649), !dbg !2796
+	tail call void @llvm.dbg.value(metadata i8 %2, i64 0, metadata !2793, metadata !649), !dbg !2797
+	%5 = bitcast %struct.quoting_options* %4 to i8*, !dbg !2798
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %5) #10, !dbg !2798
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %5, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false), !dbg !2799, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2794, metadata !985), !dbg !2801
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !1255, metadata !649), !dbg !2802
+	tail call void @llvm.dbg.value(metadata i8 %2, i64 0, metadata !1256, metadata !649), !dbg !2804
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !1257, metadata !649), !dbg !2805
+	tail call void @llvm.dbg.value(metadata i8 %2, i64 0, metadata !1258, metadata !649), !dbg !2806
+	%6 = lshr i8 %2, 5, !dbg !2807
+	%7 = zext i8 %6 to i64, !dbg !2807
+	%8 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 2, i64 %7, !dbg !2808
+	tail call void @llvm.dbg.value(metadata i32* %8, i64 0, metadata !1259, metadata !649), !dbg !2809
+	%9 = and i8 %2, 31, !dbg !2810
+	%10 = zext i8 %9 to i32, !dbg !2811
+	tail call void @llvm.dbg.value(metadata i32 %10, i64 0, metadata !1261, metadata !649), !dbg !2812
+	%11 = load i32, i32* %8, align 4, !dbg !2813, !tbaa !751
+	%12 = lshr i32 %11, %10, !dbg !2814
+	%13 = and i32 %12, 1, !dbg !2815
+	tail call void @llvm.dbg.value(metadata i32 %13, i64 0, metadata !1262, metadata !649), !dbg !2816
+	%14 = xor i32 %13, 1, !dbg !2817
+	%15 = shl i32 %14, %10, !dbg !2818
+	%16 = xor i32 %15, %11, !dbg !2819
+	store i32 %16, i32* %8, align 4, !dbg !2819, !tbaa !751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2794, metadata !985), !dbg !2801
+	%17 = call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 %1, %struct.quoting_options* nonnull %4), !dbg !2820
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %5) #10, !dbg !2821
+	ret i8* %17, !dbg !2822
+}
+define i8* @quotearg_char(i8*, i8 signext) local_unnamed_addr #6 !dbg !2823 {
+	%3 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2827, metadata !649), !dbg !2829
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !2828, metadata !649), !dbg !2830
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2791, metadata !649) #10, !dbg !2831
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !2792, metadata !649) #10, !dbg !2833
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !2793, metadata !649) #10, !dbg !2834
+	%4 = bitcast %struct.quoting_options* %3 to i8*, !dbg !2835
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %4) #10, !dbg !2835
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %4, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !2836, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2794, metadata !985) #10, !dbg !2837
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !1255, metadata !649) #10, !dbg !2838
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !1256, metadata !649) #10, !dbg !2840
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !1257, metadata !649) #10, !dbg !2841
+	tail call void @llvm.dbg.value(metadata i8 %1, i64 0, metadata !1258, metadata !649) #10, !dbg !2842
+	%5 = lshr i8 %1, 5, !dbg !2843
+	%6 = zext i8 %5 to i64, !dbg !2843
+	%7 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 2, i64 %6, !dbg !2844
+	tail call void @llvm.dbg.value(metadata i32* %7, i64 0, metadata !1259, metadata !649) #10, !dbg !2845
+	%8 = and i8 %1, 31, !dbg !2846
+	%9 = zext i8 %8 to i32, !dbg !2847
+	tail call void @llvm.dbg.value(metadata i32 %9, i64 0, metadata !1261, metadata !649) #10, !dbg !2848
+	%10 = load i32, i32* %7, align 4, !dbg !2849, !tbaa !751
+	%11 = lshr i32 %10, %9, !dbg !2850
+	%12 = and i32 %11, 1, !dbg !2851
+	tail call void @llvm.dbg.value(metadata i32 %12, i64 0, metadata !1262, metadata !649) #10, !dbg !2852
+	%13 = xor i32 %12, 1, !dbg !2853
+	%14 = shl i32 %13, %9, !dbg !2854
+	%15 = xor i32 %14, %10, !dbg !2855
+	store i32 %15, i32* %7, align 4, !dbg !2855, !tbaa !751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2794, metadata !985) #10, !dbg !2837
+	%16 = call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 -1, %struct.quoting_options* nonnull %3) #10, !dbg !2856
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %4) #10, !dbg !2857
+	ret i8* %16, !dbg !2858
+}
+define i8* @quotearg_colon(i8*) local_unnamed_addr #6 !dbg !2859 {
+	%2 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2861, metadata !649), !dbg !2862
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2827, metadata !649) #10, !dbg !2863
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !2828, metadata !649) #10, !dbg !2865
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2791, metadata !649) #10, !dbg !2866
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !2792, metadata !649) #10, !dbg !2868
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !2793, metadata !649) #10, !dbg !2869
+	%3 = bitcast %struct.quoting_options* %2 to i8*, !dbg !2870
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %3) #10, !dbg !2870
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %3, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !2871, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %2, i64 0, metadata !2794, metadata !985) #10, !dbg !2872
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %2, i64 0, metadata !1255, metadata !649) #10, !dbg !2873
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1256, metadata !649) #10, !dbg !2875
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !1257, metadata !649) #10, !dbg !2876
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1258, metadata !649) #10, !dbg !2877
+	%4 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %2, i64 0, i32 2, i64 1, !dbg !2878
+	tail call void @llvm.dbg.value(metadata i32* %4, i64 0, metadata !1259, metadata !649) #10, !dbg !2879
+	tail call void @llvm.dbg.value(metadata i32 26, i64 0, metadata !1261, metadata !649) #10, !dbg !2880
+	%5 = load i32, i32* %4, align 4, !dbg !2881, !tbaa !751
+	%6 = or i32 %5, 67108864, !dbg !2882
+	store i32 %6, i32* %4, align 4, !dbg !2882, !tbaa !751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %2, i64 0, metadata !2794, metadata !985) #10, !dbg !2872
+	%7 = call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 -1, %struct.quoting_options* nonnull %2) #10, !dbg !2883
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %3) #10, !dbg !2884
+	ret i8* %7, !dbg !2885
+}
+define i8* @quotearg_colon_mem(i8*, i64) local_unnamed_addr #6 !dbg !2886 {
+	%3 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2888, metadata !649), !dbg !2890
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2889, metadata !649), !dbg !2891
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2791, metadata !649) #10, !dbg !2892
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !2792, metadata !649) #10, !dbg !2894
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !2793, metadata !649) #10, !dbg !2895
+	%4 = bitcast %struct.quoting_options* %3 to i8*, !dbg !2896
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %4) #10, !dbg !2896
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %4, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !2897, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2794, metadata !985) #10, !dbg !2898
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !1255, metadata !649) #10, !dbg !2899
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1256, metadata !649) #10, !dbg !2901
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !1257, metadata !649) #10, !dbg !2902
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1258, metadata !649) #10, !dbg !2903
+	%5 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %3, i64 0, i32 2, i64 1, !dbg !2904
+	tail call void @llvm.dbg.value(metadata i32* %5, i64 0, metadata !1259, metadata !649) #10, !dbg !2905
+	tail call void @llvm.dbg.value(metadata i32 26, i64 0, metadata !1261, metadata !649) #10, !dbg !2906
+	%6 = load i32, i32* %5, align 4, !dbg !2907, !tbaa !751
+	%7 = or i32 %6, 67108864, !dbg !2908
+	store i32 %7, i32* %5, align 4, !dbg !2908, !tbaa !751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %3, i64 0, metadata !2794, metadata !985) #10, !dbg !2898
+	%8 = call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 %1, %struct.quoting_options* nonnull %3) #10, !dbg !2909
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %4) #10, !dbg !2910
+	ret i8* %8, !dbg !2911
+}
+define i8* @quotearg_n_style_colon(i32, i32, i8*) local_unnamed_addr #6 !dbg !2912 {
+	%4 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.declare(metadata [52 x i8]* %4, metadata !2667, metadata !2673), !dbg !2918
+	%5 = alloca %struct.quoting_options, align 8
+	%6 = alloca [52 x i8], align 4
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2914, metadata !649), !dbg !2920
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2915, metadata !649), !dbg !2921
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2916, metadata !649), !dbg !2922
+	%7 = bitcast %struct.quoting_options* %5 to i8*, !dbg !2923
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %7) #10, !dbg !2923
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2672, metadata !649) #10, !dbg !2924
+	%8 = getelementptr inbounds [52 x i8], [52 x i8]* %4, i64 0, i64 0, !dbg !2925
+	call void @llvm.lifetime.start(i64 52, i8* nonnull %8), !dbg !2925
+	tail call void @llvm.dbg.declare(metadata %struct.quoting_options* undef, metadata !2667, metadata !649) #10, !dbg !2918
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2667, metadata !2683) #10, !dbg !2918
+	call void @llvm.memset.p0i8.i64(i8* nonnull %8, i8 0, i64 52, i32 4, i1 false), !dbg !2918
+	%9 = icmp eq i32 %1, 10, !dbg !2926
+	br i1 %9, label %10, label %11, !dbg !2927
+	tail call void @abort() #14, !dbg !2928, !noalias !2929
+	unreachable, !dbg !2928
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !2667, metadata !2683) #10, !dbg !2918
+	%12 = getelementptr inbounds [52 x i8], [52 x i8]* %6, i64 0, i64 0, !dbg !2932
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %12, i8* nonnull %8, i64 52, i32 4, i1 false), !dbg !2932
+	call void @llvm.lifetime.end(i64 52, i8* nonnull %8), !dbg !2933
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !2934
+	store i32 %1, i32* %13, align 8, !dbg !2934
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 1, !dbg !2934
+	%15 = bitcast i32* %14 to i8*, !dbg !2934
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* %15, i8* nonnull %12, i64 52, i32 4, i1 false), !dbg !2934
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2917, metadata !985), !dbg !2935
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1255, metadata !649), !dbg !2936
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1256, metadata !649), !dbg !2938
+	tail call void @llvm.dbg.value(metadata i32 1, i64 0, metadata !1257, metadata !649), !dbg !2939
+	tail call void @llvm.dbg.value(metadata i8 58, i64 0, metadata !1258, metadata !649), !dbg !2940
+	%16 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 2, i64 1, !dbg !2941
+	tail call void @llvm.dbg.value(metadata i32* %16, i64 0, metadata !1259, metadata !649), !dbg !2942
+	tail call void @llvm.dbg.value(metadata i32 26, i64 0, metadata !1261, metadata !649), !dbg !2943
+	%17 = load i32, i32* %16, align 4, !dbg !2944, !tbaa !751
+	%18 = or i32 %17, 67108864, !dbg !2945
+	store i32 %18, i32* %16, align 4, !dbg !2945, !tbaa !751
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2917, metadata !985), !dbg !2935
+	%19 = call fastcc i8* @quotearg_n_options(i32 %0, i8* %2, i64 -1, %struct.quoting_options* nonnull %5), !dbg !2946
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %7) #10, !dbg !2947
+	ret i8* %19, !dbg !2948
+}
+define i8* @quotearg_n_custom(i32, i8*, i8*, i8*) local_unnamed_addr #6 !dbg !2949 {
+	%5 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2953, metadata !649), !dbg !2957
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2954, metadata !649), !dbg !2958
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2955, metadata !649), !dbg !2959
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !2956, metadata !649), !dbg !2960
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2961, metadata !649) #10, !dbg !2971
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2966, metadata !649) #10, !dbg !2973
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2967, metadata !649) #10, !dbg !2974
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !2968, metadata !649) #10, !dbg !2975
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !2969, metadata !649) #10, !dbg !2976
+	%6 = bitcast %struct.quoting_options* %5 to i8*, !dbg !2977
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %6) #10, !dbg !2977
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %6, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !2978, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2970, metadata !985) #10, !dbg !2979
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1305, metadata !649) #10, !dbg !2980
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1306, metadata !649) #10, !dbg !2982
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !1307, metadata !649) #10, !dbg !2983
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1305, metadata !649) #10, !dbg !2980
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1305, metadata !649) #10, !dbg !2980
+	%7 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !2984
+	store i32 10, i32* %7, align 8, !dbg !2985, !tbaa !1235
+	%8 = icmp ne i8* %1, null, !dbg !2986
+	%9 = icmp ne i8* %2, null, !dbg !2987
+	%10 = and i1 %8, %9, !dbg !2988
+	br i1 %10, label %12, label %11, !dbg !2988
+	tail call void @abort() #14, !dbg !2989
+	unreachable, !dbg !2989
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 3, !dbg !2990
+	store i8* %1, i8** %13, align 8, !dbg !2991, !tbaa !1324
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 4, !dbg !2992
+	store i8* %2, i8** %14, align 8, !dbg !2993, !tbaa !1327
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2970, metadata !985) #10, !dbg !2979
+	%15 = call fastcc i8* @quotearg_n_options(i32 %0, i8* %3, i64 -1, %struct.quoting_options* nonnull %5) #10, !dbg !2994
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %6) #10, !dbg !2995
+	ret i8* %15, !dbg !2996
+}
+define i8* @quotearg_n_custom_mem(i32, i8*, i8*, i8*, i64) local_unnamed_addr #6 !dbg !2962 {
+	%6 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !2961, metadata !649), !dbg !2997
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2966, metadata !649), !dbg !2998
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2967, metadata !649), !dbg !2999
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !2968, metadata !649), !dbg !3000
+	tail call void @llvm.dbg.value(metadata i64 %4, i64 0, metadata !2969, metadata !649), !dbg !3001
+	%7 = bitcast %struct.quoting_options* %6 to i8*, !dbg !3002
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %7) #10, !dbg !3002
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %7, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false), !dbg !3003, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !2970, metadata !985), !dbg !3004
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !1305, metadata !649) #10, !dbg !3005
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1306, metadata !649) #10, !dbg !3007
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !1307, metadata !649) #10, !dbg !3008
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1305, metadata !649) #10, !dbg !3005
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !1305, metadata !649) #10, !dbg !3005
+	%8 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 0, !dbg !3009
+	store i32 10, i32* %8, align 8, !dbg !3010, !tbaa !1235
+	%9 = icmp ne i8* %1, null, !dbg !3011
+	%10 = icmp ne i8* %2, null, !dbg !3012
+	%11 = and i1 %9, %10, !dbg !3013
+	br i1 %11, label %13, label %12, !dbg !3013
+	tail call void @abort() #14, !dbg !3014
+	unreachable, !dbg !3014
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 3, !dbg !3015
+	store i8* %1, i8** %14, align 8, !dbg !3016, !tbaa !1324
+	%15 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %6, i64 0, i32 4, !dbg !3017
+	store i8* %2, i8** %15, align 8, !dbg !3018, !tbaa !1327
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %6, i64 0, metadata !2970, metadata !985), !dbg !3004
+	%16 = call fastcc i8* @quotearg_n_options(i32 %0, i8* %3, i64 %4, %struct.quoting_options* nonnull %6), !dbg !3019
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %7) #10, !dbg !3020
+	ret i8* %16, !dbg !3021
+}
+define i8* @quotearg_custom(i8*, i8*, i8*) local_unnamed_addr #6 !dbg !3022 {
+	%4 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3026, metadata !649), !dbg !3029
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3027, metadata !649), !dbg !3030
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3028, metadata !649), !dbg !3031
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2953, metadata !649) #10, !dbg !3032
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2954, metadata !649) #10, !dbg !3034
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2955, metadata !649) #10, !dbg !3035
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2956, metadata !649) #10, !dbg !3036
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2961, metadata !649) #10, !dbg !3037
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2966, metadata !649) #10, !dbg !3039
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2967, metadata !649) #10, !dbg !3040
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2968, metadata !649) #10, !dbg !3041
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !2969, metadata !649) #10, !dbg !3042
+	%5 = bitcast %struct.quoting_options* %4 to i8*, !dbg !3043
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %5) #10, !dbg !3043
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %5, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !3044, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2970, metadata !985) #10, !dbg !3045
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !1305, metadata !649) #10, !dbg !3046
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1306, metadata !649) #10, !dbg !3048
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1307, metadata !649) #10, !dbg !3049
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1305, metadata !649) #10, !dbg !3046
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !1305, metadata !649) #10, !dbg !3046
+	%6 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 0, !dbg !3050
+	store i32 10, i32* %6, align 8, !dbg !3051, !tbaa !1235
+	%7 = icmp ne i8* %0, null, !dbg !3052
+	%8 = icmp ne i8* %1, null, !dbg !3053
+	%9 = and i1 %7, %8, !dbg !3054
+	br i1 %9, label %11, label %10, !dbg !3054
+	tail call void @abort() #14, !dbg !3055
+	unreachable, !dbg !3055
+	%12 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 3, !dbg !3056
+	store i8* %0, i8** %12, align 8, !dbg !3057, !tbaa !1324
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %4, i64 0, i32 4, !dbg !3058
+	store i8* %1, i8** %13, align 8, !dbg !3059, !tbaa !1327
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %4, i64 0, metadata !2970, metadata !985) #10, !dbg !3045
+	%14 = call fastcc i8* @quotearg_n_options(i32 0, i8* %2, i64 -1, %struct.quoting_options* nonnull %4) #10, !dbg !3060
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %5) #10, !dbg !3061
+	ret i8* %14, !dbg !3062
+}
+define i8* @quotearg_custom_mem(i8*, i8*, i8*, i64) local_unnamed_addr #6 !dbg !3063 {
+	%5 = alloca %struct.quoting_options, align 8
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3067, metadata !649), !dbg !3071
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3068, metadata !649), !dbg !3072
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3069, metadata !649), !dbg !3073
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !3070, metadata !649), !dbg !3074
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !2961, metadata !649) #10, !dbg !3075
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !2966, metadata !649) #10, !dbg !3077
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !2967, metadata !649) #10, !dbg !3078
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !2968, metadata !649) #10, !dbg !3079
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !2969, metadata !649) #10, !dbg !3080
+	%6 = bitcast %struct.quoting_options* %5 to i8*, !dbg !3081
+	call void @llvm.lifetime.start(i64 56, i8* nonnull %6) #10, !dbg !3081
+	call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %6, i8* bitcast (%struct.quoting_options* @default_quoting_options to i8*), i64 56, i32 8, i1 false) #10, !dbg !3082, !tbaa.struct !2800
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2970, metadata !985) #10, !dbg !3083
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1305, metadata !649) #10, !dbg !3084
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !1306, metadata !649) #10, !dbg !3086
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !1307, metadata !649) #10, !dbg !3087
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* @default_quoting_options, i64 0, metadata !1305, metadata !649) #10, !dbg !3084
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !1305, metadata !649) #10, !dbg !3084
+	%7 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 0, !dbg !3088
+	store i32 10, i32* %7, align 8, !dbg !3089, !tbaa !1235
+	%8 = icmp ne i8* %0, null, !dbg !3090
+	%9 = icmp ne i8* %1, null, !dbg !3091
+	%10 = and i1 %8, %9, !dbg !3092
+	br i1 %10, label %12, label %11, !dbg !3092
+	tail call void @abort() #14, !dbg !3093
+	unreachable, !dbg !3093
+	%13 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 3, !dbg !3094
+	store i8* %0, i8** %13, align 8, !dbg !3095, !tbaa !1324
+	%14 = getelementptr inbounds %struct.quoting_options, %struct.quoting_options* %5, i64 0, i32 4, !dbg !3096
+	store i8* %1, i8** %14, align 8, !dbg !3097, !tbaa !1327
+	tail call void @llvm.dbg.value(metadata %struct.quoting_options* %5, i64 0, metadata !2970, metadata !985) #10, !dbg !3083
+	%15 = call fastcc i8* @quotearg_n_options(i32 0, i8* %2, i64 %3, %struct.quoting_options* nonnull %5) #10, !dbg !3098
+	call void @llvm.lifetime.end(i64 56, i8* nonnull %6) #10, !dbg !3099
+	ret i8* %15, !dbg !3100
+}
+define i8* @quote_n_mem(i32, i8*, i64) local_unnamed_addr #6 !dbg !3101 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !3105, metadata !649), !dbg !3108
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3106, metadata !649), !dbg !3109
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !3107, metadata !649), !dbg !3110
+	%4 = tail call fastcc i8* @quotearg_n_options(i32 %0, i8* %1, i64 %2, %struct.quoting_options* nonnull @quote_quoting_options), !dbg !3111
+	ret i8* %4, !dbg !3112
+}
+define i8* @quote_mem(i8*, i64) local_unnamed_addr #6 !dbg !3113 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3117, metadata !649), !dbg !3119
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3118, metadata !649), !dbg !3120
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !3105, metadata !649) #10, !dbg !3121
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3106, metadata !649) #10, !dbg !3123
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3107, metadata !649) #10, !dbg !3124
+	%3 = tail call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 %1, %struct.quoting_options* nonnull @quote_quoting_options) #10, !dbg !3125
+	ret i8* %3, !dbg !3126
+}
+define i8* @quote_n(i32, i8*) local_unnamed_addr #6 !dbg !3127 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !3131, metadata !649), !dbg !3133
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3132, metadata !649), !dbg !3134
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !3105, metadata !649) #10, !dbg !3135
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3106, metadata !649) #10, !dbg !3137
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !3107, metadata !649) #10, !dbg !3138
+	%3 = tail call fastcc i8* @quotearg_n_options(i32 %0, i8* %1, i64 -1, %struct.quoting_options* nonnull @quote_quoting_options) #10, !dbg !3139
+	ret i8* %3, !dbg !3140
+}
+define i8* @quote(i8*) local_unnamed_addr #6 !dbg !3141 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3145, metadata !649), !dbg !3146
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !3131, metadata !649) #10, !dbg !3147
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3132, metadata !649) #10, !dbg !3149
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !3105, metadata !649) #10, !dbg !3150
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3106, metadata !649) #10, !dbg !3152
+	tail call void @llvm.dbg.value(metadata i64 -1, i64 0, metadata !3107, metadata !649) #10, !dbg !3153
+	%2 = tail call fastcc i8* @quotearg_n_options(i32 0, i8* %0, i64 -1, %struct.quoting_options* nonnull @quote_quoting_options) #10, !dbg !3154
+	ret i8* %2, !dbg !3155
+}
+define void @version_etc_arn(%struct._IO_FILE*, i8*, i8*, i8*, i8** readonly, i64) local_unnamed_addr #6 !dbg !3156 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3215, metadata !649), !dbg !3221
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3216, metadata !649), !dbg !3222
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3217, metadata !649), !dbg !3223
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3218, metadata !649), !dbg !3224
+	tail call void @llvm.dbg.value(metadata i8** %4, i64 0, metadata !3219, metadata !649), !dbg !3225
+	tail call void @llvm.dbg.value(metadata i64 %5, i64 0, metadata !3220, metadata !649), !dbg !3226
+	%7 = icmp eq i8* %1, null, !dbg !3227
+	br i1 %7, label %10, label %8, !dbg !3229
+	%9 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.58, i64 0, i64 0), i8* nonnull %1, i8* %2, i8* %3) #10, !dbg !3230
+	br label %12, !dbg !3230
+	%11 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1.59, i64 0, i64 0), i8* %2, i8* %3) #10, !dbg !3231
+	br label %12
+	%13 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2.60, i64 0, i64 0), i32 5) #10, !dbg !3232
+	%14 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @version_etc_copyright, i64 0, i64 0), i8* %13, i32 2017) #10, !dbg !3233
+	%15 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([203 x i8], [203 x i8]* @.str.3.61, i64 0, i64 0), i32 5) #10, !dbg !3235
+	%16 = tail call i32 @fputs_unlocked(i8* %15, %struct._IO_FILE* %0) #10, !dbg !3236
+	switch i64 %5, label %126 [
+		i64 0, label %17
+		i64 1, label %18
+		i64 2, label %22
+		i64 3, label %28
+		i64 4, label %36
+		i64 5, label %46
+		i64 6, label %58
+		i64 7, label %72
+		i64 8, label %88
+		i64 9, label %106
+	], !dbg !3237
+	tail call void @abort() #14, !dbg !3238
+	unreachable, !dbg !3238
+	%19 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.4.62, i64 0, i64 0), i32 5) #10, !dbg !3240
+	%20 = load i8*, i8** %4, align 8, !dbg !3240, !tbaa !657
+	%21 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %19, i8* %20) #10, !dbg !3241
+	br label %146, !dbg !3243
+	%23 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.5.63, i64 0, i64 0), i32 5) #10, !dbg !3244
+	%24 = load i8*, i8** %4, align 8, !dbg !3244, !tbaa !657
+	%25 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3244
+	%26 = load i8*, i8** %25, align 8, !dbg !3244, !tbaa !657
+	%27 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %23, i8* %24, i8* %26) #10, !dbg !3245
+	br label %146, !dbg !3246
+	%29 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.6.64, i64 0, i64 0), i32 5) #10, !dbg !3247
+	%30 = load i8*, i8** %4, align 8, !dbg !3247, !tbaa !657
+	%31 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3247
+	%32 = load i8*, i8** %31, align 8, !dbg !3247, !tbaa !657
+	%33 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3247
+	%34 = load i8*, i8** %33, align 8, !dbg !3247, !tbaa !657
+	%35 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %29, i8* %30, i8* %32, i8* %34) #10, !dbg !3248
+	br label %146, !dbg !3249
+	%37 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.7.65, i64 0, i64 0), i32 5) #10, !dbg !3250
+	%38 = load i8*, i8** %4, align 8, !dbg !3250, !tbaa !657
+	%39 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3250
+	%40 = load i8*, i8** %39, align 8, !dbg !3250, !tbaa !657
+	%41 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3250
+	%42 = load i8*, i8** %41, align 8, !dbg !3250, !tbaa !657
+	%43 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3250
+	%44 = load i8*, i8** %43, align 8, !dbg !3250, !tbaa !657
+	%45 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %37, i8* %38, i8* %40, i8* %42, i8* %44) #10, !dbg !3251
+	br label %146, !dbg !3252
+	%47 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.8.66, i64 0, i64 0), i32 5) #10, !dbg !3253
+	%48 = load i8*, i8** %4, align 8, !dbg !3253, !tbaa !657
+	%49 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3253
+	%50 = load i8*, i8** %49, align 8, !dbg !3253, !tbaa !657
+	%51 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3253
+	%52 = load i8*, i8** %51, align 8, !dbg !3253, !tbaa !657
+	%53 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3253
+	%54 = load i8*, i8** %53, align 8, !dbg !3253, !tbaa !657
+	%55 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3253
+	%56 = load i8*, i8** %55, align 8, !dbg !3253, !tbaa !657
+	%57 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %47, i8* %48, i8* %50, i8* %52, i8* %54, i8* %56) #10, !dbg !3254
+	br label %146, !dbg !3255
+	%59 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.9.67, i64 0, i64 0), i32 5) #10, !dbg !3256
+	%60 = load i8*, i8** %4, align 8, !dbg !3256, !tbaa !657
+	%61 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3256
+	%62 = load i8*, i8** %61, align 8, !dbg !3256, !tbaa !657
+	%63 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3256
+	%64 = load i8*, i8** %63, align 8, !dbg !3256, !tbaa !657
+	%65 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3256
+	%66 = load i8*, i8** %65, align 8, !dbg !3256, !tbaa !657
+	%67 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3256
+	%68 = load i8*, i8** %67, align 8, !dbg !3256, !tbaa !657
+	%69 = getelementptr inbounds i8*, i8** %4, i64 5, !dbg !3256
+	%70 = load i8*, i8** %69, align 8, !dbg !3256, !tbaa !657
+	%71 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %59, i8* %60, i8* %62, i8* %64, i8* %66, i8* %68, i8* %70) #10, !dbg !3257
+	br label %146, !dbg !3258
+	%73 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.10.68, i64 0, i64 0), i32 5) #10, !dbg !3259
+	%74 = load i8*, i8** %4, align 8, !dbg !3259, !tbaa !657
+	%75 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3259
+	%76 = load i8*, i8** %75, align 8, !dbg !3259, !tbaa !657
+	%77 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3259
+	%78 = load i8*, i8** %77, align 8, !dbg !3259, !tbaa !657
+	%79 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3259
+	%80 = load i8*, i8** %79, align 8, !dbg !3259, !tbaa !657
+	%81 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3259
+	%82 = load i8*, i8** %81, align 8, !dbg !3259, !tbaa !657
+	%83 = getelementptr inbounds i8*, i8** %4, i64 5, !dbg !3259
+	%84 = load i8*, i8** %83, align 8, !dbg !3259, !tbaa !657
+	%85 = getelementptr inbounds i8*, i8** %4, i64 6, !dbg !3259
+	%86 = load i8*, i8** %85, align 8, !dbg !3259, !tbaa !657
+	%87 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %73, i8* %74, i8* %76, i8* %78, i8* %80, i8* %82, i8* %84, i8* %86) #10, !dbg !3260
+	br label %146, !dbg !3261
+	%89 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.11.69, i64 0, i64 0), i32 5) #10, !dbg !3262
+	%90 = load i8*, i8** %4, align 8, !dbg !3262, !tbaa !657
+	%91 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3262
+	%92 = load i8*, i8** %91, align 8, !dbg !3262, !tbaa !657
+	%93 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3262
+	%94 = load i8*, i8** %93, align 8, !dbg !3262, !tbaa !657
+	%95 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3262
+	%96 = load i8*, i8** %95, align 8, !dbg !3262, !tbaa !657
+	%97 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3262
+	%98 = load i8*, i8** %97, align 8, !dbg !3262, !tbaa !657
+	%99 = getelementptr inbounds i8*, i8** %4, i64 5, !dbg !3262
+	%100 = load i8*, i8** %99, align 8, !dbg !3262, !tbaa !657
+	%101 = getelementptr inbounds i8*, i8** %4, i64 6, !dbg !3262
+	%102 = load i8*, i8** %101, align 8, !dbg !3262, !tbaa !657
+	%103 = getelementptr inbounds i8*, i8** %4, i64 7, !dbg !3262
+	%104 = load i8*, i8** %103, align 8, !dbg !3262, !tbaa !657
+	%105 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %89, i8* %90, i8* %92, i8* %94, i8* %96, i8* %98, i8* %100, i8* %102, i8* %104) #10, !dbg !3263
+	br label %146, !dbg !3264
+	%107 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.12.70, i64 0, i64 0), i32 5) #10, !dbg !3265
+	%108 = load i8*, i8** %4, align 8, !dbg !3265, !tbaa !657
+	%109 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3265
+	%110 = load i8*, i8** %109, align 8, !dbg !3265, !tbaa !657
+	%111 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3265
+	%112 = load i8*, i8** %111, align 8, !dbg !3265, !tbaa !657
+	%113 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3265
+	%114 = load i8*, i8** %113, align 8, !dbg !3265, !tbaa !657
+	%115 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3265
+	%116 = load i8*, i8** %115, align 8, !dbg !3265, !tbaa !657
+	%117 = getelementptr inbounds i8*, i8** %4, i64 5, !dbg !3265
+	%118 = load i8*, i8** %117, align 8, !dbg !3265, !tbaa !657
+	%119 = getelementptr inbounds i8*, i8** %4, i64 6, !dbg !3265
+	%120 = load i8*, i8** %119, align 8, !dbg !3265, !tbaa !657
+	%121 = getelementptr inbounds i8*, i8** %4, i64 7, !dbg !3265
+	%122 = load i8*, i8** %121, align 8, !dbg !3265, !tbaa !657
+	%123 = getelementptr inbounds i8*, i8** %4, i64 8, !dbg !3265
+	%124 = load i8*, i8** %123, align 8, !dbg !3265, !tbaa !657
+	%125 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %107, i8* %108, i8* %110, i8* %112, i8* %114, i8* %116, i8* %118, i8* %120, i8* %122, i8* %124) #10, !dbg !3266
+	br label %146, !dbg !3267
+	%127 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([60 x i8], [60 x i8]* @.str.13.71, i64 0, i64 0), i32 5) #10, !dbg !3268
+	%128 = load i8*, i8** %4, align 8, !dbg !3268, !tbaa !657
+	%129 = getelementptr inbounds i8*, i8** %4, i64 1, !dbg !3268
+	%130 = load i8*, i8** %129, align 8, !dbg !3268, !tbaa !657
+	%131 = getelementptr inbounds i8*, i8** %4, i64 2, !dbg !3268
+	%132 = load i8*, i8** %131, align 8, !dbg !3268, !tbaa !657
+	%133 = getelementptr inbounds i8*, i8** %4, i64 3, !dbg !3268
+	%134 = load i8*, i8** %133, align 8, !dbg !3268, !tbaa !657
+	%135 = getelementptr inbounds i8*, i8** %4, i64 4, !dbg !3268
+	%136 = load i8*, i8** %135, align 8, !dbg !3268, !tbaa !657
+	%137 = getelementptr inbounds i8*, i8** %4, i64 5, !dbg !3268
+	%138 = load i8*, i8** %137, align 8, !dbg !3268, !tbaa !657
+	%139 = getelementptr inbounds i8*, i8** %4, i64 6, !dbg !3268
+	%140 = load i8*, i8** %139, align 8, !dbg !3268, !tbaa !657
+	%141 = getelementptr inbounds i8*, i8** %4, i64 7, !dbg !3268
+	%142 = load i8*, i8** %141, align 8, !dbg !3268, !tbaa !657
+	%143 = getelementptr inbounds i8*, i8** %4, i64 8, !dbg !3268
+	%144 = load i8*, i8** %143, align 8, !dbg !3268, !tbaa !657
+	%145 = tail call i32 (%struct._IO_FILE*, i32, i8*, ...) @__fprintf_chk(%struct._IO_FILE* %0, i32 1, i8* %127, i8* %128, i8* %130, i8* %132, i8* %134, i8* %136, i8* %138, i8* %140, i8* %142, i8* %144) #10, !dbg !3269
+	br label %146, !dbg !3270
+	ret void, !dbg !3271
+}
+define void @version_etc_ar(%struct._IO_FILE*, i8*, i8*, i8*, i8** readonly) local_unnamed_addr #6 !dbg !3272 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3276, metadata !649), !dbg !3282
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3277, metadata !649), !dbg !3283
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3278, metadata !649), !dbg !3284
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3279, metadata !649), !dbg !3285
+	tail call void @llvm.dbg.value(metadata i8** %4, i64 0, metadata !3280, metadata !649), !dbg !3286
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !3281, metadata !649), !dbg !3287
+	br label %6, !dbg !3288
+	%7 = phi i64 [ 0, %5 ], [ %11, %6 ]
+	tail call void @llvm.dbg.value(metadata i64 %7, i64 0, metadata !3281, metadata !649), !dbg !3287
+	%8 = getelementptr inbounds i8*, i8** %4, i64 %7, !dbg !3290
+	%9 = load i8*, i8** %8, align 8, !dbg !3290, !tbaa !657
+	%10 = icmp eq i8* %9, null, !dbg !3293
+	%11 = add i64 %7, 1, !dbg !3295
+	tail call void @llvm.dbg.value(metadata i64 %11, i64 0, metadata !3281, metadata !649), !dbg !3287
+	br i1 %10, label %12, label %6, !dbg !3293, !llvm.loop !3297
+	tail call void @version_etc_arn(%struct._IO_FILE* %0, i8* %1, i8* %2, i8* %3, i8** nonnull %4, i64 %7), !dbg !3300
+	ret void, !dbg !3301
+}
+define void @version_etc_va(%struct._IO_FILE*, i8*, i8*, i8*, %struct.__va_list_tag* nocapture) local_unnamed_addr #6 !dbg !3302 {
+	%6 = alloca [10 x i8*], align 16
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3313, metadata !649), !dbg !3321
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3314, metadata !649), !dbg !3322
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3315, metadata !649), !dbg !3323
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3316, metadata !649), !dbg !3324
+	tail call void @llvm.dbg.value(metadata %struct.__va_list_tag* %4, i64 0, metadata !3317, metadata !649), !dbg !3325
+	%7 = bitcast [10 x i8*]* %6 to i8*, !dbg !3326
+	call void @llvm.lifetime.start(i64 80, i8* nonnull %7) #10, !dbg !3326
+	tail call void @llvm.dbg.declare(metadata [10 x i8*]* %6, metadata !3319, metadata !649), !dbg !3327
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%8 = getelementptr inbounds %struct.__va_list_tag, %struct.__va_list_tag* %4, i64 0, i32 0
+	%9 = getelementptr inbounds %struct.__va_list_tag, %struct.__va_list_tag* %4, i64 0, i32 3
+	%10 = getelementptr inbounds %struct.__va_list_tag, %struct.__va_list_tag* %4, i64 0, i32 2
+	%11 = load i32, i32* %8, align 8, !dbg !3329
+	%12 = icmp ult i32 %11, 41, !dbg !3329
+	br i1 %12, label %13, label %18, !dbg !3329
+	%14 = load i8*, i8** %9, align 8, !dbg !3333
+	%15 = sext i32 %11 to i64, !dbg !3333
+	%16 = getelementptr i8, i8* %14, i64 %15, !dbg !3333
+	%17 = add i32 %11, 8, !dbg !3333
+	store i32 %17, i32* %8, align 8, !dbg !3333
+	br label %21, !dbg !3333
+	%19 = load i8*, i8** %10, align 8, !dbg !3335
+	%20 = getelementptr i8, i8* %19, i64 8, !dbg !3335
+	store i8* %20, i8** %10, align 8, !dbg !3335
+	br label %21, !dbg !3335
+	%22 = phi i32 [ %17, %13 ], [ %11, %18 ], !dbg !3329
+	%23 = phi i8* [ %16, %13 ], [ %19, %18 ]
+	%24 = bitcast i8* %23 to i8**, !dbg !3337
+	%25 = load i8*, i8** %24, align 8, !dbg !3337
+	%26 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 0, !dbg !3339
+	store i8* %25, i8** %26, align 16, !dbg !3340, !tbaa !657
+	%27 = icmp eq i8* %25, null, !dbg !3341
+	br i1 %27, label %30, label %28, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%29 = icmp ult i32 %22, 41, !dbg !3329
+	br i1 %29, label %35, label %32, !dbg !3329
+	%31 = phi i64 [ 0, %21 ], [ 1, %40 ], [ 2, %57 ], [ 3, %74 ], [ 4, %91 ], [ 5, %108 ], [ 6, %114 ], [ 7, %121 ], [ 8, %128 ], [ %142, %135 ]
+	call void @version_etc_arn(%struct._IO_FILE* %0, i8* %1, i8* %2, i8* %3, i8** nonnull %26, i64 %31), !dbg !3344
+	call void @llvm.lifetime.end(i64 80, i8* nonnull %7) #10, !dbg !3345
+	ret void, !dbg !3345
+	%33 = load i8*, i8** %10, align 8, !dbg !3335
+	%34 = getelementptr i8, i8* %33, i64 8, !dbg !3335
+	store i8* %34, i8** %10, align 8, !dbg !3335
+	br label %40, !dbg !3335
+	%36 = load i8*, i8** %9, align 8, !dbg !3333
+	%37 = sext i32 %22 to i64, !dbg !3333
+	%38 = getelementptr i8, i8* %36, i64 %37, !dbg !3333
+	%39 = add i32 %22, 8, !dbg !3333
+	store i32 %39, i32* %8, align 8, !dbg !3333
+	br label %40, !dbg !3333
+	%41 = phi i32 [ %39, %35 ], [ %22, %32 ], !dbg !3329
+	%42 = phi i8* [ %38, %35 ], [ %33, %32 ]
+	%43 = bitcast i8* %42 to i8**, !dbg !3337
+	%44 = load i8*, i8** %43, align 8, !dbg !3337
+	%45 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 1, !dbg !3339
+	store i8* %44, i8** %45, align 8, !dbg !3340, !tbaa !657
+	%46 = icmp eq i8* %44, null, !dbg !3341
+	br i1 %46, label %30, label %47, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%48 = icmp ult i32 %41, 41, !dbg !3329
+	br i1 %48, label %52, label %49, !dbg !3329
+	%50 = load i8*, i8** %10, align 8, !dbg !3335
+	%51 = getelementptr i8, i8* %50, i64 8, !dbg !3335
+	store i8* %51, i8** %10, align 8, !dbg !3335
+	br label %57, !dbg !3335
+	%53 = load i8*, i8** %9, align 8, !dbg !3333
+	%54 = sext i32 %41 to i64, !dbg !3333
+	%55 = getelementptr i8, i8* %53, i64 %54, !dbg !3333
+	%56 = add i32 %41, 8, !dbg !3333
+	store i32 %56, i32* %8, align 8, !dbg !3333
+	br label %57, !dbg !3333
+	%58 = phi i32 [ %56, %52 ], [ %41, %49 ], !dbg !3329
+	%59 = phi i8* [ %55, %52 ], [ %50, %49 ]
+	%60 = bitcast i8* %59 to i8**, !dbg !3337
+	%61 = load i8*, i8** %60, align 8, !dbg !3337
+	%62 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 2, !dbg !3339
+	store i8* %61, i8** %62, align 16, !dbg !3340, !tbaa !657
+	%63 = icmp eq i8* %61, null, !dbg !3341
+	br i1 %63, label %30, label %64, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%65 = icmp ult i32 %58, 41, !dbg !3329
+	br i1 %65, label %69, label %66, !dbg !3329
+	%67 = load i8*, i8** %10, align 8, !dbg !3335
+	%68 = getelementptr i8, i8* %67, i64 8, !dbg !3335
+	store i8* %68, i8** %10, align 8, !dbg !3335
+	br label %74, !dbg !3335
+	%70 = load i8*, i8** %9, align 8, !dbg !3333
+	%71 = sext i32 %58 to i64, !dbg !3333
+	%72 = getelementptr i8, i8* %70, i64 %71, !dbg !3333
+	%73 = add i32 %58, 8, !dbg !3333
+	store i32 %73, i32* %8, align 8, !dbg !3333
+	br label %74, !dbg !3333
+	%75 = phi i32 [ %73, %69 ], [ %58, %66 ], !dbg !3329
+	%76 = phi i8* [ %72, %69 ], [ %67, %66 ]
+	%77 = bitcast i8* %76 to i8**, !dbg !3337
+	%78 = load i8*, i8** %77, align 8, !dbg !3337
+	%79 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 3, !dbg !3339
+	store i8* %78, i8** %79, align 8, !dbg !3340, !tbaa !657
+	%80 = icmp eq i8* %78, null, !dbg !3341
+	br i1 %80, label %30, label %81, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%82 = icmp ult i32 %75, 41, !dbg !3329
+	br i1 %82, label %86, label %83, !dbg !3329
+	%84 = load i8*, i8** %10, align 8, !dbg !3335
+	%85 = getelementptr i8, i8* %84, i64 8, !dbg !3335
+	store i8* %85, i8** %10, align 8, !dbg !3335
+	br label %91, !dbg !3335
+	%87 = load i8*, i8** %9, align 8, !dbg !3333
+	%88 = sext i32 %75 to i64, !dbg !3333
+	%89 = getelementptr i8, i8* %87, i64 %88, !dbg !3333
+	%90 = add i32 %75, 8, !dbg !3333
+	store i32 %90, i32* %8, align 8, !dbg !3333
+	br label %91, !dbg !3333
+	%92 = phi i32 [ %90, %86 ], [ %75, %83 ], !dbg !3329
+	%93 = phi i8* [ %89, %86 ], [ %84, %83 ]
+	%94 = bitcast i8* %93 to i8**, !dbg !3337
+	%95 = load i8*, i8** %94, align 8, !dbg !3337
+	%96 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 4, !dbg !3339
+	store i8* %95, i8** %96, align 16, !dbg !3340, !tbaa !657
+	%97 = icmp eq i8* %95, null, !dbg !3341
+	br i1 %97, label %30, label %98, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%99 = icmp ult i32 %92, 41, !dbg !3329
+	br i1 %99, label %103, label %100, !dbg !3329
+	%101 = load i8*, i8** %10, align 8, !dbg !3335
+	%102 = getelementptr i8, i8* %101, i64 8, !dbg !3335
+	store i8* %102, i8** %10, align 8, !dbg !3335
+	br label %108, !dbg !3335
+	%104 = load i8*, i8** %9, align 8, !dbg !3333
+	%105 = sext i32 %92 to i64, !dbg !3333
+	%106 = getelementptr i8, i8* %104, i64 %105, !dbg !3333
+	%107 = add i32 %92, 8, !dbg !3333
+	store i32 %107, i32* %8, align 8, !dbg !3333
+	br label %108, !dbg !3333
+	%109 = phi i8* [ %106, %103 ], [ %101, %100 ]
+	%110 = bitcast i8* %109 to i8**, !dbg !3337
+	%111 = load i8*, i8** %110, align 8, !dbg !3337
+	%112 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 5, !dbg !3339
+	store i8* %111, i8** %112, align 8, !dbg !3340, !tbaa !657
+	%113 = icmp eq i8* %111, null, !dbg !3341
+	br i1 %113, label %30, label %114, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%115 = load i8*, i8** %10, align 8, !dbg !3335
+	%116 = getelementptr i8, i8* %115, i64 8, !dbg !3335
+	store i8* %116, i8** %10, align 8, !dbg !3335
+	%117 = bitcast i8* %115 to i8**, !dbg !3337
+	%118 = load i8*, i8** %117, align 8, !dbg !3337
+	%119 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 6, !dbg !3339
+	store i8* %118, i8** %119, align 16, !dbg !3340, !tbaa !657
+	%120 = icmp eq i8* %118, null, !dbg !3341
+	br i1 %120, label %30, label %121, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%122 = load i8*, i8** %10, align 8, !dbg !3335
+	%123 = getelementptr i8, i8* %122, i64 8, !dbg !3335
+	store i8* %123, i8** %10, align 8, !dbg !3335
+	%124 = bitcast i8* %122 to i8**, !dbg !3337
+	%125 = load i8*, i8** %124, align 8, !dbg !3337
+	%126 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 7, !dbg !3339
+	store i8* %125, i8** %126, align 8, !dbg !3340, !tbaa !657
+	%127 = icmp eq i8* %125, null, !dbg !3341
+	br i1 %127, label %30, label %128, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%129 = load i8*, i8** %10, align 8, !dbg !3335
+	%130 = getelementptr i8, i8* %129, i64 8, !dbg !3335
+	store i8* %130, i8** %10, align 8, !dbg !3335
+	%131 = bitcast i8* %129 to i8**, !dbg !3337
+	%132 = load i8*, i8** %131, align 8, !dbg !3337
+	%133 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 8, !dbg !3339
+	store i8* %132, i8** %133, align 16, !dbg !3340, !tbaa !657
+	%134 = icmp eq i8* %132, null, !dbg !3341
+	br i1 %134, label %30, label %135, !dbg !3342
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%136 = load i8*, i8** %10, align 8, !dbg !3335
+	%137 = getelementptr i8, i8* %136, i64 8, !dbg !3335
+	store i8* %137, i8** %10, align 8, !dbg !3335
+	%138 = bitcast i8* %136 to i8**, !dbg !3337
+	%139 = load i8*, i8** %138, align 8, !dbg !3337
+	%140 = getelementptr inbounds [10 x i8*], [10 x i8*]* %6, i64 0, i64 9, !dbg !3339
+	store i8* %139, i8** %140, align 8, !dbg !3340, !tbaa !657
+	%141 = icmp eq i8* %139, null, !dbg !3341
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3318, metadata !649), !dbg !3328
+	%142 = select i1 %141, i64 9, i64 10, !dbg !3342
+	br label %30, !dbg !3342
+}
+define void @version_etc(%struct._IO_FILE*, i8*, i8*, i8*, ...) local_unnamed_addr #6 !dbg !3346 {
+	%5 = alloca [1 x %struct.__va_list_tag], align 16
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3350, metadata !649), !dbg !3360
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3351, metadata !649), !dbg !3361
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3352, metadata !649), !dbg !3362
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3353, metadata !649), !dbg !3363
+	%6 = bitcast [1 x %struct.__va_list_tag]* %5 to i8*, !dbg !3364
+	call void @llvm.lifetime.start(i64 24, i8* nonnull %6) #10, !dbg !3364
+	tail call void @llvm.dbg.declare(metadata [1 x %struct.__va_list_tag]* %5, metadata !3354, metadata !649), !dbg !3365
+	%7 = getelementptr inbounds [1 x %struct.__va_list_tag], [1 x %struct.__va_list_tag]* %5, i64 0, i64 0, !dbg !3366
+	call void @llvm.va_start(i8* nonnull %6), !dbg !3366
+	call void @version_etc_va(%struct._IO_FILE* %0, i8* %1, i8* %2, i8* %3, %struct.__va_list_tag* nonnull %7), !dbg !3367
+	call void @llvm.va_end(i8* nonnull %6), !dbg !3368
+	call void @llvm.lifetime.end(i64 24, i8* nonnull %6) #10, !dbg !3369
+	ret void, !dbg !3369
+}
+declare void @llvm.va_start(i8*) #10
+declare void @llvm.va_end(i8*) #10
+define void @emit_bug_reporting_address() local_unnamed_addr #6 !dbg !3370 {
+	%1 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.14.74, i64 0, i64 0), i32 5) #10, !dbg !3371
+	%2 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %1, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.15.75, i64 0, i64 0)) #10, !dbg !3372
+	%3 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.16.76, i64 0, i64 0), i32 5) #10, !dbg !3374
+	%4 = tail call i32 (i32, i8*, ...) @__printf_chk(i32 1, i8* %3, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.17.77, i64 0, i64 0), i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.18.78, i64 0, i64 0)) #10, !dbg !3375
+	%5 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([64 x i8], [64 x i8]* @.str.19, i64 0, i64 0), i32 5) #10, !dbg !3376
+	%6 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8, !dbg !3376, !tbaa !657
+	%7 = tail call i32 @fputs_unlocked(i8* %5, %struct._IO_FILE* %6) #10, !dbg !3377
+	ret void, !dbg !3378
+}
+define noalias i8* @xnmalloc(i64, i64) local_unnamed_addr #12 !dbg !3379 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3383, metadata !649), !dbg !3385
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3384, metadata !649), !dbg !3386
+	%3 = udiv i64 9223372036854775807, %1, !dbg !3387
+	%4 = icmp ult i64 %3, %0, !dbg !3387
+	br i1 %4, label %5, label %6, !dbg !3389
+	tail call void @xalloc_die() #14, !dbg !3390
+	unreachable, !dbg !3390
+	%7 = mul i64 %1, %0, !dbg !3391
+	tail call void @llvm.dbg.value(metadata i64 %7, i64 0, metadata !3392, metadata !649) #10, !dbg !3399
+	%8 = tail call noalias i8* @malloc(i64 %7) #10, !dbg !3401
+	tail call void @llvm.dbg.value(metadata i8* %8, i64 0, metadata !3398, metadata !649) #10, !dbg !3402
+	%9 = icmp eq i8* %8, null, !dbg !3403
+	%10 = icmp ne i64 %7, 0, !dbg !3405
+	%11 = and i1 %10, %9, !dbg !3407
+	br i1 %11, label %12, label %13, !dbg !3407
+	tail call void @xalloc_die() #14, !dbg !3408
+	unreachable, !dbg !3408
+	ret i8* %8, !dbg !3409
+}
+declare noalias i8* @malloc(i64) local_unnamed_addr #2
+define noalias i8* @xmalloc(i64) local_unnamed_addr #6 !dbg !3393 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3392, metadata !649), !dbg !3410
+	%2 = tail call noalias i8* @malloc(i64 %0) #10, !dbg !3411
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3398, metadata !649), !dbg !3412
+	%3 = icmp eq i8* %2, null, !dbg !3413
+	%4 = icmp ne i64 %0, 0, !dbg !3414
+	%5 = and i1 %4, %3, !dbg !3415
+	br i1 %5, label %6, label %7, !dbg !3415
+	tail call void @xalloc_die() #14, !dbg !3416
+	unreachable, !dbg !3416
+	ret i8* %2, !dbg !3417
+}
+define noalias i8* @xnrealloc(i8*, i64, i64) local_unnamed_addr #12 !dbg !3418 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3422, metadata !649), !dbg !3425
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3423, metadata !649), !dbg !3426
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !3424, metadata !649), !dbg !3427
+	%4 = udiv i64 9223372036854775807, %2, !dbg !3428
+	%5 = icmp ult i64 %4, %1, !dbg !3428
+	br i1 %5, label %6, label %7, !dbg !3430
+	tail call void @xalloc_die() #14, !dbg !3431
+	unreachable, !dbg !3431
+	%8 = mul i64 %2, %1, !dbg !3432
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649) #10, !dbg !3439
+	tail call void @llvm.dbg.value(metadata i64 %8, i64 0, metadata !3438, metadata !649) #10, !dbg !3441
+	%9 = icmp eq i64 %8, 0, !dbg !3442
+	%10 = icmp ne i8* %0, null, !dbg !3444
+	%11 = and i1 %10, %9, !dbg !3446
+	br i1 %11, label %12, label %13, !dbg !3446
+	tail call void @free(i8* nonnull %0) #10, !dbg !3447
+	br label %19, !dbg !3449
+	%14 = tail call i8* @realloc(i8* %0, i64 %8) #10, !dbg !3450
+	tail call void @llvm.dbg.value(metadata i8* %14, i64 0, metadata !3433, metadata !649) #10, !dbg !3439
+	%15 = icmp eq i8* %14, null, !dbg !3451
+	%16 = icmp ne i64 %8, 0, !dbg !3453
+	%17 = and i1 %16, %15, !dbg !3455
+	br i1 %17, label %18, label %19, !dbg !3455
+	tail call void @xalloc_die() #14, !dbg !3456
+	unreachable, !dbg !3456
+	%20 = phi i8* [ null, %12 ], [ %14, %13 ]
+	ret i8* %20, !dbg !3457
+}
+declare noalias i8* @realloc(i8* nocapture, i64) local_unnamed_addr #2
+define noalias i8* @xrealloc(i8*, i64) local_unnamed_addr #6 !dbg !3434 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649), !dbg !3458
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3438, metadata !649), !dbg !3459
+	%3 = icmp eq i64 %1, 0, !dbg !3460
+	%4 = icmp ne i8* %0, null, !dbg !3461
+	%5 = and i1 %4, %3, !dbg !3462
+	br i1 %5, label %6, label %7, !dbg !3462
+	tail call void @free(i8* nonnull %0) #10, !dbg !3463
+	br label %13, !dbg !3464
+	%8 = tail call i8* @realloc(i8* %0, i64 %1) #10, !dbg !3465
+	tail call void @llvm.dbg.value(metadata i8* %8, i64 0, metadata !3433, metadata !649), !dbg !3458
+	%9 = icmp eq i8* %8, null, !dbg !3466
+	%10 = icmp ne i64 %1, 0, !dbg !3467
+	%11 = and i1 %10, %9, !dbg !3468
+	br i1 %11, label %12, label %13, !dbg !3468
+	tail call void @xalloc_die() #14, !dbg !3469
+	unreachable, !dbg !3469
+	%14 = phi i8* [ null, %6 ], [ %8, %7 ]
+	ret i8* %14, !dbg !3470
+}
+define noalias i8* @x2nrealloc(i8*, i64* nocapture, i64) local_unnamed_addr #12 !dbg !571 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !576, metadata !649), !dbg !3471
+	tail call void @llvm.dbg.value(metadata i64* %1, i64 0, metadata !577, metadata !649), !dbg !3472
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !578, metadata !649), !dbg !3473
+	%4 = load i64, i64* %1, align 8, !dbg !3474, !tbaa !2473
+	tail call void @llvm.dbg.value(metadata i64 %4, i64 0, metadata !579, metadata !649), !dbg !3475
+	%5 = icmp eq i8* %0, null, !dbg !3476
+	br i1 %5, label %6, label %13, !dbg !3478
+	%7 = icmp eq i64 %4, 0, !dbg !3479
+	br i1 %7, label %8, label %17, !dbg !3482
+	%9 = udiv i64 128, %2, !dbg !3483
+	tail call void @llvm.dbg.value(metadata i64 %9, i64 0, metadata !579, metadata !649), !dbg !3475
+	%10 = icmp ugt i64 %2, 128, !dbg !3485
+	%11 = zext i1 %10 to i64, !dbg !3485
+	%12 = add nuw nsw i64 %9, %11, !dbg !3486
+	tail call void @llvm.dbg.value(metadata i64 %12, i64 0, metadata !579, metadata !649), !dbg !3475
+	br label %17, !dbg !3487
+	%14 = udiv i64 6148914691236517204, %2, !dbg !3488
+	%15 = icmp ugt i64 %14, %4, !dbg !3491
+	br i1 %15, label %20, label %16, !dbg !3492
+	tail call void @xalloc_die() #14, !dbg !3493
+	unreachable, !dbg !3493
+	%18 = phi i64 [ %12, %8 ], [ %4, %6 ]
+	tail call void @llvm.dbg.value(metadata i64 %23, i64 0, metadata !579, metadata !649), !dbg !3475
+	store i64 %18, i64* %1, align 8, !dbg !3494, !tbaa !2473
+	%19 = mul i64 %18, %2, !dbg !3495
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649) #10, !dbg !3496
+	tail call void @llvm.dbg.value(metadata i64 %24, i64 0, metadata !3438, metadata !649) #10, !dbg !3498
+	br label %27, !dbg !3499
+	%21 = lshr i64 %4, 1, !dbg !3500
+	%22 = add i64 %4, 1, !dbg !3501
+	%23 = add i64 %22, %21, !dbg !3502
+	tail call void @llvm.dbg.value(metadata i64 %23, i64 0, metadata !579, metadata !649), !dbg !3475
+	tail call void @llvm.dbg.value(metadata i64 %23, i64 0, metadata !579, metadata !649), !dbg !3475
+	store i64 %23, i64* %1, align 8, !dbg !3494, !tbaa !2473
+	%24 = mul i64 %23, %2, !dbg !3495
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649) #10, !dbg !3496
+	tail call void @llvm.dbg.value(metadata i64 %24, i64 0, metadata !3438, metadata !649) #10, !dbg !3498
+	%25 = icmp eq i64 %24, 0, !dbg !3503
+	br i1 %25, label %26, label %27, !dbg !3499
+	tail call void @free(i8* nonnull %0) #10, !dbg !3504
+	br label %34, !dbg !3505
+	%28 = phi i64 [ %19, %17 ], [ %24, %20 ]
+	%29 = tail call i8* @realloc(i8* %0, i64 %28) #10, !dbg !3506
+	tail call void @llvm.dbg.value(metadata i8* %29, i64 0, metadata !3433, metadata !649) #10, !dbg !3496
+	%30 = icmp eq i8* %29, null, !dbg !3507
+	%31 = icmp ne i64 %28, 0, !dbg !3508
+	%32 = and i1 %31, %30, !dbg !3509
+	br i1 %32, label %33, label %34, !dbg !3509
+	tail call void @xalloc_die() #14, !dbg !3510
+	unreachable, !dbg !3510
+	%35 = phi i8* [ null, %26 ], [ %29, %27 ]
+	ret i8* %35, !dbg !3511
+}
+define noalias i8* @xcharalloc(i64) local_unnamed_addr #12 !dbg !3512 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3514, metadata !649), !dbg !3515
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3392, metadata !649) #10, !dbg !3516
+	%2 = tail call noalias i8* @malloc(i64 %0) #10, !dbg !3518
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3398, metadata !649) #10, !dbg !3519
+	%3 = icmp eq i8* %2, null, !dbg !3520
+	%4 = icmp ne i64 %0, 0, !dbg !3521
+	%5 = and i1 %4, %3, !dbg !3522
+	br i1 %5, label %6, label %7, !dbg !3522
+	tail call void @xalloc_die() #14, !dbg !3523
+	unreachable, !dbg !3523
+	ret i8* %2, !dbg !3524
+}
+define noalias i8* @x2realloc(i8*, i64* nocapture) local_unnamed_addr #6 !dbg !3525 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3529, metadata !649), !dbg !3531
+	tail call void @llvm.dbg.value(metadata i64* %1, i64 0, metadata !3530, metadata !649), !dbg !3532
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !576, metadata !649) #10, !dbg !3533
+	tail call void @llvm.dbg.value(metadata i64* %1, i64 0, metadata !577, metadata !649) #10, !dbg !3535
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !578, metadata !649) #10, !dbg !3536
+	%3 = load i64, i64* %1, align 8, !dbg !3537, !tbaa !2473
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	%4 = icmp eq i8* %0, null, !dbg !3539
+	br i1 %4, label %5, label %8, !dbg !3540
+	%6 = icmp eq i64 %3, 0, !dbg !3541
+	tail call void @llvm.dbg.value(metadata i64 128, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	tail call void @llvm.dbg.value(metadata i64 128, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	%7 = select i1 %6, i64 128, i64 %3, !dbg !3542
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	store i64 %7, i64* %1, align 8, !dbg !3543, !tbaa !2473
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649) #10, !dbg !3544
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !3438, metadata !649) #10, !dbg !3546
+	br label %17, !dbg !3547
+	%9 = icmp ult i64 %3, 6148914691236517204, !dbg !3548
+	br i1 %9, label %11, label %10, !dbg !3549
+	tail call void @xalloc_die() #14, !dbg !3550
+	unreachable, !dbg !3550
+	%12 = lshr i64 %3, 1, !dbg !3551
+	%13 = add i64 %3, 1, !dbg !3552
+	%14 = add i64 %13, %12, !dbg !3553
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !579, metadata !649) #10, !dbg !3538
+	store i64 %14, i64* %1, align 8, !dbg !3543, !tbaa !2473
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3433, metadata !649) #10, !dbg !3544
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !3438, metadata !649) #10, !dbg !3546
+	%15 = icmp eq i64 %14, 0, !dbg !3554
+	br i1 %15, label %16, label %17, !dbg !3547
+	tail call void @free(i8* nonnull %0) #10, !dbg !3555
+	br label %24, !dbg !3556
+	%18 = phi i64 [ %7, %5 ], [ %14, %11 ]
+	%19 = tail call i8* @realloc(i8* %0, i64 %18) #10, !dbg !3557
+	tail call void @llvm.dbg.value(metadata i8* %19, i64 0, metadata !3433, metadata !649) #10, !dbg !3544
+	%20 = icmp eq i8* %19, null, !dbg !3558
+	%21 = icmp ne i64 %18, 0, !dbg !3559
+	%22 = and i1 %21, %20, !dbg !3560
+	br i1 %22, label %23, label %24, !dbg !3560
+	tail call void @xalloc_die() #14, !dbg !3561
+	unreachable, !dbg !3561
+	%25 = phi i8* [ null, %16 ], [ %19, %17 ]
+	ret i8* %25, !dbg !3562
+}
+define noalias i8* @xzalloc(i64) local_unnamed_addr #6 !dbg !3563 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3565, metadata !649), !dbg !3566
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3392, metadata !649) #10, !dbg !3567
+	%2 = tail call noalias i8* @malloc(i64 %0) #10, !dbg !3569
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3398, metadata !649) #10, !dbg !3570
+	%3 = icmp eq i8* %2, null, !dbg !3571
+	%4 = icmp ne i64 %0, 0, !dbg !3572
+	%5 = and i1 %4, %3, !dbg !3573
+	br i1 %5, label %6, label %7, !dbg !3573
+	tail call void @xalloc_die() #14, !dbg !3574
+	unreachable, !dbg !3574
+	tail call void @llvm.memset.p0i8.i64(i8* %2, i8 0, i64 %0, i32 1, i1 false), !dbg !3575
+	ret i8* %2, !dbg !3576
+}
+define noalias i8* @xcalloc(i64, i64) local_unnamed_addr #6 !dbg !3577 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3579, metadata !649), !dbg !3582
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3580, metadata !649), !dbg !3583
+	%3 = udiv i64 9223372036854775807, %1, !dbg !3584
+	%4 = icmp ult i64 %3, %0, !dbg !3584
+	br i1 %4, label %8, label %5, !dbg !3586
+	%6 = tail call i8* @rpl_calloc(i64 %0, i64 %1) #10, !dbg !3587
+	tail call void @llvm.dbg.value(metadata i8* %6, i64 0, metadata !3581, metadata !649), !dbg !3589
+	%7 = icmp eq i8* %6, null, !dbg !3590
+	br i1 %7, label %8, label %9, !dbg !3591
+	tail call void @xalloc_die() #14, !dbg !3593
+	unreachable, !dbg !3593
+	ret i8* %6, !dbg !3594
+}
+define noalias i8* @xmemdup(i8* nocapture readonly, i64) local_unnamed_addr #6 !dbg !3595 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3599, metadata !649), !dbg !3601
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3600, metadata !649), !dbg !3602
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3392, metadata !649) #10, !dbg !3603
+	%3 = tail call noalias i8* @malloc(i64 %1) #10, !dbg !3605
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3398, metadata !649) #10, !dbg !3606
+	%4 = icmp eq i8* %3, null, !dbg !3607
+	%5 = icmp ne i64 %1, 0, !dbg !3608
+	%6 = and i1 %5, %4, !dbg !3609
+	br i1 %6, label %7, label %8, !dbg !3609
+	tail call void @xalloc_die() #14, !dbg !3610
+	unreachable, !dbg !3610
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* %3, i8* %0, i64 %1, i32 1, i1 false), !dbg !3611
+	ret i8* %3, !dbg !3612
+}
+define noalias i8* @xstrdup(i8* nocapture readonly) local_unnamed_addr #6 !dbg !3613 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3615, metadata !649), !dbg !3616
+	%2 = tail call i64 @strlen(i8* %0) #13, !dbg !3617
+	%3 = add i64 %2, 1, !dbg !3618
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3599, metadata !649) #10, !dbg !3619
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !3600, metadata !649) #10, !dbg !3622
+	tail call void @llvm.dbg.value(metadata i64 %3, i64 0, metadata !3392, metadata !649) #10, !dbg !3623
+	%4 = tail call noalias i8* @malloc(i64 %3) #10, !dbg !3625
+	tail call void @llvm.dbg.value(metadata i8* %4, i64 0, metadata !3398, metadata !649) #10, !dbg !3626
+	%5 = icmp eq i8* %4, null, !dbg !3627
+	%6 = icmp ne i64 %3, 0, !dbg !3628
+	%7 = and i1 %6, %5, !dbg !3629
+	br i1 %7, label %8, label %9, !dbg !3629
+	tail call void @xalloc_die() #14, !dbg !3630
+	unreachable, !dbg !3630
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* %4, i8* %0, i64 %3, i32 1, i1 false) #10, !dbg !3631
+	ret i8* %4, !dbg !3632
+}
+define void @xalloc_die() local_unnamed_addr #0 !dbg !3633 {
+	%1 = load volatile i32, i32* @exit_failure, align 4, !dbg !3635, !tbaa !751
+	%2 = tail call i8* @dcgettext(i8* null, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.1.89, i64 0, i64 0), i32 5) #10, !dbg !3636
+	tail call void (i32, i32, i8*, ...) @error(i32 %1, i32 0, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.90, i64 0, i64 0), i8* %2) #10, !dbg !3637
+	tail call void @abort() #14, !dbg !3639
+	unreachable, !dbg !3639
+}
+define i32 @xgetgroups(i8*, i32, i32**) local_unnamed_addr #6 !dbg !3640 {
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !3643, metadata !649), !dbg !3647
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !3644, metadata !649), !dbg !3648
+	tail call void @llvm.dbg.value(metadata i32** %2, i64 0, metadata !3645, metadata !649), !dbg !3649
+	%4 = tail call i32 @mgetgroups(i8* %0, i32 %1, i32** %2) #10, !dbg !3650
+	tail call void @llvm.dbg.value(metadata i32 %4, i64 0, metadata !3646, metadata !649), !dbg !3651
+	%5 = icmp eq i32 %4, -1, !dbg !3652
+	br i1 %5, label %6, label %11, !dbg !3654
+	%7 = tail call i32* @__errno_location() #1, !dbg !3655
+	%8 = load i32, i32* %7, align 4, !dbg !3655, !tbaa !751
+	%9 = icmp eq i32 %8, 12, !dbg !3657
+	br i1 %9, label %10, label %11, !dbg !3658
+	tail call void @xalloc_die() #14, !dbg !3660
+	unreachable, !dbg !3660
+	ret i32 %4, !dbg !3661
+}
+define noalias i8* @rpl_calloc(i64, i64) local_unnamed_addr #6 !dbg !3662 {
+	tail call void @llvm.dbg.value(metadata i64 %0, i64 0, metadata !3665, metadata !649), !dbg !3671
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !3666, metadata !649), !dbg !3672
+	%3 = icmp eq i64 %0, 0, !dbg !3673
+	%4 = icmp eq i64 %1, 0, !dbg !3674
+	%5 = or i1 %3, %4, !dbg !3676
+	br i1 %5, label %12, label %6, !dbg !3676
+	%7 = mul i64 %1, %0, !dbg !3677
+	tail call void @llvm.dbg.value(metadata i64 %7, i64 0, metadata !3668, metadata !649), !dbg !3678
+	%8 = udiv i64 %7, %1, !dbg !3679
+	%9 = icmp eq i64 %8, %0, !dbg !3681
+	br i1 %9, label %12, label %10, !dbg !3682
+	%11 = tail call i32* @__errno_location() #1, !dbg !3683
+	store i32 12, i32* %11, align 4, !dbg !3685, !tbaa !751
+	br label %16
+	%13 = phi i64 [ 1, %2 ], [ %1, %6 ]
+	%14 = phi i64 [ 1, %2 ], [ %0, %6 ]
+	tail call void @llvm.dbg.value(metadata i64 %14, i64 0, metadata !3665, metadata !649), !dbg !3671
+	tail call void @llvm.dbg.value(metadata i64 %13, i64 0, metadata !3666, metadata !649), !dbg !3672
+	%15 = tail call noalias i8* @calloc(i64 %14, i64 %13) #10, !dbg !3686
+	tail call void @llvm.dbg.value(metadata i8* %15, i64 0, metadata !3667, metadata !649), !dbg !3687
+	br label %16, !dbg !3688
+	%17 = phi i8* [ %15, %12 ], [ null, %10 ]
+	ret i8* %17, !dbg !3689
+}
+declare noalias i8* @calloc(i64, i64) local_unnamed_addr #2
+define i64 @rpl_mbrtowc(i32*, i8*, i64, %struct.__mbstate_t*) local_unnamed_addr #6 !dbg !3690 {
+	%5 = alloca i32, align 4
+	tail call void @llvm.dbg.value(metadata i32* %0, i64 0, metadata !3707, metadata !649), !dbg !3716
+	tail call void @llvm.dbg.value(metadata i8* %1, i64 0, metadata !3708, metadata !649), !dbg !3717
+	tail call void @llvm.dbg.value(metadata i64 %2, i64 0, metadata !3709, metadata !649), !dbg !3718
+	tail call void @llvm.dbg.value(metadata %struct.__mbstate_t* %3, i64 0, metadata !3710, metadata !649), !dbg !3719
+	%6 = bitcast i32* %5 to i8*, !dbg !3720
+	call void @llvm.lifetime.start(i64 4, i8* nonnull %6) #10, !dbg !3720
+	%7 = icmp eq i32* %0, null, !dbg !3721
+	tail call void @llvm.dbg.value(metadata i32* %5, i64 0, metadata !3707, metadata !649), !dbg !3716
+	%8 = select i1 %7, i32* %5, i32* %0, !dbg !3723
+	tail call void @llvm.dbg.value(metadata i32* %8, i64 0, metadata !3707, metadata !649), !dbg !3716
+	%9 = call i64 @mbrtowc(i32* %8, i8* %1, i64 %2, %struct.__mbstate_t* %3) #10, !dbg !3724
+	call void @llvm.dbg.value(metadata i64 %9, i64 0, metadata !3711, metadata !649), !dbg !3725
+	%10 = icmp ugt i64 %9, -3, !dbg !3726
+	%11 = icmp ne i64 %2, 0, !dbg !3727
+	%12 = and i1 %11, %10, !dbg !3729
+	br i1 %12, label %13, label %18, !dbg !3729
+	%14 = call zeroext i1 @hard_locale(i32 0) #10, !dbg !3730
+	br i1 %14, label %18, label %15, !dbg !3732
+	%16 = load i8, i8* %1, align 1, !dbg !3734, !tbaa !824
+	call void @llvm.dbg.value(metadata i8 %16, i64 0, metadata !3713, metadata !649), !dbg !3735
+	%17 = zext i8 %16 to i32, !dbg !3736
+	store i32 %17, i32* %8, align 4, !dbg !3737, !tbaa !751
+	br label %18
+	%19 = phi i64 [ 1, %15 ], [ %9, %13 ], [ %9, %4 ]
+	call void @llvm.lifetime.end(i64 4, i8* nonnull %6) #10, !dbg !3738
+	ret i64 %19, !dbg !3738
+}
+declare i64 @mbrtowc(i32*, i8*, i64, %struct.__mbstate_t*) local_unnamed_addr #2
+define i32 @close_stream(%struct._IO_FILE*) local_unnamed_addr #6 !dbg !3739 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3784, metadata !649), !dbg !3789
+	%2 = tail call i64 @__fpending(%struct._IO_FILE* %0) #10, !dbg !3790
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !3791, metadata !649), !dbg !3794
+	%3 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 0, !dbg !3796
+	%4 = load i32, i32* %3, align 8, !dbg !3796, !tbaa !3797
+	%5 = and i32 %4, 32, !dbg !3796
+	%6 = icmp eq i32 %5, 0, !dbg !3798
+	%7 = tail call i32 @rpl_fclose(%struct._IO_FILE* %0) #10, !dbg !3799
+	%8 = icmp ne i32 %7, 0, !dbg !3800
+	br i1 %6, label %9, label %19, !dbg !3801
+	%10 = xor i1 %8, true, !dbg !3803
+	%11 = icmp ne i64 %2, 0, !dbg !3803
+	%12 = or i1 %11, %10, !dbg !3803
+	%13 = sext i1 %8 to i32, !dbg !3803
+	br i1 %12, label %22, label %14, !dbg !3803
+	%15 = tail call i32* @__errno_location() #1, !dbg !3805
+	%16 = load i32, i32* %15, align 4, !dbg !3805, !tbaa !751
+	%17 = icmp ne i32 %16, 9, !dbg !3807
+	%18 = sext i1 %17 to i32, !dbg !3807
+	br label %22, !dbg !3807
+	br i1 %8, label %22, label %20, !dbg !3809
+	%21 = tail call i32* @__errno_location() #1, !dbg !3811
+	store i32 0, i32* %21, align 4, !dbg !3813, !tbaa !751
+	br label %22, !dbg !3811
+	%23 = phi i32 [ -1, %20 ], [ -1, %19 ], [ %18, %14 ], [ %13, %9 ]
+	ret i32 %23, !dbg !3814
+}
+declare i64 @__fpending(%struct._IO_FILE*) local_unnamed_addr #2
+define zeroext i1 @hard_locale(i32) local_unnamed_addr #6 !dbg !3815 {
+	tail call void @llvm.dbg.value(metadata i32 %0, i64 0, metadata !3820, metadata !649), !dbg !3840
+	tail call void @llvm.dbg.value(metadata i8 1, i64 0, metadata !3821, metadata !649), !dbg !3841
+	%2 = tail call i8* @setlocale(i32 %0, i8* null) #10, !dbg !3842
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3822, metadata !649), !dbg !3843
+	%3 = icmp eq i8* %2, null, !dbg !3844
+	br i1 %3, label %15, label %4, !dbg !3845
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !3830, metadata !649), !dbg !3846
+	tail call void @llvm.dbg.value(metadata i8* %2, i64 0, metadata !3831, metadata !649), !dbg !3847
+	%5 = load i8, i8* %2, align 1, !dbg !3848, !tbaa !824
+	%6 = icmp eq i8 %5, 67, !dbg !3850
+	br i1 %6, label %7, label %11, !dbg !3853
+	%8 = getelementptr inbounds i8, i8* %2, i64 1, !dbg !3855
+	%9 = load i8, i8* %8, align 1, !dbg !3855, !tbaa !824
+	%10 = icmp eq i8 %9, 0, !dbg !3858
+	br i1 %10, label %14, label %11, !dbg !3860
+	tail call void @llvm.dbg.value(metadata i64 5, i64 0, metadata !3836, metadata !649), !dbg !3862
+	%12 = tail call i32 @strcmp(i8* nonnull %2, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.1.101, i64 0, i64 0)) #10, !dbg !3863
+	%13 = icmp eq i32 %12, 0, !dbg !3865
+	br i1 %13, label %14, label %15, !dbg !3867
+	tail call void @llvm.dbg.value(metadata i8 0, i64 0, metadata !3821, metadata !649), !dbg !3841
+	br label %15, !dbg !3869
+	%16 = phi i1 [ false, %14 ], [ true, %11 ], [ true, %1 ]
+	ret i1 %16, !dbg !3870
+}
+declare i32 @strcmp(i8* nocapture, i8* nocapture) local_unnamed_addr #4
+define i8* @locale_charset() local_unnamed_addr #6 !dbg !3871 {
+	%1 = alloca [51 x i8], align 16
+	tail call void @llvm.dbg.declare(metadata [51 x i8]* %1, metadata !3883, metadata !649), !dbg !3957
+	%2 = alloca [51 x i8], align 16
+	tail call void @llvm.dbg.declare(metadata [51 x i8]* %2, metadata !3950, metadata !649), !dbg !3959
+	%3 = tail call i8* @nl_langinfo(i32 14) #10, !dbg !3960
+	tail call void @llvm.dbg.value(metadata i8* %3, i64 0, metadata !3875, metadata !649), !dbg !3961
+	%4 = icmp eq i8* %3, null, !dbg !3962
+	%5 = select i1 %4, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.104, i64 0, i64 0), i8* %3, !dbg !3964
+	tail call void @llvm.dbg.value(metadata i8* %5, i64 0, metadata !3875, metadata !649), !dbg !3961
+	%6 = load volatile i8*, i8** @charset_aliases, align 8, !dbg !3965, !tbaa !657
+	tail call void @llvm.dbg.value(metadata i8* %6, i64 0, metadata !3897, metadata !649) #10, !dbg !3966
+	%7 = icmp eq i8* %6, null, !dbg !3967
+	br i1 %7, label %8, label %127, !dbg !3968
+	%9 = tail call i8* @getenv(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.3.105, i64 0, i64 0)) #10, !dbg !3969
+	tail call void @llvm.dbg.value(metadata i8* %9, i64 0, metadata !3898, metadata !649) #10, !dbg !3970
+	%10 = icmp eq i8* %9, null, !dbg !3971
+	br i1 %10, label %14, label %11, !dbg !3973
+	%12 = load i8, i8* %9, align 1, !dbg !3974, !tbaa !824
+	%13 = icmp eq i8 %12, 0, !dbg !3976
+	br i1 %13, label %14, label %15, !dbg !3977
+	br label %15, !dbg !3979
+	%16 = phi i8* [ getelementptr inbounds ([15 x i8], [15 x i8]* @.str.4.106, i64 0, i64 0), %14 ], [ %9, %11 ]
+	tail call void @llvm.dbg.value(metadata i8* %16, i64 0, metadata !3898, metadata !649) #10, !dbg !3970
+	%17 = tail call i64 @strlen(i8* nonnull %16) #13, !dbg !3980
+	tail call void @llvm.dbg.value(metadata i64 %17, i64 0, metadata !3901, metadata !649) #10, !dbg !3981
+	tail call void @llvm.dbg.value(metadata i64 13, i64 0, metadata !3903, metadata !649) #10, !dbg !3982
+	%18 = icmp eq i64 %17, 0, !dbg !3983
+	br i1 %18, label %24, label %19, !dbg !3984
+	%20 = add i64 %17, -1, !dbg !3985
+	%21 = getelementptr inbounds i8, i8* %16, i64 %20, !dbg !3985
+	%22 = load i8, i8* %21, align 1, !dbg !3985, !tbaa !824
+	%23 = icmp ne i8 %22, 47, !dbg !3987
+	br label %24
+	%25 = phi i1 [ false, %15 ], [ %23, %19 ]
+	%26 = zext i1 %25 to i64, !dbg !3988
+	%27 = add i64 %17, 14, !dbg !3989
+	%28 = add i64 %27, %26, !dbg !3990
+	%29 = tail call noalias i8* @malloc(i64 %28) #10, !dbg !3991
+	tail call void @llvm.dbg.value(metadata i8* %29, i64 0, metadata !3900, metadata !649) #10, !dbg !3992
+	%30 = icmp eq i8* %29, null, !dbg !3993
+	br i1 %30, label %125, label %31, !dbg !3993
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull %29, i8* %16, i64 %17, i32 1, i1 false) #10, !dbg !3994
+	%32 = getelementptr inbounds i8, i8* %29, i64 %17
+	br i1 %25, label %33, label %35, !dbg !3997
+	store i8 47, i8* %32, align 1, !dbg !3998, !tbaa !824
+	%34 = getelementptr inbounds i8, i8* %32, i64 %26, !dbg !4000
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* %34, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.2.107, i64 0, i64 0), i64 14, i32 1, i1 false) #10, !dbg !4001
+	br label %37, !dbg !4002
+	%36 = getelementptr inbounds i8, i8* %32, i64 %26, !dbg !4000
+	tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* %36, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.2.107, i64 0, i64 0), i64 14, i32 1, i1 false) #10, !dbg !4001
+	br label %37, !dbg !4002
+	%38 = tail call i32 (i8*, i32, ...) @open(i8* nonnull %29, i32 131072) #10, !dbg !4003
+	tail call void @llvm.dbg.value(metadata i32 %38, i64 0, metadata !3905, metadata !649) #10, !dbg !4004
+	%39 = icmp slt i32 %38, 0, !dbg !4005
+	br i1 %39, label %123, label %40, !dbg !4006
+	%41 = tail call %struct._IO_FILE* @fdopen(i32 %38, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.5.108, i64 0, i64 0)) #10, !dbg !4007
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %41, i64 0, metadata !3906, metadata !649) #10, !dbg !4008
+	%42 = icmp eq %struct._IO_FILE* %41, null, !dbg !4009
+	br i1 %42, label %48, label %43, !dbg !4010
+	%44 = getelementptr inbounds [51 x i8], [51 x i8]* %1, i64 0, i64 0
+	%45 = getelementptr inbounds [51 x i8], [51 x i8]* %2, i64 0, i64 0
+	%46 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %41, i64 0, i32 1
+	%47 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %41, i64 0, i32 2
+	br label %50, !dbg !4011
+	%49 = tail call i32 @close(i32 %38) #10, !dbg !4012
+	br label %123, !dbg !4014
+	%51 = phi i64 [ %112, %111 ], [ 0, %43 ]
+	%52 = phi i8* [ %113, %111 ], [ null, %43 ]
+	call void @llvm.dbg.value(metadata i8* %52, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	call void @llvm.dbg.value(metadata i64 %51, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	call void @llvm.lifetime.start(i64 51, i8* nonnull %44) #10, !dbg !4016
+	call void @llvm.lifetime.start(i64 51, i8* nonnull %45) #10, !dbg !4017
+	call void @llvm.dbg.value(metadata %struct._IO_FILE* %41, i64 0, metadata !4018, metadata !649) #10, !dbg !4023
+	%53 = load i8*, i8** %46, align 8, !dbg !4025, !tbaa !4026
+	%54 = load i8*, i8** %47, align 8, !dbg !4025, !tbaa !4027
+	%55 = icmp ult i8* %53, %54, !dbg !4025
+	br i1 %55, label %58, label %56, !dbg !4025, !prof !819
+	%57 = call i32 @__uflow(%struct._IO_FILE* nonnull %41) #10, !dbg !4028
+	br label %62, !dbg !4028
+	%59 = getelementptr inbounds i8, i8* %53, i64 1, !dbg !4030
+	store i8* %59, i8** %46, align 8, !dbg !4030, !tbaa !4026
+	%60 = load i8, i8* %53, align 1, !dbg !4030, !tbaa !824
+	%61 = zext i8 %60 to i32, !dbg !4030
+	br label %62, !dbg !4030
+	%63 = phi i32 [ %57, %56 ], [ %61, %58 ], !dbg !4032
+	call void @llvm.dbg.value(metadata i32 %63, i64 0, metadata !3949, metadata !649) #10, !dbg !4034
+	switch i32 %63, label %77 [
+		i32 -1, label %115
+		i32 32, label %111
+		i32 10, label %111
+		i32 9, label %111
+		i32 35, label %64
+	], !dbg !4035
+	br label %65, !dbg !4036
+	call void @llvm.dbg.value(metadata %struct._IO_FILE* %41, i64 0, metadata !4018, metadata !649) #10, !dbg !4036
+	%66 = load i8*, i8** %46, align 8, !dbg !4040, !tbaa !4026
+	%67 = load i8*, i8** %47, align 8, !dbg !4040, !tbaa !4027
+	%68 = icmp ult i8* %66, %67, !dbg !4040
+	br i1 %68, label %71, label %69, !dbg !4040, !prof !819
+	%70 = call i32 @__uflow(%struct._IO_FILE* nonnull %41) #10, !dbg !4041
+	br label %75, !dbg !4041
+	%72 = getelementptr inbounds i8, i8* %66, i64 1, !dbg !4042
+	store i8* %72, i8** %46, align 8, !dbg !4042, !tbaa !4026
+	%73 = load i8, i8* %66, align 1, !dbg !4042, !tbaa !824
+	%74 = zext i8 %73 to i32, !dbg !4042
+	br label %75, !dbg !4042
+	%76 = phi i32 [ %70, %69 ], [ %74, %71 ], !dbg !4043
+	call void @llvm.dbg.value(metadata i32 %76, i64 0, metadata !3949, metadata !649) #10, !dbg !4034
+	switch i32 %76, label %65 [
+		i32 -1, label %114
+		i32 10, label %110
+	], !dbg !4044, !llvm.loop !4046
+	%78 = call i32 @ungetc(i32 %63, %struct._IO_FILE* nonnull %41) #10, !dbg !4049
+	%79 = call i32 (%struct._IO_FILE*, i8*, ...) @fscanf(%struct._IO_FILE* nonnull %41, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.6.109, i64 0, i64 0), i8* nonnull %44, i8* nonnull %45) #10, !dbg !4050
+	%80 = icmp slt i32 %79, 2, !dbg !4052
+	br i1 %80, label %115, label %81, !dbg !4053
+	%82 = call i64 @strlen(i8* nonnull %44) #13, !dbg !4054
+	call void @llvm.dbg.value(metadata i64 %82, i64 0, metadata !3954, metadata !649) #10, !dbg !4055
+	%83 = call i64 @strlen(i8* nonnull %45) #13, !dbg !4056
+	call void @llvm.dbg.value(metadata i64 %83, i64 0, metadata !3955, metadata !649) #10, !dbg !4057
+	call void @llvm.dbg.value(metadata i8* %52, i64 0, metadata !3956, metadata !649) #10, !dbg !4058
+	%84 = icmp eq i64 %51, 0, !dbg !4059
+	%85 = add i64 %82, 1
+	%86 = add i64 %85, %83
+	%87 = add i64 %86, 1
+	br i1 %84, label %88, label %91, !dbg !4061
+	call void @llvm.dbg.value(metadata i64 %87, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	%89 = add i64 %86, 2, !dbg !4062
+	%90 = call noalias i8* @malloc(i64 %89) #10, !dbg !4064
+	call void @llvm.dbg.value(metadata i8* %90, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	br label %95, !dbg !4065
+	%92 = add i64 %87, %51, !dbg !4066
+	call void @llvm.dbg.value(metadata i64 %92, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	%93 = add i64 %92, 1, !dbg !4068
+	%94 = call i8* @realloc(i8* %52, i64 %93) #10, !dbg !4069
+	call void @llvm.dbg.value(metadata i8* %94, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	br label %95
+	%96 = phi i64 [ %87, %88 ], [ %92, %91 ]
+	%97 = phi i8* [ %90, %88 ], [ %94, %91 ]
+	call void @llvm.dbg.value(metadata i8* %97, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	call void @llvm.dbg.value(metadata i64 %96, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	%98 = icmp eq i8* %97, null, !dbg !4070
+	br i1 %98, label %99, label %100, !dbg !4072
+	call void @llvm.dbg.value(metadata i64 0, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	call void @free(i8* %52) #10, !dbg !4073
+	br label %116, !dbg !4075
+	%101 = getelementptr inbounds i8, i8* %97, i64 %96, !dbg !4076
+	%102 = xor i64 %83, -1, !dbg !4077
+	%103 = getelementptr inbounds i8, i8* %101, i64 %102, !dbg !4077
+	%104 = xor i64 %82, -1, !dbg !4078
+	%105 = getelementptr inbounds i8, i8* %103, i64 %104, !dbg !4078
+	call void @llvm.dbg.value(metadata i8* %105, i64 0, metadata !4079, metadata !649) #10, !dbg !4088
+	call void @llvm.dbg.value(metadata i8* %44, i64 0, metadata !4087, metadata !649) #10, !dbg !4088
+	%106 = call i64 @llvm.objectsize.i64.p0i8(i8* nonnull %105, i1 false) #10, !dbg !4090
+	%107 = call i8* @__strcpy_chk(i8* nonnull %105, i8* nonnull %44, i64 %106) #10, !dbg !4091
+	call void @llvm.dbg.value(metadata i8* %103, i64 0, metadata !4079, metadata !649) #10, !dbg !4092
+	call void @llvm.dbg.value(metadata i8* %45, i64 0, metadata !4087, metadata !649) #10, !dbg !4092
+	%108 = call i64 @llvm.objectsize.i64.p0i8(i8* nonnull %103, i1 false) #10, !dbg !4094
+	%109 = call i8* @__strcpy_chk(i8* nonnull %103, i8* nonnull %45, i64 %108) #10, !dbg !4095
+	br label %111, !dbg !4096
+	br label %111, !dbg !4011
+	%112 = phi i64 [ %96, %100 ], [ %51, %62 ], [ %51, %62 ], [ %51, %62 ], [ %51, %110 ]
+	%113 = phi i8* [ %97, %100 ], [ %52, %62 ], [ %52, %62 ], [ %52, %62 ], [ %52, %110 ]
+	call void @llvm.dbg.value(metadata i8* %113, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	call void @llvm.dbg.value(metadata i64 %112, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	call void @llvm.lifetime.end(i64 51, i8* nonnull %45) #10, !dbg !4096
+	call void @llvm.lifetime.end(i64 51, i8* nonnull %44) #10, !dbg !4096
+	br label %50
+	br label %116, !dbg !4011
+	br label %116, !dbg !4011
+	%117 = phi i64 [ 0, %99 ], [ %51, %114 ], [ %51, %115 ]
+	%118 = phi i8* [ null, %99 ], [ %52, %114 ], [ %52, %115 ]
+	call void @llvm.dbg.value(metadata i8* %113, i64 0, metadata !3947, metadata !649) #10, !dbg !4011
+	call void @llvm.dbg.value(metadata i64 %112, i64 0, metadata !3948, metadata !649) #10, !dbg !4015
+	call void @llvm.lifetime.end(i64 51, i8* nonnull %45) #10, !dbg !4096
+	call void @llvm.lifetime.end(i64 51, i8* nonnull %44) #10, !dbg !4096
+	%119 = call i32 @rpl_fclose(%struct._IO_FILE* nonnull %41) #10, !dbg !4097
+	%120 = icmp eq i64 %117, 0, !dbg !4098
+	br i1 %120, label %123, label %121, !dbg !4100
+	%122 = getelementptr inbounds i8, i8* %118, i64 %117, !dbg !4101
+	store i8 0, i8* %122, align 1, !dbg !4103, !tbaa !824
+	call void @llvm.dbg.value(metadata i8* %113, i64 0, metadata !3897, metadata !649) #10, !dbg !3966
+	br label %123
+	%124 = phi i8* [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.104, i64 0, i64 0), %37 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.104, i64 0, i64 0), %48 ], [ %118, %121 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.104, i64 0, i64 0), %116 ]
+	call void @llvm.dbg.value(metadata i8* %124, i64 0, metadata !3897, metadata !649) #10, !dbg !3966
+	call void @free(i8* %29) #10, !dbg !4104
+	br label %125
+	%126 = phi i8* [ %124, %123 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.104, i64 0, i64 0), %24 ]
+	call void @llvm.dbg.value(metadata i8* %126, i64 0, metadata !3897, metadata !649) #10, !dbg !3966
+	store volatile i8* %126, i8** @charset_aliases, align 8, !dbg !4105, !tbaa !657
+	br label %127, !dbg !4106
+	%128 = phi i8* [ %6, %0 ], [ %126, %125 ]
+	call void @llvm.dbg.value(metadata i8* %128, i64 0, metadata !3876, metadata !649), !dbg !4107
+	%129 = load i8, i8* %128, align 1, !dbg !4108, !tbaa !824
+	%130 = icmp eq i8 %129, 0, !dbg !4109
+	br i1 %130, label %157, label %131, !dbg !4110
+	br label %132, !dbg !4112
+	%133 = phi i8 [ %154, %147 ], [ %129, %131 ]
+	%134 = phi i8* [ %153, %147 ], [ %128, %131 ]
+	%135 = call i32 @strcmp(i8* %5, i8* %134) #10, !dbg !4112
+	%136 = icmp eq i32 %135, 0, !dbg !4113
+	br i1 %136, label %143, label %137, !dbg !4114
+	%138 = icmp eq i8 %133, 42, !dbg !4115
+	br i1 %138, label %139, label %147, !dbg !4117
+	%140 = getelementptr inbounds i8, i8* %134, i64 1, !dbg !4118
+	%141 = load i8, i8* %140, align 1, !dbg !4118, !tbaa !824
+	%142 = icmp eq i8 %141, 0, !dbg !4120
+	br i1 %142, label %143, label %147, !dbg !4121
+	%144 = call i64 @strlen(i8* %134) #13, !dbg !4123
+	%145 = getelementptr inbounds i8, i8* %134, i64 %144, !dbg !4125
+	%146 = getelementptr inbounds i8, i8* %145, i64 1, !dbg !4126
+	call void @llvm.dbg.value(metadata i8* %146, i64 0, metadata !3875, metadata !649), !dbg !3961
+	br label %157, !dbg !4127
+	%148 = call i64 @strlen(i8* %134) #13, !dbg !4128
+	%149 = add i64 %148, 1, !dbg !4129
+	%150 = getelementptr inbounds i8, i8* %134, i64 %149, !dbg !4130
+	call void @llvm.dbg.value(metadata i8* %150, i64 0, metadata !3876, metadata !649), !dbg !4107
+	%151 = call i64 @strlen(i8* %150) #13, !dbg !4131
+	%152 = add i64 %151, 1, !dbg !4132
+	%153 = getelementptr inbounds i8, i8* %150, i64 %152, !dbg !4133
+	call void @llvm.dbg.value(metadata i8* %153, i64 0, metadata !3876, metadata !649), !dbg !4107
+	call void @llvm.dbg.value(metadata i8* %153, i64 0, metadata !3876, metadata !649), !dbg !4107
+	%154 = load i8, i8* %153, align 1, !dbg !4108, !tbaa !824
+	%155 = icmp eq i8 %154, 0, !dbg !4109
+	br i1 %155, label %156, label %132, !dbg !4110, !llvm.loop !4134
+	br label %157, !dbg !3961
+	%158 = phi i8* [ %146, %143 ], [ %5, %127 ], [ %5, %156 ]
+	call void @llvm.dbg.value(metadata i8* %158, i64 0, metadata !3875, metadata !649), !dbg !3961
+	%159 = load i8, i8* %158, align 1, !dbg !4137, !tbaa !824
+	%160 = icmp eq i8 %159, 0, !dbg !4139
+	%161 = select i1 %160, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.1.110, i64 0, i64 0), i8* %158, !dbg !4140
+	call void @llvm.dbg.value(metadata i8* %161, i64 0, metadata !3875, metadata !649), !dbg !3961
+	ret i8* %161, !dbg !4141
+}
+declare i8* @nl_langinfo(i32) local_unnamed_addr #2
+declare i8* @getenv(i8* nocapture) local_unnamed_addr #4
+declare i32 @open(i8* nocapture readonly, i32, ...) local_unnamed_addr #3
+declare noalias %struct._IO_FILE* @fdopen(i32, i8* nocapture readonly) local_unnamed_addr #2
+declare i32 @close(i32) local_unnamed_addr #3
+declare i32 @__uflow(%struct._IO_FILE*) local_unnamed_addr #3
+declare i32 @ungetc(i32, %struct._IO_FILE* nocapture) local_unnamed_addr #2
+declare i32 @fscanf(%struct._IO_FILE* nocapture, i8* nocapture readonly, ...) local_unnamed_addr #2
+declare i64 @llvm.objectsize.i64.p0i8(i8*, i1) #1
+declare i8* @__strcpy_chk(i8*, i8*, i64) local_unnamed_addr #2
+define i32 @mgetgroups(i8*, i32, i32** nocapture) local_unnamed_addr #6 !dbg !602 {
+	%4 = alloca i32, align 4
+	tail call void @llvm.dbg.value(metadata i8* %0, i64 0, metadata !608, metadata !649), !dbg !4142
+	tail call void @llvm.dbg.value(metadata i32 %1, i64 0, metadata !609, metadata !649), !dbg !4143
+	tail call void @llvm.dbg.value(metadata i32** %2, i64 0, metadata !610, metadata !649), !dbg !4144
+	%5 = bitcast i32* %4 to i8*, !dbg !4145
+	call void @llvm.lifetime.start(i64 4, i8* nonnull %5) #10, !dbg !4145
+	%6 = icmp eq i8* %0, null, !dbg !4146
+	br i1 %6, label %44, label %7, !dbg !4147
+	tail call void @llvm.dbg.value(metadata i32 10, i64 0, metadata !611, metadata !649), !dbg !4148
+	store i32 10, i32* %4, align 4, !dbg !4149, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32* null, i64 0, metadata !4150, metadata !649) #10, !dbg !4156
+	tail call void @llvm.dbg.value(metadata i64 10, i64 0, metadata !4155, metadata !649) #10, !dbg !4158
+	%8 = tail call i8* @realloc(i8* null, i64 40) #10, !dbg !4159
+	%9 = icmp eq i8* %8, null, !dbg !4160
+	br i1 %9, label %122, label %10, !dbg !4162
+	br label %11, !dbg !4159
+	%12 = phi i32 [ %40, %39 ], [ 10, %10 ], !dbg !4163
+	%13 = phi i8* [ %30, %39 ], [ %8, %10 ]
+	%14 = bitcast i8* %13 to i32*, !dbg !4159
+	call void @llvm.dbg.value(metadata i32* %14, i64 0, metadata !613, metadata !649), !dbg !4164
+	call void @llvm.dbg.value(metadata i32 %12, i64 0, metadata !611, metadata !649), !dbg !4148
+	call void @llvm.dbg.value(metadata i32 %12, i64 0, metadata !618, metadata !649), !dbg !4165
+	call void @llvm.dbg.value(metadata i32* %4, i64 0, metadata !611, metadata !985), !dbg !4148
+	%15 = call i32 @getgrouplist(i8* nonnull %0, i32 %1, i32* nonnull %14, i32* nonnull %4) #10, !dbg !4166
+	call void @llvm.dbg.value(metadata i32 %15, i64 0, metadata !612, metadata !649), !dbg !4167
+	%16 = icmp slt i32 %15, 0, !dbg !4168
+	%17 = load i32, i32* %4, align 4, !tbaa !751
+	%18 = icmp eq i32 %12, %17, !dbg !4170
+	%19 = and i1 %16, %18, !dbg !4172
+	call void @llvm.dbg.value(metadata i32 %17, i64 0, metadata !611, metadata !649), !dbg !4148
+	br i1 %19, label %20, label %22, !dbg !4172
+	%21 = shl nsw i32 %12, 1, !dbg !4173
+	call void @llvm.dbg.value(metadata i32 %21, i64 0, metadata !611, metadata !649), !dbg !4148
+	store i32 %21, i32* %4, align 4, !dbg !4173, !tbaa !751
+	br label %22, !dbg !4174
+	%23 = phi i32 [ %21, %20 ], [ %17, %11 ], !dbg !4175
+	call void @llvm.dbg.value(metadata i32 %23, i64 0, metadata !611, metadata !649), !dbg !4148
+	call void @llvm.dbg.value(metadata i32* %14, i64 0, metadata !4150, metadata !649) #10, !dbg !4176
+	call void @llvm.dbg.value(metadata i64 %28, i64 0, metadata !4155, metadata !649) #10, !dbg !4178
+	%24 = icmp slt i32 %23, 0, !dbg !4179
+	br i1 %24, label %25, label %27, !dbg !4181
+	%26 = tail call i32* @__errno_location() #1, !dbg !4182
+	store i32 12, i32* %26, align 4, !dbg !4184, !tbaa !751
+	br label %34, !dbg !4185
+	%28 = sext i32 %23 to i64, !dbg !4175
+	%29 = shl nsw i64 %28, 2, !dbg !4186
+	%30 = call i8* @realloc(i8* nonnull %13, i64 %29) #10, !dbg !4187
+	%31 = icmp eq i8* %30, null, !dbg !4188
+	br i1 %31, label %32, label %37, !dbg !4185
+	%33 = tail call i32* @__errno_location() #1, !dbg !4189
+	br label %34, !dbg !4189
+	%35 = phi i32* [ %33, %32 ], [ %26, %25 ], !dbg !4189
+	%36 = load i32, i32* %35, align 4, !dbg !4189, !tbaa !751
+	call void @llvm.dbg.value(metadata i32 %36, i64 0, metadata !619, metadata !649), !dbg !4190
+	call void @free(i8* nonnull %13) #10, !dbg !4191
+	store i32 %36, i32* %35, align 4, !dbg !4192, !tbaa !751
+	br label %122
+	%38 = icmp sgt i32 %15, -1, !dbg !4193
+	br i1 %38, label %41, label %39, !dbg !4195
+	%40 = load i32, i32* %4, align 4, !tbaa !751
+	br label %11, !dbg !4195
+	%42 = bitcast i32** %2 to i8**, !dbg !4196
+	store i8* %30, i8** %42, align 8, !dbg !4196, !tbaa !657
+	%43 = load i32, i32* %4, align 4, !dbg !4198, !tbaa !751
+	call void @llvm.dbg.value(metadata i32 %43, i64 0, metadata !611, metadata !649), !dbg !4148
+	br label %122, !dbg !4199
+	%45 = tail call i32 @getgroups(i32 0, i32* null) #10, !dbg !4200
+	tail call void @llvm.dbg.value(metadata i32 %45, i64 0, metadata !611, metadata !649), !dbg !4148
+	store i32 %45, i32* %4, align 4, !dbg !4201, !tbaa !751
+	%46 = icmp slt i32 %45, 0, !dbg !4203
+	br i1 %46, label %47, label %59, !dbg !4205
+	%48 = tail call i32* @__errno_location() #1, !dbg !4206
+	%49 = load i32, i32* %48, align 4, !dbg !4206, !tbaa !751
+	%50 = icmp eq i32 %49, 38, !dbg !4209
+	br i1 %50, label %51, label %122, !dbg !4210
+	tail call void @llvm.dbg.value(metadata i32* null, i64 0, metadata !4150, metadata !649) #10, !dbg !4211
+	tail call void @llvm.dbg.value(metadata i64 1, i64 0, metadata !4155, metadata !649) #10, !dbg !4214
+	%52 = tail call i8* @realloc(i8* null, i64 4) #10, !dbg !4215
+	tail call void @llvm.dbg.value(metadata i32* %55, i64 0, metadata !613, metadata !649), !dbg !4164
+	%53 = icmp eq i8* %52, null, !dbg !4216
+	br i1 %53, label %122, label %54, !dbg !4217
+	%55 = bitcast i8* %52 to i32*, !dbg !4215
+	%56 = bitcast i32** %2 to i8**, !dbg !4219
+	store i8* %52, i8** %56, align 8, !dbg !4219, !tbaa !657
+	store i32 %1, i32* %55, align 4, !dbg !4221, !tbaa !751
+	%57 = icmp ne i32 %1, -1, !dbg !4222
+	%58 = zext i1 %57 to i32, !dbg !4222
+	br label %122, !dbg !4223
+	%60 = icmp eq i32 %45, 0, !dbg !4224
+	%61 = icmp ne i32 %1, -1, !dbg !4226
+	%62 = or i1 %61, %60, !dbg !4228
+	br i1 %62, label %63, label %68, !dbg !4228
+	tail call void @llvm.dbg.value(metadata i32 %45, i64 0, metadata !611, metadata !649), !dbg !4148
+	%64 = add nsw i32 %45, 1, !dbg !4229
+	tail call void @llvm.dbg.value(metadata i32 %64, i64 0, metadata !611, metadata !649), !dbg !4148
+	store i32 %64, i32* %4, align 4, !dbg !4229, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %64, i64 0, metadata !611, metadata !649), !dbg !4148
+	tail call void @llvm.dbg.value(metadata i32* null, i64 0, metadata !4150, metadata !649) #10, !dbg !4230
+	tail call void @llvm.dbg.value(metadata i64 %70, i64 0, metadata !4155, metadata !649) #10, !dbg !4232
+	%65 = icmp slt i32 %45, -1, !dbg !4233
+	br i1 %65, label %66, label %68, !dbg !4234
+	%67 = tail call i32* @__errno_location() #1, !dbg !4235
+	store i32 12, i32* %67, align 4, !dbg !4236, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32* %73, i64 0, metadata !613, metadata !649), !dbg !4164
+	br label %122, !dbg !4237
+	%69 = phi i32 [ %64, %63 ], [ %45, %59 ]
+	%70 = sext i32 %69 to i64, !dbg !4238
+	%71 = shl nsw i64 %70, 2, !dbg !4239
+	%72 = tail call i8* @realloc(i8* null, i64 %71) #10, !dbg !4240
+	%73 = bitcast i8* %72 to i32*, !dbg !4240
+	tail call void @llvm.dbg.value(metadata i32* %73, i64 0, metadata !613, metadata !649), !dbg !4164
+	%74 = icmp eq i8* %72, null, !dbg !4241
+	br i1 %74, label %122, label %75, !dbg !4237
+	tail call void @llvm.dbg.value(metadata i32 %64, i64 0, metadata !611, metadata !649), !dbg !4148
+	%76 = zext i1 %61 to i32, !dbg !4243
+	%77 = sub nsw i32 %69, %76, !dbg !4244
+	%78 = zext i1 %61 to i64, !dbg !4245
+	%79 = getelementptr inbounds i32, i32* %73, i64 %78, !dbg !4245
+	%80 = tail call i32 @getgroups(i32 %77, i32* %79) #10, !dbg !4246
+	tail call void @llvm.dbg.value(metadata i32 %80, i64 0, metadata !612, metadata !649), !dbg !4167
+	%81 = icmp slt i32 %80, 0, !dbg !4247
+	br i1 %81, label %82, label %85, !dbg !4248
+	%83 = tail call i32* @__errno_location() #1, !dbg !4249
+	%84 = load i32, i32* %83, align 4, !dbg !4249, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %84, i64 0, metadata !622, metadata !649), !dbg !4250
+	tail call void @free(i8* nonnull %72) #10, !dbg !4251
+	store i32 %84, i32* %83, align 4, !dbg !4252, !tbaa !751
+	br label %122
+	br i1 %61, label %86, label %88, !dbg !4253
+	store i32 %1, i32* %73, align 4, !dbg !4255, !tbaa !751
+	%87 = add nsw i32 %80, 1, !dbg !4257
+	tail call void @llvm.dbg.value(metadata i32 %87, i64 0, metadata !612, metadata !649), !dbg !4167
+	br label %88, !dbg !4258
+	%89 = phi i32 [ %87, %86 ], [ %80, %85 ]
+	tail call void @llvm.dbg.value(metadata i32 %89, i64 0, metadata !612, metadata !649), !dbg !4167
+	%90 = bitcast i32** %2 to i8**, !dbg !4259
+	store i8* %72, i8** %90, align 8, !dbg !4259, !tbaa !657
+	%91 = icmp sgt i32 %89, 1, !dbg !4260
+	br i1 %91, label %92, label %122, !dbg !4261
+	%93 = load i32, i32* %73, align 4, !dbg !4262, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %93, i64 0, metadata !625, metadata !649), !dbg !4263
+	%94 = sext i32 %89 to i64, !dbg !4264
+	%95 = getelementptr inbounds i32, i32* %73, i64 %94, !dbg !4264
+	tail call void @llvm.dbg.value(metadata i32* %95, i64 0, metadata !629, metadata !649), !dbg !4265
+	%96 = getelementptr inbounds i8, i8* %72, i64 4
+	%97 = bitcast i8* %96 to i32*
+	tail call void @llvm.dbg.value(metadata i32* %97, i64 0, metadata !628, metadata !649), !dbg !4266
+	tail call void @llvm.dbg.value(metadata i32 %89, i64 0, metadata !612, metadata !649), !dbg !4167
+	tail call void @llvm.dbg.value(metadata i32* %73, i64 0, metadata !613, metadata !649), !dbg !4164
+	%98 = icmp ult i32* %97, %95, !dbg !4267
+	br i1 %98, label %99, label %122, !dbg !4271
+	br label %100, !dbg !4271
+	%101 = phi i32 [ %108, %116 ], [ %93, %99 ]
+	%102 = phi i32* [ %118, %116 ], [ %97, %99 ]
+	%103 = phi i32 [ %107, %116 ], [ %89, %99 ]
+	%104 = phi i32* [ %117, %116 ], [ %73, %99 ]
+	br label %105, !dbg !4271
+	%106 = phi i32* [ %102, %100 ], [ %114, %112 ]
+	%107 = phi i32 [ %103, %100 ], [ %113, %112 ]
+	%108 = load i32, i32* %106, align 4, !dbg !4273, !tbaa !751
+	%109 = icmp eq i32 %108, %93, !dbg !4276
+	%110 = icmp eq i32 %108, %101, !dbg !4277
+	%111 = or i1 %109, %110, !dbg !4279
+	br i1 %111, label %112, label %116, !dbg !4279
+	%113 = add nsw i32 %107, -1, !dbg !4280
+	tail call void @llvm.dbg.value(metadata i32 %113, i64 0, metadata !612, metadata !649), !dbg !4167
+	%114 = getelementptr inbounds i32, i32* %106, i64 1
+	tail call void @llvm.dbg.value(metadata i32* %114, i64 0, metadata !628, metadata !649), !dbg !4266
+	tail call void @llvm.dbg.value(metadata i32 %113, i64 0, metadata !612, metadata !649), !dbg !4167
+	tail call void @llvm.dbg.value(metadata i32* %104, i64 0, metadata !613, metadata !649), !dbg !4164
+	%115 = icmp ult i32* %114, %95, !dbg !4267
+	br i1 %115, label %105, label %120, !dbg !4271, !llvm.loop !4281
+	%117 = getelementptr inbounds i32, i32* %104, i64 1, !dbg !4284
+	tail call void @llvm.dbg.value(metadata i32* %117, i64 0, metadata !613, metadata !649), !dbg !4164
+	store i32 %108, i32* %117, align 4, !dbg !4285, !tbaa !751
+	%118 = getelementptr inbounds i32, i32* %106, i64 1
+	tail call void @llvm.dbg.value(metadata i32* %118, i64 0, metadata !628, metadata !649), !dbg !4266
+	tail call void @llvm.dbg.value(metadata i32 %107, i64 0, metadata !612, metadata !649), !dbg !4167
+	tail call void @llvm.dbg.value(metadata i32* %117, i64 0, metadata !613, metadata !649), !dbg !4164
+	%119 = icmp ult i32* %118, %95, !dbg !4267
+	br i1 %119, label %100, label %121, !dbg !4271, !llvm.loop !4281
+	br label %122, !dbg !4286
+	br label %122, !dbg !4286
+	%123 = phi i32 [ %58, %54 ], [ -1, %82 ], [ -1, %7 ], [ -1, %51 ], [ -1, %47 ], [ -1, %68 ], [ %89, %88 ], [ -1, %66 ], [ %43, %41 ], [ -1, %34 ], [ %89, %92 ], [ %113, %120 ], [ %107, %121 ]
+	call void @llvm.lifetime.end(i64 4, i8* nonnull %5) #10, !dbg !4286
+	ret i32 %123, !dbg !4286
+}
+declare i32 @getgrouplist(i8*, i32, i32*, i32*) local_unnamed_addr #3
+declare i32 @getgroups(i32, i32*) local_unnamed_addr #2
+define i32 @rpl_fclose(%struct._IO_FILE* nonnull) local_unnamed_addr #6 !dbg !4287 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !4332, metadata !649), !dbg !4336
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !4333, metadata !649), !dbg !4337
+	tail call void @llvm.dbg.value(metadata i32 0, i64 0, metadata !4335, metadata !649), !dbg !4338
+	%2 = tail call i32 @fileno(%struct._IO_FILE* nonnull %0) #10, !dbg !4339
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !4334, metadata !649), !dbg !4340
+	%3 = icmp slt i32 %2, 0, !dbg !4341
+	br i1 %3, label %4, label %6, !dbg !4343
+	%5 = tail call i32 @fclose(%struct._IO_FILE* nonnull %0), !dbg !4344
+	br label %24, !dbg !4345
+	%7 = tail call i32 @__freading(%struct._IO_FILE* nonnull %0) #10, !dbg !4346
+	%8 = icmp eq i32 %7, 0, !dbg !4346
+	br i1 %8, label %13, label %9, !dbg !4348
+	%10 = tail call i32 @fileno(%struct._IO_FILE* nonnull %0) #10, !dbg !4349
+	%11 = tail call i64 @lseek(i32 %10, i64 0, i32 1) #10, !dbg !4351
+	%12 = icmp eq i64 %11, -1, !dbg !4353
+	br i1 %12, label %16, label %13, !dbg !4354
+	%14 = tail call i32 @rpl_fflush(%struct._IO_FILE* nonnull %0) #10, !dbg !4355
+	%15 = icmp eq i32 %14, 0, !dbg !4355
+	br i1 %15, label %16, label %18, !dbg !4356
+	tail call void @llvm.dbg.value(metadata i32 %20, i64 0, metadata !4333, metadata !649), !dbg !4337
+	%17 = tail call i32 @fclose(%struct._IO_FILE* nonnull %0), !dbg !4358
+	tail call void @llvm.dbg.value(metadata i32 %21, i64 0, metadata !4335, metadata !649), !dbg !4338
+	br label %24, !dbg !4359
+	%19 = tail call i32* @__errno_location() #1, !dbg !4360
+	%20 = load i32, i32* %19, align 4, !dbg !4360, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 %20, i64 0, metadata !4333, metadata !649), !dbg !4337
+	tail call void @llvm.dbg.value(metadata i32 %20, i64 0, metadata !4333, metadata !649), !dbg !4337
+	%21 = tail call i32 @fclose(%struct._IO_FILE* nonnull %0), !dbg !4358
+	tail call void @llvm.dbg.value(metadata i32 %21, i64 0, metadata !4335, metadata !649), !dbg !4338
+	%22 = icmp eq i32 %20, 0, !dbg !4361
+	br i1 %22, label %24, label %23, !dbg !4359
+	store i32 %20, i32* %19, align 4, !dbg !4363, !tbaa !751
+	tail call void @llvm.dbg.value(metadata i32 -1, i64 0, metadata !4335, metadata !649), !dbg !4338
+	br label %24, !dbg !4365
+	%25 = phi i32 [ %5, %4 ], [ -1, %23 ], [ %21, %18 ], [ %17, %16 ]
+	ret i32 %25, !dbg !4366
+}
+declare i32 @fileno(%struct._IO_FILE* nocapture) local_unnamed_addr #2
+declare i32 @fclose(%struct._IO_FILE* nocapture) local_unnamed_addr #2
+declare i32 @__freading(%struct._IO_FILE*) local_unnamed_addr #2
+declare i64 @lseek(i32, i64, i32) local_unnamed_addr #2
+define i32 @rpl_fflush(%struct._IO_FILE*) local_unnamed_addr #6 !dbg !4367 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !4412, metadata !649), !dbg !4413
+	%2 = icmp eq %struct._IO_FILE* %0, null, !dbg !4414
+	br i1 %2, label %6, label %3, !dbg !4416
+	%4 = tail call i32 @__freading(%struct._IO_FILE* nonnull %0) #10, !dbg !4417
+	%5 = icmp eq i32 %4, 0, !dbg !4417
+	br i1 %5, label %6, label %8, !dbg !4419
+	%7 = tail call i32 @fflush(%struct._IO_FILE* %0), !dbg !4421
+	br label %17, !dbg !4422
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !4423, metadata !649) #10, !dbg !4428
+	%9 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 0, !dbg !4430
+	%10 = load i32, i32* %9, align 8, !dbg !4430, !tbaa !3797
+	%11 = and i32 %10, 256, !dbg !4432
+	%12 = icmp eq i32 %11, 0, !dbg !4432
+	br i1 %12, label %15, label %13, !dbg !4433
+	%14 = tail call i32 @rpl_fseeko(%struct._IO_FILE* nonnull %0, i64 0, i32 1) #10, !dbg !4434
+	br label %15, !dbg !4434
+	%16 = tail call i32 @fflush(%struct._IO_FILE* nonnull %0), !dbg !4435
+	br label %17, !dbg !4436
+	%18 = phi i32 [ %7, %6 ], [ %16, %15 ]
+	ret i32 %18, !dbg !4437
+}
+declare i32 @fflush(%struct._IO_FILE* nocapture) local_unnamed_addr #2
+define i32 @rpl_fseeko(%struct._IO_FILE* nocapture nonnull, i64, i32) local_unnamed_addr #6 !dbg !4438 {
+	tail call void @llvm.dbg.value(metadata %struct._IO_FILE* %0, i64 0, metadata !4484, metadata !649), !dbg !4490
+	tail call void @llvm.dbg.value(metadata i64 %1, i64 0, metadata !4485, metadata !649), !dbg !4491
+	tail call void @llvm.dbg.value(metadata i32 %2, i64 0, metadata !4486, metadata !649), !dbg !4492
+	%4 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 2, !dbg !4493
+	%5 = load i8*, i8** %4, align 8, !dbg !4493, !tbaa !4027
+	%6 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 1, !dbg !4494
+	%7 = load i8*, i8** %6, align 8, !dbg !4494, !tbaa !4026
+	%8 = icmp eq i8* %5, %7, !dbg !4495
+	br i1 %8, label %9, label %28, !dbg !4496
+	%10 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 5, !dbg !4497
+	%11 = load i8*, i8** %10, align 8, !dbg !4497, !tbaa !814
+	%12 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 4, !dbg !4499
+	%13 = load i8*, i8** %12, align 8, !dbg !4499, !tbaa !4500
+	%14 = icmp eq i8* %11, %13, !dbg !4501
+	br i1 %14, label %15, label %28, !dbg !4502
+	%16 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 9, !dbg !4503
+	%17 = load i8*, i8** %16, align 8, !dbg !4503, !tbaa !4504
+	%18 = icmp eq i8* %17, null, !dbg !4505
+	br i1 %18, label %19, label %28, !dbg !4506
+	%20 = tail call i32 @fileno(%struct._IO_FILE* nonnull %0) #10, !dbg !4508
+	%21 = tail call i64 @lseek(i32 %20, i64 %1, i32 %2) #10, !dbg !4509
+	tail call void @llvm.dbg.value(metadata i64 %21, i64 0, metadata !4487, metadata !649), !dbg !4511
+	%22 = icmp eq i64 %21, -1, !dbg !4512
+	br i1 %22, label %30, label %23, !dbg !4514
+	%24 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 0, !dbg !4515
+	%25 = load i32, i32* %24, align 8, !dbg !4516, !tbaa !3797
+	%26 = and i32 %25, -17, !dbg !4516
+	store i32 %26, i32* %24, align 8, !dbg !4516, !tbaa !3797
+	%27 = getelementptr inbounds %struct._IO_FILE, %struct._IO_FILE* %0, i64 0, i32 21, !dbg !4517
+	store i64 %21, i64* %27, align 8, !dbg !4518, !tbaa !4519
+	br label %30, !dbg !4520
+	%29 = tail call i32 @fseeko(%struct._IO_FILE* nonnull %0, i64 %1, i32 %2), !dbg !4521
+	br label %30, !dbg !4522
+	%31 = phi i32 [ %29, %28 ], [ 0, %23 ], [ -1, %19 ]
+	ret i32 %31, !dbg !4523
+}
+declare i32 @fseeko(%struct._IO_FILE* nocapture, i64, i32) local_unnamed_addr #2
+attributes #0 = { noreturn nounwind sspstrong uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #5 = { noreturn nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #6 = { nounwind sspstrong uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #7 = { nounwind readnone "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #8 = { argmemonly nounwind }
+attributes #9 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #10 = { nounwind }
+attributes #11 = { nounwind readonly sspstrong uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #12 = { inlinehint nounwind sspstrong uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #13 = { nounwind readonly }
+attributes #14 = { noreturn nounwind }
+attributes #15 = { noreturn }
+attributes #16 = { cold }
 !llvm.dbg.cu = !{!2, !76, !86, !91, !100, !552, !107, !114, !558, !197, !566, !583, !585, !587, !589, !592, !594, !206, !597, !633, !635, !637}
 !llvm.ident = !{!639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639, !639}
 !llvm.module.flags = !{!640, !641, !642, !643}

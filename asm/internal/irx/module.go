@@ -192,62 +192,10 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		// Reset map tracking local variables.
 		m.locals = make(map[string]value.Named)
 
-		// Assign IDs to unnamed local variables.
-		f.AssignLocalIDs()
-
-		// Index local variables.
-		for _, param := range f.Params {
-			m.locals[param.Name] = param
-		}
-		for _, block := range f.Blocks {
-			m.locals[block.Name] = block
-			for _, inst := range block.Insts {
-				n, ok := inst.(value.Named)
-				if !ok {
-					continue
-				}
-				if n.Type().Equal(types.Void) {
-					continue
-				}
-				m.locals[n.GetName()] = n
-			}
-		}
-
-		// Resolve basic blocks.
-		//
-		//    *ir.BasicBlock
-		resolveBasicBlock := func(n interface{}) {
-			switch n := n.(type) {
-			case **ir.BasicBlock:
-				if (*n).Term == nil {
-					fmt.Println("bb name:", (*n).Name)
-					(*n) = m.locals[(*n).Name].(*ir.BasicBlock)
-				}
-			}
-		}
-		irutil.WalkFunc(f, resolveBasicBlock)
-
-		// Resolve local variables.
-		//
-		//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
-		resolveLocalIdent := func(n interface{}) {
-			switch n := n.(type) {
-			case *value.Value:
-				if i, ok := (*n).(*ast.LocalIdent); ok {
-					*n = m.local(i.Name)
-				}
-			}
-		}
-		irutil.WalkFunc(f, resolveLocalIdent)
-
 		// Resolve instruction types.
 		resolveInstType := func(n interface{}) {
 			switch n := n.(type) {
 			case *ir.InstAlloca:
-				if n.Typ == nil {
-					n.Typ = types.NewPointer(n.ElemType)
-				}
-			case *ir.InstGetElementPtr:
 				if n.Typ == nil {
 					n.Typ = types.NewPointer(n.ElemType)
 				}
@@ -270,6 +218,96 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			}
 		}
 		irutil.WalkFunc(f, resolveInstType)
+
+		// Assign IDs to unnamed local variables.
+		f.AssignLocalIDs()
+
+		// Index local variables.
+		for _, param := range f.Params {
+			m.locals[param.Name] = param
+		}
+		if f.FunctionBody != nil {
+			for _, block := range f.Blocks {
+				m.locals[block.Name] = block
+				for _, inst := range block.Insts {
+					n, ok := inst.(value.Named)
+					if !ok {
+						continue
+					}
+					if n.Type().Equal(types.Void) {
+						continue
+					}
+					m.locals[n.GetName()] = n
+				}
+			}
+		}
+
+		// Resolve basic blocks.
+		//
+		//    *ir.BasicBlock
+		resolveBasicBlock := func(n interface{}) {
+			switch n := n.(type) {
+			case **ir.BasicBlock:
+				if (*n).Term == nil {
+					(*n) = m.locals[(*n).Name].(*ir.BasicBlock)
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveBasicBlock)
+
+		// Resolve local variables.
+		//
+		//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
+		resolveLocalIdent := func(n interface{}) {
+			switch n := n.(type) {
+			case *value.Value:
+				if i, ok := (*n).(*ast.LocalIdent); ok {
+					*n = m.local(i.Name)
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveLocalIdent)
+
+		// Resolve local values.
+		//
+		//    *ast.TypeValue -> value.Value
+		resolveLocalTypeValue := func(n interface{}) {
+			switch n := n.(type) {
+			case *value.Value:
+				if tc, ok := (*n).(*ast.TypeValue); ok {
+					// Resolve tc.Const type.
+					if c, ok := tc.Value.(TypeSetter); ok {
+						// Propagate the type from tc.Typ to tc.Value.Typ.
+						c.SetType(tc.Typ)
+					} else {
+						// Validate tc.Value.Type() against tc.Typ.
+						// TODO: Figure out how to validate type.
+						//got := tc.Value.Type()
+						//want := tc.Typ
+						//if !want.Equal(got) {
+						//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
+						//}
+					}
+					*n = tc.Value
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveLocalTypeValue)
+
+		// Resolve extractvalue and getelementptr instruction types.
+		resolveGEPInstType := func(n interface{}) {
+			switch n := n.(type) {
+			case *ir.InstExtractValue:
+				if n.Typ == nil {
+					n.Typ = aggregateElemType(n.X.Type(), n.Indices)
+				}
+			case *ir.InstGetElementPtr:
+				if n.Typ == nil {
+					n.Typ = getGEPType(n.ElemType, n.Indices)
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveGEPInstType)
 	}
 
 	// Resolve values.

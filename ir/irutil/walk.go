@@ -59,7 +59,7 @@ func WalkFuncBeforeAfter(f *ir.Function, before, after func(interface{})) {
 	// Traverse child nodes of function, instead of f directly, as *ir.Function
 	// nodes are not traversed when staying within the scope of the function.
 	w.walkBeforeAfter(&f.Sig, before, after)
-	if f.Blocks != nil {
+	if f.FunctionBody != nil && f.Blocks != nil {
 		w.walkBeforeAfter(&f.Blocks, before, after)
 	}
 }

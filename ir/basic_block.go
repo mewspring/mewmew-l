@@ -62,7 +62,7 @@ func (block *BasicBlock) Def() string {
 	// OptLabelIdent Instructions Terminator
 	buf := &strings.Builder{}
 	if isLocalID(block.Name) {
-		fmt.Fprintf(buf, "; <label>:%v\n", enc.Label(block.Name))
+		//fmt.Fprintf(buf, "; <label>:%v\n", enc.Label(block.Name))
 	} else if len(block.Name) > 0 {
 		// TODO: Store block name without ':' suffix or '%' prefix.
 		fmt.Fprintf(buf, "%v\n", enc.Label(block.Name))

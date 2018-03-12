@@ -571,7 +571,7 @@ func (c *ExprShuffleVector) String() string {
 
 // Type returns the type of the shufflevector expression.
 func (c *ExprShuffleVector) Type() types.Type {
-	return c.X.Type()
+	return c.Mask.Type()
 }
 
 // Ident returns the identifier associated with the shufflevector expression.

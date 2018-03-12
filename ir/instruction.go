@@ -583,7 +583,7 @@ func (inst *InstExtractElement) Def() string {
 
 // Type returns the type of the extractelement instruction.
 func (inst *InstExtractElement) Type() types.Type {
-	panic("ir.InstExtractElement.Type: not yet implemented")
+	return inst.X.Type().(*types.VectorType).ElemType
 }
 
 // ~~~[ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -634,15 +634,21 @@ func (inst *InstShuffleVector) Def() string {
 
 // Type returns the type of the shufflevector instruction.
 func (inst *InstShuffleVector) Type() types.Type {
-	return inst.X.Type()
+	xt := inst.X.Type().(*types.VectorType)
+	mt := inst.Mask.Type().(*types.VectorType)
+	return types.NewVector(mt.Len, xt.ElemType)
 }
 
 // --- [ Aggregate instructions ] ----------------------------------------------
 
 // ~~~[ extractvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Typ is nil when InstExtractValue is in AST form; irx.Translate computes
+// the type of Typ based on the type of the X operand the and given indices.
+
 // InstExtractValue is an LLVM IR extractvalue instruction.
 type InstExtractValue struct {
+	Typ      types.Type
 	X        value.Value
 	Indices  []int64
 	Metadata []*metadata.MetadataAttachment
@@ -664,7 +670,7 @@ func (inst *InstExtractValue) Def() string {
 
 // Type returns the type of the extractvalue instruction.
 func (inst *InstExtractValue) Type() types.Type {
-	panic("ir.ExprExtractValue.Type: not yet implemented")
+	return inst.Typ
 }
 
 // ~~~[ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -953,7 +959,8 @@ const (
 // ~~~[ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Note, Typ is nil when InstGetElementPtr is in AST form; irx.Translate
-// instantiates Typ to a pointer to ElemType.
+// computes the type of Typ based on the type of the Src operand the and given
+// indices.
 
 // InstGetElementPtr is an LLVM IR getelementptr instruction.
 type InstGetElementPtr struct {
@@ -1469,7 +1476,11 @@ type InstCall struct {
 	FastMathFlags []FastMathFlag
 	CallingConv   CallingConv
 	ReturnAttrs   []ReturnAttribute
-	RetType       types.Type
+
+	// Note, RetType is either the function type of the callee or the return type
+	// of the callee.
+
+	RetType types.Type
 
 	// Note, the type of Callee is not present in the AST of the call
 	// instruction, but rather it has to be inferred by looking up the global or
@@ -1526,6 +1537,9 @@ func (inst *InstCall) Def() string {
 
 // Type returns the type of the call instruction.
 func (inst *InstCall) Type() types.Type {
+	if t, ok := inst.RetType.(*types.FuncType); ok {
+		return t.RetType
+	}
 	return inst.RetType
 }
 
