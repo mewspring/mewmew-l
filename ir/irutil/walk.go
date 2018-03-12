@@ -1088,7 +1088,7 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.Y, before, after)
 		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.InstPhi:
-		w.walkBeforeAfter(&n.Type, before, after)
+		w.walkBeforeAfter(&n.Typ, before, after)
 		w.walkBeforeAfter(&n.Incs, before, after)
 		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.Incoming:
@@ -1111,7 +1111,7 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.ArgType, before, after)
 		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.InstLandingPad:
-		w.walkBeforeAfter(&n.Type, before, after)
+		w.walkBeforeAfter(&n.Typ, before, after)
 		w.walkBeforeAfter(&n.Clauses, before, after)
 		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.Clause:

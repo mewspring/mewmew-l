@@ -265,6 +265,37 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			}
 		}
 		irutil.WalkFunc(f, resolveLocalIdent)
+
+		// Resolve instruction types.
+		resolveInstType := func(n interface{}) {
+			switch n := n.(type) {
+			case *ir.InstAlloca:
+				if n.Typ == nil {
+					n.Typ = types.NewPointer(n.ElemType)
+				}
+			case *ir.InstGetElementPtr:
+				if n.Typ == nil {
+					n.Typ = types.NewPointer(n.ElemType)
+				}
+			case *ir.InstICmp:
+				if n.Typ == nil {
+					if t, ok := n.X.Type().(*types.VectorType); ok {
+						n.Typ = types.NewVector(t.Len, types.I1)
+					} else {
+						n.Typ = types.I1
+					}
+				}
+			case *ir.InstFCmp:
+				if n.Typ == nil {
+					if t, ok := n.X.Type().(*types.VectorType); ok {
+						n.Typ = types.NewVector(t.Len, types.I1)
+					} else {
+						n.Typ = types.I1
+					}
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveInstType)
 	}
 
 	return m.Module, nil

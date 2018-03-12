@@ -20,8 +20,36 @@ type LocalDef struct {
 	Inst ValueInstruction
 }
 
-// String returns a string representation of the instruction.
+// String returns the string representation of the local definition as a type-
+// value pair.
 func (v *LocalDef) String() string {
+	// Type LocalIdent
+	return fmt.Sprintf("%v %v", v.Type(), v.Ident())
+}
+
+// Type returns the type of the local definition.
+func (v *LocalDef) Type() types.Type {
+	return v.Inst.Type()
+}
+
+// Ident returns the identifier associated with the local definition.
+func (v *LocalDef) Ident() string {
+	// LocalIdent
+	return enc.Local(v.Name)
+}
+
+// Name returns the name of the local definition.
+func (v *LocalDef) GetName() string {
+	return v.Name
+}
+
+// SetName sets the name of the local definition.
+func (v *LocalDef) SetName(name string) {
+	v.Name = name
+}
+
+// Def returns the LLVM syntax representation of the local definition.
+func (v *LocalDef) Def() string {
 	// ValueInstruction
 	// LocalIdent "=" ValueInstruction
 	if len(v.Name) == 0 {
@@ -56,6 +84,11 @@ func (inst *InstAdd) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the add instruction.
+func (inst *InstAdd) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ fadd ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstFAdd is an LLVM IR fadd instruction.
@@ -78,6 +111,11 @@ func (inst *InstFAdd) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the fadd instruction.
+func (inst *InstFAdd) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ sub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,6 +142,11 @@ func (inst *InstSub) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the sub instruction.
+func (inst *InstSub) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ fsub ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstFSub is an LLVM IR fsub instruction.
@@ -126,6 +169,11 @@ func (inst *InstFSub) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the fsub instruction.
+func (inst *InstFSub) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ mul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,6 +200,11 @@ func (inst *InstMul) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the mul instruction.
+func (inst *InstMul) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ fmul ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstFMul is an LLVM IR fmul instruction.
@@ -174,6 +227,11 @@ func (inst *InstFMul) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the fmul instruction.
+func (inst *InstFMul) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ udiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,6 +258,11 @@ func (inst *InstUDiv) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the udiv instruction.
+func (inst *InstUDiv) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ sdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstSDiv is an LLVM IR sdiv instruction.
@@ -222,6 +285,11 @@ func (inst *InstSDiv) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the sdiv instruction.
+func (inst *InstSDiv) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ fdiv ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -248,6 +316,11 @@ func (inst *InstFDiv) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the fdiv instruction.
+func (inst *InstFDiv) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ urem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstURem is an LLVM IR urem instruction.
@@ -267,6 +340,11 @@ func (inst *InstURem) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the urem instruction.
+func (inst *InstURem) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ srem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstSRem is an LLVM IR srem instruction.
@@ -284,6 +362,11 @@ func (inst *InstSRem) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the srem instruction.
+func (inst *InstSRem) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ frem ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -308,6 +391,11 @@ func (inst *InstFRem) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the frem instruction.
+func (inst *InstFRem) Type() types.Type {
+	return inst.X.Type()
 }
 
 // --- [ Bitwise instructions ] ------------------------------------------------
@@ -336,6 +424,11 @@ func (inst *InstShl) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the shl instruction.
+func (inst *InstShl) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ lshr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstLShr is an LLVM IR lshr instruction.
@@ -358,6 +451,11 @@ func (inst *InstLShr) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the lshr instruction.
+func (inst *InstLShr) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ ashr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -384,6 +482,11 @@ func (inst *InstAShr) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the ashr instruction.
+func (inst *InstAShr) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ and ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstAnd is an LLVM IR and instruction.
@@ -401,6 +504,11 @@ func (inst *InstAnd) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the and instruction.
+func (inst *InstAnd) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ or ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -422,6 +530,11 @@ func (inst *InstOr) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the or instruction.
+func (inst *InstOr) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ xor ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstXor is an LLVM IR xor instruction.
@@ -439,6 +552,11 @@ func (inst *InstXor) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the xor instruction.
+func (inst *InstXor) Type() types.Type {
+	return inst.X.Type()
 }
 
 // --- [ Vector instructions ] -------------------------------------------------
@@ -463,6 +581,11 @@ func (inst *InstExtractElement) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the extractelement instruction.
+func (inst *InstExtractElement) Type() types.Type {
+	panic("ir.InstExtractElement.Type: not yet implemented")
+}
+
 // ~~~[ insertelement ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstInsertElement is an LLVM IR insertelement instruction.
@@ -484,6 +607,11 @@ func (inst *InstInsertElement) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the insertelement instruction.
+func (inst *InstInsertElement) Type() types.Type {
+	return inst.X.Type()
+}
+
 // ~~~[ shufflevector ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstShuffleVector is an LLVM IR shufflevector instruction.
@@ -502,6 +630,11 @@ func (inst *InstShuffleVector) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the shufflevector instruction.
+func (inst *InstShuffleVector) Type() types.Type {
+	return inst.X.Type()
 }
 
 // --- [ Aggregate instructions ] ----------------------------------------------
@@ -529,6 +662,11 @@ func (inst *InstExtractValue) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the extractvalue instruction.
+func (inst *InstExtractValue) Type() types.Type {
+	panic("ir.ExprExtractValue.Type: not yet implemented")
+}
+
 // ~~~[ insertvalue ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstInsertValue is an LLVM IR insertvalue instruction.
@@ -553,14 +691,23 @@ func (inst *InstInsertValue) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the insertvalue instruction.
+func (inst *InstInsertValue) Type() types.Type {
+	return inst.X.Type()
+}
+
 // --- [ Memory instructions ] -------------------------------------------------
 
 // ~~~[ alloca ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Note, Typ is nil when InstAlloca is in AST form; irx.Translate instantiates
+// Typ to a pointer to ElemType.
 
 // InstAlloca is an LLVM IR alloca instruction.
 type InstAlloca struct {
 	InAlloca   bool
 	SwiftError bool
+	Typ        *types.PointerType
 	ElemType   types.Type
 	NElems     value.Value     // nil if not present
 	Alignment  *Alignment      // nil if not present
@@ -595,13 +742,18 @@ func (inst *InstAlloca) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the alloca instruction.
+func (inst *InstAlloca) Type() types.Type {
+	return inst.Typ
+}
+
 // ~~~[ load ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstLoad is an LLVM IR load instruction.
 type InstLoad struct {
 	Atomic         bool
 	Volatile       bool
-	ElemType       types.Type
+	ElemType       types.Type // TODO: Remove ElemType as alreaedy part of Src?
 	Src            value.Value
 	SyncScope      *SyncScope     // nil if not present
 	AtomicOrdering AtomicOrdering // zero value if not present
@@ -635,6 +787,11 @@ func (inst *InstLoad) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the load instruction.
+func (inst *InstLoad) Type() types.Type {
+	return inst.ElemType
 }
 
 // ~~~[ store ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -795,9 +952,13 @@ const (
 
 // ~~~[ getelementptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Typ is nil when InstGetElementPtr is in AST form; irx.Translate
+// instantiates Typ to a pointer to ElemType.
+
 // InstGetElementPtr is an LLVM IR getelementptr instruction.
 type InstGetElementPtr struct {
 	InBounds bool
+	Typ      *types.PointerType
 	ElemType types.Type
 	Src      value.Value
 	Indices  []value.Value
@@ -822,6 +983,11 @@ func (inst *InstGetElementPtr) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the getelementptr instruction.
+func (inst *InstGetElementPtr) Type() types.Type {
+	return inst.Typ
+}
+
 // --- [ Conversion instructions ] ---------------------------------------------
 
 // ~~~[ trunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -844,6 +1010,11 @@ func (inst *InstTrunc) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the trunc instruction.
+func (inst *InstTrunc) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ zext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstZExt is an LLVM IR zext instruction.
@@ -862,6 +1033,11 @@ func (inst *InstZExt) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the zext instruction.
+func (inst *InstZExt) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ sext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -884,6 +1060,11 @@ func (inst *InstSExt) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the sext instruction.
+func (inst *InstSExt) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ fptrunc ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstFPTrunc is an LLVM IR fptrunc instruction.
@@ -902,6 +1083,11 @@ func (inst *InstFPTrunc) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the fptrunc instruction.
+func (inst *InstFPTrunc) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ fpext ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -924,6 +1110,11 @@ func (inst *InstFPExt) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the fpext instruction.
+func (inst *InstFPExt) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ fptoui ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstFPToUI is an LLVM IR fptoui instruction.
@@ -942,6 +1133,11 @@ func (inst *InstFPToUI) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the fptoui instruction.
+func (inst *InstFPToUI) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ fptosi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -964,6 +1160,11 @@ func (inst *InstFPToSI) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the fptosi instruction.
+func (inst *InstFPToSI) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ uitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstUIToFP is an LLVM IR uitofp instruction.
@@ -982,6 +1183,11 @@ func (inst *InstUIToFP) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the uitofp instruction.
+func (inst *InstUIToFP) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ sitofp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1004,6 +1210,11 @@ func (inst *InstSIToFP) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the sitofp instruction.
+func (inst *InstSIToFP) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ ptrtoint ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstPtrToInt is an LLVM IR ptrtoint instruction.
@@ -1022,6 +1233,11 @@ func (inst *InstPtrToInt) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the ptrtoint instruction.
+func (inst *InstPtrToInt) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ inttoptr ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1044,6 +1260,11 @@ func (inst *InstIntToPtr) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the inttoptr instruction.
+func (inst *InstIntToPtr) Type() types.Type {
+	return inst.To
+}
+
 // ~~~[ bitcast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstBitCast is an LLVM IR bitcast instruction.
@@ -1062,6 +1283,11 @@ func (inst *InstBitCast) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the bitcast instruction.
+func (inst *InstBitCast) Type() types.Type {
+	return inst.To
 }
 
 // ~~~[ addrspacecast ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1084,13 +1310,23 @@ func (inst *InstAddrSpaceCast) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the addrspacecast instruction.
+func (inst *InstAddrSpaceCast) Type() types.Type {
+	return inst.To
+}
+
 // --- [ Other instructions ] --------------------------------------------------
 
 // ~~~[ icmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Note, Typ is nil when InstICmp is in AST form; irx.Translate instantiates Typ
+// to types.I1 or a vector of types.I1, depending on if X is a vactor or a
+// scalar.
+
 // InstICmp is an LLVM IR icmp instruction.
 type InstICmp struct {
 	Pred     IPred
+	Typ      types.Type
 	X, Y     value.Value
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1106,12 +1342,22 @@ func (inst *InstICmp) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the icmp instruction.
+func (inst *InstICmp) Type() types.Type {
+	return inst.Typ
+}
+
 // ~~~[ fcmp ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Note, Typ is nil when InstICmp is in AST form; irx.Translate instantiates Typ
+// to types.I1 or a vector of types.I1, depending on if X is a vactor or a
+// scalar.
 
 // InstFCmp is an LLVM IR fcmp instruction.
 type InstFCmp struct {
 	FastMathFlags []FastMathFlag
 	Pred          FPred
+	Typ           types.Type
 	X, Y          value.Value
 	Metadata      []*metadata.MetadataAttachment
 }
@@ -1131,11 +1377,16 @@ func (inst *InstFCmp) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the fcmp instruction.
+func (inst *InstFCmp) Type() types.Type {
+	return inst.Typ
+}
+
 // ~~~[ phi ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstPhi is an LLVM IR phi instruction.
 type InstPhi struct {
-	Type     types.Type
+	Typ      types.Type
 	Incs     []*Incoming
 	Metadata []*metadata.MetadataAttachment
 }
@@ -1144,7 +1395,7 @@ type InstPhi struct {
 func (inst *InstPhi) String() string {
 	// "phi" Type IncList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "phi %v ", inst.Type)
+	fmt.Fprintf(buf, "phi %v ", inst.Typ)
 	for i, inc := range inst.Incs {
 		if i != 0 {
 			buf.WriteString(", ")
@@ -1155,6 +1406,11 @@ func (inst *InstPhi) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the phi instruction.
+func (inst *InstPhi) Type() types.Type {
+	return inst.Typ
 }
 
 // Incoming is an incoming value of a phi instruction.
@@ -1198,6 +1454,11 @@ func (inst *InstSelect) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the select instruction.
+func (inst *InstSelect) Type() types.Type {
+	return inst.X.Type()
 }
 
 // ~~~[ call ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1263,6 +1524,11 @@ func (inst *InstCall) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the call instruction.
+func (inst *InstCall) Type() types.Type {
+	return inst.RetType
+}
+
 //go:generate stringer -linecomment -type Tail
 
 // Tail is a tail call attribute.
@@ -1296,11 +1562,16 @@ func (inst *InstVAArg) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the vaarg instruction.
+func (inst *InstVAArg) Type() types.Type {
+	return inst.ArgType
+}
+
 // ~~~[ landingpad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstLandingPad is an LLVM IR landingpad instruction.
 type InstLandingPad struct {
-	Type     types.Type
+	Typ      types.Type
 	Cleanup  bool
 	Clauses  []*Clause
 	Metadata []*metadata.MetadataAttachment
@@ -1310,7 +1581,7 @@ type InstLandingPad struct {
 func (inst *InstLandingPad) String() string {
 	// "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "landingpad %v", inst.Type)
+	fmt.Fprintf(buf, "landingpad %v", inst.Typ)
 	if inst.Cleanup {
 		buf.WriteString(" cleanup")
 	}
@@ -1321,6 +1592,11 @@ func (inst *InstLandingPad) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the landingpad instruction.
+func (inst *InstLandingPad) Type() types.Type {
+	return inst.Typ
 }
 
 // Clause is an exception clause.
@@ -1375,6 +1651,11 @@ func (inst *InstCatchPad) String() string {
 	return buf.String()
 }
 
+// Type returns the type of the catchpad instruction.
+func (inst *InstCatchPad) Type() types.Type {
+	return types.Token
+}
+
 // ~~~[ cleanuppad ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // InstCleanupPad is an LLVM IR cleanuppad instruction.
@@ -1400,4 +1681,9 @@ func (inst *InstCleanupPad) String() string {
 		fmt.Fprintf(buf, ", %v", md)
 	}
 	return buf.String()
+}
+
+// Type returns the type of the cleanuppad instruction.
+func (inst *InstCleanupPad) Type() types.Type {
+	return types.Token
 }

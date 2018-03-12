@@ -28,8 +28,8 @@ type BasicBlock struct {
 	Term Terminator
 }
 
-// String returns the string representation of the basic block when used as a
-// value.
+// String returns the string representation of the basic block as a type-value
+// pair.
 func (block *BasicBlock) String() string {
 	// LabelType LocalIdent
 	return fmt.Sprintf("%v %v", block.Type(), block.Ident())

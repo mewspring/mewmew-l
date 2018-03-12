@@ -36,7 +36,7 @@ FCmpInst
 
 PhiInst
 	: "phi" Type IncList OptCommaSepMetadataAttachmentList
-	<< &ir.InstPhi{Type: $1.(types.Type), Incs: $2.([]*ir.Incoming), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstPhi{Typ: $1.(types.Type), Incs: $2.([]*ir.Incoming), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 IncList
@@ -118,7 +118,7 @@ VAArgInst
 
 LandingPadInst
 	: "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
-	<< &ir.InstLandingPad{Type: $1.(types.Type), Cleanup: $2.(bool), Clauses: $3.([]*ir.Clause), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
+	<< &ir.InstLandingPad{Typ: $1.(types.Type), Cleanup: $2.(bool), Clauses: $3.([]*ir.Clause), Metadata: $4.([]*metadata.MetadataAttachment)}, nil >>
 ;
 
 OptCleanup

@@ -3,6 +3,7 @@ package ir
 import (
 	"fmt"
 
+	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
 )
 
@@ -121,8 +122,10 @@ func (*LocalDef) IsInstruction()      {}
 
 // A ValueInstruction is an instruction which produces a value.
 type ValueInstruction interface {
-	// String returns the string representation of the instruction.
-	fmt.Stringer
+	// String returns a string representation of the instruction.
+	String() string
+	// Type returns the type of the results computed by the instruction.
+	Type() types.Type
 	// IsValueInstruction ensures that only value instructions can be assigned to
 	// the ir.ValueInstruction interface.
 	IsValueInstruction()

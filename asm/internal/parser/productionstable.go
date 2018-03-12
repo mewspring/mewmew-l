@@ -4029,13 +4029,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ir.InstPhi{Type: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `PhiInst : "phi" Type IncList OptCommaSepMetadataAttachmentList	<< &ir.InstPhi{Typ: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "PhiInst",
 		NTType:     189,
 		Index:      400,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.InstPhi{Type: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return &ir.InstPhi{Typ: X[1].(types.Type), Incs: X[2].([]*ir.Incoming), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -4139,13 +4139,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ir.InstLandingPad{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `LandingPadInst : "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList	<< &ir.InstLandingPad{Typ: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil >>`,
 		Id:         "LandingPadInst",
 		NTType:     196,
 		Index:      411,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.InstLandingPad{Type: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
+			return &ir.InstLandingPad{Typ: X[1].(types.Type), Cleanup: X[2].(bool), Clauses: X[3].([]*ir.Clause), Metadata: X[4].([]*metadata.MetadataAttachment)}, nil
 		},
 	},
 	ProdTabEntry{

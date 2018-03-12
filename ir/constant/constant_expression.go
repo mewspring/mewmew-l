@@ -26,12 +26,12 @@ func (c *ExprAdd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the add expression.
 func (c *ExprAdd) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the add expression.
 func (c *ExprAdd) Ident() string {
 	// "add" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -56,12 +56,12 @@ func (c *ExprFAdd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fadd expression.
 func (c *ExprFAdd) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fadd expression.
 func (c *ExprFAdd) Ident() string {
 	// "fadd" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fadd (%v, %v)", c.X, c.Y)
@@ -81,12 +81,12 @@ func (c *ExprSub) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the sub expression.
 func (c *ExprSub) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the sub expression.
 func (c *ExprSub) Ident() string {
 	// "sub" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -111,12 +111,12 @@ func (c *ExprFSub) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fsub expression.
 func (c *ExprFSub) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fsub expression.
 func (c *ExprFSub) Ident() string {
 	// "fsub" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fsub (%v, %v)", c.X, c.Y)
@@ -136,12 +136,12 @@ func (c *ExprMul) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the mul expression.
 func (c *ExprMul) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the mul expression.
 func (c *ExprMul) Ident() string {
 	// "mul" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -166,12 +166,12 @@ func (c *ExprFMul) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fmul expression.
 func (c *ExprFMul) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fmul expression.
 func (c *ExprFMul) Ident() string {
 	// "fmul" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fmul (%v, %v)", c.X, c.Y)
@@ -191,12 +191,12 @@ func (c *ExprUDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the udiv expression.
 func (c *ExprUDiv) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the udiv expression.
 func (c *ExprUDiv) Ident() string {
 	// "udiv" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -222,12 +222,12 @@ func (c *ExprSDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the sdiv expression.
 func (c *ExprSDiv) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the sdiv expression.
 func (c *ExprSDiv) Ident() string {
 	// "sdiv" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -252,12 +252,12 @@ func (c *ExprFDiv) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fdiv expression.
 func (c *ExprFDiv) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fdiv expression.
 func (c *ExprFDiv) Ident() string {
 	// "fdiv" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fdiv (%v, %v)", c.X, c.Y)
@@ -276,12 +276,12 @@ func (c *ExprURem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the urem expression.
 func (c *ExprURem) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the urem expression.
 func (c *ExprURem) Ident() string {
 	// "urem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("urem (%v, %v)", c.X, c.Y)
@@ -300,12 +300,12 @@ func (c *ExprSRem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the srem expression.
 func (c *ExprSRem) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the srem expression.
 func (c *ExprSRem) Ident() string {
 	// "srem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("srem (%v, %v)", c.X, c.Y)
@@ -324,12 +324,12 @@ func (c *ExprFRem) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the frem expression.
 func (c *ExprFRem) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the frem expression.
 func (c *ExprFRem) Ident() string {
 	// "frem" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("frem (%v, %v)", c.X, c.Y)
@@ -351,12 +351,12 @@ func (c *ExprShl) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the shl expression.
 func (c *ExprShl) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the shl expression.
 func (c *ExprShl) Ident() string {
 	// "shl" OverflowFlags "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -382,12 +382,12 @@ func (c *ExprLShr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the lshr expression.
 func (c *ExprLShr) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the lshr expression.
 func (c *ExprLShr) Ident() string {
 	// "lshr" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -413,12 +413,12 @@ func (c *ExprAShr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the ashr expression.
 func (c *ExprAShr) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the ashr expression.
 func (c *ExprAShr) Ident() string {
 	// "ashr" OptExact "(" Type Constant "," Type Constant ")"
 	buf := &strings.Builder{}
@@ -443,12 +443,12 @@ func (c *ExprAnd) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the and expression.
 func (c *ExprAnd) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the and expression.
 func (c *ExprAnd) Ident() string {
 	// "and" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("and (%v, %v)", c.X, c.Y)
@@ -467,12 +467,12 @@ func (c *ExprOr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the or expression.
 func (c *ExprOr) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the or expression.
 func (c *ExprOr) Ident() string {
 	// "or" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("or (%v, %v)", c.X, c.Y)
@@ -491,12 +491,12 @@ func (c *ExprXor) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the xor expression.
 func (c *ExprXor) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the xor expression.
 func (c *ExprXor) Ident() string {
 	// "xor" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("xor (%v, %v)", c.X, c.Y)
@@ -518,12 +518,12 @@ func (c *ExprExtractElement) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the extractelement expression.
 func (c *ExprExtractElement) Type() types.Type {
-	panic("constant.ExtractElementExpr.Type: not yet implemented")
+	panic("constant.ExprExtractElement.Type: not yet implemented")
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the extractelement expression.
 func (c *ExprExtractElement) Ident() string {
 	// "extractelement" "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("extractelement (%v, %v)", c.X, c.Index)
@@ -544,12 +544,12 @@ func (c *ExprInsertElement) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the insertelement expression.
 func (c *ExprInsertElement) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the insertelement expression.
 func (c *ExprInsertElement) Ident() string {
 	// "insertelement" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("insertelement (%v, %v, %v)", c.X, c.Elem, c.Index)
@@ -569,12 +569,12 @@ func (c *ExprShuffleVector) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the shufflevector expression.
 func (c *ExprShuffleVector) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the shufflevector expression.
 func (c *ExprShuffleVector) Ident() string {
 	// "shufflevector" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("shufflevector (%v, %v, %v)", c.X, c.Y, c.Mask)
@@ -596,12 +596,12 @@ func (c *ExprExtractValue) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the extractvalue expression.
 func (c *ExprExtractValue) Type() types.Type {
-	panic("constant.ExtractValueExpr.Type: not yet implemented")
+	panic("constant.ExprExtractValue.Type: not yet implemented")
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the extractvalue expression.
 func (c *ExprExtractValue) Ident() string {
 	// "extractvalue" "(" Type Constant Indices ")"
 	buf := &strings.Builder{}
@@ -628,12 +628,12 @@ func (c *ExprInsertValue) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the insertvalue expression.
 func (c *ExprInsertValue) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the insertvalue expression.
 func (c *ExprInsertValue) Ident() string {
 	// "insertvalue" "(" Type Constant "," Type Constant Indices ")"
 	buf := &strings.Builder{}
@@ -668,12 +668,12 @@ func (c *ExprGetElementPtr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the getelementptr expression.
 func (c *ExprGetElementPtr) Type() types.Type {
 	return c.Typ
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the getelementptr expression.
 func (c *ExprGetElementPtr) Ident() string {
 	// "getelementptr" OptInBounds "(" Type "," Type Constant "," GEPConstIndices ")"
 	buf := &strings.Builder{}
@@ -725,12 +725,12 @@ func (c *ExprTrunc) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the trunc expression.
 func (c *ExprTrunc) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the trunc expression.
 func (c *ExprTrunc) Ident() string {
 	// "trunc" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("trunc (%v to %v)", c.From, c.To)
@@ -750,12 +750,12 @@ func (c *ExprZExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the zext expression.
 func (c *ExprZExt) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the zext expression.
 func (c *ExprZExt) Ident() string {
 	// "zext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("zext (%v to %v)", c.From, c.To)
@@ -775,12 +775,12 @@ func (c *ExprSExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the sext expression.
 func (c *ExprSExt) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the sext expression.
 func (c *ExprSExt) Ident() string {
 	// "sext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("sext (%v to %v)", c.From, c.To)
@@ -800,12 +800,12 @@ func (c *ExprFPTrunc) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fptrunc expression.
 func (c *ExprFPTrunc) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fptrunc expression.
 func (c *ExprFPTrunc) Ident() string {
 	// "fptrunc" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptrunc (%v to %v)", c.From, c.To)
@@ -825,12 +825,12 @@ func (c *ExprFPExt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fpext expression.
 func (c *ExprFPExt) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fpext expression.
 func (c *ExprFPExt) Ident() string {
 	// "fpext" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fpext (%v to %v)", c.From, c.To)
@@ -850,12 +850,12 @@ func (c *ExprFPToUI) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fptoui expression.
 func (c *ExprFPToUI) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fptoui expression.
 func (c *ExprFPToUI) Ident() string {
 	// "fptoui" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptoui (%v to %v)", c.From, c.To)
@@ -875,12 +875,12 @@ func (c *ExprFPToSI) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fptosi expression.
 func (c *ExprFPToSI) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fptosi expression.
 func (c *ExprFPToSI) Ident() string {
 	// "fptosi" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("fptosi (%v to %v)", c.From, c.To)
@@ -900,12 +900,12 @@ func (c *ExprUIToFP) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the uitofp expression.
 func (c *ExprUIToFP) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the uitofp expression.
 func (c *ExprUIToFP) Ident() string {
 	// "uitofp" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("uitofp (%v to %v)", c.From, c.To)
@@ -925,12 +925,12 @@ func (c *ExprSIToFP) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the sitofp expression.
 func (c *ExprSIToFP) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the sitofp expression.
 func (c *ExprSIToFP) Ident() string {
 	// "sitofp" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("sitofp (%v to %v)", c.From, c.To)
@@ -950,12 +950,12 @@ func (c *ExprPtrToInt) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the ptrtoint expression.
 func (c *ExprPtrToInt) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the ptrtoint expression.
 func (c *ExprPtrToInt) Ident() string {
 	// "ptrtoint" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("ptrtoint (%v to %v)", c.From, c.To)
@@ -975,12 +975,12 @@ func (c *ExprIntToPtr) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the inttoptr expression.
 func (c *ExprIntToPtr) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the inttoptr expression.
 func (c *ExprIntToPtr) Ident() string {
 	// "inttoptr" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("inttoptr (%v to %v)", c.From, c.To)
@@ -1025,12 +1025,12 @@ func (c *ExprAddrSpaceCast) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the addrspacecast expression.
 func (c *ExprAddrSpaceCast) Type() types.Type {
 	return c.To
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the addrspacecast expression.
 func (c *ExprAddrSpaceCast) Ident() string {
 	// "addrspacecast" "(" Type Constant "to" Type ")"
 	return fmt.Sprintf("addrspacecast (%v to %v)", c.From, c.To)
@@ -1052,12 +1052,12 @@ func (c *ExprICmp) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the icmp expression.
 func (c *ExprICmp) Type() types.Type {
 	panic("constant.ICmpExpr.Type: not yet implemented")
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the icmp expression.
 func (c *ExprICmp) Ident() string {
 	// "icmp" IPred "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("icmp %v (%v, %v)", c.Pred, c.X, c.Y)
@@ -1077,12 +1077,12 @@ func (c *ExprFCmp) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the fcmp expression.
 func (c *ExprFCmp) Type() types.Type {
 	panic("constant.FCmpExpr.Type: not yet implemented")
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the fcmp expression.
 func (c *ExprFCmp) Ident() string {
 	// "fcmp" FPred "(" Type Constant "," Type Constant ")"
 	return fmt.Sprintf("fcmp %v (%v, %v)", c.Pred, c.X, c.Y)
@@ -1102,12 +1102,12 @@ func (c *ExprSelect) String() string {
 	return fmt.Sprintf("%v %v", c.Type(), c.Ident())
 }
 
-// Type returns the type of the bitcast expression.
+// Type returns the type of the select expression.
 func (c *ExprSelect) Type() types.Type {
 	return c.X.Type()
 }
 
-// Ident returns the identifier associated with the bitcast expression.
+// Ident returns the identifier associated with the select expression.
 func (c *ExprSelect) Ident() string {
 	// "select" "(" Type Constant "," Type Constant "," Type Constant ")"
 	return fmt.Sprintf("select (%v, %v, %v)", c.Cond, c.X, c.Y)
