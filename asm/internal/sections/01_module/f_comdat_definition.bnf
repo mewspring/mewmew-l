@@ -6,7 +6,7 @@
 
 ComdatDef
 	: ComdatName "=" "comdat" SelectionKind
-	<< &ir.ComdatDef{Name: $0.(*ast.ComdatName).Name, Kind: $3.(ir.SelectionKind)}, nil >>
+	<< &ir.ComdatDef{Name: astx.ComdatName($0), Kind: $3.(ir.SelectionKind)}, nil >>
 ;
 
 SelectionKind

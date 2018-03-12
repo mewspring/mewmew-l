@@ -19,14 +19,14 @@ type NamedMetadataDef struct {
 
 // String returns the string representation of the named metadata definition.
 func (md *NamedMetadataDef) String() string {
-	return md.Name
+	return enc.Metadata(md.Name)
 }
 
 // Def returns the LLVM syntax representation of the named metadata definition.
 func (md *NamedMetadataDef) Def() string {
 	// MetadataName "=" "!" "{" MetadataNodes "}"
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v = !{", md.Name)
+	fmt.Fprintf(buf, "%v = !{", enc.Metadata(md.Name))
 	for i, node := range md.Nodes {
 		if i != 0 {
 			buf.WriteString(", ")
@@ -48,7 +48,7 @@ type MetadataDef struct {
 
 // String returns the string representation of the metadata definition.
 func (md *MetadataDef) String() string {
-	return md.ID
+	return enc.Metadata(md.ID)
 }
 
 // Def returns the LLVM syntax representation of the metadata definition.
@@ -56,7 +56,7 @@ func (md *MetadataDef) Def() string {
 	// MetadataID "=" OptDistinct MDTuple
 	// MetadataID "=" OptDistinct SpecializedMDNode
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v = ", md.ID)
+	fmt.Fprintf(buf, "%v = ", enc.Metadata(md.ID))
 	if md.Distinct {
 		buf.WriteString("distinct ")
 	}
@@ -126,5 +126,5 @@ type MetadataAttachment struct {
 // String returns the string representation of the metadata attachment.
 func (m *MetadataAttachment) String() string {
 	// !dbg !42
-	return fmt.Sprintf("%s %s", m.Name, m.Node)
+	return fmt.Sprintf("%s %s", enc.Metadata(m.Name), m.Node)
 }

@@ -4,6 +4,8 @@ package types
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mewmew/l/internal/enc"
 )
 
 // === [ Types ] ===============================================================
@@ -67,7 +69,7 @@ func (t *VoidType) Equal(u Type) bool {
 // String returns the string representation of the void type.
 func (t *VoidType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -127,7 +129,7 @@ func (t *FuncType) Equal(u Type) bool {
 // String returns the string representation of the function type.
 func (t *FuncType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -186,7 +188,7 @@ func (t *IntType) Equal(u Type) bool {
 // String returns the string representation of the integer type.
 func (t *IntType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -223,7 +225,7 @@ func (t *FloatType) Equal(u Type) bool {
 // String returns the string representation of the floating-point type.
 func (t *FloatType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -272,7 +274,7 @@ func (t *MMXType) Equal(u Type) bool {
 // String returns the string representation of the MMX type.
 func (t *MMXType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -321,7 +323,7 @@ func (t *PointerType) Equal(u Type) bool {
 // String returns the string representation of the pointer type.
 func (t *PointerType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -386,7 +388,7 @@ func (t *VectorType) Equal(u Type) bool {
 // String returns the string representation of the vector type.
 func (t *VectorType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -421,7 +423,7 @@ func (t *LabelType) Equal(u Type) bool {
 // String returns the string representation of the label type.
 func (t *LabelType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -456,7 +458,7 @@ func (t *TokenType) Equal(u Type) bool {
 // String returns the string representation of the token type.
 func (t *TokenType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -491,7 +493,7 @@ func (t *MetadataType) Equal(u Type) bool {
 // String returns the string representation of the metadata type.
 func (t *MetadataType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -541,7 +543,7 @@ func (t *ArrayType) Equal(u Type) bool {
 // String returns the string representation of the array type.
 func (t *ArrayType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }
@@ -608,7 +610,7 @@ func (t *StructType) Equal(u Type) bool {
 // String returns the string representation of the structure type.
 func (t *StructType) String() string {
 	if len(t.Name) > 0 {
-		return t.Name
+		return enc.Local(t.Name)
 	}
 	return t.Def()
 }

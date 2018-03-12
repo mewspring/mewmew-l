@@ -631,7 +631,15 @@ func NewGenericDINode(fields []*SpecializedMDField) (*metadata.GenericDINode, er
 	return node, nil
 }
 
-// ### [ Helper functions ] ####################################################
+// ### [ Helpers ] #############################################################
+
+// SpecializedMDField is a specialized metadata field.
+type SpecializedMDField struct {
+	// Key of field (e.g. "name:").
+	Key string
+	// Value of field (e.g. !42).
+	Value interface{}
+}
 
 // getMDFieldMap returns a map from specialized metadata field key to value.
 func getMDFieldMap(fields []*SpecializedMDField) map[string]interface{} {

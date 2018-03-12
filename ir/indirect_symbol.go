@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/types"
 )
 
@@ -37,14 +38,14 @@ func (s *IndirectSymbol) Type() types.Type {
 
 // Ident returns the identifier associated with the indirect symbol.
 func (s *IndirectSymbol) Ident() string {
-	return s.Name
+	return enc.Global(s.Name)
 }
 
 // Def returns the LLVM syntax representation of the indirect symbol definition.
 func (s *IndirectSymbol) Def() string {
 	// GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v =", s.Name)
+	fmt.Fprintf(buf, "%v =", enc.Global(s.Name))
 	if s.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", s.Linkage)
 	}

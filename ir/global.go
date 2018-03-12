@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
 )
@@ -49,7 +50,7 @@ func (g *Global) Type() types.Type {
 
 // Ident returns the identifier associated with the global variable.
 func (g *Global) Ident() string {
-	return g.Name
+	return enc.Global(g.Name)
 }
 
 // Def returns the LLVM syntax representation of the global variable definition.
@@ -58,7 +59,7 @@ func (g *Global) Def() string {
 	// OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace
 	// OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "%v =", g.Name)
+	fmt.Fprintf(buf, "%v =", enc.Global(g.Name))
 	if g.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", g.Linkage)
 	}

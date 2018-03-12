@@ -42,7 +42,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 					}
 					t = u
 				default:
-					fmt.Printf("%T\n", u)
 					u.SetName(name)
 					m.typeDefs[name] = u
 					m.TypeDefs = append(m.TypeDefs, u)
@@ -197,11 +196,12 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 					c.SetType(tc.Typ)
 				} else {
 					// Validate tc.Value.Type() against tc.Typ.
-					got := tc.Value.Type()
-					want := tc.Typ
-					if !want.Equal(got) {
-						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
-					}
+					// TODO: Figure out how to validate type.
+					//got := tc.Value.Type()
+					//want := tc.Typ
+					//if !want.Equal(got) {
+					//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
+					//}
 				}
 				*n = tc.Value
 			}
@@ -213,9 +213,32 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 
 	// Resolve local variables (per function).
 	//
-	//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
 	//    *ast.TypeValue
 	for _, f := range m.Funcs {
+		// Reset map tracking local variables.
+		m.locals = make(map[string]value.Named)
+
+		// Assign IDs to unnamed local variables.
+		f.AssignLocalIDs()
+
+		// Index local variables.
+		for _, param := range f.Params {
+			m.locals[param.Name] = param
+		}
+		for _, block := range f.Blocks {
+			m.locals[block.Name] = block
+			for _, inst := range block.Insts {
+				n, ok := inst.(value.Named)
+				if !ok {
+					continue
+				}
+				if n.Type().Equal(types.Void) {
+					continue
+				}
+				m.locals[n.GetName()] = n
+			}
+		}
+
 		// Resolve basic blocks.
 		//
 		//    *ir.BasicBlock
@@ -224,13 +247,24 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			case **ir.BasicBlock:
 				if (*n).Term == nil {
 					fmt.Println("bb name:", (*n).Name)
+					(*n) = m.locals[(*n).Name].(*ir.BasicBlock)
 				}
-				// TODO: Resolve basic block.
 			}
 		}
 		irutil.WalkFunc(f, resolveBasicBlock)
 
-		// TODO: resolve local variables.
+		// Resolve local variables.
+		//
+		//    *ast.LocalIdent  -> look up in map. (*ir.BasicBlock, *ir.Param, *ir.LocalDef)
+		resolveLocalIdent := func(n interface{}) {
+			switch n := n.(type) {
+			case *value.Value:
+				if i, ok := (*n).(*ast.LocalIdent); ok {
+					*n = m.local(i.Name)
+				}
+			}
+		}
+		irutil.WalkFunc(f, resolveLocalIdent)
 	}
 
 	return m.Module, nil

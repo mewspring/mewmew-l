@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/types"
 )
 
@@ -43,15 +44,28 @@ func (block *BasicBlock) Type() types.Type {
 // Ident returns the identifier associated with the basic block.
 func (block *BasicBlock) Ident() string {
 	// LocalIdent
+	return enc.Local(block.Name)
+}
+
+// Name returns the name of the basic block.
+func (block *BasicBlock) GetName() string {
 	return block.Name
+}
+
+// SetName sets the name of the basic block.
+func (block *BasicBlock) SetName(name string) {
+	block.Name = name
 }
 
 // Def returns the LLVM syntax representation of the basic block definition.
 func (block *BasicBlock) Def() string {
 	// OptLabelIdent Instructions Terminator
 	buf := &strings.Builder{}
-	if len(block.Name) > 0 {
-		fmt.Fprintf(buf, "%v\n", block.Name)
+	if isLocalID(block.Name) {
+		fmt.Fprintf(buf, "; <label>:%v\n", enc.Label(block.Name))
+	} else if len(block.Name) > 0 {
+		// TODO: Store block name without ':' suffix or '%' prefix.
+		fmt.Fprintf(buf, "%v\n", enc.Label(block.Name))
 	}
 	for _, inst := range block.Insts {
 		fmt.Fprintf(buf, "\t%v\n", inst)

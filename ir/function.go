@@ -2,11 +2,13 @@ package ir
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
+	"github.com/mewmew/l/ir/value"
 )
 
 // ~~~ [ Function Declaration or Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,7 +43,7 @@ func (f *Function) Type() types.Type {
 
 // Ident returns the identifier associated with the function.
 func (f *Function) Ident() string {
-	return f.Name
+	return enc.Global(f.Name)
 }
 
 // Def returns the LLVM syntax representation of the global variable definition.
@@ -76,6 +78,67 @@ func (f *Function) Def() string {
 	}
 	fmt.Fprintf(buf, " %v", f.FunctionBody)
 	return buf.String()
+}
+
+// AssignLocalIDs assigns IDs to unnamed local variables.
+func (f *Function) AssignLocalIDs() {
+	id := 0
+	names := make(map[string]value.Value)
+	setName := func(n value.Named) {
+		name := n.GetName()
+		switch {
+		case isUnnamed(name):
+			name := strconv.Itoa(id)
+			n.SetName(name)
+			names[name] = n
+			id++
+		case isLocalID(name):
+			want := strconv.Itoa(id)
+			if want != name {
+				panic(fmt.Errorf("invalid local ID in function %v, expected %v, got %v", f.Name, want, name))
+			}
+			id++
+		default:
+			// Valid is named; nothing to do.
+		}
+	}
+	if f.FunctionBody == nil {
+		return
+	}
+	for _, param := range f.Params {
+		// Assign local IDs to unnamed parameters of function definitions.
+		setName(param)
+	}
+	for _, block := range f.Blocks {
+		// Assign local IDs to unnamed basic blocks.
+		setName(block)
+		for _, inst := range block.Insts {
+			n, ok := inst.(value.Named)
+			if !ok {
+				continue
+			}
+			if n.Type().Equal(types.Void) {
+				continue
+			}
+			// Assign local IDs to unnamed local variables.
+			setName(n)
+		}
+	}
+}
+
+// isUnnamed reports whether the given identifier is unnamed.
+func isUnnamed(name string) bool {
+	return len(name) == 0
+}
+
+// isLocalID reports whether the given identifier is a local ID (e.g. "%42").
+func isLocalID(name string) bool {
+	for _, r := range name {
+		if strings.IndexRune("0123456789", r) == -1 {
+			return false
+		}
+	}
+	return len(name) > 0
 }
 
 // FunctionHeader is the header of an LLVM IR function.
@@ -121,7 +184,7 @@ func (hdr *FunctionHeader) String() string {
 		fmt.Fprintf(buf, " %v", attr)
 	}
 	fmt.Fprintf(buf, " %v", hdr.RetType)
-	fmt.Fprintf(buf, " %v(", hdr.Name)
+	fmt.Fprintf(buf, " %v(", enc.Global(hdr.Name))
 	for i, param := range hdr.Params {
 		if i != 0 {
 			buf.WriteString(", ")

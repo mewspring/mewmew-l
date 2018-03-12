@@ -387,6 +387,16 @@ func (param *Param) String() string {
 	return buf.String()
 }
 
+// Name returns the name of the function parameter.
+func (param *Param) GetName() string {
+	return param.Name
+}
+
+// SetName sets the name of the function parameter.
+func (param *Param) SetName(name string) {
+	param.Name = name
+}
+
 //go:generate stringer -linecomment -type ParamAttr
 
 // ParamAttr is a parameter attribute.

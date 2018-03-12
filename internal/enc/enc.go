@@ -31,6 +31,19 @@ func Local(name string) string {
 	return "%" + EscapeIdent(name)
 }
 
+// Label encodes a label name to its LLVM IR assembly representation.
+//
+// Examples:
+//    "foo" -> "foo:"
+//    "a b" -> `"a\20b":`
+//    "世" -> `"\E4\B8\96":`
+//
+// References:
+//    http://www.llvm.org/docs/LangRef.html#identifiers
+func Label(name string) string {
+	return EscapeIdent(name) + ":"
+}
+
 // Metadata encodes a metadata name to its LLVM IR assembly representation.
 //
 // Examples:

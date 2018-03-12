@@ -36,7 +36,7 @@ FunctionDef
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
-	<< &ir.FunctionHeader{Preemption: $0.(ir.Preemption), Visibility: $1.(ir.Visibility), DLLStorageClass: $2.(ir.DLLStorageClass), CallingConv: $3.(ir.CallingConv), ReturnAttrs: $4.([]ir.ReturnAttribute), RetType: $5.(types.Type), Name: $6.(*ast.GlobalIdent).Name, Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ir.UnnamedAddr), FuncAttrs: $11.([]ir.FuncAttribute), Section: $12.(*ir.Section), Comdat: $13.(*ir.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
+	<< &ir.FunctionHeader{Preemption: $0.(ir.Preemption), Visibility: $1.(ir.Visibility), DLLStorageClass: $2.(ir.DLLStorageClass), CallingConv: $3.(ir.CallingConv), ReturnAttrs: $4.([]ir.ReturnAttribute), RetType: $5.(types.Type), Name: astx.GlobalIdent($6), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ir.UnnamedAddr), FuncAttrs: $11.([]ir.FuncAttribute), Section: $12.(*ir.Section), Comdat: $13.(*ir.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
 ;
 
 OptGC

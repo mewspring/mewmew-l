@@ -22,7 +22,7 @@ type Value interface {
 type Named interface {
 	Value
 	// Name returns the name of the value.
-	Name() string
+	GetName() string
 	// SetName sets the name of the value.
 	SetName(name string)
 }

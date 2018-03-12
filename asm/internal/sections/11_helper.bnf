@@ -219,7 +219,7 @@ Comdat
 	: "comdat"
 	<< &ir.Comdat{}, nil >>
 	| "comdat" "(" ComdatName ")"
-	<< &ir.Comdat{Name: $2.(*ast.ComdatName).Name}, nil >>
+	<< &ir.Comdat{Name: astx.ComdatName($2)}, nil >>
 ;
 
 Dereferenceable

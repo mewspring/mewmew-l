@@ -33,14 +33,14 @@
 
 GlobalDecl
 	: GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs
-	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Section: astx.OptSectionFromGlobalAttrs($12.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($12.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($12.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($12.([]astx.GlobalAttribute)), FuncAttrs: $13.([]ir.FuncAttribute)}, nil >>
+	<< &ir.Global{Name: astx.GlobalIdent($0), Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Section: astx.OptSectionFromGlobalAttrs($12.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($12.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($12.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($12.([]astx.GlobalAttribute)), FuncAttrs: $13.([]ir.FuncAttribute)}, nil >>
 ;
 
 // ~~~ [ Global Variable Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 GlobalDef
 	: GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs
-	<< &ir.Global{Name: $0.(*ast.GlobalIdent).Name, Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Init: astx.TypeConst($11, $12), Section: astx.OptSectionFromGlobalAttrs($13.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($13.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($13.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($13.([]astx.GlobalAttribute)), FuncAttrs: $14.([]ir.FuncAttribute)}, nil >>
+	<< &ir.Global{Name: astx.GlobalIdent($0), Linkage: $2.(ir.Linkage), Preemption: $3.(ir.Preemption), Visibility: $4.(ir.Visibility), DLLStorageClass: $5.(ir.DLLStorageClass), ThreadLocal: $6.(*ir.ThreadLocal), UnnamedAddr: $7.(ir.UnnamedAddr), AddrSpace: $8.(types.AddrSpace), ExternallyInitialized: $9.(bool), Immutable: $10.(bool), ContentType: $11.(types.Type), Init: astx.TypeConst($11, $12), Section: astx.OptSectionFromGlobalAttrs($13.([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs($13.([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs($13.([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs($13.([]astx.GlobalAttribute)), FuncAttrs: $14.([]ir.FuncAttribute)}, nil >>
 ;
 
 OptExternallyInitialized

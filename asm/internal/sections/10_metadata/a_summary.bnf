@@ -84,7 +84,7 @@ MDString
 
 MetadataAttachment
 	: MetadataName MDNode
-	<< &metadata.MetadataAttachment{Name: $0.(*ast.MetadataName).Name, Node: $1.(metadata.MDNode)}, nil >>
+	<< &metadata.MetadataAttachment{Name: astx.MetadataName($0), Node: $1.(metadata.MDNode)}, nil >>
 ;
 
 // --- [ Metadata Node ] -------------------------------------------------------

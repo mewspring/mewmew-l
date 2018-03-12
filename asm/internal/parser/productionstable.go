@@ -299,13 +299,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ComdatDef : ComdatName "=" "comdat" SelectionKind	<< &ir.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ir.SelectionKind)}, nil >>`,
+		String: `ComdatDef : ComdatName "=" "comdat" SelectionKind	<< &ir.ComdatDef{Name: astx.ComdatName(X[0]), Kind: X[3].(ir.SelectionKind)}, nil >>`,
 		Id:         "ComdatDef",
 		NTType:     9,
 		Index:      27,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.ComdatDef{Name: X[0].(*ast.ComdatName).Name, Kind: X[3].(ir.SelectionKind)}, nil
+			return &ir.ComdatDef{Name: astx.ComdatName(X[0]), Kind: X[3].(ir.SelectionKind)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -359,23 +359,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalDecl : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs	<< &ir.Global{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Section: astx.OptSectionFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), FuncAttrs: X[13].([]ir.FuncAttribute)}, nil >>`,
+		String: `GlobalDecl : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type GlobalAttrs FuncAttrs	<< &ir.Global{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Section: astx.OptSectionFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), FuncAttrs: X[13].([]ir.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDecl",
 		NTType:     11,
 		Index:      33,
 		NumSymbols: 14,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.Global{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Section: astx.OptSectionFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), FuncAttrs: X[13].([]ir.FuncAttribute)}, nil
+			return &ir.Global{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Section: astx.OptSectionFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[12].([]astx.GlobalAttribute)), FuncAttrs: X[13].([]ir.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ir.Global{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Init: astx.TypeConst(X[11], X[12]), Section: astx.OptSectionFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), FuncAttrs: X[14].([]ir.FuncAttribute)}, nil >>`,
+		String: `GlobalDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr OptAddrSpace OptExternallyInitialized Immutable Type Constant GlobalAttrs FuncAttrs	<< &ir.Global{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Init: astx.TypeConst(X[11], X[12]), Section: astx.OptSectionFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), FuncAttrs: X[14].([]ir.FuncAttribute)}, nil >>`,
 		Id:         "GlobalDef",
 		NTType:     12,
 		Index:      34,
 		NumSymbols: 15,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.Global{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Init: astx.TypeConst(X[11], X[12]), Section: astx.OptSectionFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), FuncAttrs: X[14].([]ir.FuncAttribute)}, nil
+			return &ir.Global{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), AddrSpace: X[8].(types.AddrSpace), ExternallyInitialized: X[9].(bool), Immutable: X[10].(bool), ContentType: X[11].(types.Type), Init: astx.TypeConst(X[11], X[12]), Section: astx.OptSectionFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Comdat: astx.OptComdatFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Align: astx.OptAlignFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), Metadata: astx.MetadataFromGlobalAttrs(X[13].([]astx.GlobalAttribute)), FuncAttrs: X[14].([]ir.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -499,23 +499,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" ExternLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     18,
 		Index:      47,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ir.IndirectSymbol{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
+		String: `IndirectSymbolDef : GlobalIdent "=" OptLinkage OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptThreadLocal OptUnnamedAddr Alias Type "," Type Constant	<< &ir.IndirectSymbol{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil >>`,
 		Id:         "IndirectSymbolDef",
 		NTType:     18,
 		Index:      48,
 		NumSymbols: 13,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.IndirectSymbol{Name: X[0].(*ast.GlobalIdent).Name, Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
+			return &ir.IndirectSymbol{Name: astx.GlobalIdent(X[0]), Linkage: X[2].(ir.Linkage), Preemption: X[3].(ir.Preemption), Visibility: X[4].(ir.Visibility), DLLStorageClass: X[5].(ir.DLLStorageClass), ThreadLocal: X[6].(*ir.ThreadLocal), UnnamedAddr: X[7].(ir.UnnamedAddr), Alias: X[8].(bool), Typ: X[9].(types.Type), Const: astx.TypeConst(X[10], X[11])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -559,13 +559,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent).Name, Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     22,
 		Index:      53,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: X[6].(*ast.GlobalIdent).Name, Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
+			return &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -659,23 +659,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `AttrGroupDef : "attributes" AttrGroupID "=" "{" FuncAttrs "}"	<< &ir.AttrGroupDef{ID: X[1].(*ast.AttrGroupID).ID, FuncAttrs: X[4].([]ir.FuncAttribute)}, nil >>`,
+		String: `AttrGroupDef : "attributes" AttrGroupID "=" "{" FuncAttrs "}"	<< &ir.AttrGroupDef{ID: astx.AttrGroupID(X[1]), FuncAttrs: X[4].([]ir.FuncAttribute)}, nil >>`,
 		Id:         "AttrGroupDef",
 		NTType:     28,
 		Index:      63,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.AttrGroupDef{ID: X[1].(*ast.AttrGroupID).ID, FuncAttrs: X[4].([]ir.FuncAttribute)}, nil
+			return &ir.AttrGroupDef{ID: astx.AttrGroupID(X[1]), FuncAttrs: X[4].([]ir.FuncAttribute)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `NamedMetadataDef : MetadataName "=" "!" "{" MetadataNodes "}"	<< &metadata.NamedMetadataDef{Name: X[0].(*ast.MetadataName).Name, Nodes: X[4].([]metadata.MetadataNode)}, nil >>`,
+		String: `NamedMetadataDef : MetadataName "=" "!" "{" MetadataNodes "}"	<< &metadata.NamedMetadataDef{Name: astx.MetadataName(X[0]), Nodes: X[4].([]metadata.MetadataNode)}, nil >>`,
 		Id:         "NamedMetadataDef",
 		NTType:     29,
 		Index:      64,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &metadata.NamedMetadataDef{Name: X[0].(*ast.MetadataName).Name, Nodes: X[4].([]metadata.MetadataNode)}, nil
+			return &metadata.NamedMetadataDef{Name: astx.MetadataName(X[0]), Nodes: X[4].([]metadata.MetadataNode)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -739,23 +739,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataDef : MetadataID "=" OptDistinct MDTuple	<< &metadata.MetadataDef{ID: X[0].(*ast.MetadataID).ID, Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil >>`,
+		String: `MetadataDef : MetadataID "=" OptDistinct MDTuple	<< &metadata.MetadataDef{ID: astx.MetadataID(X[0]), Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil >>`,
 		Id:         "MetadataDef",
 		NTType:     33,
 		Index:      71,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &metadata.MetadataDef{ID: X[0].(*ast.MetadataID).ID, Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil
+			return &metadata.MetadataDef{ID: astx.MetadataID(X[0]), Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataDef : MetadataID "=" OptDistinct SpecializedMDNode	<< &metadata.MetadataDef{ID: X[0].(*ast.MetadataID).ID, Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil >>`,
+		String: `MetadataDef : MetadataID "=" OptDistinct SpecializedMDNode	<< &metadata.MetadataDef{ID: astx.MetadataID(X[0]), Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil >>`,
 		Id:         "MetadataDef",
 		NTType:     33,
 		Index:      72,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &metadata.MetadataDef{ID: X[0].(*ast.MetadataID).ID, Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil
+			return &metadata.MetadataDef{ID: astx.MetadataID(X[0]), Distinct: X[2].(bool), Node: X[3].(metadata.MDNode)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -829,83 +829,83 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `UseListOrderBB : "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"	<< &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[1].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: X[3].(*ast.LocalIdent).Name}, Indices: X[6].([]int64)}, nil >>`,
+		String: `UseListOrderBB : "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"	<< &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: astx.GlobalIdent(X[1])}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil >>`,
 		Id:         "UseListOrderBB",
 		NTType:     38,
 		Index:      80,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[1].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: X[3].(*ast.LocalIdent).Name}, Indices: X[6].([]int64)}, nil
+			return &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: astx.GlobalIdent(X[1])}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil
 		},
 	},
 	ProdTabEntry{
-		String: `GlobalIdent : global_ident	<< &ast.GlobalIdent{Name: astx.String(X[0])}, nil >>`,
+		String: `GlobalIdent : global_ident	<< astx.NewGlobalIdent(X[0]) >>`,
 		Id:         "GlobalIdent",
 		NTType:     39,
 		Index:      81,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.GlobalIdent{Name: astx.String(X[0])}, nil
+			return astx.NewGlobalIdent(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `LocalIdent : local_ident	<< &ast.LocalIdent{Name: astx.String(X[0])}, nil >>`,
+		String: `LocalIdent : local_ident	<< astx.NewLocalIdent(X[0]) >>`,
 		Id:         "LocalIdent",
 		NTType:     40,
 		Index:      82,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LocalIdent{Name: astx.String(X[0])}, nil
+			return astx.NewLocalIdent(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `LabelIdent : label_ident	<< &ast.LabelIdent{Name: astx.String(X[0])}, nil >>`,
+		String: `LabelIdent : label_ident	<< astx.NewLabelIdent(X[0]) >>`,
 		Id:         "LabelIdent",
 		NTType:     41,
 		Index:      83,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.LabelIdent{Name: astx.String(X[0])}, nil
+			return astx.NewLabelIdent(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `AttrGroupID : attr_group_id	<< &ast.AttrGroupID{ID: astx.String(X[0])}, nil >>`,
+		String: `AttrGroupID : attr_group_id	<< astx.NewAttrGroupID(X[0]) >>`,
 		Id:         "AttrGroupID",
 		NTType:     42,
 		Index:      84,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.AttrGroupID{ID: astx.String(X[0])}, nil
+			return astx.NewAttrGroupID(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `ComdatName : comdat_name	<< &ast.ComdatName{Name: astx.String(X[0])}, nil >>`,
+		String: `ComdatName : comdat_name	<< astx.NewComdatName(X[0]) >>`,
 		Id:         "ComdatName",
 		NTType:     43,
 		Index:      85,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.ComdatName{Name: astx.String(X[0])}, nil
+			return astx.NewComdatName(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataName : metadata_name	<< &ast.MetadataName{Name: astx.String(X[0])}, nil >>`,
+		String: `MetadataName : metadata_name	<< astx.NewMetadataName(X[0]) >>`,
 		Id:         "MetadataName",
 		NTType:     44,
 		Index:      86,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MetadataName{Name: astx.String(X[0])}, nil
+			return astx.NewMetadataName(X[0])
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataID : metadata_id	<< &ast.MetadataID{ID: astx.String(X[0])}, nil >>`,
+		String: `MetadataID : metadata_id	<< astx.NewMetadataID(X[0]) >>`,
 		Id:         "MetadataID",
 		NTType:     45,
 		Index:      87,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ast.MetadataID{ID: astx.String(X[0])}, nil
+			return astx.NewMetadataID(X[0])
 		},
 	},
 	ProdTabEntry{
@@ -1759,13 +1759,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: X[4].(*ast.LocalIdent).Name}}, nil >>`,
+		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil >>`,
 		Id:         "BlockAddressConst",
 		NTType:     87,
 		Index:      173,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: X[4].(*ast.LocalIdent).Name}}, nil
+			return &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil
 		},
 	},
 	ProdTabEntry{
@@ -2669,13 +2669,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptLabelIdent : empty	<< (*ast.LabelIdent)(nil), nil >>`,
+		String: `OptLabelIdent : empty	<<  >>`,
 		Id:         "OptLabelIdent",
 		NTType:     135,
 		Index:      264,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return (*ast.LabelIdent)(nil), nil
+			return nil, nil
 		},
 	},
 	ProdTabEntry{
@@ -4709,13 +4709,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `MetadataAttachment : MetadataName MDNode	<< &metadata.MetadataAttachment{Name: X[0].(*ast.MetadataName).Name, Node: X[1].(metadata.MDNode)}, nil >>`,
+		String: `MetadataAttachment : MetadataName MDNode	<< &metadata.MetadataAttachment{Name: astx.MetadataName(X[0]), Node: X[1].(metadata.MDNode)}, nil >>`,
 		Id:         "MetadataAttachment",
 		NTType:     227,
 		Index:      468,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &metadata.MetadataAttachment{Name: X[0].(*ast.MetadataName).Name, Node: X[1].(metadata.MDNode)}, nil
+			return &metadata.MetadataAttachment{Name: astx.MetadataName(X[0]), Node: X[1].(metadata.MDNode)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -9029,13 +9029,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Comdat : "comdat" "(" ComdatName ")"	<< &ir.Comdat{Name: X[2].(*ast.ComdatName).Name}, nil >>`,
+		String: `Comdat : "comdat" "(" ComdatName ")"	<< &ir.Comdat{Name: astx.ComdatName(X[2])}, nil >>`,
 		Id:         "Comdat",
 		NTType:     381,
 		Index:      900,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.Comdat{Name: X[2].(*ast.ComdatName).Name}, nil
+			return &ir.Comdat{Name: astx.ComdatName(X[2])}, nil
 		},
 	},
 	ProdTabEntry{
