@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/kr/pretty"
 	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
@@ -116,6 +117,10 @@ func (f *Function) AssignLocalIDs() {
 			n, ok := inst.(value.Named)
 			if !ok {
 				continue
+			}
+			nt := n.Type()
+			if nt == nil {
+				pretty.Println("n:", n)
 			}
 			if n.Type().Equal(types.Void) {
 				continue

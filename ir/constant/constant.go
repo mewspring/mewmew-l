@@ -115,7 +115,10 @@ func NewFloat(x float64) *Float {
 // string.
 func NewFloatFromString(s string) *Float {
 	x := &big.Float{}
-	if _, ok := x.SetString(s); !ok {
+	if strings.HasPrefix(s, "0x") {
+		log.Printf("unable to set hexadecimal floating-point constant %q", s)
+		x.SetFloat64(0)
+	} else if _, ok := x.SetString(s); !ok {
 		// TODO: Handle hexadecimal representation of floating-point constants.
 		//
 		// Fallback to 0.0 value for now.

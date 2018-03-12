@@ -5,6 +5,7 @@ import (
 
 	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/ir"
+	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/irutil"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
@@ -142,6 +143,21 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	}
 	irutil.Walk(m.Module, resolveMetadataID)
 
+	// Resolve floating-point constants.
+	resolveASTConst := func(n interface{}) {
+		switch n := n.(type) {
+		case *value.Value:
+			if c, ok := (*n).(*ast.FloatConst); ok {
+				*n = constant.NewFloatFromString(c.X)
+			}
+		case *ir.Constant:
+			if c, ok := (*n).(*ast.FloatConst); ok {
+				*n = constant.NewFloatFromString(c.X)
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveASTConst)
+
 	// Resolve constants.
 	//
 	//    *ast.TypeConst -> value.Value or ir.Constant
@@ -171,11 +187,12 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 					c.SetType(tc.Typ)
 				} else {
 					// Validate tc.Const.Type() against tc.Typ.
-					got := tc.Const.Type()
-					want := tc.Typ
-					if !want.Equal(got) {
-						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
-					}
+					// TODO: Figure out how to validate type.
+					//got := tc.Const.Type()
+					//want := tc.Typ
+					//if !want.Equal(got) {
+					//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
+					//}
 				}
 				*n = tc.Const
 			}
@@ -195,9 +212,17 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		// Resolve instruction types.
 		resolveInstType := func(n interface{}) {
 			switch n := n.(type) {
+			case *ir.InstExtractValue:
+				if n.Typ == nil {
+					n.Typ = aggregateElemType(n.X.Type(), n.Indices)
+				}
 			case *ir.InstAlloca:
 				if n.Typ == nil {
 					n.Typ = types.NewPointer(n.ElemType)
+				}
+			case *ir.InstGetElementPtr:
+				if n.Typ == nil {
+					n.Typ = getGEPType(n.ElemType, n.Indices)
 				}
 			case *ir.InstICmp:
 				if n.Typ == nil {
@@ -293,21 +318,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 			}
 		}
 		irutil.WalkFunc(f, resolveLocalTypeValue)
-
-		// Resolve extractvalue and getelementptr instruction types.
-		resolveGEPInstType := func(n interface{}) {
-			switch n := n.(type) {
-			case *ir.InstExtractValue:
-				if n.Typ == nil {
-					n.Typ = aggregateElemType(n.X.Type(), n.Indices)
-				}
-			case *ir.InstGetElementPtr:
-				if n.Typ == nil {
-					n.Typ = getGEPType(n.ElemType, n.Indices)
-				}
-			}
-		}
-		irutil.WalkFunc(f, resolveGEPInstType)
 	}
 
 	// Resolve values.
