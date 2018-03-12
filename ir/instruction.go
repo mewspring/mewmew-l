@@ -53,9 +53,9 @@ func (v *LocalDef) Def() string {
 	// ValueInstruction
 	// LocalIdent "=" ValueInstruction
 	if len(v.Name) == 0 {
-		return v.Inst.String()
+		return v.Inst.Def()
 	}
-	return fmt.Sprintf("%v = %v", enc.Local(v.Name), v.Inst)
+	return fmt.Sprintf("%v = %v", enc.Local(v.Name), v.Inst.Def())
 }
 
 // --- [ Binary instructions ] -------------------------------------------------
@@ -69,8 +69,8 @@ type InstAdd struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAdd) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAdd) Def() string {
 	// "add" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("add")
@@ -98,8 +98,8 @@ type InstFAdd struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFAdd) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFAdd) Def() string {
 	// "fadd" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fadd")
@@ -127,8 +127,8 @@ type InstSub struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSub) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSub) Def() string {
 	// "sub" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("sub")
@@ -156,8 +156,8 @@ type InstFSub struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFSub) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFSub) Def() string {
 	// "fsub" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fsub")
@@ -185,8 +185,8 @@ type InstMul struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstMul) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstMul) Def() string {
 	// "mul" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("mul")
@@ -214,8 +214,8 @@ type InstFMul struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFMul) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFMul) Def() string {
 	// "fmul" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fmul")
@@ -243,8 +243,8 @@ type InstUDiv struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstUDiv) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstUDiv) Def() string {
 	// "udiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("udiv")
@@ -272,8 +272,8 @@ type InstSDiv struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSDiv) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSDiv) Def() string {
 	// "sdiv" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("sdiv")
@@ -301,8 +301,8 @@ type InstFDiv struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFDiv) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFDiv) Def() string {
 	// "fdiv" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fdiv")
@@ -329,8 +329,8 @@ type InstURem struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstURem) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstURem) Def() string {
 	// "urem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "urem %v, %v", inst.X, inst.Y.Ident())
@@ -353,8 +353,8 @@ type InstSRem struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSRem) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSRem) Def() string {
 	// "srem" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "srem %v, %v", inst.X, inst.Y.Ident())
@@ -378,8 +378,8 @@ type InstFRem struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFRem) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFRem) Def() string {
 	// "frem" FastMathFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("frem")
@@ -409,8 +409,8 @@ type InstShl struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstShl) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstShl) Def() string {
 	// "shl" OverflowFlags Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("shl")
@@ -438,8 +438,8 @@ type InstLShr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstLShr) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstLShr) Def() string {
 	// "lshr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("lshr")
@@ -467,8 +467,8 @@ type InstAShr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAShr) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAShr) Def() string {
 	// "ashr" OptExact Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("ashr")
@@ -495,8 +495,8 @@ type InstAnd struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAnd) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAnd) Def() string {
 	// "and" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "and %v, %v", inst.X, inst.Y.Ident())
@@ -519,8 +519,8 @@ type InstOr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstOr) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstOr) Def() string {
 	// "or" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "or %v, %v", inst.X, inst.Y.Ident())
@@ -543,8 +543,8 @@ type InstXor struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstXor) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstXor) Def() string {
 	// "xor" Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "xor %v, %v", inst.X, inst.Y.Ident())
@@ -570,8 +570,8 @@ type InstExtractElement struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstExtractElement) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstExtractElement) Def() string {
 	// "extractelement" Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractelement %v, %v", inst.X, inst.Index)
@@ -596,8 +596,8 @@ type InstInsertElement struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstInsertElement) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstInsertElement) Def() string {
 	// "insertelement" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertelement %v, %v, %v", inst.X, inst.Elem, inst.Index)
@@ -621,8 +621,8 @@ type InstShuffleVector struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstShuffleVector) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstShuffleVector) Def() string {
 	// "shufflevector" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "shufflevector %v, %v, %v", inst.X, inst.Y, inst.Mask)
@@ -648,8 +648,8 @@ type InstExtractValue struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstExtractValue) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstExtractValue) Def() string {
 	// "extractvalue" Type Value "," IndexList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "extractvalue %v", inst.X)
@@ -677,8 +677,8 @@ type InstInsertValue struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstInsertValue) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstInsertValue) Def() string {
 	// "insertvalue" Type Value "," Type Value "," IndexList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "insertvalue %v, %v", inst.X, inst.Elem)
@@ -715,8 +715,8 @@ type InstAlloca struct {
 	Metadata   []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAlloca) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAlloca) Def() string {
 	// "alloca" OptInAlloca OptSwiftError Type OptCommaTypeValue OptCommaAlignment OptCommaAddrSpace OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("alloca")
@@ -761,8 +761,8 @@ type InstLoad struct {
 	Metadata       []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstLoad) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstLoad) Def() string {
 	// "load" "atomic" OptVolatile Type "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "load" OptVolatile Type "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -808,8 +808,8 @@ type InstStore struct {
 	Metadata       []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstStore) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstStore) Def() string {
 	// "store" "atomic" OptVolatile Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaAlignment OptCommaSepMetadataAttachmentList
 	// "store" OptVolatile Type Value "," Type Value OptCommaAlignment OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -845,8 +845,8 @@ type InstFence struct {
 	Metadata       []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFence) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFence) Def() string {
 	// "fence" OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fence")
@@ -875,8 +875,8 @@ type InstCmpXchg struct {
 	Metadata  []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstCmpXchg) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstCmpXchg) Def() string {
 	// "cmpxchg" OptWeak OptVolatile Type Value "," Type Value "," Type Value OptSyncScope AtomicOrdering AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("cmpxchg")
@@ -911,8 +911,8 @@ type InstAtomicRMW struct {
 	Metadata       []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAtomicRMW) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAtomicRMW) Def() string {
 	// "atomicrmw" OptVolatile BinOp Type Value "," Type Value OptSyncScope AtomicOrdering OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("atomicrmw")
@@ -965,8 +965,8 @@ type InstGetElementPtr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstGetElementPtr) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstGetElementPtr) Def() string {
 	// "getelementptr" OptInBounds Type "," Type Value GEPIndices OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("getelementptr")
@@ -999,8 +999,8 @@ type InstTrunc struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstTrunc) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstTrunc) Def() string {
 	// "trunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "trunc %v to %v", inst.From, inst.To)
@@ -1024,8 +1024,8 @@ type InstZExt struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstZExt) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstZExt) Def() string {
 	// "zext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "zext %v to %v", inst.From, inst.To)
@@ -1049,8 +1049,8 @@ type InstSExt struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSExt) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSExt) Def() string {
 	// "sext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sext %v to %v", inst.From, inst.To)
@@ -1074,8 +1074,8 @@ type InstFPTrunc struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFPTrunc) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFPTrunc) Def() string {
 	// "fptrunc" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptrunc %v to %v", inst.From, inst.To)
@@ -1099,8 +1099,8 @@ type InstFPExt struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFPExt) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFPExt) Def() string {
 	// "fpext" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fpext %v to %v", inst.From, inst.To)
@@ -1124,8 +1124,8 @@ type InstFPToUI struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFPToUI) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFPToUI) Def() string {
 	// "fptoui" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptoui %v to %v", inst.From, inst.To)
@@ -1149,8 +1149,8 @@ type InstFPToSI struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFPToSI) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFPToSI) Def() string {
 	// "fptosi" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "fptosi %v to %v", inst.From, inst.To)
@@ -1174,8 +1174,8 @@ type InstUIToFP struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstUIToFP) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstUIToFP) Def() string {
 	// "uitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "uitofp %v to %v", inst.From, inst.To)
@@ -1199,8 +1199,8 @@ type InstSIToFP struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSIToFP) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSIToFP) Def() string {
 	// "sitofp" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "sitofp %v to %v", inst.From, inst.To)
@@ -1224,8 +1224,8 @@ type InstPtrToInt struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstPtrToInt) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstPtrToInt) Def() string {
 	// "ptrtoint" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "ptrtoint %v to %v", inst.From, inst.To)
@@ -1249,8 +1249,8 @@ type InstIntToPtr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstIntToPtr) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstIntToPtr) Def() string {
 	// "inttoptr" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "inttoptr %v to %v", inst.From, inst.To)
@@ -1274,8 +1274,8 @@ type InstBitCast struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstBitCast) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstBitCast) Def() string {
 	// "bitcast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "bitcast %v to %v", inst.From, inst.To)
@@ -1299,8 +1299,8 @@ type InstAddrSpaceCast struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstAddrSpaceCast) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstAddrSpaceCast) Def() string {
 	// "addrspacecast" Type Value "to" Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "addrspacecast %v to %v", inst.From, inst.To)
@@ -1331,8 +1331,8 @@ type InstICmp struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstICmp) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstICmp) Def() string {
 	// "icmp" IPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "icmp %v %v, %v", inst.Pred, inst.X, inst.Y.Ident())
@@ -1362,8 +1362,8 @@ type InstFCmp struct {
 	Metadata      []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstFCmp) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstFCmp) Def() string {
 	// "fcmp" FastMathFlags FPred Type Value "," Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("fcmp")
@@ -1391,8 +1391,8 @@ type InstPhi struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstPhi) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstPhi) Def() string {
 	// "phi" Type IncList OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "phi %v ", inst.Typ)
@@ -1445,8 +1445,8 @@ type InstSelect struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstSelect) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstSelect) Def() string {
 	// "select" Type Value "," Type Value "," Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "select %v, %v, %v", inst.Cond, inst.X, inst.Y)
@@ -1483,8 +1483,8 @@ type InstCall struct {
 	Metadata       []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstCall) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstCall) Def() string {
 	// OptTail "call" FastMathFlags OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	if inst.Tail != TailNone {
@@ -1551,8 +1551,8 @@ type InstVAArg struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstVAArg) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstVAArg) Def() string {
 	// "va_arg" Type Value "," Type OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "va_arg %v, %v", inst.ArgList, inst.ArgType)
@@ -1577,8 +1577,8 @@ type InstLandingPad struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstLandingPad) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstLandingPad) Def() string {
 	// "landingpad" Type OptCleanup Clauses OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "landingpad %v", inst.Typ)
@@ -1633,8 +1633,8 @@ type InstCatchPad struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstCatchPad) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstCatchPad) Def() string {
 	// "catchpad" "within" LocalIdent "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchpad within %v [", inst.Scope)
@@ -1665,8 +1665,8 @@ type InstCleanupPad struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the instruction.
-func (inst *InstCleanupPad) String() string {
+// Def returns the LLVM syntax representation of the instruction.
+func (inst *InstCleanupPad) Def() string {
 	// "cleanuppad" "within" ExceptionScope "[" ExceptionArgs "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "cleanuppad within %v [", inst.Scope)

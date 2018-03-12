@@ -183,32 +183,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	}
 	irutil.Walk(m.Module, resolveTypeConst)
 
-	// Resolve values.
-	//
-	//    *ast.TypeValue -> value.Value
-	resolveTypeValue := func(n interface{}) {
-		switch n := n.(type) {
-		case *value.Value:
-			if tc, ok := (*n).(*ast.TypeValue); ok {
-				// Resolve tc.Const type.
-				if c, ok := tc.Value.(TypeSetter); ok {
-					// Propagate the type from tc.Typ to tc.Value.Typ.
-					c.SetType(tc.Typ)
-				} else {
-					// Validate tc.Value.Type() against tc.Typ.
-					// TODO: Figure out how to validate type.
-					//got := tc.Value.Type()
-					//want := tc.Typ
-					//if !want.Equal(got) {
-					//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
-					//}
-				}
-				*n = tc.Value
-			}
-		}
-	}
-	irutil.Walk(m.Module, resolveTypeValue)
-
 	// === [ Per function resolution ] ===
 
 	// Resolve local variables (per function).
@@ -297,6 +271,32 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		}
 		irutil.WalkFunc(f, resolveInstType)
 	}
+
+	// Resolve values.
+	//
+	//    *ast.TypeValue -> value.Value
+	resolveTypeValue := func(n interface{}) {
+		switch n := n.(type) {
+		case *value.Value:
+			if tc, ok := (*n).(*ast.TypeValue); ok {
+				// Resolve tc.Const type.
+				if c, ok := tc.Value.(TypeSetter); ok {
+					// Propagate the type from tc.Typ to tc.Value.Typ.
+					c.SetType(tc.Typ)
+				} else {
+					// Validate tc.Value.Type() against tc.Typ.
+					// TODO: Figure out how to validate type.
+					//got := tc.Value.Type()
+					//want := tc.Typ
+					//if !want.Equal(got) {
+					//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
+					//}
+				}
+				*n = tc.Value
+			}
+		}
+	}
+	irutil.Walk(m.Module, resolveTypeValue)
 
 	return m.Module, nil
 }

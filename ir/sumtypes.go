@@ -104,7 +104,8 @@ func (ParamAttr) isParamAttribute()        {}
 
 // An Instruction is an LLVM IR instruction.
 type Instruction interface {
-	fmt.Stringer
+	// Def returns the LLVM syntax representation of the instruction.
+	Def() string
 	// IsInstruction ensures that only instructions can be assigned to the
 	// ast.Instruction interface.
 	IsInstruction()
@@ -122,8 +123,8 @@ func (*LocalDef) IsInstruction()      {}
 
 // A ValueInstruction is an instruction which produces a value.
 type ValueInstruction interface {
-	// String returns a string representation of the instruction.
-	String() string
+	// Def returns the LLVM syntax representation of the instruction.
+	Def() string
 	// Type returns the type of the results computed by the instruction.
 	Type() types.Type
 	// IsValueInstruction ensures that only value instructions can be assigned to
@@ -206,7 +207,8 @@ func (*Arg) IsArgument() {} // used as function argument
 
 // A Terminator is an LLVM IR terminator.
 type Terminator interface {
-	fmt.Stringer
+	// Def returns the LLVM syntax representation of the terminator.
+	Def() string
 	// IsTerminator ensures that only terminators can be assigned to the
 	// ast.Terminator interface.
 	IsTerminator()

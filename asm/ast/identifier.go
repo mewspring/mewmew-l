@@ -24,7 +24,7 @@ func (i *GlobalIdent) String() string {
 
 // Type returns the type of the global identifier.
 func (i *GlobalIdent) Type() types.Type {
-	panic("ast.GlobalIdent.Type: unintended use of Type; type resolution not complete")
+	panic(fmt.Errorf("ast.GlobalIdent.Type: unintended use of Type for global ident %q; type resolution not complete", i.Ident()))
 }
 
 // Ident returns the identifier associated with the global identifier.
@@ -48,7 +48,7 @@ func (i *LocalIdent) String() string {
 
 // Type returns the type of the local identifier.
 func (i *LocalIdent) Type() types.Type {
-	panic("ast.LocalIdent.Type: unintended use of Type; type resolution not complete")
+	panic(fmt.Errorf("ast.LocalIdent.Type: unintended use of Type for local ident %q; type resolution not complete", i.Ident()))
 }
 
 // Ident returns the identifier associated with the local identifier.

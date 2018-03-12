@@ -19,8 +19,8 @@ type TermRet struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermRet) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermRet) Def() string {
 	// "ret" VoidType OptCommaSepMetadataAttachmentList
 	// "ret" ConcreteType Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
@@ -47,8 +47,8 @@ type TermBr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermBr) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermBr) Def() string {
 	// "br" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "br %v", term.Target)
@@ -76,8 +76,8 @@ type TermCondBr struct {
 	Metadata    []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermCondBr) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermCondBr) Def() string {
 	// "br" IntType Value "," LabelType LocalIdent "," LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "br %v, %v, %v", term.Cond, term.TargetTrue, term.TargetFalse)
@@ -102,8 +102,8 @@ type TermSwitch struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermSwitch) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermSwitch) Def() string {
 	// "switch" Type Value "," LabelType LocalIdent "[" Cases "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "switch %v, %v [\n", term.X, term.Default)
@@ -148,8 +148,8 @@ type TermIndirectBr struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermIndirectBr) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermIndirectBr) Def() string {
 	// "indirectbr" Type Value "," "[" LabelList "]" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "indirectbr %v, [", term.Addr)
@@ -198,8 +198,8 @@ type TermInvoke struct {
 	Metadata  []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermInvoke) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermInvoke) Def() string {
 	// "invoke" OptCallingConv ReturnAttrs Type Value "(" Args ")" FuncAttrs OperandBundles "to" LabelType LocalIdent "unwind" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("invoke")
@@ -242,8 +242,8 @@ type TermResume struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermResume) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermResume) Def() string {
 	// "resume" Type Value OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "resume %v", term.X)
@@ -268,8 +268,8 @@ type TermCatchSwitch struct {
 	Metadata     []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermCatchSwitch) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermCatchSwitch) Def() string {
 	// "catchswitch" "within" ExceptionScope "[" LabelList "]" "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchswitch within %v [", term.Scope)
@@ -304,8 +304,8 @@ type TermCatchRet struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermCatchRet) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermCatchRet) Def() string {
 	// "catchret" "from" Value "to" LabelType LocalIdent OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "catchret from %v to %v", term.From, term.To)
@@ -328,8 +328,8 @@ type TermCleanupRet struct {
 	Metadata     []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermCleanupRet) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermCleanupRet) Def() string {
 	// "cleanupret" "from" Value "unwind" UnwindTarget OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	fmt.Fprintf(buf, "cleanupret from %v unwind %v", term.From, term.UnwindTarget)
@@ -346,8 +346,8 @@ type TermUnreachable struct {
 	Metadata []*metadata.MetadataAttachment
 }
 
-// String returns a string representation of the terminator.
-func (term *TermUnreachable) String() string {
+// Def returns the LLVM syntax representation of the terminator.
+func (term *TermUnreachable) Def() string {
 	// "unreachable" OptCommaSepMetadataAttachmentList
 	buf := &strings.Builder{}
 	buf.WriteString("unreachable")

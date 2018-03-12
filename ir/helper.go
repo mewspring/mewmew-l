@@ -370,7 +370,7 @@ func (p *Param) Type() types.Type {
 
 // Ident returns the identifier associated with the function parameter.
 func (p *Param) Ident() string {
-	return p.Name
+	return enc.Local(p.Name)
 }
 
 // String returns the string representation of the function parameter.
@@ -382,7 +382,7 @@ func (param *Param) String() string {
 		fmt.Fprintf(buf, " %v", attr)
 	}
 	if len(param.Name) > 0 {
-		fmt.Fprintf(buf, " %v", param.Name)
+		fmt.Fprintf(buf, " %v", enc.Local(param.Name))
 	}
 	return buf.String()
 }

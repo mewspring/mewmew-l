@@ -68,8 +68,8 @@ func (block *BasicBlock) Def() string {
 		fmt.Fprintf(buf, "%v\n", enc.Label(block.Name))
 	}
 	for _, inst := range block.Insts {
-		fmt.Fprintf(buf, "\t%v\n", inst)
+		fmt.Fprintf(buf, "\t%v\n", inst.Def())
 	}
-	fmt.Fprintf(buf, "\t%v", block.Term)
+	fmt.Fprintf(buf, "\t%v", block.Term.Def())
 	return buf.String()
 }
