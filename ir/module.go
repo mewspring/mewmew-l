@@ -68,7 +68,7 @@ func (m *Module) String() string {
 	for _, t := range m.TypeDefs {
 		// LocalIdent "=" "type" OpaqueType
 		// LocalIdent "=" "type" Type
-		fmt.Fprintf(buf, "%v = type %v\n", t.String(), t.Def())
+		fmt.Fprintf(buf, "%v = type %v\n", t, t.Def())
 	}
 	// Global declarations and definitions.
 	for _, c := range m.ComdatDefs {
@@ -206,14 +206,14 @@ type AttrGroupDef struct {
 
 // String returns the string representation of the attribute group definition.
 func (a *AttrGroupDef) String() string {
-	return a.ID
+	return enc.AttrGroup(a.ID)
 }
 
 // Def returns the LLVM syntax representation of the attribute group definition.
 func (a *AttrGroupDef) Def() string {
 	// "attributes" AttrGroupID "=" "{" FuncAttrs "}"
 	buf := &strings.Builder{}
-	fmt.Fprintf(buf, "attributes %v = { ", a.ID)
+	fmt.Fprintf(buf, "attributes %v = { ", enc.AttrGroup(a.ID))
 	for i, attr := range a.FuncAttrs {
 		if i != 0 {
 			buf.WriteString(" ")

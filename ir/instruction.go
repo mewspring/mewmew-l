@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/metadata"
 	"github.com/mewmew/l/ir/types"
 	"github.com/mewmew/l/ir/value"
@@ -26,7 +27,7 @@ func (v *LocalDef) String() string {
 	if len(v.Name) == 0 {
 		return v.Inst.String()
 	}
-	return fmt.Sprintf("%v = %v", v.Name, v.Inst)
+	return fmt.Sprintf("%v = %v", enc.Local(v.Name), v.Inst)
 }
 
 // --- [ Binary instructions ] -------------------------------------------------
@@ -1176,7 +1177,7 @@ type Incoming struct {
 // String returns the string representation of the incoming value.
 func (inc *Incoming) String() string {
 	// "[" Value "," LocalIdent "]"
-	return fmt.Sprintf("[ %v, %v ]", inc.X.Ident(), inc.Pred.Name)
+	return fmt.Sprintf("[ %v, %v ]", inc.X.Ident(), inc.Pred.Ident())
 }
 
 // ~~~[ select ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

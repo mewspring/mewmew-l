@@ -3,6 +3,7 @@ package ast
 import (
 	"fmt"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/types"
 )
 
@@ -29,7 +30,7 @@ func (i *GlobalIdent) Type() types.Type {
 // Ident returns the identifier associated with the global identifier.
 func (i *GlobalIdent) Ident() string {
 	// global_ident
-	return i.Name
+	return enc.Global(i.Name)
 }
 
 // --- [ Local Identifiers ] ---------------------------------------------------
@@ -53,7 +54,7 @@ func (i *LocalIdent) Type() types.Type {
 // Ident returns the identifier associated with the local identifier.
 func (i *LocalIdent) Ident() string {
 	// local_ident
-	return i.Name
+	return enc.Local(i.Name)
 }
 
 // --- [ Label Identifiers ] ---------------------------------------------------
@@ -66,7 +67,7 @@ type LabelIdent struct {
 // String returns the string representation of the label identifier.
 func (i *LabelIdent) String() string {
 	// label_ident
-	return i.Name
+	return enc.Label(i.Name)
 }
 
 // --- [ Attribute Group Identifiers ] -----------------------------------------
@@ -79,7 +80,7 @@ type AttrGroupID struct {
 // String returns the string representation of the  attribute group ID.
 func (i *AttrGroupID) String() string {
 	// attr_group_id
-	return i.ID
+	return enc.AttrGroup(i.ID)
 }
 
 // --- [ Comdat Identifiers ] --------------------------------------------------
@@ -92,7 +93,7 @@ type ComdatName struct {
 // String returns the string representation of the comdat name.
 func (i *ComdatName) String() string {
 	// comdat_name
-	return i.Name
+	return enc.Comdat(i.Name)
 }
 
 // --- [ Metadata Identifiers ] ------------------------------------------------
@@ -105,7 +106,7 @@ type MetadataName struct {
 // String returns the string representation of the metadata name.
 func (i *MetadataName) String() string {
 	// metadata_name
-	return i.Name
+	return enc.Metadata(i.Name)
 }
 
 // A MetadataID is a metadata ID (e.g. !42).
@@ -116,5 +117,5 @@ type MetadataID struct {
 // String returns the string representation of the metadata ID.
 func (i *MetadataID) String() string {
 	// metadata_id
-	return i.ID
+	return enc.Metadata(i.ID)
 }

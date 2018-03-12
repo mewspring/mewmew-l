@@ -44,6 +44,31 @@ func Label(name string) string {
 	return EscapeIdent(name) + ":"
 }
 
+// AttrGroupID encodes a attribute group name to its LLVM IR assembly
+// representation.
+//
+// Examples:
+//    "40" -> "#42:"
+//
+// References:
+//    http://www.llvm.org/docs/LangRef.html#identifiers
+func AttrGroup(name string) string {
+	return "#" + name
+}
+
+// Comdat encodes a comdat name to its LLVM IR assembly representation.
+//
+// Examples:
+//    "foo" -> $%foo"
+//    "a b" -> `$"a\20b"`
+//    "世" -> `$"\E4\B8\96"`
+//
+// References:
+//    http://www.llvm.org/docs/LangRef.html#identifiers
+func Comdat(name string) string {
+	return "$" + EscapeIdent(name)
+}
+
 // Metadata encodes a metadata name to its LLVM IR assembly representation.
 //
 // Examples:

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mewmew/l/internal/enc"
 	"github.com/mewmew/l/ir/types"
 )
 
@@ -25,7 +26,7 @@ func (m *Module) String() string {
 		case *NamedType:
 			// LocalIdent "=" "type" OpaqueType
 			// LocalIdent "=" "type" Type
-			fmt.Fprintf(buf, "%v = type %v\n", entity.Name, entity.Type)
+			fmt.Fprintf(buf, "%v = type %v\n", enc.Local(entity.Name), entity.Type)
 		default:
 			fmt.Fprintln(buf, entity.Def())
 
@@ -47,7 +48,7 @@ func (t *NamedType) Equal(u types.Type) bool {
 
 // String returns the string representation of the named type.
 func (t *NamedType) String() string {
-	return t.Name
+	return enc.Local(t.Name)
 }
 
 // Def returns the LLVM syntax representation of the definition of the type.
