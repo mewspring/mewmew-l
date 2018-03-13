@@ -3,12 +3,23 @@ package constant
 import (
 	"fmt"
 	"log"
+	"math"
 	"math/big"
+	"os"
+	"strconv"
 	"strings"
 
+	"github.com/mewkiz/pkg/term"
 	"github.com/mewmew/l/internal/enc"
+	"github.com/mewmew/l/internal/floats"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/types"
+)
+
+var (
+	// warn represents a logger with the "constant:" prefix, which logs warnings
+	// to standard error.
+	warn = log.New(os.Stderr, term.RedBold("constant:")+" ", 0)
 )
 
 // === [ Constants ] ===========================================================
@@ -105,28 +116,62 @@ type Float struct {
 
 // NewFloat returns a new floating-point constant based on the given floating-
 // point value.
-func NewFloat(x float64) *Float {
+func NewFloat(x float64, typ *types.FloatType) *Float {
 	return &Float{
-		X: big.NewFloat(x),
+		Typ: typ,
+		X:   big.NewFloat(x),
 	}
 }
 
 // NewFloatFromString returns a new floating-point constant based on the given
 // string.
-func NewFloatFromString(s string) *Float {
+func NewFloatFromString(s string, typ *types.FloatType) *Float {
 	x := &big.Float{}
-	if strings.HasPrefix(s, "0x") {
-		log.Printf("unable to set hexadecimal floating-point constant %q", s)
-		x.SetFloat64(0)
-	} else if _, ok := x.SetString(s); !ok {
-		// TODO: Handle hexadecimal representation of floating-point constants.
-		//
-		// Fallback to 0.0 value for now.
-		log.Printf("unable to set floating-point constant %q", s)
-		x.SetFloat64(0)
+	c := &Float{
+		Typ: typ,
+		X:   x,
 	}
-	return &Float{
-		X: x,
+	switch {
+	// HexFP80Constant   0xK[0-9A-Fa-f]+    // 20 hex digits
+	case strings.HasPrefix(s, "0xK"):
+		switch s {
+		case "0xK00000000000000000000":
+			// zero value.
+			return c
+		default:
+			f := floats.NewFloat80FromBytes([]byte(s[len("0xK"):]))
+			c.X = f.BigFloat()
+		}
+		return c
+	// HexFP128Constant  0xL[0-9A-Fa-f]+    // 32 hex digits
+	case strings.HasPrefix(s, "0xL"):
+		warn.Printf("unable to set hexadecimal floating-point constant %q", s)
+		x.SetFloat64(0)
+		return c
+	// HexPPC128Constant 0xM[0-9A-Fa-f]+    // 32 hex digits
+	case strings.HasPrefix(s, "0xM"):
+		warn.Printf("unable to set hexadecimal floating-point constant %q", s)
+		x.SetFloat64(0)
+		return c
+	// HexHalfConstant   0xH[0-9A-Fa-f]+    // 4 hex digits
+	case strings.HasPrefix(s, "0xH"):
+		warn.Printf("unable to set hexadecimal floating-point constant %q", s)
+		x.SetFloat64(0)
+		return c
+	// HexFPConstant     0x[0-9A-Fa-f]+     // 16 hex digits
+	case strings.HasPrefix(s, "0x"):
+		f := parseHexFloat(s[len("0x"):], typ)
+		x.SetFloat64(f)
+		return c
+	default:
+		if _, ok := x.SetString(s); !ok {
+			// TODO: Handle hexadecimal representation of floating-point constants.
+			//
+			// Fallback to 0.0 value for now.
+			warn.Printf("unable to set floating-point constant %q", s)
+			x.SetFloat64(0)
+		}
+		return c
 	}
 }
 
@@ -144,7 +189,25 @@ func (c *Float) Type() types.Type {
 // Ident returns the identifier associated with the floating-point constant.
 func (c *Float) Ident() string {
 	// float_lit
-	return c.X.String()
+	if c.X.MinPrec() > 5 {
+		// Represent as hexadecimal floating-point constant.
+		f, acc := c.X.Float64()
+		if acc != big.Exact {
+			warn.Printf("unable to represent `%v` without loss of precision", c.X.Text('f', -1))
+		}
+		bits := math.Float64bits(f)
+		switch c.Typ.Kind {
+		case types.FloatKindFloat:
+			return fmt.Sprintf("0x%16X", bits)
+		case types.FloatKindDouble:
+			return fmt.Sprintf("0x%16X", bits)
+		default:
+			warn.Printf("support for hexadecimal representation of floating-point type %v not yet implemented; floating-point constant %v", c.Typ, c.X.Text('f', -1))
+			// TODO: Implement support for hex float representation, using fallback
+			// representation for now.
+		}
+	}
+	return c.X.Text('e', 6)
 }
 
 // SetType sets the type of the constant to t.
@@ -469,4 +532,16 @@ func (*BlockAddress) Type() types.Type {
 func (c *BlockAddress) Ident() string {
 	// "blockaddress" "(" GlobalIdent "," LocalIdent ")"
 	return fmt.Sprintf("blockaddress(%v, %v)", c.Func.Ident(), c.Block.Ident())
+}
+
+// ### [ Helpers ] =============================================================
+
+// parseHexFloat parses the given hexadecimal representation of a floating-point
+// constant.
+func parseHexFloat(s string, typ *types.FloatType) float64 {
+	bits, err := strconv.ParseUint(s, 16, 64)
+	if err != nil {
+		panic(fmt.Errorf("unable to parse hexadecimal floating-point constants %q; %v", s, err))
+	}
+	return math.Float64frombits(bits)
 }

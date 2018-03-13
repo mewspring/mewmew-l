@@ -2,8 +2,10 @@ package ast
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/mewmew/l/ir/types"
+	"github.com/pkg/errors"
 )
 
 // --- [ Floating-point Constants ] --------------------------------------------
@@ -21,7 +23,9 @@ func (c *FloatConst) String() string {
 
 // Type returns the type of the floating-point constant.
 func (c *FloatConst) Type() types.Type {
-	panic("ast.FloatConst.Type: unintended use of Type; type resolution not complete")
+	err := errors.Errorf("ast.FloatConst.Type: unintended use of Type for constant %v; type resolution not complete", c.Ident())
+	log.Fatalf("%+v", err)
+	panic(fmt.Errorf("ast.FloatConst.Type: unintended use of Type for constant %v; type resolution not complete", c.Ident()))
 }
 
 // Ident returns the identifier associated with the floating-point constant.

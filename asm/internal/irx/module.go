@@ -143,21 +143,6 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 	}
 	irutil.Walk(m.Module, resolveMetadataID)
 
-	// Resolve floating-point constants.
-	resolveASTConst := func(n interface{}) {
-		switch n := n.(type) {
-		case *value.Value:
-			if c, ok := (*n).(*ast.FloatConst); ok {
-				*n = constant.NewFloatFromString(c.X)
-			}
-		case *ir.Constant:
-			if c, ok := (*n).(*ast.FloatConst); ok {
-				*n = constant.NewFloatFromString(c.X)
-			}
-		}
-	}
-	irutil.Walk(m.Module, resolveASTConst)
-
 	// Resolve constants.
 	//
 	//    *ast.TypeConst -> value.Value or ir.Constant
@@ -177,7 +162,12 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 						panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
 					}
 				}
-				*n = tc.Const
+				// Resolve AST floating-point constants.
+				if c, ok := tc.Const.(*ast.FloatConst); ok {
+					*n = constant.NewFloatFromString(c.X, tc.Typ.(*types.FloatType))
+				} else {
+					*n = tc.Const
+				}
 			}
 		case *ir.Constant:
 			if tc, ok := (*n).(*ast.TypeConst); ok {
@@ -194,7 +184,12 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 					//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Const.Ident(), want, got))
 					//}
 				}
-				*n = tc.Const
+				// Resolve AST floating-point constants.
+				if c, ok := tc.Const.(*ast.FloatConst); ok {
+					*n = constant.NewFloatFromString(c.X, tc.Typ.(*types.FloatType))
+				} else {
+					*n = tc.Const
+				}
 			}
 		}
 	}
@@ -299,21 +294,26 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		resolveLocalTypeValue := func(n interface{}) {
 			switch n := n.(type) {
 			case *value.Value:
-				if tc, ok := (*n).(*ast.TypeValue); ok {
-					// Resolve tc.Const type.
-					if c, ok := tc.Value.(TypeSetter); ok {
-						// Propagate the type from tc.Typ to tc.Value.Typ.
-						c.SetType(tc.Typ)
+				if tv, ok := (*n).(*ast.TypeValue); ok {
+					// Resolve tv.Value type.
+					if c, ok := tv.Value.(TypeSetter); ok {
+						// Propagate the type from tv.Typ to tv.Value.Typ.
+						c.SetType(tv.Typ)
 					} else {
-						// Validate tc.Value.Type() against tc.Typ.
+						// Validate tv.Value.Type() against tv.Typ.
 						// TODO: Figure out how to validate type.
-						//got := tc.Value.Type()
-						//want := tc.Typ
+						//got := tv.Value.Type()
+						//want := tv.Typ
 						//if !want.Equal(got) {
-						//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tc.Value.Ident(), want, got))
+						//	panic(fmt.Errorf("type mismatch for constant `%v`; expected %v, got %v", tv.Value.Ident(), want, got))
 						//}
 					}
-					*n = tc.Value
+					// Resolve AST floating-point constants.
+					if c, ok := tv.Value.(*ast.FloatConst); ok {
+						*n = constant.NewFloatFromString(c.X, tv.Typ.(*types.FloatType))
+					} else {
+						*n = tv.Value
+					}
 				}
 			}
 		}
