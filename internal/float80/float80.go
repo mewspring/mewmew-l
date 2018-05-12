@@ -4,6 +4,7 @@ package float80
 
 import (
 	"fmt"
+	"math"
 	"math/big"
 	"strconv"
 )
@@ -46,7 +47,57 @@ func (f Float80) String() string {
 
 // Float64 returns the float64 representation of f.
 func (f Float80) Float64() float64 {
-	panic("not yet implemented")
+	se := uint64(f.se)
+	m := f.m
+	// 1 bit: sign
+	sign := se >> 15
+	// 15 bits: exponent
+	exp := se & 0x7FFF
+	// Adjust for exponent bias.
+	//
+	// === [ binary64 ] =========================================================
+	//
+	// Exponent bias 1023.
+	//
+	//    +===========================+=======================+
+	//    | Exponent (in binary)      | Notes                 |
+	//    +===========================+=======================+
+	//    | 00000000000               | zero/subnormal number |
+	//    +---------------------------+-----------------------+
+	//    | 00000000001 - 11111111110 | normalized value      |
+	//    +---------------------------+-----------------------+
+	//    | 11111111111               | infinity/NaN          |
+	//    +---------------------------+-----------------------+
+	//
+	// References:
+	//    https://en.wikipedia.org/wiki/Double-precision_floating-point_format#Exponent_encoding
+	exp64 := int64(exp) - 16383 + 1023
+	switch {
+	case exp == 0:
+		// exponent is all zeroes.
+		exp64 = 0
+	case exp == 0x7FFF:
+		switch m {
+		case 0xC000000000000000:
+			// Handle NaN.
+			return math.NaN()
+		}
+		// exponent is all ones.
+		exp64 = 0x7FF
+	default:
+	}
+	// 63 bits: fraction
+	frac := m & 0x7FFFFFFFFFFFFFFF
+	// Sign, exponent and fraction of binary64.
+	//
+	//    1 bit:   sign
+	//    11 bits: exponent
+	//    52 bits: fraction
+	//
+	// References:
+	//    https://en.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64
+	bits := sign<<63 | uint64(exp64)<<52 | frac>>11
+	return math.Float64frombits(bits)
 }
 
 // BigFloat returns the *big.Float representation of f.
@@ -88,5 +139,48 @@ func NewFromString(s string) Float80 {
 
 // NewFromFloat64 returns the nearest 80-bit floating-point value for x.
 func NewFromFloat64(x float64) Float80 {
-	panic("not yet implemented")
+	// Sign, exponent and fraction of binary64.
+	//
+	//    1 bit:   sign
+	//    11 bits: exponent
+	//    52 bits: fraction
+	bits := math.Float64bits(x)
+	// 1 bit: sign
+	sign := uint16(bits >> 63)
+	// 11 bits: exponent
+	exp := bits >> 52 & 0x7FF
+	// 52 bits: fraction
+	frac := bits & 0xFFFFFFFFFFFFF
+
+	if exp == 0 && frac == 0 {
+		// zero value.
+		se := sign << 15
+		return Float80{se: se}
+	}
+
+	// Sign, exponent and fraction of binary80.
+	//
+	//    1 bit:   sign
+	//    15 bits: exponent
+	//    1 bit:   integer part
+	//    63 bits: fraction
+
+	// 15 bits: exponent.
+	//
+	// Exponent bias 1023  (binary64)
+	// Exponent bias 16383 (binary80)
+	exp80 := int64(exp) - 1023 + 16383
+	// 63 bits: fraction.
+	//
+	frac80 := frac << 11
+	switch {
+	case exp == 0:
+		exp80 = 0
+	case exp == 0x7FF:
+		exp80 = 0x7FFF
+	}
+	se := sign<<15 | uint16(exp80)
+	// Integer part set to specify normalized value.
+	m := 0x8000000000000000 | frac80
+	return NewFromBits(se, m)
 }
