@@ -11,7 +11,7 @@ import (
 
 	"github.com/mewkiz/pkg/term"
 	"github.com/mewmew/l/internal/enc"
-	"github.com/mewmew/l/internal/floats"
+	"github.com/mewmew/l/internal/float80"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/types"
 )
@@ -112,11 +112,19 @@ func (c *Int) SetType(t types.Type) {
 type Float struct {
 	Typ *types.FloatType
 	X   *big.Float
+	NaN bool
 }
 
 // NewFloat returns a new floating-point constant based on the given floating-
 // point value.
 func NewFloat(x float64, typ *types.FloatType) *Float {
+	if math.IsNaN(x) {
+		return &Float{
+			Typ: typ,
+			X:   &big.Float{},
+			NaN: true,
+		}
+	}
 	return &Float{
 		Typ: typ,
 		X:   big.NewFloat(x),
@@ -139,8 +147,14 @@ func NewFloatFromString(s string, typ *types.FloatType) *Float {
 			// zero value.
 			return c
 		default:
-			f := floats.NewFloat80FromBytes([]byte(s[len("0xK"):]))
-			c.X = f.BigFloat()
+			f := float80.NewFromString(s[len("0xK"):])
+			x := f.Float64()
+			if math.IsNaN(x) {
+				c.NaN = true
+			} else {
+				//c.X = f.BigFloat()
+				c.X = big.NewFloat(f.Float64())
+			}
 		}
 		return c
 	// HexFP128Constant  0xL[0-9A-Fa-f]+    // 32 hex digits
@@ -189,6 +203,17 @@ func (c *Float) Type() types.Type {
 // Ident returns the identifier associated with the floating-point constant.
 func (c *Float) Ident() string {
 	// float_lit
+	switch c.Typ.Kind {
+	case types.FloatKindX86FP80:
+		f, acc := c.X.Float64()
+		if acc != big.Exact {
+			warn.Printf("unable to represent `%v` without loss of precision", c.X.Text('f', -1))
+		}
+		if c.NaN {
+			f = math.NaN()
+		}
+		return fmt.Sprintf("0xK%v", float80.NewFromFloat64(f))
+	}
 	if c.X.MinPrec() > 5 {
 		// Represent as hexadecimal floating-point constant.
 		f, acc := c.X.Float64()

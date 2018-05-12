@@ -181,6 +181,12 @@ func NewFromFloat64(x float64) Float80 {
 	}
 	se := sign<<15 | uint16(exp80)
 	// Integer part set to specify normalized value.
+
+	// Handle NaN.
+	if math.IsNaN(x) {
+		return NewFromBits(se, 0xC000000000000000)
+	}
+
 	m := 0x8000000000000000 | frac80
 	return NewFromBits(se, m)
 }
