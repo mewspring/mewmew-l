@@ -830,7 +830,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `UseListOrderBB : "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"	<< &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: astx.GlobalIdent(X[1])}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil >>`,
+		String: `UseListOrderBB : "uselistorder_bb" GlobalIdent "," LocalIdent "," "{" IndexList "}"	<< &ir.UseListOrderBB{Func: &ir.Function{Name: astx.GlobalIdent(X[1])}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil >>`,
 		Id:         "UseListOrderBB",
 		NTType:     38,
 		Index:      80,
@@ -1760,7 +1760,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil >>`,
+		String: `BlockAddressConst : "blockaddress" "(" GlobalIdent "," LocalIdent ")"	<< &constant.BlockAddress{Func: &ir.Function{Name: X[2].(*ast.GlobalIdent).Name}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil >>`,
 		Id:         "BlockAddressConst",
 		NTType:     87,
 		Index:      173,
