@@ -23,8 +23,32 @@ import (
 // A Function is an LLVM IR function.
 type Function struct {
 	Linkage Linkage
-	*FunctionHeader
-	*FunctionBody // nil if declaration
+
+	// Function header
+
+	Preemption      Preemption      // zero value if not present
+	Visibility      Visibility      // zero value if not present
+	DLLStorageClass DLLStorageClass // zero value if not present
+	CallingConv     CallingConv     // zero value if not present
+	ReturnAttrs     []ReturnAttribute
+	RetType         types.Type
+	Name            string // *GlobalIdent
+	Params          []*Param
+	Variadic        bool
+	UnnamedAddr     UnnamedAddr
+	FuncAttrs       []FuncAttribute
+	Section         *Section // nil if not present
+	Comdat          *Comdat  // nil if not present
+	GC              string   // empty if not present
+	Prefix          Constant // *TypeConst; nil if not present
+	Prologue        Constant // *TypeConst; nil if not present
+	Personality     Constant // *TypeConst; nil if not present
+
+	// Function body
+
+	Blocks        []*BasicBlock // nil if declaration
+	UseListOrders []*UseListOrder
+
 	// Function signature.
 	Sig      *types.FuncType
 	Typ      *types.PointerType // pointer to Sig.
@@ -52,7 +76,7 @@ func (f *Function) Def() string {
 	// "declare" MetadataAttachments OptExternLinkage FunctionHeader
 	// "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
 	buf := &strings.Builder{}
-	if f.FunctionBody == nil {
+	if len(f.Blocks) == 0 {
 		// Function declaration.
 		//
 		//    "declare" MetadataAttachments OptExternLinkage FunctionHeader
@@ -63,7 +87,7 @@ func (f *Function) Def() string {
 		if f.Linkage != LinkageNone {
 			fmt.Fprintf(buf, " %v", f.Linkage)
 		}
-		buf.WriteString(f.FunctionHeader.String())
+		buf.WriteString(f.headerString())
 		return buf.String()
 	}
 	// Function definition.
@@ -73,17 +97,17 @@ func (f *Function) Def() string {
 	if f.Linkage != LinkageNone {
 		fmt.Fprintf(buf, " %v", f.Linkage)
 	}
-	buf.WriteString(f.FunctionHeader.String())
+	buf.WriteString(f.headerString())
 	for _, md := range f.Metadata {
 		fmt.Fprintf(buf, " %v", md)
 	}
-	fmt.Fprintf(buf, " %v", f.FunctionBody)
+	fmt.Fprintf(buf, " %v", f.bodyString())
 	return buf.String()
 }
 
 // AssignLocalIDs assigns IDs to unnamed local variables.
 func (f *Function) AssignLocalIDs() {
-	if f.FunctionBody == nil {
+	if len(f.Blocks) == 0 {
 		return
 	}
 	id := 0
@@ -146,29 +170,8 @@ func isLocalID(name string) bool {
 	return len(name) > 0
 }
 
-// FunctionHeader is the header of an LLVM IR function.
-type FunctionHeader struct {
-	Preemption      Preemption      // zero value if not present
-	Visibility      Visibility      // zero value if not present
-	DLLStorageClass DLLStorageClass // zero value if not present
-	CallingConv     CallingConv     // zero value if not present
-	ReturnAttrs     []ReturnAttribute
-	RetType         types.Type
-	Name            string // *GlobalIdent
-	Params          []*Param
-	Variadic        bool
-	UnnamedAddr     UnnamedAddr
-	FuncAttrs       []FuncAttribute
-	Section         *Section // nil if not present
-	Comdat          *Comdat  // nil if not present
-	GC              string   // empty if not present
-	Prefix          Constant // *TypeConst; nil if not present
-	Prologue        Constant // *TypeConst; nil if not present
-	Personality     Constant // *TypeConst; nil if not present
-}
-
-// String returns the string representation of the function header.
-func (hdr *FunctionHeader) String() string {
+// headerString returns the string representation of the function header.
+func (hdr *Function) headerString() string {
 	// OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv
 	// ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs
 	// OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
@@ -230,14 +233,8 @@ func (hdr *FunctionHeader) String() string {
 	return buf.String()
 }
 
-// FunctionBody is the body of an LLVM IR function.
-type FunctionBody struct {
-	Blocks        []*BasicBlock
-	UseListOrders []*UseListOrder
-}
-
-// String returns the string representation of the function body.
-func (body *FunctionBody) String() string {
+// bodyString returns the string representation of the function body.
+func (body *Function) bodyString() string {
 	// "{" BasicBlockList UseListOrders "}"
 	buf := &strings.Builder{}
 	buf.WriteString("{\n")

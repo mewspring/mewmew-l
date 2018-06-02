@@ -59,7 +59,7 @@ func WalkFuncBeforeAfter(f *ir.Function, before, after func(interface{})) {
 	// Traverse child nodes of function, instead of f directly, as *ir.Function
 	// nodes are not traversed when staying within the scope of the function.
 	w.walkBeforeAfter(&f.Sig, before, after)
-	if f.FunctionBody != nil && f.Blocks != nil {
+	if f.Blocks != nil {
 		w.walkBeforeAfter(&f.Blocks, before, after)
 	}
 }
@@ -147,10 +147,6 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 	case **ir.IndirectSymbol:
 		w.walkBeforeAfter(*n, before, after)
 	case **ir.Function:
-		w.walkBeforeAfter(*n, before, after)
-	case **ir.FunctionHeader:
-		w.walkBeforeAfter(*n, before, after)
-	case **ir.FunctionBody:
 		w.walkBeforeAfter(*n, before, after)
 	case **ir.AttrGroupDef:
 		w.walkBeforeAfter(*n, before, after)
@@ -642,20 +638,7 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		w.walkBeforeAfter(&n.Typ, before, after)
 		w.walkBeforeAfter(&n.Const, before, after)
 	case *ir.Function:
-		w.walkBeforeAfter(&n.FunctionHeader, before, after)
-		if n.FunctionBody != nil {
-			w.walkBeforeAfter(&n.FunctionBody, before, after)
-		}
-		// Note, Sig is nil until function type resoltion has completed.
-		if n.Sig != nil {
-			w.walkBeforeAfter(&n.Sig, before, after)
-		}
-		// Note, Typ is nil until function type resoltion has completed.
-		if n.Typ != nil {
-			w.walkBeforeAfter(&n.Typ, before, after)
-		}
-		w.walkBeforeAfter(&n.Metadata, before, after)
-	case *ir.FunctionHeader:
+		// header
 		w.walkBeforeAfter(&n.RetType, before, after)
 		w.walkBeforeAfter(&n.Params, before, after)
 		w.walkBeforeAfter(&n.FuncAttrs, before, after)
@@ -668,9 +651,18 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		if n.Personality != nil {
 			w.walkBeforeAfter(&n.Personality, before, after)
 		}
-	case *ir.FunctionBody:
+		// body
 		w.walkBeforeAfter(&n.Blocks, before, after)
 		w.walkBeforeAfter(&n.UseListOrders, before, after)
+		// Note, Sig is nil until function type resoltion has completed.
+		if n.Sig != nil {
+			w.walkBeforeAfter(&n.Sig, before, after)
+		}
+		// Note, Typ is nil until function type resoltion has completed.
+		if n.Typ != nil {
+			w.walkBeforeAfter(&n.Typ, before, after)
+		}
+		w.walkBeforeAfter(&n.Metadata, before, after)
 	case *ir.AttrGroupDef:
 		w.walkBeforeAfter(&n.FuncAttrs, before, after)
 	case *ir.UseListOrder:

@@ -8,7 +8,7 @@
 
 FunctionDecl
 	: "declare" MetadataAttachments OptExternLinkage FunctionHeader
-	<< &ir.Function{Linkage: $2.(ir.Linkage), FunctionHeader: $3.(*ir.FunctionHeader), Metadata: $1.([]*metadata.MetadataAttachment)}, nil >>
+	<< irx.NewFunctionDecl($1, $2, $3) >>
 ;
 
 // ~~~ [ Function Definition ] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -21,7 +21,7 @@ FunctionDecl
 
 FunctionDef
 	: "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody
-	<< &ir.Function{Linkage: $1.(ir.Linkage), FunctionHeader: $2.(*ir.FunctionHeader), FunctionBody: $4.(*ir.FunctionBody), Metadata: $3.([]*metadata.MetadataAttachment)}, nil >>
+	<< irx.NewFunctionDef($1, $2, $3, $4) >>
 ;
 
 // ref: ParseFunctionHeader
@@ -36,7 +36,7 @@ FunctionDef
 
 FunctionHeader
 	: OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality
-	<< &ir.FunctionHeader{Preemption: $0.(ir.Preemption), Visibility: $1.(ir.Visibility), DLLStorageClass: $2.(ir.DLLStorageClass), CallingConv: $3.(ir.CallingConv), ReturnAttrs: $4.([]ir.ReturnAttribute), RetType: $5.(types.Type), Name: astx.GlobalIdent($6), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ir.UnnamedAddr), FuncAttrs: $11.([]ir.FuncAttribute), Section: $12.(*ir.Section), Comdat: $13.(*ir.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
+	<< &irx.FunctionHeader{Preemption: $0.(ir.Preemption), Visibility: $1.(ir.Visibility), DLLStorageClass: $2.(ir.DLLStorageClass), CallingConv: $3.(ir.CallingConv), ReturnAttrs: $4.([]ir.ReturnAttribute), RetType: $5.(types.Type), Name: astx.GlobalIdent($6), Params: $8.(*astx.Params).Params, Variadic: $8.(*astx.Params).Variadic, UnnamedAddr: $10.(ir.UnnamedAddr), FuncAttrs: $11.([]ir.FuncAttribute), Section: $12.(*ir.Section), Comdat: $13.(*ir.Comdat), GC: $14.(string), Prefix: astx.OptConstant($15), Prologue: astx.OptConstant($16), Personality: astx.OptConstant($17)}, nil >>
 ;
 
 OptGC
@@ -70,6 +70,6 @@ OptPersonality
 
 FunctionBody
 	: "{" BasicBlockList UseListOrders "}"
-	<< &ir.FunctionBody{Blocks: $1.([]*ir.BasicBlock), UseListOrders: $2.([]*ir.UseListOrder)}, nil >>
+	<< &irx.FunctionBody{Blocks: $1.([]*ir.BasicBlock), UseListOrders: $2.([]*ir.UseListOrder)}, nil >>
 ;
 

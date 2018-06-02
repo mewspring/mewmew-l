@@ -5,6 +5,7 @@ package parser
 import (
 	"github.com/mewmew/l/asm/ast"
 	"github.com/mewmew/l/asm/internal/astx"
+	"github.com/mewmew/l/asm/internal/irx"
 	"github.com/mewmew/l/ir"
 	"github.com/mewmew/l/ir/constant"
 	"github.com/mewmew/l/ir/metadata"
@@ -539,33 +540,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionDecl : "declare" MetadataAttachments OptExternLinkage FunctionHeader	<< &ir.Function{Linkage: X[2].(ir.Linkage), FunctionHeader: X[3].(*ir.FunctionHeader), Metadata: X[1].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FunctionDecl : "declare" MetadataAttachments OptExternLinkage FunctionHeader	<< irx.NewFunctionDecl(X[1], X[2], X[3]) >>`,
 		Id:         "FunctionDecl",
 		NTType:     20,
 		Index:      51,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.Function{Linkage: X[2].(ir.Linkage), FunctionHeader: X[3].(*ir.FunctionHeader), Metadata: X[1].([]*metadata.MetadataAttachment)}, nil
+			return irx.NewFunctionDecl(X[1], X[2], X[3])
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionDef : "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody	<< &ir.Function{Linkage: X[1].(ir.Linkage), FunctionHeader: X[2].(*ir.FunctionHeader), FunctionBody: X[4].(*ir.FunctionBody), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil >>`,
+		String: `FunctionDef : "define" OptLinkage FunctionHeader MetadataAttachments FunctionBody	<< irx.NewFunctionDef(X[1], X[2], X[3], X[4]) >>`,
 		Id:         "FunctionDef",
 		NTType:     21,
 		Index:      52,
 		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.Function{Linkage: X[1].(ir.Linkage), FunctionHeader: X[2].(*ir.FunctionHeader), FunctionBody: X[4].(*ir.FunctionBody), Metadata: X[3].([]*metadata.MetadataAttachment)}, nil
+			return irx.NewFunctionDef(X[1], X[2], X[3], X[4])
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
+		String: `FunctionHeader : OptPreemptionSpecifier OptVisibility OptDLLStorageClass OptCallingConv ReturnAttrs Type GlobalIdent "(" Params ")" OptUnnamedAddr FuncAttrs OptSection OptComdat OptGC OptPrefix OptPrologue OptPersonality	<< &irx.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil >>`,
 		Id:         "FunctionHeader",
 		NTType:     22,
 		Index:      53,
 		NumSymbols: 18,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
+			return &irx.FunctionHeader{Preemption: X[0].(ir.Preemption), Visibility: X[1].(ir.Visibility), DLLStorageClass: X[2].(ir.DLLStorageClass), CallingConv: X[3].(ir.CallingConv), ReturnAttrs: X[4].([]ir.ReturnAttribute), RetType: X[5].(types.Type), Name: astx.GlobalIdent(X[6]), Params: X[8].(*astx.Params).Params, Variadic: X[8].(*astx.Params).Variadic, UnnamedAddr: X[10].(ir.UnnamedAddr), FuncAttrs: X[11].([]ir.FuncAttribute), Section: X[12].(*ir.Section), Comdat: X[13].(*ir.Comdat), GC: X[14].(string), Prefix: astx.OptConstant(X[15]), Prologue: astx.OptConstant(X[16]), Personality: astx.OptConstant(X[17])}, nil
 		},
 	},
 	ProdTabEntry{
@@ -649,13 +650,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FunctionBody : "{" BasicBlockList UseListOrders "}"	<< &ir.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ir.UseListOrder)}, nil >>`,
+		String: `FunctionBody : "{" BasicBlockList UseListOrders "}"	<< &irx.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ir.UseListOrder)}, nil >>`,
 		Id:         "FunctionBody",
 		NTType:     27,
 		Index:      62,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ir.UseListOrder)}, nil
+			return &irx.FunctionBody{Blocks: X[1].([]*ir.BasicBlock), UseListOrders: X[2].([]*ir.UseListOrder)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -835,7 +836,7 @@ var productionsTable = ProdTab{
 		Index:      80,
 		NumSymbols: 8,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.UseListOrderBB{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: astx.GlobalIdent(X[1])}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil
+			return &ir.UseListOrderBB{Func: &ir.Function{Name: astx.GlobalIdent(X[1])}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[3])}, Indices: X[6].([]int64)}, nil
 		},
 	},
 	ProdTabEntry{
@@ -1765,7 +1766,7 @@ var productionsTable = ProdTab{
 		Index:      173,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &constant.BlockAddress{Func: &ir.Function{FunctionHeader: &ir.FunctionHeader{Name: X[2].(*ast.GlobalIdent).Name}}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil
+			return &constant.BlockAddress{Func: &ir.Function{Name: X[2].(*ast.GlobalIdent).Name}, Block: &ir.BasicBlock{Name: astx.LocalIdent(X[4])}}, nil
 		},
 	},
 	ProdTabEntry{

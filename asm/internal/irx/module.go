@@ -246,19 +246,17 @@ func Translate(module *ast.Module) (*ir.Module, error) {
 		for _, param := range f.Params {
 			m.locals[param.Name] = param
 		}
-		if f.FunctionBody != nil {
-			for _, block := range f.Blocks {
-				m.locals[block.Name] = block
-				for _, inst := range block.Insts {
-					n, ok := inst.(value.Named)
-					if !ok {
-						continue
-					}
-					if n.Type().Equal(types.Void) {
-						continue
-					}
-					m.locals[n.GetName()] = n
+		for _, block := range f.Blocks {
+			m.locals[block.Name] = block
+			for _, inst := range block.Insts {
+				n, ok := inst.(value.Named)
+				if !ok {
+					continue
 				}
+				if n.Type().Equal(types.Void) {
+					continue
+				}
+				m.locals[n.GetName()] = n
 			}
 		}
 
