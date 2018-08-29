@@ -233,25 +233,24 @@ const (
 	FuncAttrWriteOnly                                   // writeonly
 )
 
-// FuncAttrPair is a function attribute key-value pair.
-type FuncAttrPair struct {
+// AttrPair is a attribute key-value pair of a function, parameter or return argument attribute.
+type AttrPair struct {
 	Key   string
 	Value string
 }
 
-// String returns the string representation of the function attribute key-value
-// pair.
-func (a *FuncAttrPair) String() string {
+// String returns the string representation of the attribute key-value pair.
+func (a *AttrPair) String() string {
 	return fmt.Sprintf("%v=%v", enc.Quote(a.Key), enc.Quote(a.Value))
 }
 
-// FuncAttrString is a function attribute string.
-type FuncAttrString struct {
+// AttrString is a attribute string of a function, parameter or return argument attribute.
+type AttrString struct {
 	Value string
 }
 
-// String returns the string representation of the function attribute string.
-func (a *FuncAttrString) String() string {
+// String returns the string representation of the attribute string.
+func (a *AttrString) String() string {
 	return enc.Quote(a.Value)
 }
 
@@ -428,16 +427,6 @@ const (
 	ParamAttrZeroExt                     // zeroext
 )
 
-// ParamAttrString is a parameter attribute string.
-type ParamAttrString struct {
-	Value string
-}
-
-// String returns the string representation of the parameter attribute string.
-func (a *ParamAttrString) String() string {
-	return enc.Quote(a.Value)
-}
-
 //go:generate stringer -linecomment -type Preemption
 
 // Preemption specifies the preemtion of a global identifier.
@@ -463,17 +452,6 @@ const (
 	ReturnAttrSignExt                   // signext
 	ReturnAttrZeroExt                   // zeroext
 )
-
-// ReturnAttrString is a return argument attribute string.
-type ReturnAttrString struct {
-	Value string
-}
-
-// String returns the string representation of the return argument attribute
-// string.
-func (a *ReturnAttrString) String() string {
-	return enc.Quote(a.Value)
-}
 
 // Section specifies a section attribute.
 type Section struct {

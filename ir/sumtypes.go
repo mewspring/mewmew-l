@@ -56,10 +56,11 @@ type ReturnAttribute interface {
 
 // isReturnAttribute ensures that only return argument attributes can be
 // assigned to the ast.ReturnAttribute interface.
-func (*Alignment) isReturnAttribute()        {}
-func (*Dereferenceable) isReturnAttribute()  {}
-func (*ReturnAttrString) isReturnAttribute() {}
-func (ReturnAttr) isReturnAttribute()        {}
+func (*Alignment) isReturnAttribute()       {}
+func (*Dereferenceable) isReturnAttribute() {}
+func (*AttrString) isReturnAttribute()      {}
+func (*AttrPair) isReturnAttribute()        {}
+func (ReturnAttr) isReturnAttribute()       {}
 
 // --- [ ir.FuncAttribute ] ----------------------------------------------------
 
@@ -79,8 +80,8 @@ func (*AttrGroupDef) IsFuncAttribute() {}
 func (*Alignment) IsFuncAttribute()      {}
 func (*AllocSize) IsFuncAttribute()      {}
 func (*StackAlignment) IsFuncAttribute() {}
-func (*FuncAttrString) IsFuncAttribute() {}
-func (*FuncAttrPair) IsFuncAttribute()   {}
+func (*AttrString) IsFuncAttribute()     {}
+func (*AttrPair) IsFuncAttribute()       {}
 func (FuncAttr) IsFuncAttribute()        {}
 
 // --- [ ir.ParamAttribute ] ---------------------------------------------------
@@ -97,7 +98,8 @@ type ParamAttribute interface {
 // the ast.ParamAttribute interface.
 func (*Alignment) isParamAttribute()       {}
 func (*Dereferenceable) isParamAttribute() {}
-func (*ParamAttrString) isParamAttribute() {}
+func (*AttrString) isParamAttribute()      {}
+func (*AttrPair) isParamAttribute()        {}
 func (ParamAttr) isParamAttribute()        {}
 
 // --- [ ir.Instruction ] ------------------------------------------------------

@@ -1376,9 +1376,9 @@ func (w *walker) walkBeforeAfter(x interface{}, before, after func(interface{}))
 		// nothing to do.
 	case *ir.StackAlignment:
 		// nothing to do.
-	case *ir.FuncAttrString:
+	case *ir.AttrString:
 		// nothing to do.
-	case *ir.FuncAttrPair:
+	case *ir.AttrPair:
 		// nothing to do.
 	// From AST.
 	case *ast.GlobalIdent:

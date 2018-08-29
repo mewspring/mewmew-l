@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	numProductions = 1108
-	numStates      = 13156
-	numSymbols     = 866
+	numProductions = 1112
+	numStates      = 13183
+	numSymbols     = 868
 )
 
 // Stack
@@ -69,11 +69,16 @@ func (s *stack) String() string {
 	w := new(bytes.Buffer)
 	fmt.Fprintf(w, "stack:\n")
 	for i, st := range s.state {
-		fmt.Fprintf(w, "\t%d:%d , ", i, st)
+		fmt.Fprintf(w, "\t%d: %d , ", i, st)
 		if s.attrib[i] == nil {
 			fmt.Fprintf(w, "nil")
 		} else {
-			fmt.Fprintf(w, "%v", s.attrib[i])
+			switch attr := s.attrib[i].(type) {
+			case *token.Token:
+				fmt.Fprintf(w, "%s", attr.Lit)
+			default:
+				fmt.Fprintf(w, "%v", attr)
+			}
 		}
 		fmt.Fprintf(w, "\n")
 	}

@@ -9580,23 +9580,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : StringLit	<< &ir.FuncAttrString{Value: X[0].(string)}, nil >>`,
+		String: `FuncAttr : AttrString	<<  >>`,
 		Id:         "FuncAttr",
 		NTType:     396,
 		Index:      955,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.FuncAttrString{Value: X[0].(string)}, nil
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `FuncAttr : StringLit "=" StringLit	<< &ir.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil >>`,
+		String: `FuncAttr : AttrPair	<<  >>`,
 		Id:         "FuncAttr",
 		NTType:     396,
 		Index:      956,
-		NumSymbols: 3,
+		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.FuncAttrPair{Key: X[0].(string), Value: X[2].(string)}, nil
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
@@ -9970,10 +9970,30 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `OptInBounds : empty	<< false, nil >>`,
-		Id:         "OptInBounds",
+		String: `AttrString : StringLit	<< &ir.AttrString{Value: X[0].(string)}, nil >>`,
+		Id:         "AttrString",
 		NTType:     397,
 		Index:      994,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return &ir.AttrString{Value: X[0].(string)}, nil
+		},
+	},
+	ProdTabEntry{
+		String: `AttrPair : StringLit "=" StringLit	<< &ir.AttrPair{Key: X[0].(string), Value: X[2].(string)}, nil >>`,
+		Id:         "AttrPair",
+		NTType:     398,
+		Index:      995,
+		NumSymbols: 3,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return &ir.AttrPair{Key: X[0].(string), Value: X[2].(string)}, nil
+		},
+	},
+	ProdTabEntry{
+		String: `OptInBounds : empty	<< false, nil >>`,
+		Id:         "OptInBounds",
+		NTType:     399,
+		Index:      996,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -9982,8 +10002,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptInBounds : "inbounds"	<< true, nil >>`,
 		Id:         "OptInBounds",
-		NTType:     397,
-		Index:      995,
+		NTType:     399,
+		Index:      997,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
@@ -9992,8 +10012,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Indices : empty	<< ([]int64)(nil), nil >>`,
 		Id:         "Indices",
-		NTType:     398,
-		Index:      996,
+		NTType:     400,
+		Index:      998,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]int64)(nil), nil
@@ -10002,8 +10022,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Indices : "," IndexList	<< X[1], nil >>`,
 		Id:         "Indices",
-		NTType:     398,
-		Index:      997,
+		NTType:     400,
+		Index:      999,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -10012,8 +10032,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IndexList : Index	<< []int64{X[0].(int64)}, nil >>`,
 		Id:         "IndexList",
-		NTType:     399,
-		Index:      998,
+		NTType:     401,
+		Index:      1000,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []int64{X[0].(int64)}, nil
@@ -10022,8 +10042,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IndexList : IndexList "," Index	<< append(X[0].([]int64), X[2].(int64)), nil >>`,
 		Id:         "IndexList",
-		NTType:     399,
-		Index:      999,
+		NTType:     401,
+		Index:      1001,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]int64), X[2].(int64)), nil
@@ -10032,8 +10052,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Index : int_lit	<< astx.Int(X[0]), nil >>`,
 		Id:         "Index",
-		NTType:     400,
-		Index:      1000,
+		NTType:     402,
+		Index:      1002,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return astx.Int(X[0]), nil
@@ -10042,8 +10062,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "eq"	<< ir.IPredEQ, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1001,
+		NTType:     403,
+		Index:      1003,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredEQ, nil
@@ -10052,8 +10072,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "ne"	<< ir.IPredNE, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1002,
+		NTType:     403,
+		Index:      1004,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredNE, nil
@@ -10062,8 +10082,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "sge"	<< ir.IPredSGE, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1003,
+		NTType:     403,
+		Index:      1005,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredSGE, nil
@@ -10072,8 +10092,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "sgt"	<< ir.IPredSGT, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1004,
+		NTType:     403,
+		Index:      1006,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredSGT, nil
@@ -10082,8 +10102,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "sle"	<< ir.IPredSLE, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1005,
+		NTType:     403,
+		Index:      1007,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredSLE, nil
@@ -10092,8 +10112,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "slt"	<< ir.IPredSLT, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1006,
+		NTType:     403,
+		Index:      1008,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredSLT, nil
@@ -10102,8 +10122,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "uge"	<< ir.IPredUGE, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1007,
+		NTType:     403,
+		Index:      1009,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredUGE, nil
@@ -10112,8 +10132,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "ugt"	<< ir.IPredUGT, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1008,
+		NTType:     403,
+		Index:      1010,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredUGT, nil
@@ -10122,8 +10142,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "ule"	<< ir.IPredULE, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1009,
+		NTType:     403,
+		Index:      1011,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredULE, nil
@@ -10132,8 +10152,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `IPred : "ult"	<< ir.IPredULT, nil >>`,
 		Id:         "IPred",
-		NTType:     401,
-		Index:      1010,
+		NTType:     403,
+		Index:      1012,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.IPredULT, nil
@@ -10142,8 +10162,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptLinkage : empty	<< ir.LinkageNone, nil >>`,
 		Id:         "OptLinkage",
-		NTType:     402,
-		Index:      1011,
+		NTType:     404,
+		Index:      1013,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageNone, nil
@@ -10152,8 +10172,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptLinkage : Linkage	<<  >>`,
 		Id:         "OptLinkage",
-		NTType:     402,
-		Index:      1012,
+		NTType:     404,
+		Index:      1014,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10162,8 +10182,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "appending"	<< ir.LinkageAppending, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1013,
+		NTType:     405,
+		Index:      1015,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageAppending, nil
@@ -10172,8 +10192,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "available_externally"	<< ir.LinkageAvailableExternally, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1014,
+		NTType:     405,
+		Index:      1016,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageAvailableExternally, nil
@@ -10182,8 +10202,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "common"	<< ir.LinkageCommon, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1015,
+		NTType:     405,
+		Index:      1017,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageCommon, nil
@@ -10192,8 +10212,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "internal"	<< ir.LinkageInternal, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1016,
+		NTType:     405,
+		Index:      1018,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageInternal, nil
@@ -10202,8 +10222,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "linkonce"	<< ir.LinkageLinkOnce, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1017,
+		NTType:     405,
+		Index:      1019,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageLinkOnce, nil
@@ -10212,8 +10232,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "linkonce_odr"	<< ir.LinkageLinkOnceODR, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1018,
+		NTType:     405,
+		Index:      1020,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageLinkOnceODR, nil
@@ -10222,8 +10242,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "private"	<< ir.LinkagePrivate, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1019,
+		NTType:     405,
+		Index:      1021,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkagePrivate, nil
@@ -10232,8 +10252,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "weak"	<< ir.LinkageWeak, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1020,
+		NTType:     405,
+		Index:      1022,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageWeak, nil
@@ -10242,8 +10262,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Linkage : "weak_odr"	<< ir.LinkageWeakODR, nil >>`,
 		Id:         "Linkage",
-		NTType:     403,
-		Index:      1021,
+		NTType:     405,
+		Index:      1023,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageWeakODR, nil
@@ -10252,8 +10272,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptExternLinkage : empty	<< ir.LinkageNone, nil >>`,
 		Id:         "OptExternLinkage",
-		NTType:     404,
-		Index:      1022,
+		NTType:     406,
+		Index:      1024,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageNone, nil
@@ -10262,8 +10282,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptExternLinkage : ExternLinkage	<<  >>`,
 		Id:         "OptExternLinkage",
-		NTType:     404,
-		Index:      1023,
+		NTType:     406,
+		Index:      1025,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10272,8 +10292,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ExternLinkage : "extern_weak"	<< ir.LinkageExternWeak, nil >>`,
 		Id:         "ExternLinkage",
-		NTType:     405,
-		Index:      1024,
+		NTType:     407,
+		Index:      1026,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageExternWeak, nil
@@ -10282,8 +10302,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ExternLinkage : "external"	<< ir.LinkageExternal, nil >>`,
 		Id:         "ExternLinkage",
-		NTType:     405,
-		Index:      1025,
+		NTType:     407,
+		Index:      1027,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.LinkageExternal, nil
@@ -10292,8 +10312,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OperandBundles : empty	<< ([]*ir.OperandBundle)(nil), nil >>`,
 		Id:         "OperandBundles",
-		NTType:     406,
-		Index:      1026,
+		NTType:     408,
+		Index:      1028,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]*ir.OperandBundle)(nil), nil
@@ -10302,8 +10322,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OperandBundles : "[" OperandBundleList "]"	<< X[1], nil >>`,
 		Id:         "OperandBundles",
-		NTType:     406,
-		Index:      1027,
+		NTType:     408,
+		Index:      1029,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[1], nil
@@ -10312,8 +10332,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OperandBundleList : OperandBundle	<< []*ir.OperandBundle{X[0].(*ir.OperandBundle)}, nil >>`,
 		Id:         "OperandBundleList",
-		NTType:     407,
-		Index:      1028,
+		NTType:     409,
+		Index:      1030,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []*ir.OperandBundle{X[0].(*ir.OperandBundle)}, nil
@@ -10322,8 +10342,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OperandBundleList : OperandBundleList OperandBundle	<< append(X[0].([]*ir.OperandBundle), X[1].(*ir.OperandBundle)), nil >>`,
 		Id:         "OperandBundleList",
-		NTType:     407,
-		Index:      1029,
+		NTType:     409,
+		Index:      1031,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]*ir.OperandBundle), X[1].(*ir.OperandBundle)), nil
@@ -10332,8 +10352,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OperandBundle : StringLit "(" TypeValues ")"	<< &ir.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil >>`,
 		Id:         "OperandBundle",
-		NTType:     408,
-		Index:      1030,
+		NTType:     410,
+		Index:      1032,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.OperandBundle{Tag: X[0].(string), Inputs: X[2].([]value.Value)}, nil
@@ -10342,8 +10362,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlags : empty	<< ([]ir.OverflowFlag)(nil), nil >>`,
 		Id:         "OverflowFlags",
-		NTType:     409,
-		Index:      1031,
+		NTType:     411,
+		Index:      1033,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]ir.OverflowFlag)(nil), nil
@@ -10352,8 +10372,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlags : OverflowFlagList	<<  >>`,
 		Id:         "OverflowFlags",
-		NTType:     409,
-		Index:      1032,
+		NTType:     411,
+		Index:      1034,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10362,8 +10382,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlagList : OverflowFlag	<< []ir.OverflowFlag{X[0].(ir.OverflowFlag)}, nil >>`,
 		Id:         "OverflowFlagList",
-		NTType:     410,
-		Index:      1033,
+		NTType:     412,
+		Index:      1035,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []ir.OverflowFlag{X[0].(ir.OverflowFlag)}, nil
@@ -10372,8 +10392,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlagList : OverflowFlagList OverflowFlag	<< append(X[0].([]ir.OverflowFlag), X[1].(ir.OverflowFlag)), nil >>`,
 		Id:         "OverflowFlagList",
-		NTType:     410,
-		Index:      1034,
+		NTType:     412,
+		Index:      1036,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]ir.OverflowFlag), X[1].(ir.OverflowFlag)), nil
@@ -10382,8 +10402,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlag : "nsw"	<< ir.OverflowFlagNSW, nil >>`,
 		Id:         "OverflowFlag",
-		NTType:     411,
-		Index:      1035,
+		NTType:     413,
+		Index:      1037,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.OverflowFlagNSW, nil
@@ -10392,8 +10412,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OverflowFlag : "nuw"	<< ir.OverflowFlagNUW, nil >>`,
 		Id:         "OverflowFlag",
-		NTType:     411,
-		Index:      1036,
+		NTType:     413,
+		Index:      1038,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.OverflowFlagNUW, nil
@@ -10402,8 +10422,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttrs : empty	<< ([]ir.ParamAttribute)(nil), nil >>`,
 		Id:         "ParamAttrs",
-		NTType:     412,
-		Index:      1037,
+		NTType:     414,
+		Index:      1039,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]ir.ParamAttribute)(nil), nil
@@ -10412,8 +10432,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttrs : ParamAttrList	<<  >>`,
 		Id:         "ParamAttrs",
-		NTType:     412,
-		Index:      1038,
+		NTType:     414,
+		Index:      1040,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10422,8 +10442,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttrList : ParamAttr	<< []ir.ParamAttribute{X[0].(ir.ParamAttribute)}, nil >>`,
 		Id:         "ParamAttrList",
-		NTType:     413,
-		Index:      1039,
+		NTType:     415,
+		Index:      1041,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []ir.ParamAttribute{X[0].(ir.ParamAttribute)}, nil
@@ -10432,8 +10452,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttrList : ParamAttrList ParamAttr	<< append(X[0].([]ir.ParamAttribute), X[1].(ir.ParamAttribute)), nil >>`,
 		Id:         "ParamAttrList",
-		NTType:     413,
-		Index:      1040,
+		NTType:     415,
+		Index:      1042,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]ir.ParamAttribute), X[1].(ir.ParamAttribute)), nil
@@ -10442,8 +10462,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : Alignment	<<  >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1041,
+		NTType:     416,
+		Index:      1043,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10452,28 +10472,38 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : Dereferenceable	<<  >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1042,
+		NTType:     416,
+		Index:      1044,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `ParamAttr : StringLit	<< &ir.ParamAttrString{Value: X[0].(string)}, nil >>`,
+		String: `ParamAttr : AttrString	<<  >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1043,
+		NTType:     416,
+		Index:      1045,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.ParamAttrString{Value: X[0].(string)}, nil
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `ParamAttr : AttrPair	<<  >>`,
+		Id:         "ParamAttr",
+		NTType:     416,
+		Index:      1046,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
 		String: `ParamAttr : "byval"	<< ir.ParamAttrByval, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1044,
+		NTType:     416,
+		Index:      1047,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrByval, nil
@@ -10482,8 +10512,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "inalloca"	<< ir.ParamAttrInAlloca, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1045,
+		NTType:     416,
+		Index:      1048,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrInAlloca, nil
@@ -10492,8 +10522,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "inreg"	<< ir.ParamAttrInReg, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1046,
+		NTType:     416,
+		Index:      1049,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrInReg, nil
@@ -10502,8 +10532,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "nest"	<< ir.ParamAttrNest, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1047,
+		NTType:     416,
+		Index:      1050,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrNest, nil
@@ -10512,8 +10542,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "noalias"	<< ir.ParamAttrNoAlias, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1048,
+		NTType:     416,
+		Index:      1051,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrNoAlias, nil
@@ -10522,8 +10552,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "nocapture"	<< ir.ParamAttrNoCapture, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1049,
+		NTType:     416,
+		Index:      1052,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrNoCapture, nil
@@ -10532,8 +10562,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "nonnull"	<< ir.ParamAttrNonNull, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1050,
+		NTType:     416,
+		Index:      1053,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrNonNull, nil
@@ -10542,8 +10572,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "readnone"	<< ir.ParamAttrReadNone, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1051,
+		NTType:     416,
+		Index:      1054,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrReadNone, nil
@@ -10552,8 +10582,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "readonly"	<< ir.ParamAttrReadOnly, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1052,
+		NTType:     416,
+		Index:      1055,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrReadOnly, nil
@@ -10562,8 +10592,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "returned"	<< ir.ParamAttrReturned, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1053,
+		NTType:     416,
+		Index:      1056,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrReturned, nil
@@ -10572,8 +10602,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "signext"	<< ir.ParamAttrSignExt, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1054,
+		NTType:     416,
+		Index:      1057,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrSignExt, nil
@@ -10582,8 +10612,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "sret"	<< ir.ParamAttrSRet, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1055,
+		NTType:     416,
+		Index:      1058,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrSRet, nil
@@ -10592,8 +10622,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "swifterror"	<< ir.ParamAttrSwiftError, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1056,
+		NTType:     416,
+		Index:      1059,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrSwiftError, nil
@@ -10602,8 +10632,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "swiftself"	<< ir.ParamAttrSwiftSelf, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1057,
+		NTType:     416,
+		Index:      1060,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrSwiftSelf, nil
@@ -10612,8 +10642,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "writeonly"	<< ir.ParamAttrWriteOnly, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1058,
+		NTType:     416,
+		Index:      1061,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrWriteOnly, nil
@@ -10622,8 +10652,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamAttr : "zeroext"	<< ir.ParamAttrZeroExt, nil >>`,
 		Id:         "ParamAttr",
-		NTType:     414,
-		Index:      1059,
+		NTType:     416,
+		Index:      1062,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ParamAttrZeroExt, nil
@@ -10632,8 +10662,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Params : empty	<< &astx.Params{}, nil >>`,
 		Id:         "Params",
-		NTType:     415,
-		Index:      1060,
+		NTType:     417,
+		Index:      1063,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &astx.Params{}, nil
@@ -10642,8 +10672,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Params : "..."	<< &astx.Params{Variadic: true}, nil >>`,
 		Id:         "Params",
-		NTType:     415,
-		Index:      1061,
+		NTType:     417,
+		Index:      1064,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &astx.Params{Variadic: true}, nil
@@ -10652,8 +10682,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Params : ParamList	<< &astx.Params{Params: X[0].([]*ir.Param)}, nil >>`,
 		Id:         "Params",
-		NTType:     415,
-		Index:      1062,
+		NTType:     417,
+		Index:      1065,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &astx.Params{Params: X[0].([]*ir.Param)}, nil
@@ -10662,8 +10692,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Params : ParamList "," "..."	<< &astx.Params{Params: X[0].([]*ir.Param), Variadic: true}, nil >>`,
 		Id:         "Params",
-		NTType:     415,
-		Index:      1063,
+		NTType:     417,
+		Index:      1066,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &astx.Params{Params: X[0].([]*ir.Param), Variadic: true}, nil
@@ -10672,8 +10702,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamList : Param	<< []*ir.Param{X[0].(*ir.Param)}, nil >>`,
 		Id:         "ParamList",
-		NTType:     416,
-		Index:      1064,
+		NTType:     418,
+		Index:      1067,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return []*ir.Param{X[0].(*ir.Param)}, nil
@@ -10682,8 +10712,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ParamList : ParamList "," Param	<< append(X[0].([]*ir.Param), X[2].(*ir.Param)), nil >>`,
 		Id:         "ParamList",
-		NTType:     416,
-		Index:      1065,
+		NTType:     418,
+		Index:      1068,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return append(X[0].([]*ir.Param), X[2].(*ir.Param)), nil
@@ -10692,8 +10722,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Param : Type ParamAttrs	<< &ir.Param{Typ: X[0].(types.Type), Attrs: X[1].([]ir.ParamAttribute)}, nil >>`,
 		Id:         "Param",
-		NTType:     417,
-		Index:      1066,
+		NTType:     419,
+		Index:      1069,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.Param{Typ: X[0].(types.Type), Attrs: X[1].([]ir.ParamAttribute)}, nil
@@ -10702,8 +10732,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Param : Type ParamAttrs LocalIdent	<< &ir.Param{Typ: X[0].(types.Type), Name: astx.LocalIdent(X[2]), Attrs: X[1].([]ir.ParamAttribute)}, nil >>`,
 		Id:         "Param",
-		NTType:     417,
-		Index:      1067,
+		NTType:     419,
+		Index:      1070,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.Param{Typ: X[0].(types.Type), Name: astx.LocalIdent(X[2]), Attrs: X[1].([]ir.ParamAttribute)}, nil
@@ -10712,8 +10742,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPreemptionSpecifier : empty	<< ir.PreemptionNone, nil >>`,
 		Id:         "OptPreemptionSpecifier",
-		NTType:     418,
-		Index:      1068,
+		NTType:     420,
+		Index:      1071,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.PreemptionNone, nil
@@ -10722,8 +10752,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptPreemptionSpecifier : PreemptionSpecifier	<<  >>`,
 		Id:         "OptPreemptionSpecifier",
-		NTType:     418,
-		Index:      1069,
+		NTType:     420,
+		Index:      1072,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10732,8 +10762,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `PreemptionSpecifier : "dso_local"	<< ir.PreemptionDSOLocal, nil >>`,
 		Id:         "PreemptionSpecifier",
-		NTType:     419,
-		Index:      1070,
+		NTType:     421,
+		Index:      1073,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.PreemptionDSOLocal, nil
@@ -10742,8 +10772,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `PreemptionSpecifier : "dso_preemptable"	<< ir.PreemptionDSOPreemptable, nil >>`,
 		Id:         "PreemptionSpecifier",
-		NTType:     419,
-		Index:      1071,
+		NTType:     421,
+		Index:      1074,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.PreemptionDSOPreemptable, nil
@@ -10752,8 +10782,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttrs : empty	<< ([]ir.ReturnAttribute)(nil), nil >>`,
 		Id:         "ReturnAttrs",
-		NTType:     420,
-		Index:      1072,
+		NTType:     422,
+		Index:      1075,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ([]ir.ReturnAttribute)(nil), nil
@@ -10762,36 +10792,6 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttrs : ReturnAttrList	<<  >>`,
 		Id:         "ReturnAttrs",
-		NTType:     420,
-		Index:      1073,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
-		},
-	},
-	ProdTabEntry{
-		String: `ReturnAttrList : ReturnAttr	<< []ir.ReturnAttribute{X[0].(ir.ReturnAttribute)}, nil >>`,
-		Id:         "ReturnAttrList",
-		NTType:     421,
-		Index:      1074,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return []ir.ReturnAttribute{X[0].(ir.ReturnAttribute)}, nil
-		},
-	},
-	ProdTabEntry{
-		String: `ReturnAttrList : ReturnAttrList ReturnAttr	<< append(X[0].([]ir.ReturnAttribute), X[1].(ir.ReturnAttribute)), nil >>`,
-		Id:         "ReturnAttrList",
-		NTType:     421,
-		Index:      1075,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return append(X[0].([]ir.ReturnAttribute), X[1].(ir.ReturnAttribute)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `ReturnAttr : Alignment	<<  >>`,
-		Id:         "ReturnAttr",
 		NTType:     422,
 		Index:      1076,
 		NumSymbols: 1,
@@ -10800,30 +10800,70 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : Dereferenceable	<<  >>`,
-		Id:         "ReturnAttr",
-		NTType:     422,
+		String: `ReturnAttrList : ReturnAttr	<< []ir.ReturnAttribute{X[0].(ir.ReturnAttribute)}, nil >>`,
+		Id:         "ReturnAttrList",
+		NTType:     423,
 		Index:      1077,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return []ir.ReturnAttribute{X[0].(ir.ReturnAttribute)}, nil
+		},
+	},
+	ProdTabEntry{
+		String: `ReturnAttrList : ReturnAttrList ReturnAttr	<< append(X[0].([]ir.ReturnAttribute), X[1].(ir.ReturnAttribute)), nil >>`,
+		Id:         "ReturnAttrList",
+		NTType:     423,
+		Index:      1078,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return append(X[0].([]ir.ReturnAttribute), X[1].(ir.ReturnAttribute)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `ReturnAttr : Alignment	<<  >>`,
+		Id:         "ReturnAttr",
+		NTType:     424,
+		Index:      1079,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `ReturnAttr : StringLit	<< &ir.ReturnAttrString{Value: X[0].(string)}, nil >>`,
+		String: `ReturnAttr : Dereferenceable	<<  >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1078,
+		NTType:     424,
+		Index:      1080,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return &ir.ReturnAttrString{Value: X[0].(string)}, nil
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `ReturnAttr : AttrString	<<  >>`,
+		Id:         "ReturnAttr",
+		NTType:     424,
+		Index:      1081,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `ReturnAttr : AttrPair	<<  >>`,
+		Id:         "ReturnAttr",
+		NTType:     424,
+		Index:      1082,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
 		String: `ReturnAttr : "inreg"	<< ir.ReturnAttrInReg, nil >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1079,
+		NTType:     424,
+		Index:      1083,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ReturnAttrInReg, nil
@@ -10832,8 +10872,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttr : "noalias"	<< ir.ReturnAttrNoAlias, nil >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1080,
+		NTType:     424,
+		Index:      1084,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ReturnAttrNoAlias, nil
@@ -10842,8 +10882,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttr : "nonnull"	<< ir.ReturnAttrNonNull, nil >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1081,
+		NTType:     424,
+		Index:      1085,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ReturnAttrNonNull, nil
@@ -10852,8 +10892,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttr : "signext"	<< ir.ReturnAttrSignExt, nil >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1082,
+		NTType:     424,
+		Index:      1086,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ReturnAttrSignExt, nil
@@ -10862,8 +10902,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ReturnAttr : "zeroext"	<< ir.ReturnAttrZeroExt, nil >>`,
 		Id:         "ReturnAttr",
-		NTType:     422,
-		Index:      1083,
+		NTType:     424,
+		Index:      1087,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.ReturnAttrZeroExt, nil
@@ -10872,8 +10912,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptSection : empty	<< (*ir.Section)(nil), nil >>`,
 		Id:         "OptSection",
-		NTType:     423,
-		Index:      1084,
+		NTType:     425,
+		Index:      1088,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ir.Section)(nil), nil
@@ -10882,8 +10922,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptSection : Section	<<  >>`,
 		Id:         "OptSection",
-		NTType:     423,
-		Index:      1085,
+		NTType:     425,
+		Index:      1089,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10892,8 +10932,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Section : "section" StringLit	<< &ir.Section{Name: X[1].(string)}, nil >>`,
 		Id:         "Section",
-		NTType:     424,
-		Index:      1086,
+		NTType:     426,
+		Index:      1090,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.Section{Name: X[1].(string)}, nil
@@ -10902,8 +10942,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `StackAlignment : "alignstack" "(" int_lit ")"	<< &ir.StackAlignment{Align: astx.Int(X[2])}, nil >>`,
 		Id:         "StackAlignment",
-		NTType:     425,
-		Index:      1087,
+		NTType:     427,
+		Index:      1091,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.StackAlignment{Align: astx.Int(X[2])}, nil
@@ -10912,8 +10952,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptSyncScope : empty	<< (*ir.SyncScope)(nil), nil >>`,
 		Id:         "OptSyncScope",
-		NTType:     426,
-		Index:      1088,
+		NTType:     428,
+		Index:      1092,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ir.SyncScope)(nil), nil
@@ -10922,8 +10962,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptSyncScope : "syncscope" "(" StringLit ")"	<< &ir.SyncScope{Scope: X[2].(string)}, nil >>`,
 		Id:         "OptSyncScope",
-		NTType:     426,
-		Index:      1089,
+		NTType:     428,
+		Index:      1093,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.SyncScope{Scope: X[2].(string)}, nil
@@ -10932,8 +10972,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptThreadLocal : empty	<< (*ir.ThreadLocal)(nil), nil >>`,
 		Id:         "OptThreadLocal",
-		NTType:     427,
-		Index:      1090,
+		NTType:     429,
+		Index:      1094,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return (*ir.ThreadLocal)(nil), nil
@@ -10942,8 +10982,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptThreadLocal : ThreadLocal	<<  >>`,
 		Id:         "OptThreadLocal",
-		NTType:     427,
-		Index:      1091,
+		NTType:     429,
+		Index:      1095,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return X[0], nil
@@ -10952,8 +10992,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ThreadLocal : "thread_local"	<< &ir.ThreadLocal{}, nil >>`,
 		Id:         "ThreadLocal",
-		NTType:     428,
-		Index:      1092,
+		NTType:     430,
+		Index:      1096,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.ThreadLocal{}, nil
@@ -10962,8 +11002,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `ThreadLocal : "thread_local" "(" TLSModel ")"	<< &ir.ThreadLocal{Model: X[2].(ir.TLSModel)}, nil >>`,
 		Id:         "ThreadLocal",
-		NTType:     428,
-		Index:      1093,
+		NTType:     430,
+		Index:      1097,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return &ir.ThreadLocal{Model: X[2].(ir.TLSModel)}, nil
@@ -10972,8 +11012,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "initialexec"	<< ir.TLSModelInitialExec, nil >>`,
 		Id:         "TLSModel",
-		NTType:     429,
-		Index:      1094,
+		NTType:     431,
+		Index:      1098,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.TLSModelInitialExec, nil
@@ -10982,8 +11022,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "localdynamic"	<< ir.TLSModelLocalDynamic, nil >>`,
 		Id:         "TLSModel",
-		NTType:     429,
-		Index:      1095,
+		NTType:     431,
+		Index:      1099,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.TLSModelLocalDynamic, nil
@@ -10992,8 +11032,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `TLSModel : "localexec"	<< ir.TLSModelLocalExec, nil >>`,
 		Id:         "TLSModel",
-		NTType:     429,
-		Index:      1096,
+		NTType:     431,
+		Index:      1100,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.TLSModelLocalExec, nil
@@ -11002,8 +11042,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptUnnamedAddr : empty	<< ir.UnnamedAddrNone, nil >>`,
 		Id:         "OptUnnamedAddr",
-		NTType:     430,
-		Index:      1097,
+		NTType:     432,
+		Index:      1101,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.UnnamedAddrNone, nil
@@ -11012,46 +11052,6 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptUnnamedAddr : UnnamedAddr	<<  >>`,
 		Id:         "OptUnnamedAddr",
-		NTType:     430,
-		Index:      1098,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return X[0], nil
-		},
-	},
-	ProdTabEntry{
-		String: `UnnamedAddr : "local_unnamed_addr"	<< ir.UnnamedAddrLocalUnnamedAddr, nil >>`,
-		Id:         "UnnamedAddr",
-		NTType:     431,
-		Index:      1099,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ir.UnnamedAddrLocalUnnamedAddr, nil
-		},
-	},
-	ProdTabEntry{
-		String: `UnnamedAddr : "unnamed_addr"	<< ir.UnnamedAddrUnnamedAddr, nil >>`,
-		Id:         "UnnamedAddr",
-		NTType:     431,
-		Index:      1100,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ir.UnnamedAddrUnnamedAddr, nil
-		},
-	},
-	ProdTabEntry{
-		String: `OptVisibility : empty	<< ir.VisibilityNone, nil >>`,
-		Id:         "OptVisibility",
-		NTType:     432,
-		Index:      1101,
-		NumSymbols: 0,
-		ReduceFunc: func(X []Attrib) (Attrib, error) {
-			return ir.VisibilityNone, nil
-		},
-	},
-	ProdTabEntry{
-		String: `OptVisibility : Visibility	<<  >>`,
-		Id:         "OptVisibility",
 		NTType:     432,
 		Index:      1102,
 		NumSymbols: 1,
@@ -11060,10 +11060,50 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Visibility : "default"	<< ir.VisibilityDefault, nil >>`,
-		Id:         "Visibility",
+		String: `UnnamedAddr : "local_unnamed_addr"	<< ir.UnnamedAddrLocalUnnamedAddr, nil >>`,
+		Id:         "UnnamedAddr",
 		NTType:     433,
 		Index:      1103,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ir.UnnamedAddrLocalUnnamedAddr, nil
+		},
+	},
+	ProdTabEntry{
+		String: `UnnamedAddr : "unnamed_addr"	<< ir.UnnamedAddrUnnamedAddr, nil >>`,
+		Id:         "UnnamedAddr",
+		NTType:     433,
+		Index:      1104,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ir.UnnamedAddrUnnamedAddr, nil
+		},
+	},
+	ProdTabEntry{
+		String: `OptVisibility : empty	<< ir.VisibilityNone, nil >>`,
+		Id:         "OptVisibility",
+		NTType:     434,
+		Index:      1105,
+		NumSymbols: 0,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ir.VisibilityNone, nil
+		},
+	},
+	ProdTabEntry{
+		String: `OptVisibility : Visibility	<<  >>`,
+		Id:         "OptVisibility",
+		NTType:     434,
+		Index:      1106,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `Visibility : "default"	<< ir.VisibilityDefault, nil >>`,
+		Id:         "Visibility",
+		NTType:     435,
+		Index:      1107,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.VisibilityDefault, nil
@@ -11072,8 +11112,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Visibility : "hidden"	<< ir.VisibilityHidden, nil >>`,
 		Id:         "Visibility",
-		NTType:     433,
-		Index:      1104,
+		NTType:     435,
+		Index:      1108,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.VisibilityHidden, nil
@@ -11082,8 +11122,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Visibility : "protected"	<< ir.VisibilityProtected, nil >>`,
 		Id:         "Visibility",
-		NTType:     433,
-		Index:      1105,
+		NTType:     435,
+		Index:      1109,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ir.VisibilityProtected, nil
@@ -11092,8 +11132,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptVolatile : empty	<< false, nil >>`,
 		Id:         "OptVolatile",
-		NTType:     434,
-		Index:      1106,
+		NTType:     436,
+		Index:      1110,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return false, nil
@@ -11102,8 +11142,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `OptVolatile : "volatile"	<< true, nil >>`,
 		Id:         "OptVolatile",
-		NTType:     434,
-		Index:      1107,
+		NTType:     436,
+		Index:      1111,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return true, nil
