@@ -50,7 +50,7 @@ func NewLabelIdent(tok interface{}) (*ast.LabelIdent, error) {
 	if !strings.HasSuffix(ident, suffix) {
 		return nil, errors.Errorf("invalid label identifier %q; missing '%v' suffix", ident, suffix)
 	}
-	ident = ident[len(suffix):]
+	ident = ident[:len(ident)-len(suffix)]
 	if strings.HasPrefix(ident, `"`) && strings.HasSuffix(ident, `"`) {
 		ident = enc.Unquote(ident)
 	}
